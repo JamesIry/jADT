@@ -24,7 +24,7 @@ public class StandardParser implements Parser {
 
 
     private static enum Token {
-        PACKAGE, IMPORT, DATA, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LBRACE, RBRACE, EOF, UNKNOWN;
+        PACKAGE, IMPORT, DATA, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LBRACE, RBRACE, LANGLE, RANGLE, EOF, UNKNOWN;
     }
     private class Impl {
         
@@ -43,6 +43,8 @@ public class StandardParser implements Parser {
             tokenizer.wordChars('A', 'Z');
             tokenizer.wordChars('0', '9');
             tokenizer.wordChars('.', '.');
+            tokenizer.ordinaryChars('<', '<');
+            tokenizer.ordinaryChars('>', '>');
             tokenizer.ordinaryChar('=');
             tokenizer.ordinaryChar('(');
             tokenizer.ordinaryChar(')');
@@ -84,6 +86,12 @@ public class StandardParser implements Parser {
             case ')':
                 symbol = ")";
                 return Token.RBRACE;
+            case '<':
+                symbol = "<";
+                return Token.LANGLE;
+            case '>':
+                symbol = ">";
+                return Token.RANGLE;
             case '=':
                 symbol = "=";
                 return Token.EQUALS;
@@ -94,7 +102,7 @@ public class StandardParser implements Parser {
                 symbol = "|";
                 return Token.BAR;
             default:
-                symbol = tokenizer.sval;
+                symbol = "" + (char)tokenType;
                 return Token.UNKNOWN;
             }
         }
@@ -179,18 +187,32 @@ public class StandardParser implements Parser {
         }
     
         private Arg arg() throws IOException {
+            final String type = type();
+            
             if (!accept(Token.IDENTIFIER)) {
-                throw syntaxException("an argument type");
+                throw syntaxException("an argument name");
             } else {
-                final String type = symbol;
-                if (!accept(Token.IDENTIFIER)) {
-                    throw syntaxException("an argument name");
-                } else {
-                    final String name = symbol;
-                    return new Arg(type, name);
-                }
+                final String name = symbol;
+                return new Arg(type, name);
             }
-    
+        }
+        
+        private String type() throws IOException {
+            final StringBuilder type = new StringBuilder();
+            if (!accept(Token.IDENTIFIER)) { throw syntaxException("a type"); }
+            type.append(symbol);
+
+            if (accept(Token.LANGLE)) {
+                type.append("<");
+                type.append(type());
+                while (accept(Token.COMMA)) {
+                    type.append(", ");
+                    type.append(type());
+                }
+                if (!accept(Token.RANGLE)) { throw syntaxException(">"); }
+                type.append(">");
+            }
+            return type.toString();
         }
     
         private String pkg() throws IOException {

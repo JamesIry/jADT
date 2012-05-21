@@ -1,6 +1,0 @@
-package pogofish.jadt.ast2
-
-data Expression =
-    Add(Expression left, Expression right)
-  | Literal(int value)
-    

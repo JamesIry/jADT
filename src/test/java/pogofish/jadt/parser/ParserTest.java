@@ -64,7 +64,7 @@ public class ParserTest {
     @Test
     public void testNoArgs() throws IOException {
         final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader("data whatever = whatever"));
+        final Doc doc = parser.parse("ParserTest", new StringReader("whatever = whatever"));
 
         assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(new DataType("whatever",
                 list(new Constructor("whatever", Util.<Arg> list()))))), doc);
@@ -73,7 +73,7 @@ public class ParserTest {
     @Test
     public void testArgs() throws IOException {
         final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader("data FooBar = FooBar(int hello, String world)"));
+        final Doc doc = parser.parse("ParserTest", new StringReader("FooBar = FooBar(int hello, String world)"));
 
         assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(new DataType("FooBar", list(new Constructor(
                 "FooBar", list(new Arg("int", "hello"), new Arg("String", "world"))))))), doc);
@@ -84,7 +84,7 @@ public class ParserTest {
         final Parser parser = new StandardParser();
         final Doc doc = parser.parse("ParserTest", new StringReader(
                 "package hello.world import wow.man import flim.flam "
-                        + "data FooBar = foo | bar(int hey, String yeah) " + "data whatever = whatever"));
+                        + "FooBar = foo | bar(int hey, String yeah) " + "whatever = whatever"));
 
         assertEquals(
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
@@ -98,7 +98,7 @@ public class ParserTest {
         final Parser parser = new StandardParser();
         final Doc doc = parser.parse("ParserTest", new StringReader(
                 "package hello.world import wow.man import flim.flam "
-                        + "data FooBar = foo | bar(int hey, Map<String, Cow> yeah) " + "data whatever = whatever"));
+                        + "FooBar = foo | bar(int hey, Map<String, Cow> yeah) " + "whatever = whatever"));
 
         assertEquals(
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(

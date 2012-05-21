@@ -39,7 +39,7 @@ public class StandardParser implements Parser {
 
 
     private static enum Token {
-        PACKAGE, IMPORT, DATA, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LBRACE, RBRACE, LANGLE, RANGLE, EOF, UNKNOWN;
+        PACKAGE, IMPORT, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LBRACE, RBRACE, LANGLE, RANGLE, EOF, UNKNOWN;
     }
     private class Impl {
         
@@ -82,8 +82,6 @@ public class StandardParser implements Parser {
                     return Token.PACKAGE; 
                 } else if (symbol.equals("import")) {
                     return Token.IMPORT;
-                } else if (symbol.equals("data")) {
-                    return Token.DATA;
                 } else {
                     final Matcher identifierMatcher = IDENTIFIER_REGEX.matcher(symbol);
                     if (identifierMatcher.matches()) {
@@ -157,8 +155,6 @@ public class StandardParser implements Parser {
         }
     
         private DataType dataType() throws IOException {
-            if (!accept(Token.DATA)) { throw syntaxException("a data type definition"); }
-    
             if (!accept(Token.IDENTIFIER)) { throw syntaxException("a data type name"); }
             final String name = symbol;
     

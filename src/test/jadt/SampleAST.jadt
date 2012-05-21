@@ -18,20 +18,20 @@ package pogofish.jadt.sampleast
 
 import java.util.List
 
-data Type =
+Type =
      Int
    | Long
    
-data Function = FunctionDef(Type returnType, String name, List<Arg> args, List<Statement> statements)
+Function = FunctionDef(Type returnType, String name, List<Arg> args, List<Statement> statements)
 
-data Arg = ArgDef(Type type, String name)
+Arg = ArgDef(Type type, String name)
 
-data Statement =
+Statement =
     Declaration(Type type, String name, Expression expression)
   | Assignment(String name, Expression expression)
   | Return(Expression expression)
 
-data Expression =
+Expression =
     Add(Expression left, Expression right)
   | Variable(String name)
   | Literal(int value)

@@ -11,23 +11,23 @@ Here's a sample AST for a fragment of a language
 
     import java.util.List
 
-    data Type =
+    Type =
          Int
        | Long
    
-    data Function = 
+    Function = 
          FunctionDef(Type returnType, 
                      String name, 
                      List<Arg> args, 
                      List<Statement> statements)
 
-    data Arg = ArgDef(Type type, String name)
+    Arg = ArgDef(Type type, String name)
 
-    data Statement =
+    Statement =
         Declaration(Type type, String name, Expression expression)
       | Assignment(String name, Expression expression)
 
-    data Expression =
+    Expression =
         Add(Expression left, Expression right)
       | Variable(String name)
       | Literal(int value)
@@ -120,7 +120,7 @@ The syntax of a JADT file is
     IMPORTS : IMPORT*
     IMPORT : "import" PACKAGENAME
     DATATYPE : DATATYPE+
-    DATATYPE : "data" DATATYPENAME "=" CONSTRUCTORS
+    DATATYPE : DATATYPENAME "=" CONSTRUCTORS
     DATATYPENAME : IDENTIFIER
     CONSTRUCTORS : CONSTRUCTOR ("|" CONSTRUCTORS)?
     CONSTRUCTOR : CONSTRUCTORNAME ("(" ARGS ")")?
@@ -138,7 +138,7 @@ In general whitespace isn't significant other than for separating tokens and end
 Known Limitations
 =================
 
-* Currently there's no way to create a parameterized (generic) ADT.  So no "data Option A = Some(A value) | None". Should be easy to fix, I just haven't gotten around to it.
+* Currently there's no way to create a parameterized (generic) ADT.  So no "Option A = Some(A value) | None". Should be easy to fix, I just haven't gotten around to it.
 * ADTs with only a single constructor are done stupidly.  Who needs a whole sealed hierarchy/visitor system for what can basically be handled as a glorified data only class? Just needs two different emitters for constructors.
 * Constructors cannot have the same name as the data type.  That restriction could be lifted for single constructor ADTs once those are handled specially, but it's not clear how to lift that restriction for multi-constructor ADTs.
 * The aforementioned limitation isn't enforced by JADT - the java compiler just pukes all over the generated code. This is VERY easy to fix

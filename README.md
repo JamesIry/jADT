@@ -1,5 +1,7 @@
 JADT generates .java source files from algebraic datatype description files. The resulting Java is sealed against extension and automatically gets a visitor interface; an abstract visitor class that computes a default on all constructor types; and methods for equals(), hashCode(), and toString().  The resulting Java has no compile or runtime dependencies besides those you specify in your JADT description file.  While generating Java JADT has no dependencies other than the standard JDK.
 
+JADT is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
 Sample
 ======
 
@@ -140,3 +142,5 @@ Known Limitations
 * ADTs with only a single constructor are done stupidly.  Who needs a whole sealed hierarchy/visitor system for what can basically be handled as a glorified data only class? Just needs two different emitters for constructors.
 * Constructors cannot have the same name as the data type.  That restriction could be lifted for single constructor ADTs once those are handled specially, but it's not clear how to lift that restriction for multi-constructor ADTs.
 * The aforementioned limitation isn't enforced by JADT - the java compiler just pukes all over the generated code. This is VERY easy to fix
+
+_Copyright 2012 James Iry_

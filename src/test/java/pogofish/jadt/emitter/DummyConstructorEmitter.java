@@ -16,33 +16,19 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
-public class StringTarget implements Target {
-    private final StringWriter writer;
-    private boolean closed = false;
-    
-    public StringTarget() {
-        super();
-        this.writer = new StringWriter();
-    }
-    
+import pogofish.jadt.ast.Constructor;
+
+public class DummyConstructorEmitter implements ConstructorEmitter {
+
     @Override
-    public void write(String data) throws IOException {
-        writer.write(data);
+    public void constructorFactory(Target target, String dataTypeName, Constructor constructor) throws IOException {
+        target.write("/* factory " + dataTypeName + " " + constructor.name + " */");
     }
-    
+
     @Override
-    public void close() throws IOException {
-        writer.close();
-        closed = true;
-    }
-    
-    public String result() throws IOException {
-        if (!closed) {
-            throw new IOException("target was not closed");
-        }
-        return writer.toString();
+    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName) throws IOException {
+        target.write("/* declaration " + dataTypeName + " " + constructor.name + " */");
     }
 
 }

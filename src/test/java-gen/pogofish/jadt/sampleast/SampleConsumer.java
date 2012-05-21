@@ -15,10 +15,10 @@ limitations under the License.
 */
 package pogofish.jadt.sampleast;
 
-import static pogofish.jadt.sampleast.Arg._ArgDef;
+import static pogofish.jadt.sampleast.Arg._Arg;
 import static pogofish.jadt.sampleast.Expression._Add;
 import static pogofish.jadt.sampleast.Expression._Variable;
-import static pogofish.jadt.sampleast.Function._FunctionDef;
+import static pogofish.jadt.sampleast.Function._Function;
 import static pogofish.jadt.sampleast.Statement._Return;
 import static pogofish.jadt.sampleast.Type._Int;
 
@@ -31,7 +31,7 @@ import pogofish.jadt.sampleast.Statement.Return;
 
 public class SampleConsumer {
     public Function sampleFunction() {   
-        return _FunctionDef(_Int, "addTwo", list(_ArgDef(_Int, "x"), _ArgDef(_Int, "y")), list(
+        return _Function(_Int, "addTwo", list(_Arg(_Int, "x"), _Arg(_Int, "y")), list(
                 _Return(_Add(_Variable("x"), _Variable("y")))
                 ));
     }

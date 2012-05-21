@@ -8,29 +8,27 @@ Sample
 Here's a sample AST for a fragment of a language
 
     package pogofish.jadt.sampleast
-
+    
     import java.util.List
-
+    
     Type =
          Int
        | Long
    
-    Function = 
-         FunctionDef(Type returnType, 
-                     String name, 
-                     List<Arg> args, 
-                     List<Statement> statements)
-
-    Arg = ArgDef(Type type, String name)
-
+    Function = Function(Type returnType, String name, List<Arg> args, List<Statement> statements)
+    
+    Arg = Arg(Type type, String name)
+    
     Statement =
         Declaration(Type type, String name, Expression expression)
       | Assignment(String name, Expression expression)
-
+      | Return(Expression expression)
+    
     Expression =
         Add(Expression left, Expression right)
       | Variable(String name)
       | Literal(int value)
+
 
 Usage
 =====
@@ -48,16 +46,15 @@ To use the generated Java, you'll need some imports
 
     import java.util.*;
 
-    import pogofish.jadt.sampleast.*;
     import pogofish.jadt.sampleast.Expression.*;
-    import pogofish.jadt.sampleast.Statement.*;    
+    import pogofish.jadt.sampleast.Statement.*; 
 
 Here's an example of creating a complete function using generated factory methods
 
      public Function sampleFunction() {   
-         return _FunctionDef(_Int, "addTwo", list(_ArgDef(_Int, "x"), _ArgDef(_Int, "y")), list(
-                 _Return(_Add(_Variable("x"), _Variable("y")))
-                 ));
+            return _Function(_Int, "addTwo", list(_Arg(_Int, "x"), _Arg(_Int, "y")), list(
+                    _Return(_Add(_Variable("x"), _Variable("y")))
+                    ));
      }
 
      public static <A> List<A> list(A... elements) {
@@ -140,15 +137,14 @@ Lexical conventions
 * Whitespace isn't significant other than for separating tokens.
 * End of line characters are just treated as whitespace.  
 * There's no need for semicolons or other end markers.
-* Just as in Java, "import" and "package" are keywords and cannot be used as identifiers.
+* Java keywords cannot be used as identifiers or package names.
 * The punctuation "=" "," "<" ">" "(" ")" serves as both tokens and token separators.  E.g. the data type definition "Foo=Bar|Baz" is parsed the same as "Foo = Bar | Baz"
 
 Known Limitations
 =================
 
 * Currently there's no way to create a parameterized (generic) ADT.  So no "Option A = Some(A value) | None". Should be easy to fix, I just haven't gotten around to it.
-* ADTs with only a single constructor are done stupidly.  Who needs a whole sealed hierarchy/visitor system for what can basically be handled as a glorified data only class? Just needs two different emitters for constructors.
-* Constructors cannot have the same name as the data type.  That restriction could be lifted for single constructor ADTs once those are handled specially, but it's not clear how to lift that restriction for multi-constructor ADTs.
+* If an ADT has multiple constructors, none may the same name as the data type.  It's not clear how to lift that restriction and still make Java happy.  For now, use different names.  E.g. Foo = Foo | Bar should be Foo = FooDef | Bar
 * The aforementioned limitation isn't enforced by JADT - the java compiler just pukes all over the generated code. This is VERY easy to fix
 
 _Copyright 2012 James Iry_

@@ -41,7 +41,7 @@ public class JADT {
         final String srcFileName = args[0];
         final String destDirName = args[1];
         
-        final JADT adt = new JADT(new StandardParser(), new StandardDocEmitter(new FileTargetFactory(destDirName), new StandardDataTypeEmitter()));        
+        final JADT adt = new JADT(new StandardParser(), new StandardDocEmitter(new FileTargetFactory(destDirName), new StandardDataTypeEmitter(new StandardClassBodyEmitter(), new StandardConstructorEmitter(new StandardClassBodyEmitter()))));        
         adt.parseAndEmit(srcFileName);
     }
     

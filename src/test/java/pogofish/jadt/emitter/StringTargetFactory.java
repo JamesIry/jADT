@@ -15,17 +15,24 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
+import java.io.IOException;
 import java.util.*;
 
 public class StringTargetFactory implements TargetFactory {
-    private Map<String, String> results = new HashMap<String, String>();
+    private final Map<String, StringTarget> targets = new HashMap<String, StringTarget>();
     
     @Override
     public Target createTarget(String className) {
-        return new StringTarget(className, results);
+        StringTarget target = new StringTarget();
+        targets.put(className, target);
+        return target;
     }
     
-    public Map<String, String> getResults() {
+    public Map<String, String> getResults() throws IOException {
+        final Map<String, String> results = new HashMap<String, String>(targets.size());
+        for (Map.Entry<String, StringTarget> entry : targets.entrySet()) {
+            results.put(entry.getKey(), entry.getValue().result());
+        }
         return Collections.unmodifiableMap(results);
     }
 }

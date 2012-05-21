@@ -13,27 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+package pogofish.jadt.emitter;
 
-package pogofish.jadt.sampleast
+import java.io.IOException;
 
-import java.util.List
+import pogofish.jadt.ast.Constructor;
 
-Type =
-     Int
-   | Long
-   
-Function = Function(Type returnType, String name, List<Arg> args, List<Statement> statements)
+public interface ConstructorEmitter {    
+    public void constructorFactory(Target target, String dataTypeName, Constructor constructor) throws IOException;
 
-Arg = Arg(Type type, String name)
-
-Statement =
-    Declaration(Type type, String name, Expression expression)
-  | Assignment(String name, Expression expression)
-  | Return(Expression expression)
-
-Expression =
-    Add(Expression left, Expression right)
-  | Variable(String name)
-  | Literal(int value)
-  
-  
+    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName) throws IOException;
+}

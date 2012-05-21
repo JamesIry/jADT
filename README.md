@@ -132,8 +132,14 @@ The syntax of a JADT file is
     ARGNAME : IDENTIFIER
     PACKAGENAME : valid Java package name
     IDENTIFIER : valid Java identifier
-
-In general whitespace isn't significant other than for separating tokens and end of line characters are just treated as whitespace
+    
+Lexical conventions    
+* JADT is case sensitive
+* Whitespace isn't significant other than for separating tokens.
+* End of line characters are just treated as whitespace.  
+* There's no need for semicolons or other end markers.
+* Just as in Java, "import" and "package" are keywords and cannot be used as identifiers.
+* The punctuation "=" "," "<" ">" "(" ")" serves as both tokens and token separators.  E.g. the data type definition "Foo=Bar|Baz" is parsed the same as "Foo = Bar | Baz"
 
 Known Limitations
 =================
@@ -142,5 +148,6 @@ Known Limitations
 * ADTs with only a single constructor are done stupidly.  Who needs a whole sealed hierarchy/visitor system for what can basically be handled as a glorified data only class? Just needs two different emitters for constructors.
 * Constructors cannot have the same name as the data type.  That restriction could be lifted for single constructor ADTs once those are handled specially, but it's not clear how to lift that restriction for multi-constructor ADTs.
 * The aforementioned limitation isn't enforced by JADT - the java compiler just pukes all over the generated code. This is VERY easy to fix
+* JADT does not currently enforce a limitation on use of Java keywords other than "package" or "import." If you write "ClassType = class | interface | enum" then JADT will happily produce code that will make a Java compiler grumpy and caustic.
 
 _Copyright 2012 James Iry_

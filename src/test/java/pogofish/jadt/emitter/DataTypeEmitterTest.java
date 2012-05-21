@@ -10,8 +10,6 @@ import java.util.Map;
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
-import pogofish.jadt.emitter.DataTypeEmitter;
-import pogofish.jadt.emitter.StandardDataTypeEmitter;
 import pogofish.jadt.util.Util;
 
 
@@ -23,8 +21,8 @@ public class DataTypeEmitterTest {
     "   private FooBar() {\n" +
     "   }\n" +
     "\n" +
-    "   public static final FooBar Foo(Integer yeah, String hmmm) { return new Foo(yeah, hmmm); }\n" +
-    "   public static FooBar Bar = new Bar();\n" +
+    "   public static final FooBar _Foo(Integer yeah, String hmmm) { return new Foo(yeah, hmmm); }\n" +
+    "   public static FooBar _Bar = new Bar();\n" +
     "\n" +
     "   public static interface Visitor<A> {\n" +
     "      A visit(Foo x);\n" +
@@ -122,7 +120,7 @@ public class DataTypeEmitterTest {
     "   private PrimitiveNonInt() {\n" +
     "   }\n" +
     "\n" +
-    "   public static final PrimitiveNonInt Foo(long yeah) { return new Foo(yeah); }\n" +
+    "   public static final PrimitiveNonInt _Foo(long yeah) { return new Foo(yeah); }\n" +
     "\n" +
     "   public static interface Visitor<A> {\n" +
     "      A visit(Foo x);\n" +
@@ -180,7 +178,7 @@ public class DataTypeEmitterTest {
     "   private PrimitiveInt() {\n" +
     "   }\n" +
     "\n" +
-    "   public static final PrimitiveInt Foo(int yeah) { return new Foo(yeah); }\n" +
+    "   public static final PrimitiveInt _Foo(int yeah) { return new Foo(yeah); }\n" +
     "\n" +
     "   public static interface Visitor<A> {\n" +
     "      A visit(Foo x);\n" +
@@ -238,7 +236,7 @@ public class DataTypeEmitterTest {
     "   private Whatever() {\n" +
     "   }\n" +
     "\n" +
-    "   public static Whatever Whatever = new Whatever();\n" +
+    "   public static Whatever _Whatever = new Whatever();\n" +
     "\n" +
     "   public static interface Visitor<A> {\n" +
     "      A visit(Whatever x);\n" +

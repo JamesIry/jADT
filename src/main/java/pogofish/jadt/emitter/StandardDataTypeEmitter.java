@@ -51,9 +51,9 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
     
     private static void constructorFactory(Target target, String dataTypeName, Constructor constructor) throws IOException {
         if (constructor.args.isEmpty()) {
-            target.write("   public static " + dataTypeName + " " + constructor.name + " = new " + constructor.name + "();");
+            target.write("   public static " + dataTypeName + " _" + constructor.name + " = new " + constructor.name + "();");
         } else {
-            target.write("   public static final " + dataTypeName + " " + constructor.name + "(");
+            target.write("   public static final " + dataTypeName + " _" + constructor.name + "(");
             constructorArgs(target, constructor, true);
             target.write(") { return new " + constructor.name + "("); 
             constructorArgs(target, constructor, false);

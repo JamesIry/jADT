@@ -13,6 +13,7 @@ data Arg = ArgDef(Type type, String name)
 data Statement =
     Declaration(Type type, String name, Expression expression)
   | Assignment(String name, Expression expression)
+  | Return(Expression expression)
 
 data Expression =
     Add(Expression left, Expression right)

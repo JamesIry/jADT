@@ -16,6 +16,7 @@ limitations under the License.
 package pogofish.jadt.parser;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static pogofish.jadt.util.Util.list;
 
 import java.io.IOException;
@@ -105,6 +106,20 @@ public class ParserTest {
                         new DataType("FooBar", Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
                                 "bar", list(new Arg("int", "hey"), new Arg("Map<String, Cow>", "yeah"))))), new DataType(
                                 "whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
+    }
+    
+    @Test
+    public void testJavaKeyword() throws IOException {
+        
+        try {
+            final Parser parser = new StandardParser();
+            final Doc doc = parser.parse("ParserTest", new StringReader(
+                    "package hello.world import wow.man import flim.flam "
+                            + "ClassType = class | interface | enum"));
+            fail("Expected a syntax exception but got " + doc);
+        } catch (SyntaxException e) {
+            // yay, that's good
+        }
     }
 
 }

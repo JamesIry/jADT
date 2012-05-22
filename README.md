@@ -133,7 +133,8 @@ The syntax of a JADT file is
     IDENTIFIER : valid Java identifier
     
 Lexical conventions    
-* JADT is case sensitive
+* JADT is case sensitive.
+* Java style comments, both end of line (//) and block (/* */), are allowed.
 * Whitespace isn't significant other than for separating tokens.
 * End of line characters are just treated as whitespace.  
 * There's no need for semicolons or other end markers.
@@ -142,7 +143,7 @@ Lexical conventions
 
 Known Limitations
 =================
-
+* Currently you can add comments to a JADT file but there's no way to create comments that flow through to the generated Java.
 * Currently there's no way to create a parameterized (generic) ADT.  So no "Option A = Some(A value) | None". Should be easy to fix, I just haven't gotten around to it.
 * If an ADT has multiple constructors, none may the same name as the data type.  It's not clear how to lift that restriction and still make Java happy other than by mangling names and that wouldn't be invisible to the user.  For now, use different names.  E.g. Foo = Foo | Bar should be Foo = FooDef | Bar
 

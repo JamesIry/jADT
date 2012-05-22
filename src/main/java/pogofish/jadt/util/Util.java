@@ -34,4 +34,18 @@ public class Util {
         return set;
     }
     
+    public static String makeString(Iterable<?> objects, String separator) {
+        final StringBuilder builder = new StringBuilder();
+        boolean first = true;
+        for (Object object : objects) {
+            if (first) {
+                first = false;
+            } else {
+                builder.append(separator);
+            }
+            builder.append(object);
+        }
+        return builder.toString();
+    }
+    
 }

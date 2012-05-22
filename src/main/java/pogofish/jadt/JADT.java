@@ -16,8 +16,10 @@ limitations under the License.
 package pogofish.jadt;
 
 import java.io.*;
+import java.util.Set;
 
 import pogofish.jadt.ast.Doc;
+import pogofish.jadt.checker.*;
 import pogofish.jadt.emitter.*;
 import pogofish.jadt.parser.Parser;
 import pogofish.jadt.parser.StandardParser;
@@ -27,11 +29,13 @@ import pogofish.jadt.printer.Printer;
 public class JADT {
     private final Parser parser;
     private final DocEmitter emitter;
+    private final Checker checker;
     
-    public JADT(Parser parser, DocEmitter emitter) {
+    public JADT(Parser parser, Checker checker, DocEmitter emitter) {
         super();
         this.parser = parser;
         this.emitter = emitter;
+        this.checker = checker;
     }
 
     public static void main(String[] args) throws Exception {
@@ -42,7 +46,7 @@ public class JADT {
         final String srcFileName = args[0];
         final String destDirName = args[1];
         
-        final JADT adt = new JADT(new StandardParser(), new StandardDocEmitter(new FileTargetFactory(destDirName), new StandardDataTypeEmitter(new StandardClassBodyEmitter(), new StandardConstructorEmitter(new StandardClassBodyEmitter())), new Printer()));        
+        final JADT adt = new JADT(new StandardParser(), new StandardChecker(), new StandardDocEmitter(new FileTargetFactory(destDirName), new StandardDataTypeEmitter(new StandardClassBodyEmitter(), new StandardConstructorEmitter(new StandardClassBodyEmitter())), new Printer()));        
         adt.parseAndEmit(srcFileName);
     }
     
@@ -58,6 +62,10 @@ public class JADT {
     
     public void parseAndEmit(String srcInfo, Reader src) throws IOException {
         final Doc doc = parser.parse(srcInfo, src);
+        final Set<SemanticException> errors = checker.check(doc);
+        if (!errors.isEmpty()) {
+            throw new SemanticExceptions(errors);
+        }
         emitter.emit(doc);                
     }
 }

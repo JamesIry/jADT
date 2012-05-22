@@ -144,7 +144,6 @@ Known Limitations
 =================
 
 * Currently there's no way to create a parameterized (generic) ADT.  So no "Option A = Some(A value) | None". Should be easy to fix, I just haven't gotten around to it.
-* If an ADT has multiple constructors, none may the same name as the data type.  It's not clear how to lift that restriction and still make Java happy.  For now, use different names.  E.g. Foo = Foo | Bar should be Foo = FooDef | Bar
-* The aforementioned limitation isn't enforced by JADT - the java compiler just pukes all over the generated code. This is VERY easy to fix
+* If an ADT has multiple constructors, none may the same name as the data type.  It's not clear how to lift that restriction and still make Java happy other than by mangling names and that wouldn't be invisible to the user.  For now, use different names.  E.g. Foo = Foo | Bar should be Foo = FooDef | Bar
 
 _Copyright 2012 James Iry_

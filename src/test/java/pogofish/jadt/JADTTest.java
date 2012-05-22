@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
+import pogofish.jadt.checker.DummyChecker;
 import pogofish.jadt.emitter.DocEmitter;
 import pogofish.jadt.parser.Parser;
 import pogofish.jadt.util.Util;
@@ -38,13 +39,14 @@ public class JADTTest {
             final StringWriter writer = new StringWriter();
             try {
                 final Doc doc = new Doc("srcInfo", "pkg", Util.<String>list(), Util.<DataType>list());
+                final DummyChecker checker = new DummyChecker();
                 final JADT adt = new JADT(new Parser(){
                     @Override
                     public Doc parse(String srcInfo, Reader reader) throws IOException {
                         assertEquals(srcInfo, srcInfo);                        
                         assertEquals("hello", new BufferedReader(reader).readLine());
                         return doc;
-                    }}, new DocEmitter(){
+                    }}, checker, new DocEmitter(){
         
                     @Override
                     public void emit(Doc arg) throws IOException {
@@ -52,6 +54,7 @@ public class JADTTest {
                         writer.write("all good!");
                     }});
                 adt.parseAndEmit("srcInfo", reader);
+                assertSame("Checker was not called", doc, checker.lastDoc());
             } finally {
                 writer.close();
             }

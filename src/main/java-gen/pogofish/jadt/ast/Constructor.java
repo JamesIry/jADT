@@ -18,7 +18,21 @@ data DataType =
 data Constructor =
     Constructor(String name, List<Arg> args)
 data Arg =
-    Arg(String type, String name)
+    Arg(Type type, String name)
+data Type =
+    Ref(RefType type)
+  | Primitive(PrimitiveType type)
+data RefType =
+    ClassType(String baseName, List<RefType> typeArguments)
+  | ArrayType(Type heldType)
+data PrimitiveType =
+    BooleanType
+  | CharType
+  | DoubleType
+  | FloatType
+  | IntType
+  | LongType
+  | ShortType
 
 */
 public final class Constructor {

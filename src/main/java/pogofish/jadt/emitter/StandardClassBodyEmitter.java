@@ -15,16 +15,23 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import static pogofish.jadt.util.Util.set;
-
 import java.io.IOException;
-import java.util.Set;
 
-import pogofish.jadt.ast.Arg;
-import pogofish.jadt.ast.Constructor;
+import pogofish.jadt.ast.*;
+import pogofish.jadt.ast.PrimitiveType.IntType;
+import pogofish.jadt.ast.RefType.ArrayType;
+import pogofish.jadt.ast.RefType.ClassType;
+import pogofish.jadt.ast.Type.Primitive;
+import pogofish.jadt.ast.Type.Ref;
+import pogofish.jadt.printer.Printer;
 
 public class StandardClassBodyEmitter implements ClassBodyEmitter {
-    private static final Set<String> PRIMITIVES = set("boolean", "short", "char", "int", "long", "float", "double");
+    final Printer printer;
+    
+    public StandardClassBodyEmitter(Printer printer) {
+        super();
+        this.printer = printer;
+    }
 
     /* (non-Javadoc)
      * @see pogofish.jadt.emitter.ClassBodyEmitter#constructorFactory(pogofish.jadt.emitter.Target, java.lang.String, java.lang.String, pogofish.jadt.ast.Constructor)
@@ -61,7 +68,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     @Override
     public void emitConstructorMethod(Target target, Constructor constructor) throws IOException {
         for (Arg arg : constructor.args) {
-            target.write("      public final " + arg.type + " " + arg.name + ";");
+            target.write("      public final " + printer.print(arg.type) + " " + arg.name + ";");
             target.write("\n");
         }
         target.write("\n      public " + constructor.name + "("); 
@@ -102,7 +109,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      * @see pogofish.jadt.emitter.ClassBodyEmitter#emitEquals(pogofish.jadt.emitter.Target, pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitEquals(Target target, Constructor constructor) throws IOException {
+    public void emitEquals(final Target target, Constructor constructor) throws IOException {
         target.write("      @Override\n");
         target.write("      public boolean equals(Object obj) {\n");
         target.write("         if (this == obj) return true;\n");
@@ -111,14 +118,32 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
         if (!constructor.args.isEmpty()) {
             target.write("         " + constructor.name + " other = (" + constructor.name + ")obj;\n");
             
-            for (Arg arg : constructor.args) {
-                if (isPrimitive(arg.type)) {
-                    target.write("         if (" + arg.name + " != other." + arg.name + ") return false;\n");                
-                } else {
-                    target.write("         if (" + arg.name + " == null) {\n");
-                    target.write("            if (other." + arg.name + " != null) return false;\n");
-                    target.write("         } else if (!" + arg.name + ".equals(other." + arg.name + ")) return false;\n");
-                }
+            for (final Arg arg : constructor.args) {
+                arg.type.accept(new Type.Visitor<Void>(){
+                    @Override
+                    public Void visit(Ref x) {
+                        target.write("         if (" + arg.name + " == null) {\n");
+                        target.write("            if (other." + arg.name + " != null) return false;\n");
+                        x.type.accept(new RefType.Visitor<Void>() {
+                            @Override
+                            public Void visit(ClassType x) {
+                                target.write("         } else if (!" + arg.name + ".equals(other." + arg.name + ")) return false;\n");
+                                return null;
+                            }
+
+                            @Override
+                            public Void visit(ArrayType x) {
+                                target.write("         } else if (!Array.equals(" + arg.name + ", other )) return false;\n");
+                                return null;
+                            }});
+                        return null;
+                    }
+
+                    @Override
+                    public Void visit(Primitive x) {
+                        target.write("         if (" + arg.name + " != other." + arg.name + ") return false;\n");
+                        return null;
+                    }});
             }
         }
         target.write("         return true;\n");
@@ -129,7 +154,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      * @see pogofish.jadt.emitter.ClassBodyEmitter#emitHashCode(pogofish.jadt.emitter.Target, pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitHashCode(Target target, Constructor constructor) throws IOException {
+    public void emitHashCode(final Target target, Constructor constructor) throws IOException {
         target.write("      @Override\n");
         target.write("      public int hashCode() {\n");
         if (constructor.args.isEmpty()) {
@@ -137,16 +162,42 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
         } else {
             target.write("          final int prime = 31;\n");
             target.write("          int result = 1;\n");
-            for (Arg arg : constructor.args) {
-                if (isPrimitive(arg.type)) {
-                    if (arg.type.equals("int")) {
-                        target.write("          result = prime * result + " + arg.name + ";\n");
-                    } else {
-                        target.write("          result = prime * result + (int)" + arg.name + ";\n");                    
+            for (final Arg arg : constructor.args) {
+                arg.type.accept(new Type.Visitor<Void>(){
+                    @Override
+                    public Void visit(Ref x) {
+                        x.type.accept(new RefType.Visitor<Void>() {
+                            @Override
+                            public Void visit(ClassType x) {
+                                target.write("          result = prime * result + ((" + arg.name + " == null) ? 0 : " + arg.name + ".hashCode());\n");                
+                                return null;
+                            }
+
+                            @Override
+                            public Void visit(ArrayType x) {
+                                target.write("          result = prime * result + ((" + arg.name + " == null) ? 0 : Arrays.hashCode(" + arg.name + "));\n");                
+                                return null;
+                            }});
+                        return null;
                     }
-                } else {
-                    target.write("          result = prime * result + ((" + arg.name + " == null) ? 0 : " + arg.name + ".hashCode());\n");                
-                }
+
+                    @Override
+                    public Void visit(Primitive x) {
+                        x.type.accept(new PrimitiveType.VisitorWithDefault<Void>() {
+
+                            @Override
+                            public Void visit(IntType x) {
+                                target.write("          result = prime * result + " + arg.name + ";\n");
+                                return null;
+                            }
+
+                            @Override
+                            public Void getDefault(PrimitiveType x) {
+                                target.write("          result = prime * result + (int)" + arg.name + ";\n");                    
+                                return null;
+                            }});
+                        return null;
+                    }});
             }
             target.write("          return result;\n");
         }
@@ -154,13 +205,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     }
      
     
-    private static String constructorArg(Arg arg, boolean withType) {
-        return withType ? (arg.type + " " + arg.name) : arg.name;
+    private String constructorArg(Arg arg, boolean withType) {
+        return withType ? (printer.print(arg.type) + " " + arg.name) : arg.name;
     }    
-    
-    
-    private static boolean isPrimitive(String type) {
-        return PRIMITIVES.contains(type);
-    }    
-
 }

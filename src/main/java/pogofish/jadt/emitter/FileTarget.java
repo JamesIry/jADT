@@ -40,8 +40,12 @@ public class FileTarget implements Target {
     }
     
     @Override
-    public void write(String data) throws IOException {
-        writer.write(data);
+    public void write(String data) {
+        try {
+            writer.write(data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     @Override

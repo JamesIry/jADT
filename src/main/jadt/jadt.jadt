@@ -8,4 +8,10 @@ DataType = DataType(String name, List<Constructor> constructors)
 
 Constructor = Constructor(String name, List<Arg> args)
 
-Arg = Arg(String type, String name)
+Arg = Arg(Type type, String name)
+
+Type = Ref(RefType type) | Primitive(PrimitiveType type)
+
+RefType = ClassType(String baseName, List<RefType> typeArguments) | ArrayType(Type heldType)
+
+PrimitiveType = BooleanType | CharType | DoubleType | FloatType | IntType | LongType | ShortType 

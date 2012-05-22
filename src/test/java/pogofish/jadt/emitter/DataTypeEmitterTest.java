@@ -16,6 +16,8 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import static org.junit.Assert.assertEquals;
+import static pogofish.jadt.ast.RefType._ClassType;
+import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
 import java.io.IOException;
@@ -80,8 +82,8 @@ public class DataTypeEmitterTest {
         final DataType fooBar =
                 new DataType("FooBar", list(
                         new Constructor("Foo", list(
-                                new Arg("Integer", "yeah"),
-                                new Arg("String", "hmmm")
+                                new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
+                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
                         new Constructor("Bar", Util.<Arg>list())
                 ));
@@ -102,8 +104,8 @@ public class DataTypeEmitterTest {
        final DataType fooBar =
                new DataType("FooBar", list(
                        new Constructor("Foo", list(
-                               new Arg("Integer", "yeah"),
-                               new Arg("String", "hmmm")
+                               new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
+                               new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                        ))
                ));
        

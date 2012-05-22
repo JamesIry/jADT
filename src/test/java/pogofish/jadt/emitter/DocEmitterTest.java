@@ -16,6 +16,10 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import static org.junit.Assert.assertEquals;
+import static pogofish.jadt.ast.PrimitiveType._IntType;
+import static pogofish.jadt.ast.RefType._ClassType;
+import static pogofish.jadt.ast.Type._Primitive;
+import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
 import java.io.IOException;
@@ -64,8 +68,8 @@ public class DocEmitterTest {
         final Doc doc = new Doc("EmitterTest", "some.package", list("wow.man", "flim.flam"), list(
                 new DataType("FooBar", list(
                         new Constructor("Foo", list(
-                                new Arg("int", "yeah"),
-                                new Arg("String", "hmmm")
+                                new Arg(_Primitive(_IntType), "yeah"),
+                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
                         new Constructor("Bar", Util.<Arg>list())
                 )),

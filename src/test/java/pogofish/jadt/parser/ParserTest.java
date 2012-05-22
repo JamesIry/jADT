@@ -17,6 +17,11 @@ package pogofish.jadt.parser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static pogofish.jadt.ast.PrimitiveType._IntType;
+import static pogofish.jadt.ast.RefType._ArrayType;
+import static pogofish.jadt.ast.RefType._ClassType;
+import static pogofish.jadt.ast.Type._Primitive;
+import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
 import java.io.IOException;
@@ -77,7 +82,9 @@ public class ParserTest {
         final Doc doc = parser.parse("ParserTest", new StringReader("FooBar = FooBar(int hello, String world)"));
 
         assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(new DataType("FooBar", list(new Constructor(
-                "FooBar", list(new Arg("int", "hello"), new Arg("String", "world"))))))), doc);
+                "FooBar", list(
+                        new Arg(_Primitive(_IntType), "hello"), 
+                        new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "world"))))))), doc); 
     }
 
     @Test
@@ -90,8 +97,10 @@ public class ParserTest {
         assertEquals(
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
                         new DataType("FooBar", Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
-                                "bar", list(new Arg("int", "hey"), new Arg("String[]", "yeah"))))), new DataType(
-                                "whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
+                                "bar", list(
+                                        new Arg(_Primitive(_IntType), "hey"), 
+                                        new Arg(_Ref(_ArrayType(_Ref(_ClassType("String", Util.<RefType>list())))), "yeah"))))), 
+                                 new DataType("whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
     }
 
     @Test
@@ -104,7 +113,13 @@ public class ParserTest {
         assertEquals(
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
                         new DataType("FooBar", Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
-                                "bar", list(new Arg("int", "hey"), new Arg("Map<String, Cow>", "yeah"))))), new DataType(
+                                "bar", list(
+                                        new Arg(_Primitive(_IntType), "hey"), 
+                                        new Arg(_Ref((_ClassType("Map", list(
+                                                                        _ClassType("String", Util.<RefType>list()), 
+                                                                        _ClassType("Cow", Util.<RefType>list())
+                                                                        )))), "yeah")                                        
+                                        )))), new DataType(
                                 "whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
     }
     

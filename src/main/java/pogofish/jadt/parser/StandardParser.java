@@ -15,7 +15,11 @@ limitations under the License.
 */
 package pogofish.jadt.parser;
 
-import static pogofish.jadt.util.Util.set;
+import static pogofish.jadt.ast.PrimitiveType.*;
+import static pogofish.jadt.ast.RefType._ArrayType;
+import static pogofish.jadt.ast.RefType._ClassType;
+import static pogofish.jadt.ast.Type._Primitive;
+import static pogofish.jadt.ast.Type._Ref;
 
 import java.io.*;
 import java.util.*;
@@ -23,16 +27,65 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pogofish.jadt.ast.*;
+import pogofish.jadt.util.Util;
 
 public class StandardParser implements Parser {
-    private static final Set<String> JAVA_TYPES = set("boolean", "char", "double", "float", "int",
-            "long", "short");
-    private static final Set<String> JAVA_KEYWORDS = set("abstract", "assert", "boolean", "break", "byte", "case",
-            "catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends",
-            "final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int", "interface",
-            "long", "native", "new", "package", "private", "protected", "public", "return", "short", "static",
-            "strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "try", "void",
-            "volatile", "while");
+    private static final Map<String, Token> KEYWORDS = new HashMap<String, Token>();
+    
+    {        
+        KEYWORDS.put("import", Token.IMPORT);
+        KEYWORDS.put("package", Token.PACKAGE);
+
+        KEYWORDS.put("boolean", Token.BOOLEAN);
+        KEYWORDS.put("double", Token.DOUBLE);
+        KEYWORDS.put("char", Token.CHAR);
+        KEYWORDS.put("float", Token.FLOAT);
+        KEYWORDS.put("int", Token.INT);
+        KEYWORDS.put("long", Token.LONG);
+        KEYWORDS.put("short", Token.SHORT);
+        
+        KEYWORDS.put("abstract", Token.JAVA_KEYWORD);
+        KEYWORDS.put("assert", Token.JAVA_KEYWORD);
+        KEYWORDS.put("break", Token.JAVA_KEYWORD);
+        KEYWORDS.put("byte", Token.JAVA_KEYWORD);
+        KEYWORDS.put("case", Token.JAVA_KEYWORD);
+        KEYWORDS.put("catch", Token.JAVA_KEYWORD);
+        KEYWORDS.put("class", Token.JAVA_KEYWORD);
+        KEYWORDS.put("const", Token.JAVA_KEYWORD);
+        KEYWORDS.put("continue", Token.JAVA_KEYWORD);
+        KEYWORDS.put("default", Token.JAVA_KEYWORD);
+        KEYWORDS.put("do", Token.JAVA_KEYWORD);
+        KEYWORDS.put("else", Token.JAVA_KEYWORD);
+        KEYWORDS.put("enum", Token.JAVA_KEYWORD);
+        KEYWORDS.put("extends", Token.JAVA_KEYWORD);
+        KEYWORDS.put("final", Token.JAVA_KEYWORD);
+        KEYWORDS.put("finally", Token.JAVA_KEYWORD);
+        KEYWORDS.put("for", Token.JAVA_KEYWORD);
+        KEYWORDS.put("goto", Token.JAVA_KEYWORD);
+        KEYWORDS.put("if", Token.JAVA_KEYWORD);
+        KEYWORDS.put("implements", Token.JAVA_KEYWORD);
+        KEYWORDS.put("instanceof", Token.JAVA_KEYWORD);
+        KEYWORDS.put("interface", Token.JAVA_KEYWORD);
+        KEYWORDS.put("native", Token.JAVA_KEYWORD);
+        KEYWORDS.put("new", Token.JAVA_KEYWORD);
+        KEYWORDS.put("private", Token.JAVA_KEYWORD);
+        KEYWORDS.put("protected", Token.JAVA_KEYWORD);
+        KEYWORDS.put("public", Token.JAVA_KEYWORD);
+        KEYWORDS.put("return", Token.JAVA_KEYWORD);
+        KEYWORDS.put("static", Token.JAVA_KEYWORD);
+        KEYWORDS.put("strictfp", Token.JAVA_KEYWORD);
+        KEYWORDS.put("super", Token.JAVA_KEYWORD);
+        KEYWORDS.put("switch", Token.JAVA_KEYWORD);
+        KEYWORDS.put("synchronized", Token.JAVA_KEYWORD);
+        KEYWORDS.put("this", Token.JAVA_KEYWORD);
+        KEYWORDS.put("throw", Token.JAVA_KEYWORD);
+        KEYWORDS.put("throws", Token.JAVA_KEYWORD);
+        KEYWORDS.put("transient", Token.JAVA_KEYWORD);
+        KEYWORDS.put("try", Token.JAVA_KEYWORD);
+        KEYWORDS.put("void", Token.JAVA_KEYWORD);
+        KEYWORDS.put("volatile", Token.JAVA_KEYWORD);
+        KEYWORDS.put("while", Token.JAVA_KEYWORD);
+    }
     
     private static final String IDENTIFIER_CHUNK = "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*";
     private static final Pattern IDENTIFIER_REGEX = Pattern.compile(IDENTIFIER_CHUNK);
@@ -49,7 +102,7 @@ public class StandardParser implements Parser {
 
 
     private static enum Token {
-        PACKAGE, IMPORT, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LPAREN, RRPAREN, LANGLE, RANGLE, LBRACKET, RBRACKET, EOF, JAVA_TYPE, JAVA_KEYWORD, UNKNOWN;
+        PACKAGE, IMPORT, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LPAREN, RRPAREN, LANGLE, RANGLE, LBRACKET, RBRACKET, EOF, JAVA_KEYWORD, UNKNOWN, BOOLEAN, DOUBLE, CHAR, FLOAT, INT, LONG, SHORT;
     }
     private class Impl {
         
@@ -90,14 +143,8 @@ public class StandardParser implements Parser {
                 return Token.EOF;
             case StreamTokenizer.TT_WORD:
                 symbol = tokenizer.sval;
-                if (symbol.equals("package")) {
-                    return Token.PACKAGE; 
-                } else if (symbol.equals("import")) {
-                    return Token.IMPORT;
-                } else if (JAVA_TYPES.contains(symbol)) {
-                    return Token.JAVA_TYPE;
-                } else if (JAVA_KEYWORDS.contains(symbol)) {
-                    return Token.JAVA_KEYWORD;
+                if (KEYWORDS.containsKey(symbol)) {
+                    return KEYWORDS.get(symbol);
                 } else {
                     final Matcher identifierMatcher = IDENTIFIER_REGEX.matcher(symbol);
                     if (identifierMatcher.matches()) {
@@ -220,7 +267,7 @@ public class StandardParser implements Parser {
         }
     
         private Arg arg() throws IOException {
-            final String type = type();
+            final Type type = type();
             
             if (!accept(Token.IDENTIFIER)) {
                 throw syntaxException("an argument name");
@@ -230,38 +277,86 @@ public class StandardParser implements Parser {
             }
         }
         
-        private String type() throws IOException {
-            final StringBuilder type = new StringBuilder();
-            if (accept(Token.JAVA_TYPE)) {
-                type.append(symbol);
-            } else if (accept(Token.IDENTIFIER)) {
-                type.append(symbol);
+        private Type type() throws IOException {
+            final PrimitiveType primitive = primitiveType();
+            Type type = primitive == null ? _Ref(classType()) : _Primitive(primitive);
+            
+            while (accept(Token.LBRACKET)) {
+                if (accept(Token.RBRACKET)) {
+                    type = _Ref(_ArrayType(type));
+                } else {
+                    throw syntaxException("]");
+                }
+            }
+            return type;
+        }
+        
+        private RefType classType() throws IOException {
+            if (!accept(Token.IDENTIFIER)) {
+                syntaxException("a type");
+            }
+            final String baseName = symbol;
+            final List<RefType> typeArguments = Util.<RefType>list();
+            if (accept(Token.LANGLE)) {
+                typeArguments.add(refType());
+                while(accept(Token.COMMA)) {
+                    typeArguments.add(refType());
+                }
+                if (!accept(Token.RANGLE)) {
+                    throw syntaxException(">");
+                }
+            }
+            return _ClassType(baseName, typeArguments);
+        }
 
-                if (accept(Token.LANGLE)) {
-                    type.append("<");
-                    type.append(type());
-                    while (accept(Token.COMMA)) {
-                        type.append(", ");
-                        type.append(type());
+        private RefType refType() throws IOException {
+            RefType type = null;
+            final PrimitiveType primitive = primitiveType();
+            if (primitive != null) {
+                if (accept(Token.LBRACKET)) {
+                    if (accept(Token.RBRACKET)) {
+                        type = _ArrayType(_Primitive(primitive));
+                    } else {
+                        throw syntaxException("]");
                     }
-                    if (!accept(Token.RANGLE)) { throw syntaxException(">"); }
-                    type.append(">");
+                } else {
+                    throw syntaxException("non primitive type");
                 }
             } else {
-                throw syntaxException("a type");
+                type = classType();
             }
             
-            if (accept(Token.LBRACKET)) {
-                if (!accept(Token.RBRACKET)) {
-                    throw syntaxException("]");
+            while (accept(Token.LBRACKET)) {
+                if (accept(Token.RBRACKET)) {
+                    type = _ArrayType(_Ref(type));
                 } else {
-                    type.append("[]");
+                    throw syntaxException("]");
                 }
             }
-
-            return type.toString();
+            
+            return type;
         }
-    
+        
+        private PrimitiveType primitiveType() throws IOException {
+            if (accept(Token.BOOLEAN)) {
+                return(_BooleanType); 
+            } else if (accept(Token.CHAR)) {
+                return(_CharType); 
+            } else if (accept(Token.SHORT)) {
+                return(_ShortType); 
+            } else if (accept(Token.INT)) {
+                return(_IntType); 
+            } else if (accept(Token.LONG)) {
+                return(_LongType); 
+            } else if (accept(Token.FLOAT)) {
+                return(_FloatType); 
+            } else if (accept(Token.DOUBLE)) {
+                return(_LongType);
+            } else {
+                return null;
+            }            
+        }
+
         private String pkg() throws IOException {
             if (accept(Token.PACKAGE)) {
                 return packageName();

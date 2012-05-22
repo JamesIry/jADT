@@ -28,7 +28,7 @@ public class StringTarget implements Target {
     }
     
     @Override
-    public void write(String data) throws IOException {
+    public void write(String data) {
         writer.write(data);
     }
     

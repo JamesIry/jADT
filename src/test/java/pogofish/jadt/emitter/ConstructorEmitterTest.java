@@ -16,14 +16,19 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import static org.junit.Assert.assertEquals;
+import static pogofish.jadt.ast.PrimitiveType._IntType;
+import static pogofish.jadt.ast.PrimitiveType._LongType;
+import static pogofish.jadt.ast.RefType._ClassType;
+import static pogofish.jadt.ast.Type._Primitive;
+import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
 import java.io.IOException;
 
 import org.junit.Test;
 
-import pogofish.jadt.ast.Arg;
-import pogofish.jadt.ast.Constructor;
+import pogofish.jadt.ast.*;
+import pogofish.jadt.printer.Printer;
 import pogofish.jadt.util.Util;
 
 
@@ -153,7 +158,7 @@ public class ConstructorEmitterTest {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter());
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
             emitter.constructorFactory(target, "WhateverDataType", constructor);
         } finally {
             target.close();            
@@ -164,13 +169,13 @@ public class ConstructorEmitterTest {
     @Test
     public void testArgsFactory() throws IOException {
         final Constructor constructor = new Constructor("Foo", list(
-                                new Arg("Integer", "yeah"),
-                                new Arg("String", "hmmm")
+                                new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
+                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
         
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter());
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
             
             emitter.constructorFactory(target, "FooBar", constructor);
         } finally {
@@ -182,12 +187,12 @@ public class ConstructorEmitterTest {
     @Test
     public void testPrimitiveNonInt() throws IOException {
         final Constructor constructor = new Constructor("Foo", list(
-                                new Arg("long", "yeah")
+                                new Arg(_Primitive(_LongType), "yeah")
                         ));
         
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter());
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
             
             emitter.constructorDeclaration(target, constructor, "PrimitiveNonInt");
         } finally {
@@ -198,11 +203,11 @@ public class ConstructorEmitterTest {
     
     @Test
     public void testPrimitiveInt() throws IOException {
-        final Constructor constructor = new Constructor("Foo", list(new Arg("int", "yeah")));
+        final Constructor constructor = new Constructor("Foo", list(new Arg(_Primitive(_IntType), "yeah")));
 
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter());
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
 
             emitter.constructorDeclaration(target, constructor, "PrimitiveInt");
         } finally {
@@ -213,16 +218,17 @@ public class ConstructorEmitterTest {
     
     @Test
     public void testNonPrimitive() throws IOException {
-        final Constructor constructor = new Constructor("Foo", list(new Arg("String", "um"), new Arg("int", "yeah")));
+        final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType), "yeah")));
 
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter());
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
 
             emitter.constructorDeclaration(target, constructor, "NonPrimitive");
         } finally {
             target.close();
         }
+        System.out.println(target.result());
         assertEquals(NON_PRIMITIVE, target.result());
     }
     

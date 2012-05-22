@@ -24,6 +24,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
+import pogofish.jadt.printer.Printer;
 import pogofish.jadt.util.Util;
 
 
@@ -74,7 +75,7 @@ public class DocEmitterTest {
                 
         ));
         final StringTargetFactory factory = new StringTargetFactory();
-        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter());
+        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter(), new Printer());
         emitter.emit(doc);
         final Map<String, String> results = factory.getResults();
         assertEquals("Got the wrong number of results", 2, results.size());

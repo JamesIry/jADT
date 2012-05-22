@@ -19,15 +19,15 @@ import java.io.IOException;
 
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
-import pogofish.jadt.printer.Printer;
+import pogofish.jadt.printer.StandardPrinter;
 
 
 public class StandardDocEmitter implements DocEmitter {    
     private final TargetFactory factory;
     private final DataTypeEmitter dataTypeEmitter;
-    private final Printer printer;
+    private final StandardPrinter printer;
         
-    public StandardDocEmitter(TargetFactory factory, DataTypeEmitter dataTypeEmitter, Printer printer) {
+    public StandardDocEmitter(TargetFactory factory, DataTypeEmitter dataTypeEmitter, StandardPrinter printer) {
         super();
         this.factory = factory;
         this.dataTypeEmitter = dataTypeEmitter;

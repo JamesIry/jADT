@@ -23,12 +23,12 @@ import pogofish.jadt.ast.RefType.ArrayType;
 import pogofish.jadt.ast.RefType.ClassType;
 import pogofish.jadt.ast.Type.Primitive;
 import pogofish.jadt.ast.Type.Ref;
-import pogofish.jadt.printer.Printer;
+import pogofish.jadt.printer.StandardPrinter;
 
 public class StandardClassBodyEmitter implements ClassBodyEmitter {
-    final Printer printer;
+    final StandardPrinter printer;
     
-    public StandardClassBodyEmitter(Printer printer) {
+    public StandardClassBodyEmitter(StandardPrinter printer) {
         super();
         this.printer = printer;
     }
@@ -122,18 +122,18 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
                 arg.type.accept(new Type.Visitor<Void>(){
                     @Override
                     public Void visit(Ref x) {
-                        target.write("         if (" + arg.name + " == null) {\n");
-                        target.write("            if (other." + arg.name + " != null) return false;\n");
                         x.type.accept(new RefType.Visitor<Void>() {
                             @Override
                             public Void visit(ClassType x) {
+                                target.write("         if (" + arg.name + " == null) {\n");
+                                target.write("            if (other." + arg.name + " != null) return false;\n");
                                 target.write("         } else if (!" + arg.name + ".equals(other." + arg.name + ")) return false;\n");
                                 return null;
                             }
 
                             @Override
                             public Void visit(ArrayType x) {
-                                target.write("         } else if (!Array.equals(" + arg.name + ", other )) return false;\n");
+                                target.write("         if (!java.util.Arrays.equals(" + arg.name + ", other." + arg.name + ")) return false;\n");
                                 return null;
                             }});
                         return null;
@@ -175,7 +175,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
 
                             @Override
                             public Void visit(ArrayType x) {
-                                target.write("          result = prime * result + ((" + arg.name + " == null) ? 0 : Arrays.hashCode(" + arg.name + "));\n");                
+                                target.write("          result = prime * result + java.util.Arrays.hashCode(" + arg.name + ");\n");                
                                 return null;
                             }});
                         return null;

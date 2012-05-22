@@ -28,7 +28,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
-import pogofish.jadt.printer.Printer;
+import pogofish.jadt.printer.StandardPrinter;
 import pogofish.jadt.util.Util;
 
 
@@ -49,10 +49,10 @@ public class DocEmitterTest {
     "import wow.man\n" +
     "import flim.flam\n" +
     "\n" +
-    "data FooBar =\n" +
+    "FooBar =\n" +
     "    Foo(int yeah, String hmmm)\n" +
     "  | Bar\n" +
-    "data Whatever =\n" +
+    "Whatever =\n" +
     "    Whatever\n" +
     "\n" +
     "*/\n";
@@ -79,7 +79,7 @@ public class DocEmitterTest {
                 
         ));
         final StringTargetFactory factory = new StringTargetFactory();
-        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter(), new Printer());
+        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter(), new StandardPrinter());
         emitter.emit(doc);
         final Map<String, String> results = factory.getResults();
         assertEquals("Got the wrong number of results", 2, results.size());

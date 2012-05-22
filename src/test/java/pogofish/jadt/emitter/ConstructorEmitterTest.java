@@ -28,7 +28,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
-import pogofish.jadt.printer.Printer;
+import pogofish.jadt.printer.StandardPrinter;
 import pogofish.jadt.util.Util;
 
 
@@ -158,7 +158,7 @@ public class ConstructorEmitterTest {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new StandardPrinter()));
             emitter.constructorFactory(target, "WhateverDataType", constructor);
         } finally {
             target.close();            
@@ -175,7 +175,7 @@ public class ConstructorEmitterTest {
         
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new StandardPrinter()));
             
             emitter.constructorFactory(target, "FooBar", constructor);
         } finally {
@@ -192,7 +192,7 @@ public class ConstructorEmitterTest {
         
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new StandardPrinter()));
             
             emitter.constructorDeclaration(target, constructor, "PrimitiveNonInt");
         } finally {
@@ -207,7 +207,7 @@ public class ConstructorEmitterTest {
 
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new StandardPrinter()));
 
             emitter.constructorDeclaration(target, constructor, "PrimitiveInt");
         } finally {
@@ -222,13 +222,12 @@ public class ConstructorEmitterTest {
 
         final StringTarget target = new StringTarget();
         try {
-            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()));
+            final ConstructorEmitter emitter = new StandardConstructorEmitter(new StandardClassBodyEmitter(new StandardPrinter()));
 
             emitter.constructorDeclaration(target, constructor, "NonPrimitive");
         } finally {
             target.close();
         }
-        System.out.println(target.result());
         assertEquals(NON_PRIMITIVE, target.result());
     }
     

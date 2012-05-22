@@ -23,7 +23,7 @@ import pogofish.jadt.checker.*;
 import pogofish.jadt.emitter.*;
 import pogofish.jadt.parser.Parser;
 import pogofish.jadt.parser.StandardParser;
-import pogofish.jadt.printer.Printer;
+import pogofish.jadt.printer.StandardPrinter;
 
 
 public class JADT {
@@ -46,7 +46,7 @@ public class JADT {
         final String srcFileName = args[0];
         final String destDirName = args[1];
         
-        final JADT adt = new JADT(new StandardParser(), new StandardChecker(), new StandardDocEmitter(new FileTargetFactory(destDirName), new StandardDataTypeEmitter(new StandardClassBodyEmitter(new Printer()), new StandardConstructorEmitter(new StandardClassBodyEmitter(new Printer()))), new Printer()));        
+        final JADT adt = new JADT(new StandardParser(), new StandardChecker(), new StandardDocEmitter(new FileTargetFactory(destDirName), new StandardDataTypeEmitter(new StandardClassBodyEmitter(new StandardPrinter()), new StandardConstructorEmitter(new StandardClassBodyEmitter(new StandardPrinter()))), new StandardPrinter()));        
         adt.parseAndEmit(srcFileName);
     }
     

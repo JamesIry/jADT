@@ -29,9 +29,9 @@
     </license>
   </licenses>
   
-  <!-- all this noise to quiet a warning about using a default encoding for text files -->
   <build>
     <plugins>
+  <!-- all this noise to quiet a warning about using a default encoding for text files -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -40,6 +40,28 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
+      
+  <!-- add generated JADT to sources -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/main/java-gen/</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
     </plugins>
   </build>    
 </project>

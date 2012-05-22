@@ -49,7 +49,7 @@ public class StandardParser implements Parser {
 
 
     private static enum Token {
-        PACKAGE, IMPORT, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LBRACE, RBRACE, LANGLE, RANGLE, EOF, JAVA_TYPE, JAVA_KEYWORD, UNKNOWN;
+        PACKAGE, IMPORT, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LPAREN, RRPAREN, LANGLE, RANGLE, LBRACKET, RBRACKET, EOF, JAVA_TYPE, JAVA_KEYWORD, UNKNOWN;
     }
     private class Impl {
         
@@ -75,6 +75,8 @@ public class StandardParser implements Parser {
             tokenizer.ordinaryChar(')');
             tokenizer.ordinaryChar(',');
             tokenizer.ordinaryChar('|');
+            tokenizer.ordinaryChar('[');
+            tokenizer.ordinaryChar(']');
             tokenizer.whitespaceChars(' ', ' ');
             tokenizer.whitespaceChars('\n', '\n');
             tokenizer.whitespaceChars('\r', '\r');
@@ -109,16 +111,22 @@ public class StandardParser implements Parser {
                 }
             case '(':
                 symbol = "(";
-                return Token.LBRACE;
+                return Token.LPAREN;
             case ')':
                 symbol = ")";
-                return Token.RBRACE;
+                return Token.RRPAREN;
             case '<':
                 symbol = "<";
                 return Token.LANGLE;
             case '>':
                 symbol = ">";
                 return Token.RANGLE;
+            case '[':
+                symbol = "<";
+                return Token.LBRACKET;
+            case ']':
+                symbol = ">";
+                return Token.RBRACKET;
             case '=':
                 symbol = "=";
                 return Token.EQUALS;
@@ -190,9 +198,9 @@ public class StandardParser implements Parser {
         private Constructor constructor() throws IOException {
             if (!accept(Token.IDENTIFIER)) { throw syntaxException("a constructor name"); }
             final String name = symbol;
-            if (accept(Token.LBRACE)) {
+            if (accept(Token.LPAREN)) {
                 final List<Arg> args = args();
-                if (!accept(Token.RBRACE)) {
+                if (!accept(Token.RRPAREN)) {
                     throw syntaxException("')'");
                 } else {
                     return new Constructor(name, args);
@@ -241,6 +249,14 @@ public class StandardParser implements Parser {
                 }
             } else {
                 throw syntaxException("a type");
+            }
+            
+            if (accept(Token.LBRACKET)) {
+                if (!accept(Token.RBRACKET)) {
+                    throw syntaxException("]");
+                } else {
+                    type.append("[]");
+                }
             }
 
             return type.toString();

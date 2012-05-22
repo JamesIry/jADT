@@ -123,7 +123,8 @@ The syntax of a JADT file is
     CONSTRUCTOR : CONSTRUCTORNAME ("(" ARGS ")")?
     ARGS : ARG ("," ARGS)?
     ARG : TYPE ARGNAME
-    TYPE : JAVAPRIMITIVE | TYPENAME ("<" TYPELIST ">")?
+    TYPE : ARRAY | JAVAPRIMITIVE | TYPENAME ("<" TYPELIST ">")?
+    ARRAY : TYPE "[]"
     JAVAPRIMITIVE : "boolean" | "char" | "double" |
                     "float" | "int" | "long" | "short"
     TYPENAME : IDENTIFIER

@@ -85,12 +85,12 @@ public class ParserTest {
         final Parser parser = new StandardParser();
         final Doc doc = parser.parse("ParserTest", new StringReader(
                 "package hello.world import wow.man import flim.flam "
-                        + "FooBar = foo | bar(int hey, String yeah) " + "whatever = whatever"));
+                        + "FooBar = foo | bar(int hey, String[] yeah) " + "whatever = whatever"));
 
         assertEquals(
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
                         new DataType("FooBar", Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
-                                "bar", list(new Arg("int", "hey"), new Arg("String", "yeah"))))), new DataType(
+                                "bar", list(new Arg("int", "hey"), new Arg("String[]", "yeah"))))), new DataType(
                                 "whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
     }
 

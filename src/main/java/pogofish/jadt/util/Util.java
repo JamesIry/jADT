@@ -17,7 +17,15 @@ package pogofish.jadt.util;
 
 import java.util.*;
 
+/**
+ * Some convenient static utility methods
+ *
+ * @author jiry
+ */
 public class Util {
+    /**
+     * Returns an array list of elements
+     */
     public static <A> List<A> list(A... elements) {
         final List<A> list = new ArrayList<A>(elements.length);
         for (A element : elements) {
@@ -25,7 +33,10 @@ public class Util {
         }
         return list;
     }
-    
+
+    /**
+     * Returns a hash set of elements
+     */
     public static <A> Set<A> set(A... elements) {
         final Set<A> set = new HashSet<A>(elements.length);
         for (A element : elements) {
@@ -33,7 +44,10 @@ public class Util {
         }
         return set;
     }
-    
+
+    /**
+     * Makes a string by concetenating the toString of objects together separated by the separator
+     */
     public static String makeString(Iterable<?> objects, String separator) {
         final StringBuilder builder = new StringBuilder();
         boolean first = true;

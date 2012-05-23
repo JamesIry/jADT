@@ -19,19 +19,17 @@ import java.io.IOException;
 
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
-import pogofish.jadt.printer.StandardPrinter;
+import pogofish.jadt.printer.Printer;
 
 
 public class StandardDocEmitter implements DocEmitter {    
     private final TargetFactory factory;
     private final DataTypeEmitter dataTypeEmitter;
-    private final StandardPrinter printer;
         
-    public StandardDocEmitter(TargetFactory factory, DataTypeEmitter dataTypeEmitter, StandardPrinter printer) {
+    public StandardDocEmitter(TargetFactory factory, DataTypeEmitter dataTypeEmitter) {
         super();
         this.factory = factory;
         this.dataTypeEmitter = dataTypeEmitter;
-        this.printer = printer;
     }
 
     /* (non-Javadoc)
@@ -48,7 +46,7 @@ public class StandardDocEmitter implements DocEmitter {
         }
         header.append("/*\nThis file was generated based on " + doc.srcInfo + ". Please do not modify directly.\n\n");
         header.append("The source was parsed as: \n\n");
-        header.append(printer.print(doc));
+        header.append(Printer.print(doc));
         header.append("\n*/\n");
         
         for (DataType dataType : doc.dataTypes) {

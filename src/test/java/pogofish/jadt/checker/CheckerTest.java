@@ -12,15 +12,6 @@ import pogofish.jadt.ast.*;
 import pogofish.jadt.util.Util;
 
 public class CheckerTest {
-
-    @Test
-    public void testEmptyDoc() {
-        final Checker checker = new StandardChecker();
-        final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), Util.<DataType>list());
-        final Set<SemanticException> errors = checker.check(doc);
-        assertEquals(1, errors.size());
-        assertTrue(errors.contains(new MissingDataTypesException(doc)));
-    }
     
     @Test
     public void testDuplicateDataType() {

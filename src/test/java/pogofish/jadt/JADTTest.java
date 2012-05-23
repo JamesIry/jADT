@@ -42,9 +42,13 @@ public class JADTTest {
                 final DummyChecker checker = new DummyChecker();
                 final JADT adt = new JADT(new Parser(){
                     @Override
-                    public Doc parse(String srcInfo, Reader reader) throws IOException {
+                    public Doc parse(String srcInfo, Reader reader) {
                         assertEquals(srcInfo, srcInfo);                        
-                        assertEquals("hello", new BufferedReader(reader).readLine());
+                        try {
+                            assertEquals("hello", new BufferedReader(reader).readLine());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                         return doc;
                     }}, checker, new DocEmitter(){
         

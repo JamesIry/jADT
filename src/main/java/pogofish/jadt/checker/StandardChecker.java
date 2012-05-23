@@ -10,16 +10,12 @@ public class StandardChecker implements Checker {
     public Set<SemanticException> check(Doc doc) {
         final Set<SemanticException> errors = new HashSet<SemanticException>();
         final Set<String> dataTypeNames = new HashSet<String>();
-        if (doc.dataTypes.isEmpty()) {
-            errors.add(new MissingDataTypesException(doc));
-        } else {
-            for (DataType dataType : doc.dataTypes) {
-                errors.addAll(check(dataType));
-                if (dataTypeNames.contains(dataType.name)) {
-                    errors.add(new DuplicateDataTypeException(dataType));
-                } else {
-                    dataTypeNames.add(dataType.name);
-                }
+        for (DataType dataType : doc.dataTypes) {
+            errors.addAll(check(dataType));
+            if (dataTypeNames.contains(dataType.name)) {
+                errors.add(new DuplicateDataTypeException(dataType));
+            } else {
+                dataTypeNames.add(dataType.name);
             }
         }
         return errors;

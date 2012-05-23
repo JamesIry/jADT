@@ -21,233 +21,167 @@ import static pogofish.jadt.ast.RefType._ClassType;
 import static pogofish.jadt.ast.Type._Primitive;
 import static pogofish.jadt.ast.Type._Ref;
 
-import java.io.*;
+import java.io.Reader;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import pogofish.jadt.ast.*;
+import pogofish.jadt.ast.Type.Primitive;
+import pogofish.jadt.ast.Type.Ref;
 import pogofish.jadt.util.Util;
 
+/**
+ * The standard parse for JADT description files
+ *
+ * @author jiry
+ */
 public class StandardParser implements Parser {
-    private static final Map<String, Token> KEYWORDS = new HashMap<String, Token>();
-    
-    {        
-        KEYWORDS.put("import", Token.IMPORT);
-        KEYWORDS.put("package", Token.PACKAGE);
 
-        KEYWORDS.put("boolean", Token.BOOLEAN);
-        KEYWORDS.put("double", Token.DOUBLE);
-        KEYWORDS.put("char", Token.CHAR);
-        KEYWORDS.put("float", Token.FLOAT);
-        KEYWORDS.put("int", Token.INT);
-        KEYWORDS.put("long", Token.LONG);
-        KEYWORDS.put("short", Token.SHORT);
-        
-        KEYWORDS.put("abstract", Token.JAVA_KEYWORD);
-        KEYWORDS.put("assert", Token.JAVA_KEYWORD);
-        KEYWORDS.put("break", Token.JAVA_KEYWORD);
-        KEYWORDS.put("byte", Token.JAVA_KEYWORD);
-        KEYWORDS.put("case", Token.JAVA_KEYWORD);
-        KEYWORDS.put("catch", Token.JAVA_KEYWORD);
-        KEYWORDS.put("class", Token.JAVA_KEYWORD);
-        KEYWORDS.put("const", Token.JAVA_KEYWORD);
-        KEYWORDS.put("continue", Token.JAVA_KEYWORD);
-        KEYWORDS.put("default", Token.JAVA_KEYWORD);
-        KEYWORDS.put("do", Token.JAVA_KEYWORD);
-        KEYWORDS.put("else", Token.JAVA_KEYWORD);
-        KEYWORDS.put("enum", Token.JAVA_KEYWORD);
-        KEYWORDS.put("extends", Token.JAVA_KEYWORD);
-        KEYWORDS.put("final", Token.JAVA_KEYWORD);
-        KEYWORDS.put("finally", Token.JAVA_KEYWORD);
-        KEYWORDS.put("for", Token.JAVA_KEYWORD);
-        KEYWORDS.put("goto", Token.JAVA_KEYWORD);
-        KEYWORDS.put("if", Token.JAVA_KEYWORD);
-        KEYWORDS.put("implements", Token.JAVA_KEYWORD);
-        KEYWORDS.put("instanceof", Token.JAVA_KEYWORD);
-        KEYWORDS.put("interface", Token.JAVA_KEYWORD);
-        KEYWORDS.put("native", Token.JAVA_KEYWORD);
-        KEYWORDS.put("new", Token.JAVA_KEYWORD);
-        KEYWORDS.put("private", Token.JAVA_KEYWORD);
-        KEYWORDS.put("protected", Token.JAVA_KEYWORD);
-        KEYWORDS.put("public", Token.JAVA_KEYWORD);
-        KEYWORDS.put("return", Token.JAVA_KEYWORD);
-        KEYWORDS.put("static", Token.JAVA_KEYWORD);
-        KEYWORDS.put("strictfp", Token.JAVA_KEYWORD);
-        KEYWORDS.put("super", Token.JAVA_KEYWORD);
-        KEYWORDS.put("switch", Token.JAVA_KEYWORD);
-        KEYWORDS.put("synchronized", Token.JAVA_KEYWORD);
-        KEYWORDS.put("this", Token.JAVA_KEYWORD);
-        KEYWORDS.put("throw", Token.JAVA_KEYWORD);
-        KEYWORDS.put("throws", Token.JAVA_KEYWORD);
-        KEYWORDS.put("transient", Token.JAVA_KEYWORD);
-        KEYWORDS.put("try", Token.JAVA_KEYWORD);
-        KEYWORDS.put("void", Token.JAVA_KEYWORD);
-        KEYWORDS.put("volatile", Token.JAVA_KEYWORD);
-        KEYWORDS.put("while", Token.JAVA_KEYWORD);
-    }
-    
-    private static final String IDENTIFIER_CHUNK = "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*";
-    private static final Pattern IDENTIFIER_REGEX = Pattern.compile(IDENTIFIER_CHUNK);
-    private static final Pattern DOTTED_IDENTIFIER_REGEX = Pattern.compile("(" + IDENTIFIER_CHUNK + "\\.)+" + IDENTIFIER_CHUNK);
     
     /* (non-Javadoc)
      * @see sfdc.adt.IParser#parse(java.lang.String, java.io.Reader)
      */
     @Override
-    public Doc parse(String srcInfo, Reader reader) throws IOException {
-        final Impl impl = new Impl(srcInfo, reader);
+    public Doc parse(String srcInfo, Reader reader)  {
+        final Tokenizer tokenizer = new Tokenizer(reader);
+        final Impl impl = new Impl(srcInfo, tokenizer);
         return impl.doc();
     }
-
-
-    private static enum Token {
-        PACKAGE, IMPORT, EQUALS, IDENTIFIER, DOTTED_IDENTIFIER, COMMA, BAR, LPAREN, RRPAREN, LANGLE, RANGLE, LBRACKET, RBRACKET, EOF, JAVA_KEYWORD, UNKNOWN, BOOLEAN, DOUBLE, CHAR, FLOAT, INT, LONG, SHORT;
-    }
-    private class Impl {
-        
+    
+    /**
+     * Internal implementation of the Parser that lets Parser be non-stateful
+     *
+     * @author jiry
+     */
+    static class Impl {
+        /**
+         * Tokenizer to be parsed
+         */
+        private final Tokenizer tokenizer;
+        /**
+         * Information about the source that will be used during error reporting
+         */
         private final String srcInfo;
-        private final StreamTokenizer tokenizer;
-    
-        private String symbol = null;
-    
-        private Impl(String srcInfo, final Reader reader) throws IOException {
+        
+
+        /**
+         * Creates a Parser.Impl that will parse the given tokenizer using the srcInfo for error reporting
+         * 
+         * @param srcInfo String information about the source that is used when throwing a syntax exception
+         * @param tokenizer Tokenizer to be parsed
+         */
+        public Impl(String srcInfo, Tokenizer tokenizer) {
+            this.tokenizer = tokenizer;
             this.srcInfo = srcInfo;
-            tokenizer = new StreamTokenizer(reader);
-            tokenizer.resetSyntax();
-            tokenizer.slashSlashComments(true);
-            tokenizer.slashStarComments(true);
-            tokenizer.wordChars('a', 'z');
-            tokenizer.wordChars('A', 'Z');
-            tokenizer.wordChars('0', '9');
-            tokenizer.wordChars('.', '.');
-            tokenizer.ordinaryChars('<', '<');
-            tokenizer.ordinaryChars('>', '>');
-            tokenizer.ordinaryChar('=');
-            tokenizer.ordinaryChar('(');
-            tokenizer.ordinaryChar(')');
-            tokenizer.ordinaryChar(',');
-            tokenizer.ordinaryChar('|');
-            tokenizer.ordinaryChar('[');
-            tokenizer.ordinaryChar(']');
-            tokenizer.whitespaceChars(' ', ' ');
-            tokenizer.whitespaceChars('\n', '\n');
-            tokenizer.whitespaceChars('\r', '\r');
-            tokenizer.eolIsSignificant(false);
         }
-    
-        private Token getToken() throws IOException {
-            final int tokenType = tokenizer.nextToken();
-            switch (tokenType) {
-            case StreamTokenizer.TT_EOF:
-                return Token.EOF;
-            case StreamTokenizer.TT_WORD:
-                symbol = tokenizer.sval;
-                if (KEYWORDS.containsKey(symbol)) {
-                    return KEYWORDS.get(symbol);
-                } else {
-                    final Matcher identifierMatcher = IDENTIFIER_REGEX.matcher(symbol);
-                    if (identifierMatcher.matches()) {
-                        return Token.IDENTIFIER;
-                    }
-                    final Matcher dottedIdentifierMatcher = DOTTED_IDENTIFIER_REGEX.matcher(symbol);
-                    if (dottedIdentifierMatcher.matches()) {
-                        return Token.DOTTED_IDENTIFIER;
-                    }
-                    return Token.UNKNOWN;
-                }
-            case '(':
-                symbol = "(";
-                return Token.LPAREN;
-            case ')':
-                symbol = ")";
-                return Token.RRPAREN;
-            case '<':
-                symbol = "<";
-                return Token.LANGLE;
-            case '>':
-                symbol = ">";
-                return Token.RANGLE;
-            case '[':
-                symbol = "<";
-                return Token.LBRACKET;
-            case ']':
-                symbol = ">";
-                return Token.RBRACKET;
-            case '=':
-                symbol = "=";
-                return Token.EQUALS;
-            case ',':
-                symbol = ",";
-                return Token.COMMA;
-            case '|':
-                symbol = "|";
-                return Token.BAR;
-            default:
-                symbol = "" + (char)tokenType;
-                return Token.UNKNOWN;
-            }
+
+        /**
+         * Parses a complete document which is pkg imports dataTypes
+         * 
+         * @return Doc
+         */
+        public Doc doc() {
+            return new Doc(srcInfo, pkg(), imports(), dataTypes());
         }
-    
-        private boolean accept(Token expected) throws IOException {
-            final Token token = getToken();
-            if (token.equals(expected)) {
-                return true;
+
+        /** 
+         * Gets an optional package declaration "pacakage" packageName
+         * 
+         * @return String the package name, or, because package is optional returns an empty string ""
+         */
+        public String pkg() {
+            if (tokenizer.accept(TokenType.PACKAGE)) {
+                return packageName();
             } else {
-                tokenizer.pushBack();
-                return false;
+                return "";
             }
-        }
-    
-        public Doc doc() throws IOException {
-            final String pkg = pkg();
-            return new Doc(srcInfo, pkg, imports(), dataTypes());
         }
         
-        private List<String> imports() throws IOException {
+        /**
+         * Recognizes a required token that is a valid package name
+         * 
+         * @return String the package name
+         */
+        private String packageName() {
+            if (tokenizer.accept(TokenType.IDENTIFIER)) {
+                return tokenizer.lastSymbol();
+            } else if (tokenizer.accept(TokenType.DOTTED_IDENTIFIER)) {
+                return tokenizer.lastSymbol();
+            } else {
+                throw syntaxException("a package name");
+            }
+        }
+        
+        /**
+         * Parses an optional list of imports which is ("import" packageName)*
+         * 
+         * @return List<String> possibly empty list of imports
+         */
+        public List<String> imports() {
             final List<String> imports = new ArrayList<String>();
             
-            while (accept(Token.IMPORT)) {
+            while (tokenizer.accept(TokenType.IMPORT)) {
                 imports.add(packageName());
             }
             return imports;
             
         }
-    
-        private List<DataType> dataTypes() throws IOException {
+
+        /**
+         * Parses a required list of datatypes which is dataType (dataType)*
+         * 
+         * @return List<DataType> non empty list of DataTypes
+         */
+        public List<DataType> dataTypes() {
             final List<DataType> dataTypes = new ArrayList<DataType>();
-    
-            while (!accept(Token.EOF)) {
+
+            dataTypes.add(dataType());
+            
+            while (!tokenizer.accept(TokenType.EOF)) {
                 dataTypes.add(dataType());
             }
             return Collections.unmodifiableList(dataTypes);
         }
-    
-        private DataType dataType() throws IOException {
-            if (!accept(Token.IDENTIFIER)) { throw syntaxException("a data type name"); }
-            final String name = symbol;
-    
-            if (!accept(Token.EQUALS)) { throw syntaxException("'='"); }
-    
+
+        /**
+         * Parses a reqiored dataType which is (name "=" constructors)
+         * 
+         * @return DataType
+         */
+        public DataType dataType() {
+            if (!tokenizer.accept(TokenType.IDENTIFIER)) { throw syntaxException("a data type name"); }
+            final String name = tokenizer.lastSymbol();
+
+            if (!tokenizer.accept(TokenType.EQUALS)) { throw syntaxException("'='"); }
+
             return new DataType(name, constructors());
-    
+
         }
-    
-        private List<Constructor> constructors() throws IOException {
+
+        /**
+         * Parses a required list of constructors which is constructor ("|" constructor)*
+         * 
+         * @return List<Constructor> non empty List of constructors
+         */
+        public List<Constructor> constructors() {
             final List<Constructor> constructors = new ArrayList<Constructor>();
             constructors.add(constructor());
-            while (accept(Token.BAR)) {
+            while (tokenizer.accept(TokenType.BAR)) {
                 constructors.add(constructor());
             }
             return Collections.unmodifiableList(constructors);
         }
-    
-        private Constructor constructor() throws IOException {
-            if (!accept(Token.IDENTIFIER)) { throw syntaxException("a constructor name"); }
-            final String name = symbol;
-            if (accept(Token.LPAREN)) {
+
+        /**
+         * Parses a required constructor which is constructorName ( "(" args ")" )?
+         * 
+         * @return Constructor
+         */
+        public Constructor constructor() {
+            if (!tokenizer.accept(TokenType.IDENTIFIER)) { throw syntaxException("a constructor name"); }
+            final String name = tokenizer.lastSymbol();
+            if (tokenizer.accept(TokenType.LPAREN)) {
                 final List<Arg> args = args();
-                if (!accept(Token.RRPAREN)) {
+                if (!tokenizer.accept(TokenType.RPAREN)) {
                     throw syntaxException("')'");
                 } else {
                     return new Constructor(name, args);
@@ -256,127 +190,141 @@ public class StandardParser implements Parser {
                 return new Constructor(name, Collections.<Arg> emptyList());
             }
         }
-    
-        private List<Arg> args() throws IOException {
+
+        /** 
+         * Parses a required list of constructor args which is arg ("," arg)*
+         * 
+         * @return List<Arg> non-empty list of args
+         */
+        public List<Arg> args() {
             final List<Arg> args = new ArrayList<Arg>();
             args.add(arg());
-            while (accept(Token.COMMA)) {
+            while (tokenizer.accept(TokenType.COMMA)) {
                 args.add(arg());
             }
             return Collections.unmodifiableList(args);
         }
-    
-        private Arg arg() throws IOException {
+
+        /**
+         * parses a single required constructor argument which is a type followed by a name
+         * 
+         * @return Arg
+         */
+        public Arg arg() {
             final Type type = type();
             
-            if (!accept(Token.IDENTIFIER)) {
+            if (!tokenizer.accept(TokenType.IDENTIFIER)) {
                 throw syntaxException("an argument name");
             } else {
-                final String name = symbol;
+                final String name = tokenizer.lastSymbol();
                 return new Arg(type, name);
             }
         }
         
-        private Type type() throws IOException {
-            final PrimitiveType primitive = primitiveType();
-            Type type = primitive == null ? _Ref(classType()) : _Primitive(primitive);
-            
-            while (accept(Token.LBRACKET)) {
-                if (accept(Token.RBRACKET)) {
-                    type = _Ref(_ArrayType(type));
-                } else {
-                    throw syntaxException("]");
-                }
-            }
-            return type;
-        }
-        
-        private RefType classType() throws IOException {
-            if (!accept(Token.IDENTIFIER)) {
-                syntaxException("a type");
-            }
-            final String baseName = symbol;
-            final List<RefType> typeArguments = Util.<RefType>list();
-            if (accept(Token.LANGLE)) {
-                typeArguments.add(refType());
-                while(accept(Token.COMMA)) {
-                    typeArguments.add(refType());
-                }
-                if (!accept(Token.RANGLE)) {
-                    throw syntaxException(">");
-                }
-            }
-            return _ClassType(baseName, typeArguments);
-        }
+        /** 
+         * Returns a required class or array type, giving a syntax error on a primitive
+         * 
+         * @return a RefType
+         */
+        public RefType refType() {
+            return type().accept(new Type.Visitor<RefType>() {
 
-        private RefType refType() throws IOException {
-            RefType type = null;
-            final PrimitiveType primitive = primitiveType();
-            if (primitive != null) {
-                if (accept(Token.LBRACKET)) {
-                    if (accept(Token.RBRACKET)) {
-                        type = _ArrayType(_Primitive(primitive));
-                    } else {
-                        throw syntaxException("]");
-                    }
-                } else {
-                    throw syntaxException("non primitive type");
+                @Override
+                public RefType visit(Ref x) {
+                    return x.type;
                 }
-            } else {
-                type = classType();
-            }
-            
-            while (accept(Token.LBRACKET)) {
-                if (accept(Token.RBRACKET)) {
-                    type = _ArrayType(_Ref(type));
+
+                @Override
+                public RefType visit(Primitive x) {
+                    throw new SyntaxException("an array or class type (type parameters may not be primitive).  Found " + x.toString() + " and then looked for [] ");
+                }});
+        }
+        
+        /**
+         * Returns a required type where a type is a primitive or classType wrapped in an array
+         * 
+         * @return Type
+         */
+        public Type type() {
+            final PrimitiveType primitive = primitiveType();
+            final Type baseType = primitive == null ? _Ref(classType()) : _Primitive(primitive);
+            return array(baseType);
+        }
+        
+        /**
+         * Recursively wraps a type in ArrayType based on the number of "[]" pairs immediately in the stream
+         * @param heldType last type parsed
+         * @return either the original held type or that type wrapped in ArrayType
+         */
+        public Type array(Type heldType) {
+            if (tokenizer.accept(TokenType.LBRACKET)) {
+                if (tokenizer.accept(TokenType.RBRACKET)) {
+                    return array(_Ref(_ArrayType(heldType)));
                 } else {
                     throw syntaxException("]");
                 }
             }
-            
-            return type;
+            return heldType;            
         }
         
-        private PrimitiveType primitiveType() throws IOException {
-            if (accept(Token.BOOLEAN)) {
+        /**
+         * Returns a required classType, which is className ("<" refType ("," refType)* ">")?
+         * 
+         * @return RefType
+         */
+        public RefType classType() {
+            if (!tokenizer.accept(TokenType.IDENTIFIER)) {
+                throw syntaxException("a type");
+            } else {
+                final String baseName = tokenizer.lastSymbol();
+                final List<RefType> typeArguments = Util.<RefType>list();
+                if (tokenizer.accept(TokenType.LANGLE)) {
+                    typeArguments.add(refType());
+                    while(tokenizer.accept(TokenType.COMMA)) {
+                        typeArguments.add(refType());
+                    }
+                    if (!tokenizer.accept(TokenType.RANGLE)) {
+                        throw syntaxException(">");
+                    }
+                }
+                return _ClassType(baseName, typeArguments);
+            }
+        }
+        
+        /** 
+         * Optionally recognizes and returns any of the primitive types
+         * 
+         * @return PrimitiveType or null if the next token isn't a primitve type
+         */
+        public PrimitiveType primitiveType() {
+            if (tokenizer.accept(TokenType.BOOLEAN)) {
                 return(_BooleanType); 
-            } else if (accept(Token.CHAR)) {
+            } else if (tokenizer.accept(TokenType.CHAR)) {
                 return(_CharType); 
-            } else if (accept(Token.SHORT)) {
+            } else if (tokenizer.accept(TokenType.SHORT)) {
                 return(_ShortType); 
-            } else if (accept(Token.INT)) {
+            } else if (tokenizer.accept(TokenType.INT)) {
                 return(_IntType); 
-            } else if (accept(Token.LONG)) {
+            } else if (tokenizer.accept(TokenType.LONG)) {
                 return(_LongType); 
-            } else if (accept(Token.FLOAT)) {
+            } else if (tokenizer.accept(TokenType.FLOAT)) {
                 return(_FloatType); 
-            } else if (accept(Token.DOUBLE)) {
-                return(_LongType);
+            } else if (tokenizer.accept(TokenType.DOUBLE)) {
+                return(_DoubleType);
             } else {
                 return null;
             }            
         }
+        
+        /**
+         * Generates (but does not throw) a new syntax exception with source and line number information
 
-        private String pkg() throws IOException {
-            if (accept(Token.PACKAGE)) {
-                return packageName();
-            } else {
-                return "";
-            }
-        }
-        
-        private String packageName() throws IOException {
-            if (accept(Token.IDENTIFIER)) {
-                return symbol;
-            } else if (accept(Token.DOTTED_IDENTIFIER)) {
-                return symbol;
-            } else {
-                throw syntaxException("a package name");
-            }
-        }
-        
+         * @param expected the kind of thing expected
+         * @return A SyntaxException with information about where the problem occurred, what was expected, and what was found
+         */
         private SyntaxException syntaxException(String expected) {
-            return new SyntaxException("While parsing " + srcInfo + ". Expected " + expected + " but found " + symbol + " at line " + tokenizer.lineno());        
+            return new SyntaxException("While parsing " + srcInfo + ". Expected " + expected + " but found " + tokenizer.lastSymbol() + " at line " + tokenizer.lineno());        
         }
+        
     }
 }

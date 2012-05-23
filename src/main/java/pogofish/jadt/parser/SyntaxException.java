@@ -15,8 +15,18 @@ limitations under the License.
 */
 package pogofish.jadt.parser;
 
+/**
+ * An exception occuring during the parsing of a JADT description file
+ *
+ * @author jiry
+ */
 public class SyntaxException extends RuntimeException {
 
+    /**
+     * Constructor based on a message with the problem
+     * 
+     * @param msg String explaining what went wrong
+     */
     public SyntaxException(String msg) {
       super(msg);
     }

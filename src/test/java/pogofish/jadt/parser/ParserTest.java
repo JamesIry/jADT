@@ -17,78 +17,262 @@ package pogofish.jadt.parser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static pogofish.jadt.ast.PrimitiveType._IntType;
+import static pogofish.jadt.ast.Arg._Arg;
+import static pogofish.jadt.ast.Constructor._Constructor;
+import static pogofish.jadt.ast.DataType._DataType;
+import static pogofish.jadt.ast.PrimitiveType.*;
 import static pogofish.jadt.ast.RefType._ArrayType;
 import static pogofish.jadt.ast.RefType._ClassType;
 import static pogofish.jadt.ast.Type._Primitive;
 import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
-import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
+import pogofish.jadt.parser.StandardParser.Impl;
 import pogofish.jadt.util.Util;
 
 
 public class ParserTest {
 
+    private Impl parserImpl(final String text) {
+        return new StandardParser.Impl("ParserTest", new Tokenizer(new StringReader(text)));
+    }
+    
     @Test
-    public void testEmpty() throws IOException {
-        final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader(""));
-
-        assertEquals(new Doc("ParserTest", "", Util.<String> list(), Util.<DataType> list()), doc);
+    public void testPrimitive() {
+        assertEquals(_BooleanType, parserImpl("boolean").primitiveType());
+        assertEquals(_ShortType, parserImpl("short").primitiveType());
+        assertEquals(_CharType, parserImpl("char").primitiveType());
+        assertEquals(_IntType, parserImpl("int").primitiveType());
+        assertEquals(_LongType, parserImpl("long").primitiveType());
+        assertEquals(_DoubleType, parserImpl("double").primitiveType());
+        assertEquals(_FloatType, parserImpl("float").primitiveType());
+        assertEquals(null, parserImpl("flurbis").primitiveType());
+    }
+    
+    @Test
+    public void testClassType() {
+        assertEquals(_ClassType("Foo", Util.<RefType>list()), parserImpl("Foo").classType());
+        assertEquals(_ClassType("Foo", list(_ClassType("Bar", Util.<RefType>list()))), parserImpl("Foo<Bar>").classType());
+        assertEquals(_ClassType("Foo", list(_ArrayType(_Primitive(_IntType)))), parserImpl("Foo<int[]>").classType());
+        assertEquals(_ClassType("Foo", list(_ClassType("Bar", Util.<RefType>list()), _ClassType("Baz", Util.<RefType>list()))), parserImpl("Foo<Bar, Baz>").classType());
+        try {
+            final RefType result = parserImpl("int").classType();
+            fail("No syntax exception from primitive, got " + result);
+        } catch (SyntaxException e) {            
+        }
+        try {
+            final RefType result = parserImpl("Foo<int>").classType();
+            fail("No syntax exception from primitive type parameter, got " + result);
+        } catch (SyntaxException e) {            
+        }        
+        try {
+            final RefType result = parserImpl("Foo<Bar Baz").classType();
+            fail("No syntax exception from missing right angle bracket, got " + result);
+        } catch (SyntaxException e) {            
+        }        
+    }
+    
+    @Test
+    public void testArray() {
+        assertEquals(_Primitive(_IntType), parserImpl(" whatever").array(_Primitive(_IntType)));
+        assertEquals(_Ref(_ArrayType(_Primitive(_IntType))), parserImpl("[]").array(_Primitive(_IntType)));
+        assertEquals(_Ref(_ArrayType(_Ref(_ArrayType(_Primitive(_IntType))))), parserImpl("[][]").array(_Primitive(_IntType)));
+        try {
+            final Type result = parserImpl("[ whatever").array(_Primitive(_IntType));
+            fail("No syntax exception from missing right square bracket, got " + result);
+        } catch (SyntaxException e) {            
+        }                
+    }
+    
+    @Test
+    public void testType() {
+        assertEquals(_Primitive(_IntType), parserImpl("int").type());
+        assertEquals(_Ref(_ClassType("Foo", Util.<RefType>list())), parserImpl("Foo").type());
+        assertEquals(_Ref(_ArrayType(_Primitive(_IntType))), parserImpl("int[]").type());
+        assertEquals(_Ref(_ArrayType(_Ref(_ClassType("Foo", Util.<RefType>list())))), parserImpl("Foo[]").type());
+        try {
+            final Type result = parserImpl("").type();
+            fail("No syntax exception from missing type, got " + result);
+        } catch (SyntaxException e) {            
+        }                        
+    }
+    
+    @Test
+    public void testRefType() {
+        assertEquals(_ClassType("Foo", Util.<RefType>list()), parserImpl("Foo").refType());
+        assertEquals(_ArrayType(_Primitive(_IntType)), parserImpl("int[]").refType());
+        assertEquals(_ArrayType(_Ref(_ClassType("Foo", Util.<RefType>list()))), parserImpl("Foo[]").refType());
+        try {
+            final RefType result = parserImpl("int").refType();
+            fail("No syntax exception from primitive type, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+    }
+    
+    @Test
+    public void testArg() {
+        assertEquals(_Arg(_Primitive(_IntType), "Foo"), parserImpl("int Foo").arg());        
+        try {
+            final Arg result = parserImpl("foo").arg();
+            fail("No syntax exception from missing type, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+        try {
+            final Arg result = parserImpl("int").arg();
+            fail("No syntax exception from missing name, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+    }
+    
+    @Test
+    public void testArgs() {
+        assertEquals(list(_Arg(_Primitive(_IntType), "Foo")), parserImpl("int Foo").args());        
+        assertEquals(list(_Arg(_Primitive(_IntType), "Foo"), _Arg(_Primitive(_BooleanType), "Bar")), parserImpl("int Foo, boolean Bar").args());        
+        try {
+            final List<Arg> result = parserImpl("").args();
+            fail("No syntax exception from empty arg list, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+        try {
+            final List<Arg> result = parserImpl("int Foo,").args();
+            fail("No syntax exception from missing arg after comma, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+        
+    }
+    
+    @Test
+    public void testConstructor() {
+        assertEquals(_Constructor("Foo", Util.<Arg>list()), parserImpl("Foo").constructor());
+        assertEquals(_Constructor("Foo", list(_Arg(_Primitive(_IntType), "Bar"))), parserImpl("Foo(int Bar)").constructor());
+        try {
+            final Constructor result = parserImpl("").constructor();
+            fail("No syntax exception from empty constructor, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+        try {
+            final Constructor result = parserImpl("Foo()").constructor();
+            fail("No syntax exception from missing args, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+        try {
+            final Constructor result = parserImpl("Foo(int Bar").constructor();
+            fail("No syntax exception from missing paren, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+        
+    }
+    
+    @Test
+    public void testConstructors() {
+        assertEquals(list(_Constructor("Foo", Util.<Arg>list())), parserImpl("Foo").constructors());
+        assertEquals(list(_Constructor("Foo", Util.<Arg>list()), _Constructor("Bar", Util.<Arg>list())), parserImpl("Foo|Bar").constructors());
+        try {
+            final List<Constructor> result = parserImpl("").constructors();
+            fail("No syntax exception from empty constructor list, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+        try {
+            final List<Constructor> result = parserImpl("Foo|").constructors();
+            fail("No syntax exception from missing constructor after bar, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+    }
+    
+    @Test
+    public void testDataType() {
+        assertEquals(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo=Foo").dataType());
+        try {
+            final DataType result = parserImpl("").dataType();
+            fail("No syntax exception from empty dataType, got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+        try {
+            final DataType result = parserImpl("Foo").dataType();
+            fail("No syntax exception from missing = , got " + result);
+        } catch (SyntaxException e) {            
+        }                                
+    }
+    
+    @Test
+    public void testDataTypes() {
+        assertEquals(list(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list())))), parserImpl("Foo=Foo").dataTypes());
+        assertEquals(list(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list()))), _DataType("Bar", list(_Constructor("Bar", Util.<Arg>list())))), parserImpl("Foo=Foo Bar = Bar").dataTypes());
+        try {
+            final List<DataType> result = parserImpl("").dataTypes();
+            fail("No syntax exception from empty dataType list, got " + result);
+        } catch (SyntaxException e) {            
+        }
+    }
+    
+    @Test
+    public void testPackage() {
+        assertEquals("", parserImpl("").pkg());
+        assertEquals("", parserImpl("frog").pkg());
+        assertEquals("hello", parserImpl("package hello").pkg());
+        assertEquals("hello.world", parserImpl("package hello.world").pkg());
+        try {
+            final String result = parserImpl("package").pkg();
+            fail("No syntax exception from missing package name, got " + result);
+        } catch (SyntaxException e) {
+        }
+        try {
+            final String result = parserImpl("package foo.bar.").pkg();
+            fail("No syntax exception from malformed package name, got " + result);
+        } catch (SyntaxException e) {
+        }
+        try {
+            final String result = parserImpl("package ?g42").pkg();
+            fail("No syntax exception from bad package name, got " + result);
+        } catch (SyntaxException e) {
+        }
+        try {
+            final String result = parserImpl("package boolean").pkg();
+            fail("No syntax exception from keyword package name, got " + result);
+        } catch (SyntaxException f) {
+        }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void testSimplePackage() throws IOException {
+    public void testImports() {
+        assertEquals(Util.<List<String>>list(), parserImpl("").imports());
+        assertEquals(list("hello"),parserImpl("import hello").imports());
+        assertEquals(list("hello", "oh.yeah"),parserImpl("import hello import oh.yeah").imports());
+        try {
+            final List<String> result = parserImpl("import").imports();
+            fail("No syntax exception from missing import name, got " + result);
+        } catch (SyntaxException e) {
+        }
+        try {
+            final List<String> result = parserImpl("import ?g42").imports();
+            fail("No syntax exception from bad import name, got " + result);
+        } catch (SyntaxException e) {
+        }
+        try {
+            final List<String> result = parserImpl("import boolean").imports();
+            fail("No syntax exception from keyword import name, got " + result);
+        } catch (SyntaxException f) {
+        }
+    }
+    
+    @Test
+    public void testMinimal() {
         final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader("package hello"));
+        final Doc doc = parser.parse("ParserTest", new StringReader("Foo = Foo"));
 
-        assertEquals(new Doc("ParserTest", "hello", Util.<String> list(), Util.<DataType> list()), doc);
+        assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list()))))), doc);
     }
 
+    
     @Test
-    public void testComplexPackage() throws IOException {
-        final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader("package hello.world"));
-
-        assertEquals(new Doc("ParserTest", "hello.world", Util.<String> list(), Util.<DataType> list()), doc);
-    }
-
-    @Test
-    public void testImports() throws IOException {
-        final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader("import wow.man import flim.flam"));
-
-        assertEquals(new Doc("ParserTest", "", list("wow.man", "flim.flam"), Util.<DataType> list()), doc);
-    }
-
-    @Test
-    public void testNoArgs() throws IOException {
-        final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader("whatever = whatever"));
-
-        assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(new DataType("whatever",
-                list(new Constructor("whatever", Util.<Arg> list()))))), doc);
-    }
-
-    @Test
-    public void testArgs() throws IOException {
-        final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader("FooBar = FooBar(int hello, String world)"));
-
-        assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(new DataType("FooBar", list(new Constructor(
-                "FooBar", list(
-                        new Arg(_Primitive(_IntType), "hello"), 
-                        new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "world"))))))), doc); 
-    }
-
-    @Test
-    public void testFull() throws IOException {
+    public void testFull() {
         final Parser parser = new StandardParser();
         final Doc doc = parser.parse("ParserTest", new StringReader(
                 "package hello.world import wow.man import flim.flam "
@@ -101,40 +285,5 @@ public class ParserTest {
                                         new Arg(_Primitive(_IntType), "hey"), 
                                         new Arg(_Ref(_ArrayType(_Ref(_ClassType("String", Util.<RefType>list())))), "yeah"))))), 
                                  new DataType("whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
-    }
-
-    @Test
-    public void testParameterizedArg() throws IOException {
-        final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader(
-                "package hello.world import wow.man import flim.flam "
-                        + "FooBar = foo | bar(int hey, Map<String, Cow> yeah) " + "whatever = whatever"));
-
-        assertEquals(
-                new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
-                        new DataType("FooBar", Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
-                                "bar", list(
-                                        new Arg(_Primitive(_IntType), "hey"), 
-                                        new Arg(_Ref((_ClassType("Map", list(
-                                                                        _ClassType("String", Util.<RefType>list()), 
-                                                                        _ClassType("Cow", Util.<RefType>list())
-                                                                        )))), "yeah")                                        
-                                        )))), new DataType(
-                                "whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
-    }
-    
-    @Test
-    public void testJavaKeyword() throws IOException {
-        
-        try {
-            final Parser parser = new StandardParser();
-            final Doc doc = parser.parse("ParserTest", new StringReader(
-                    "package hello.world import wow.man import flim.flam "
-                            + "ClassType = class | interface | enum"));
-            fail("Expected a syntax exception but got " + doc);
-        } catch (SyntaxException e) {
-            // yay, that's good
-        }
-    }
-
+    }    
 }

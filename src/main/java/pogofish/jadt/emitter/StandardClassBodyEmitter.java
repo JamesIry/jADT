@@ -23,16 +23,10 @@ import pogofish.jadt.ast.RefType.ArrayType;
 import pogofish.jadt.ast.RefType.ClassType;
 import pogofish.jadt.ast.Type.Primitive;
 import pogofish.jadt.ast.Type.Ref;
-import pogofish.jadt.printer.StandardPrinter;
+import pogofish.jadt.printer.Printer;
 
 public class StandardClassBodyEmitter implements ClassBodyEmitter {
-    final StandardPrinter printer;
     
-    public StandardClassBodyEmitter(StandardPrinter printer) {
-        super();
-        this.printer = printer;
-    }
-
     /* (non-Javadoc)
      * @see pogofish.jadt.emitter.ClassBodyEmitter#constructorFactory(pogofish.jadt.emitter.Target, java.lang.String, java.lang.String, pogofish.jadt.ast.Constructor)
      */
@@ -68,7 +62,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     @Override
     public void emitConstructorMethod(Target target, Constructor constructor) throws IOException {
         for (Arg arg : constructor.args) {
-            target.write("      public final " + printer.print(arg.type) + " " + arg.name + ";");
+            target.write("      public final " + Printer.print(arg.type) + " " + arg.name + ";");
             target.write("\n");
         }
         target.write("\n      public " + constructor.name + "("); 
@@ -206,6 +200,6 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      
     
     private String constructorArg(Arg arg, boolean withType) {
-        return withType ? (printer.print(arg.type) + " " + arg.name) : arg.name;
+        return withType ? (Printer.print(arg.type) + " " + arg.name) : arg.name;
     }    
 }

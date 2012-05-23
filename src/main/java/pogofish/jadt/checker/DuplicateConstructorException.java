@@ -1,24 +1,41 @@
+/*
+Copyright 2012 James Iry
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package pogofish.jadt.checker;
 
-import pogofish.jadt.ast.Constructor;
-import pogofish.jadt.ast.DataType;
-
+/**
+ * SemanticException indicating that a data type and a constructor had the same name
+ *
+ * @author jiry
+ */
 public class DuplicateConstructorException extends SemanticException {
     private final String dataTypeName;
     private final String constructorName;
     
-    public DuplicateConstructorException(DataType dataType, Constructor constructor) {
-        super("Data type " + dataType.name + " cannot have two constructors named " + constructor.name + ".");
-        this.dataTypeName = dataType.name;
-        this.constructorName = constructor.name;
+    public DuplicateConstructorException(String dataTypeName, String constructorName) {
+        super("Data type " + dataTypeName + " cannot have two constructors named " + constructorName + ".");
+        this.dataTypeName = dataTypeName;
+        this.constructorName = constructorName;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((constructorName == null) ? 0 : constructorName.hashCode());
-        result = prime * result + ((dataTypeName == null) ? 0 : dataTypeName.hashCode());
+        result = prime * result + constructorName.hashCode();
+        result = prime * result + dataTypeName.hashCode();
         return result;
     }
 
@@ -28,12 +45,8 @@ public class DuplicateConstructorException extends SemanticException {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         DuplicateConstructorException other = (DuplicateConstructorException)obj;
-        if (constructorName == null) {
-            if (other.constructorName != null) return false;
-        } else if (!constructorName.equals(other.constructorName)) return false;
-        if (dataTypeName == null) {
-            if (other.dataTypeName != null) return false;
-        } else if (!dataTypeName.equals(other.dataTypeName)) return false;
+        if (!constructorName.equals(other.constructorName)) return false;
+        if (!dataTypeName.equals(other.dataTypeName)) return false;
         return true;
     }
     

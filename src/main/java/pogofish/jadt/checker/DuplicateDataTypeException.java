@@ -1,20 +1,38 @@
+/*
+Copyright 2012 James Iry
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package pogofish.jadt.checker;
 
-import pogofish.jadt.ast.DataType;
-
+/**
+ * SemanticException indicating that a data type and a constructor had the same name
+ *
+ * @author jiry
+ */
 public class DuplicateDataTypeException extends SemanticException {
     private String dataTypeName;
     
-    public DuplicateDataTypeException(DataType dataType) {
-        super("Cannot have two datatypes named " + dataType.name);
-        this.dataTypeName = dataType.name;
+    public DuplicateDataTypeException(String dataTypeName) {
+        super("Cannot have two datatypes named " + dataTypeName);
+        this.dataTypeName = dataTypeName;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((dataTypeName == null) ? 0 : dataTypeName.hashCode());
+        result = prime * result + dataTypeName.hashCode();
         return result;
     }
 
@@ -24,9 +42,7 @@ public class DuplicateDataTypeException extends SemanticException {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         DuplicateDataTypeException other = (DuplicateDataTypeException)obj;
-        if (dataTypeName == null) {
-            if (other.dataTypeName != null) return false;
-        } else if (!dataTypeName.equals(other.dataTypeName)) return false;
+        if (!dataTypeName.equals(other.dataTypeName)) return false;
         return true;
     }
 

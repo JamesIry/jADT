@@ -20,7 +20,7 @@ public class CheckerTest {
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType, dataType));
         final Set<SemanticException> errors = checker.check(doc);
         assertEquals(1, errors.size());
-        assertTrue(errors.contains(new DuplicateDataTypeException(dataType)));
+        assertTrue(errors.contains(new DuplicateDataTypeException(dataType.name)));
     }
     
     @Test
@@ -31,7 +31,7 @@ public class CheckerTest {
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
         final Set<SemanticException> errors = checker.check(doc);
         assertEquals(1, errors.size());
-        assertTrue(errors.contains(new DuplicateConstructorException(dataType, constructor)));
+        assertTrue(errors.contains(new DuplicateConstructorException(dataType.name, constructor.name)));
     }
     
     @Test
@@ -43,6 +43,6 @@ public class CheckerTest {
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
         final Set<SemanticException> errors = checker.check(doc);
         assertEquals(1, errors.size());
-        assertTrue(errors.contains(new ConstructorDataTypeConflictException(dataType, constructor2)));
+        assertTrue(errors.contains(new ConstructorDataTypeConflictException(dataType.name, constructor2.name)));
     }    
 }

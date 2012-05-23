@@ -33,14 +33,18 @@ public class StringTarget implements Target {
     }
     
     @Override
-    public void close() throws IOException {
-        writer.close();
-        closed = true;
+    public void close() {
+        try {
+            writer.close();
+            closed = true;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
-    public String result() throws IOException {
+    public String result() {
         if (!closed) {
-            throw new IOException("target was not closed");
+            throw new RuntimeException("target was not closed");
         }
         return writer.toString();
     }

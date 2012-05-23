@@ -17,21 +17,19 @@ package pogofish.jadt.emitter;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 
 public class FileTargetFactoryTest {
     @Test
-    public void testFactorySlash() throws IOException {
+    public void testFactorySlash() {
         final FileTargetFactory factory = new FileTargetFactory("/germufabits/");
         final String path = factory.convertToPath("hello.world");
         assertEquals("/germufabits/hello/world.java", path);
     }
     
     @Test
-    public void testFactoryNoSlash() throws IOException {
+    public void testFactoryNoSlash() {
         final FileTargetFactory factory = new FileTargetFactory("/germufabits");
         final String path = factory.convertToPath("hello.world");
         assertEquals("/germufabits/hello/world.java", path);

@@ -21,22 +21,25 @@ public class FileTarget implements Target {
     private final Writer writer;
     final File outputFile;
         
-    public FileTarget(String outputFileName) throws IOException {
+    public FileTarget(String outputFileName) {
         super();
-        
-        outputFile = new File(outputFileName);
-        final File parentDir = outputFile.getParentFile();
-        if (parentDir != null && !parentDir.exists()) {
-            parentDir.mkdirs();
+        try {            
+            outputFile = new File(outputFileName);
+            final File parentDir = outputFile.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+            
+            if (outputFile.exists()) {
+                outputFile.delete();
+            }
+            
+            outputFile.createNewFile();
+            
+            writer = new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        
-        if (outputFile.exists()) {
-            outputFile.delete();
-        }
-        
-        outputFile.createNewFile();
-        
-        writer = new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8");
     }
     
     @Override
@@ -49,7 +52,11 @@ public class FileTarget implements Target {
     }
     
     @Override
-    public void close() throws IOException {
-        writer.close();
+    public void close() {
+        try {
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -23,8 +23,6 @@ import static pogofish.jadt.ast.Type._Primitive;
 import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
@@ -153,7 +151,7 @@ public class ConstructorEmitterTest {
     "   public static final FooBar _Foo(Integer yeah, String hmmm) { return new Foo(yeah, hmmm); }";    
     
     @Test
-    public void testNoArgFactory() throws IOException {
+    public void testNoArgFactory() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         final StringTarget target = new StringTarget();
         try {
@@ -166,7 +164,7 @@ public class ConstructorEmitterTest {
     }
 
     @Test
-    public void testArgsFactory() throws IOException {
+    public void testArgsFactory() {
         final Constructor constructor = new Constructor("Foo", list(
                                 new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
                                 new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
@@ -184,7 +182,7 @@ public class ConstructorEmitterTest {
     }
     
     @Test
-    public void testPrimitiveNonInt() throws IOException {
+    public void testPrimitiveNonInt() {
         final Constructor constructor = new Constructor("Foo", list(
                                 new Arg(_Primitive(_LongType), "yeah")
                         ));
@@ -201,7 +199,7 @@ public class ConstructorEmitterTest {
     }
     
     @Test
-    public void testPrimitiveInt() throws IOException {
+    public void testPrimitiveInt() {
         final Constructor constructor = new Constructor("Foo", list(new Arg(_Primitive(_IntType), "yeah")));
 
         final StringTarget target = new StringTarget();
@@ -216,7 +214,7 @@ public class ConstructorEmitterTest {
     }
     
     @Test
-    public void testNonPrimitive() throws IOException {
+    public void testNonPrimitive() {
         final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType), "yeah")));
 
         final StringTarget target = new StringTarget();

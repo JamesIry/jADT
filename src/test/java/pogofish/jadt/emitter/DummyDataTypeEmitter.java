@@ -15,15 +15,13 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
-
 import pogofish.jadt.ast.DataType;
 
 
 public class DummyDataTypeEmitter implements DataTypeEmitter {
 
     @Override
-    public void emit(Target target, DataType dataType, String header) throws IOException {
+    public void emit(Target target, DataType dataType, String header) {
         target.write(header + dataType.name);
     }
 

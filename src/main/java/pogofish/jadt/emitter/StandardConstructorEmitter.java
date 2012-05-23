@@ -15,8 +15,6 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
-
 import pogofish.jadt.ast.Constructor;
 
 public class StandardConstructorEmitter implements ConstructorEmitter {
@@ -28,12 +26,12 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
     }
 
     @Override
-    public void constructorFactory(Target target, String dataTypeName, Constructor constructor) throws IOException {
+    public void constructorFactory(Target target, String dataTypeName, Constructor constructor) {
         classBodyEmitter.constructorFactory(target, dataTypeName, constructor.name, constructor);
     }
     
     @Override
-    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName) throws IOException {
+    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName) {
         target.write("   public static final class " + constructor.name + " extends " + dataTypeName + " {\n");
         
         classBodyEmitter.emitConstructorMethod(target, constructor);
@@ -54,7 +52,7 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
         target.write("   }");
     }
     
-    private void emitAccept(Target target) throws IOException {
+    private void emitAccept(Target target) {
         target.write("      @Override\n");
         target.write("      public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }");
     }

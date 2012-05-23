@@ -15,19 +15,17 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
-
 import pogofish.jadt.ast.Constructor;
 
 public class DummyConstructorEmitter implements ConstructorEmitter {
 
     @Override
-    public void constructorFactory(Target target, String dataTypeName, Constructor constructor) throws IOException {
+    public void constructorFactory(Target target, String dataTypeName, Constructor constructor) {
         target.write("/* factory " + dataTypeName + " " + constructor.name + " */");
     }
 
     @Override
-    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName) throws IOException {
+    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName) {
         target.write("/* declaration " + dataTypeName + " " + constructor.name + " */");
     }
 

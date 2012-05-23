@@ -20,8 +20,6 @@ import static pogofish.jadt.ast.RefType._ClassType;
 import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
@@ -78,7 +76,7 @@ public class DataTypeEmitterTest {
     "}";
     
    @Test
-    public void testMultipleConstructors() throws IOException {
+    public void testMultipleConstructors() {
         final DataType fooBar =
                 new DataType("FooBar", list(
                         new Constructor("Foo", list(
@@ -100,7 +98,7 @@ public class DataTypeEmitterTest {
     }
    
    @Test
-   public void testSingleConstructor() throws IOException {
+   public void testSingleConstructor() {
        final DataType fooBar =
                new DataType("FooBar", list(
                        new Constructor("Foo", list(

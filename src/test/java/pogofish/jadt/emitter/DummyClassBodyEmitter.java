@@ -15,36 +15,34 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
-
 import pogofish.jadt.ast.Constructor;
 
 public class DummyClassBodyEmitter implements ClassBodyEmitter {
 
     @Override
     public void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor)
-            throws IOException {
+            {
         target.write("/* constructor factory " + dataTypeName + " " + factoryName + " " + constructor.name + "*/");
 
     }
 
     @Override
-    public void emitConstructorMethod(Target target, Constructor constructor) throws IOException {
+    public void emitConstructorMethod(Target target, Constructor constructor) {
         target.write("/* constructor method " + constructor.name +  "*/");
     }
 
     @Override
-    public void emitToString(Target target, Constructor constructor) throws IOException {
+    public void emitToString(Target target, Constructor constructor) {
         target.write("/* toString method " + constructor.name +  "*/");
     }
 
     @Override
-    public void emitEquals(Target target, Constructor constructor) throws IOException {
+    public void emitEquals(Target target, Constructor constructor) {
         target.write("/* equals method " + constructor.name +  "*/");
     }
 
     @Override
-    public void emitHashCode(Target target, Constructor constructor) throws IOException {
+    public void emitHashCode(Target target, Constructor constructor) {
         target.write("/* hashCode method " + constructor.name +  "*/");
     }
 

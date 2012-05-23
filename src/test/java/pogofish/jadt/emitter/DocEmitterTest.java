@@ -22,7 +22,6 @@ import static pogofish.jadt.ast.Type._Primitive;
 import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.junit.Test;
@@ -63,7 +62,7 @@ public class DocEmitterTest {
     "Whatever";
     
     @Test
-    public void test() throws IOException {
+    public void test() {
         final Doc doc = new Doc("EmitterTest", "some.package", list("wow.man", "flim.flam"), list(
                 new DataType("FooBar", list(
                         new Constructor("Foo", list(

@@ -15,8 +15,6 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
-
 import pogofish.jadt.ast.*;
 import pogofish.jadt.ast.PrimitiveType.IntType;
 import pogofish.jadt.ast.RefType.ArrayType;
@@ -31,7 +29,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      * @see pogofish.jadt.emitter.ClassBodyEmitter#constructorFactory(pogofish.jadt.emitter.Target, java.lang.String, java.lang.String, pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor) throws IOException {
+    public void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor) {
         if (constructor.args.isEmpty()) {
             target.write("   public static " + dataTypeName + " _" + factoryName + " = new " + constructor.name + "();");
         } else {
@@ -43,7 +41,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
         }
     }
     
-    private void constructorArgs(Target target, Constructor constructor, boolean withTypes) throws IOException {
+    private void constructorArgs(Target target, Constructor constructor, boolean withTypes) {
         boolean first = true;
         for (Arg arg : constructor.args) {
             if (first) {
@@ -60,7 +58,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      * @see pogofish.jadt.emitter.ClassBodyEmitter#emitConstructorMethod(pogofish.jadt.emitter.Target, pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitConstructorMethod(Target target, Constructor constructor) throws IOException {
+    public void emitConstructorMethod(Target target, Constructor constructor) {
         for (Arg arg : constructor.args) {
             target.write("      public final " + Printer.print(arg.type) + " " + arg.name + ";");
             target.write("\n");
@@ -78,7 +76,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      * @see pogofish.jadt.emitter.ClassBodyEmitter#emitToString(pogofish.jadt.emitter.Target, pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitToString(Target target, Constructor constructor) throws IOException {
+    public void emitToString(Target target, Constructor constructor) {
         target.write("      @Override\n");
         target.write("      public String toString() {\n");
         target.write("         return \"" + constructor.name);
@@ -103,7 +101,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      * @see pogofish.jadt.emitter.ClassBodyEmitter#emitEquals(pogofish.jadt.emitter.Target, pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitEquals(final Target target, Constructor constructor) throws IOException {
+    public void emitEquals(final Target target, Constructor constructor) {
         target.write("      @Override\n");
         target.write("      public boolean equals(Object obj) {\n");
         target.write("         if (this == obj) return true;\n");
@@ -148,7 +146,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      * @see pogofish.jadt.emitter.ClassBodyEmitter#emitHashCode(pogofish.jadt.emitter.Target, pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitHashCode(final Target target, Constructor constructor) throws IOException {
+    public void emitHashCode(final Target target, Constructor constructor) {
         target.write("      @Override\n");
         target.write("      public int hashCode() {\n");
         if (constructor.args.isEmpty()) {

@@ -16,7 +16,6 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import java.io.File;
-import java.io.IOException;
 
 public class FileTargetFactory implements TargetFactory {
     private final String destDirName;
@@ -26,7 +25,7 @@ public class FileTargetFactory implements TargetFactory {
     }
 
     @Override
-    public Target createTarget(String className) throws IOException {
+    public Target createTarget(String className) {
         return new FileTarget(convertToPath(className));
     }
 

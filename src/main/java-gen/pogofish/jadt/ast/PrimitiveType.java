@@ -1,6 +1,5 @@
 package pogofish.jadt.ast;
 
-import java.util.List;
 
 /*
 This file was generated based on /home/jiry/workspace/JADT/src/main/jadt/jadt.jadt. Please do not modify directly.

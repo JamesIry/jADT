@@ -15,7 +15,6 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
 import java.util.*;
 
 public class StringTargetFactory implements TargetFactory {
@@ -28,7 +27,7 @@ public class StringTargetFactory implements TargetFactory {
         return target;
     }
     
-    public Map<String, String> getResults() throws IOException {
+    public Map<String, String> getResults() {
         final Map<String, String> results = new HashMap<String, String>(targets.size());
         for (Map.Entry<String, StringTarget> entry : targets.entrySet()) {
             results.put(entry.getKey(), entry.getValue().result());

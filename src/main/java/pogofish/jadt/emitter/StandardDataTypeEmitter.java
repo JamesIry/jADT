@@ -15,8 +15,6 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
-
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.ast.DataType;
 
@@ -35,7 +33,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
      * @see sfdc.adt.emitter.DataTypeEmitter#emit(sfdc.adt.emitter.Target, sfdc.adt.ast.DataType, java.lang.String)
      */
     @Override
-    public void emit(Target target, DataType dataType, String header) throws IOException {
+    public void emit(Target target, DataType dataType, String header) {
         target.write(header);
         
         if (dataType.constructors.size() == 1) {
@@ -46,7 +44,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         }
     }
 
-    private void emitSingleConstructor(Target target, DataType dataType, String header) throws IOException {
+    private void emitSingleConstructor(Target target, DataType dataType, String header) {
         final Constructor originalConstructor = dataType.constructors.get(0);
         final Constructor pseudoConstructor = new Constructor(dataType.name, originalConstructor.args);
         
@@ -70,7 +68,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         
     }
 
-    private void emitMultipleConstructor(Target target, DataType dataType, String header) throws IOException {
+    private void emitMultipleConstructor(Target target, DataType dataType, String header) {
         target.write("public abstract class " + dataType.name + " {\n\n");
         target.write("   private " + dataType.name + "() {\n");
         target.write("   }\n");

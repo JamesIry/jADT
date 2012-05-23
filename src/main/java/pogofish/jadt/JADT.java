@@ -49,17 +49,21 @@ public class JADT {
         adt.parseAndEmit(srcFileName);
     }
     
-    public void parseAndEmit(String srcFileName) throws IOException {
-        final File srcFile = new File(srcFileName);
-        final Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), "UTF-8"));
+    public void parseAndEmit(String srcFileName) {
         try {
-            parseAndEmit(srcFile.getAbsolutePath(), reader);            
-        } finally {
-            reader.close();
+            final File srcFile = new File(srcFileName);
+            final Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), "UTF-8"));
+            try {
+                parseAndEmit(srcFile.getAbsolutePath(), reader);            
+            } finally {
+                reader.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     
-    public void parseAndEmit(String srcInfo, Reader src) throws IOException {
+    public void parseAndEmit(String srcInfo, Reader src) {
         final Doc doc = parser.parse(srcInfo, src);
         final Set<SemanticException> errors = checker.check(doc);
         if (!errors.isEmpty()) {

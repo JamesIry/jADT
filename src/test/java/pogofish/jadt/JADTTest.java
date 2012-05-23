@@ -53,7 +53,7 @@ public class JADTTest {
                     }}, checker, new DocEmitter(){
         
                     @Override
-                    public void emit(Doc arg) throws IOException {
+                    public void emit(Doc arg) {
                         assertSame(doc, arg);
                         writer.write("all good!");
                     }});

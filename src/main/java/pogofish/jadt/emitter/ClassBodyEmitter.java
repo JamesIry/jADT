@@ -15,21 +15,19 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
-
 import pogofish.jadt.ast.Constructor;
 
 public interface ClassBodyEmitter {
 
     public abstract void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor)
-            throws IOException;
+           ;
 
-    public abstract void emitConstructorMethod(Target target, Constructor constructor) throws IOException;
+    public abstract void emitConstructorMethod(Target target, Constructor constructor);
 
-    public abstract void emitToString(Target target, Constructor constructor) throws IOException;
+    public abstract void emitToString(Target target, Constructor constructor);
 
-    public abstract void emitEquals(Target target, Constructor constructor) throws IOException;
+    public abstract void emitEquals(Target target, Constructor constructor);
 
-    public abstract void emitHashCode(Target target, Constructor constructor) throws IOException;
+    public abstract void emitHashCode(Target target, Constructor constructor);
 
 }

@@ -15,8 +15,6 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
-import java.io.IOException;
-
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
 import pogofish.jadt.printer.Printer;
@@ -36,7 +34,7 @@ public class StandardDocEmitter implements DocEmitter {
      * @see sfdc.adt.emitter.Emitter#emit(sfdc.adt.ast.Doc, sfdc.adt.emitter.TargetFactory)
      */
     @Override
-    public void emit(Doc doc) throws IOException {
+    public void emit(Doc doc) {
         final StringBuilder header = new StringBuilder(doc.pkg.isEmpty() ? "" : ("package " + doc.pkg + ";\n\n"));
         if (!doc.imports.isEmpty()) {
             for (String imp : doc.imports) {

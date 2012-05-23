@@ -16,11 +16,30 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.junit.Test;
 
 
 public class FileTargetFactoryTest {
+    @Test
+    public void testCreate() throws IOException {
+        final String tempDir = new File(System.getProperty("java.io.tmpdir")).getCanonicalPath();
+        final TargetFactory factory = new FileTargetFactory(tempDir);
+        final FileTarget target = (FileTarget)factory.createTarget("bar.baz.Blah");
+        try {
+            assertTrue("Output file did not exist", target.outputFile.exists());
+            assertEquals(new File(tempDir + "/bar/baz/Blah.java").getCanonicalPath(), target.outputFile.getCanonicalPath());
+        } finally {
+            if (target.outputFile.exists()) {
+                target.outputFile.delete();
+            }
+        }
+    }
+    
     @Test
     public void testFactorySlash() {
         final FileTargetFactory factory = new FileTargetFactory("/germufabits/");

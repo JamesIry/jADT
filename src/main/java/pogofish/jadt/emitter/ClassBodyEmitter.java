@@ -19,8 +19,7 @@ import pogofish.jadt.ast.Constructor;
 
 public interface ClassBodyEmitter {
 
-    public abstract void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor)
-           ;
+    public abstract void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor);
 
     public abstract void emitConstructorMethod(Target target, Constructor constructor);
 

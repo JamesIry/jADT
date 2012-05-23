@@ -1,62 +1,65 @@
 /*
-Copyright 2012 James Iry
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+ * Copyright 2012 James Iry Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing permissions and limitations under the
+ * License.
+ */
 package pogofish.jadt.emitter;
 
 import java.io.*;
 
+/**
+ * Target that writes to a specified file in UTF-8
+ *
+ * @author jiry
+ */
 public class FileTarget implements Target {
     private final Writer writer;
     final File outputFile;
-        
-    public FileTarget(String outputFileName) {
+
+    /**
+     * Creates a FileTarget based on a complete file name
+     * 
+     * @param outputFileName String full name of the file to be output
+     */
+    public FileTarget(final String outputFileName) {
         super();
-        try {            
-            outputFile = new File(outputFileName);
-            final File parentDir = outputFile.getParentFile();
-            if (parentDir != null && !parentDir.exists()) {
+        outputFile = new File(outputFileName);
+
+        writer = new IOExceptionAction<Writer>() {
+            @Override
+            public Writer doAction() throws IOException {
+                final File parentDir = outputFile.getParentFile();
                 parentDir.mkdirs();
+
+                outputFile.createNewFile();
+
+                return new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8");
             }
-            
-            if (outputFile.exists()) {
-                outputFile.delete();
-            }
-            
-            outputFile.createNewFile();
-            
-            writer = new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        }.execute();
     }
-    
+
     @Override
-    public void write(String data) {
-        try {
-            writer.write(data);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void write(final String data) {
+        new IOExceptionAction<Writer>() {
+
+            @Override
+            public Writer doAction() throws IOException {
+                writer.write(data);
+                return null;
+            }}.execute();
     }
-    
+
     @Override
     public void close() {
-        try {
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        new IOExceptionAction<Writer>() {
+
+            @Override
+            public Writer doAction() throws IOException {
+                writer.close();
+                return null;
+            }}.execute();
     }
 }

@@ -17,9 +17,19 @@ package pogofish.jadt.emitter;
 
 import java.io.File;
 
+/**
+ * Factor that creates FileTargets within a given base directory
+ *
+ * @author jiry
+ */
 public class FileTargetFactory implements TargetFactory {
     private final String destDirName;
 
+    /**
+     * Creates a FileTargetFactory that will output to the given directory
+     * 
+     * @param destDirName
+     */
     public FileTargetFactory(String destDirName) {
         this.destDirName = destDirName;
     }
@@ -29,6 +39,12 @@ public class FileTargetFactory implements TargetFactory {
         return new FileTarget(convertToPath(className));
     }
 
+    /**
+     * Turns a class name like foo.bar.Baz into the path destDirName/foo/bar/Baz.java
+     * 
+     * @param className
+     * @return
+     */
     public String convertToPath(String className) {
         final String fixedDir = destDirName.endsWith(File.separator) ? destDirName: destDirName + File.separator;
         final String fixedClassName = className.replace('.', '/');

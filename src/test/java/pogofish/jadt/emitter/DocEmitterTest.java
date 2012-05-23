@@ -55,6 +55,45 @@ public class DocEmitterTest {
     "\n" +
     "*/\n";
 
+    private static final String NO_PACKAGE_HEADER =
+    "import wow.man;\n" +
+    "import flim.flam;\n" +
+    "\n" +
+    "/*\n" +
+    "This file was generated based on EmitterTest. Please do not modify directly.\n" +
+    "\n" +
+    "The source was parsed as: \n" +
+    "\n" +
+    "import wow.man\n" +
+    "import flim.flam\n" +
+    "\n" +
+    "FooBar =\n" +
+    "    Foo(int yeah, String hmmm)\n" +
+    "  | Bar\n" +
+    "Whatever =\n" +
+    "    Whatever\n" +
+    "\n" +
+    "*/\n";
+
+    
+    private static final String NO_IMPORTS_HEADER =
+    "package some.package;\n" +
+    "\n" +
+    "/*\n" +
+    "This file was generated based on EmitterTest. Please do not modify directly.\n" +
+    "\n" +
+    "The source was parsed as: \n" +
+    "\n" +
+    "package some.package\n" +
+    "\n" +
+    "FooBar =\n" +
+    "    Foo(int yeah, String hmmm)\n" +
+    "  | Bar\n" +
+    "Whatever =\n" +
+    "    Whatever\n" +
+    "\n" +
+    "*/\n";
+    
     private static final String FOOBAR = 
     "FooBar";
     
@@ -62,7 +101,7 @@ public class DocEmitterTest {
     "Whatever";
     
     @Test
-    public void test() {
+    public void testFull() {
         final Doc doc = new Doc("EmitterTest", "some.package", list("wow.man", "flim.flam"), list(
                 new DataType("FooBar", list(
                         new Constructor("Foo", list(
@@ -86,4 +125,53 @@ public class DocEmitterTest {
         assertEquals(FULL_HEADER+WHATEVER, results.get("some.package.Whatever"));
     }
 
+    @Test
+    public void testNoImports() {
+        final Doc doc = new Doc("EmitterTest", "some.package", Util.<String>list(), list(
+                new DataType("FooBar", list(
+                        new Constructor("Foo", list(
+                                new Arg(_Primitive(_IntType), "yeah"),
+                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
+                        )),
+                        new Constructor("Bar", Util.<Arg>list())
+                )),
+                new DataType("Whatever", list(
+                        new Constructor("Whatever", Util.<Arg>list())
+                ))
+                
+        ));
+        final StringTargetFactory factory = new StringTargetFactory();
+        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter());
+        emitter.emit(doc);
+        final Map<String, String> results = factory.getResults();
+        assertEquals("Got the wrong number of results", 2, results.size());
+        final String foobar = results.get("some.package.FooBar");
+        assertEquals(NO_IMPORTS_HEADER+FOOBAR, foobar);
+        assertEquals(NO_IMPORTS_HEADER+WHATEVER, results.get("some.package.Whatever"));
+    }
+    
+    @Test
+    public void testNoPackage() {
+        final Doc doc = new Doc("EmitterTest", "", list("wow.man", "flim.flam"), list(
+                new DataType("FooBar", list(
+                        new Constructor("Foo", list(
+                                new Arg(_Primitive(_IntType), "yeah"),
+                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
+                        )),
+                        new Constructor("Bar", Util.<Arg>list())
+                )),
+                new DataType("Whatever", list(
+                        new Constructor("Whatever", Util.<Arg>list())
+                ))
+                
+        ));
+        final StringTargetFactory factory = new StringTargetFactory();
+        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter());
+        emitter.emit(doc);
+        final Map<String, String> results = factory.getResults();
+        assertEquals("Got the wrong number of results", 2, results.size());
+        final String foobar = results.get("FooBar");
+        assertEquals(NO_PACKAGE_HEADER+FOOBAR, foobar);
+        assertEquals(NO_PACKAGE_HEADER+WHATEVER, results.get("Whatever"));
+    }
 }

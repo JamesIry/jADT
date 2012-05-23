@@ -26,33 +26,45 @@ public class FileTargetTest {
     @Test
     public void testMissingFile() throws IOException {
         final File temp = File.createTempFile("testFactory", "java");
-        temp.delete();
-        final FileTarget target = new FileTarget(temp.getAbsolutePath());
         try {
-            target.write("hello");
+            temp.delete();
+            final FileTarget target = new FileTarget(temp.getAbsolutePath());
+            try {
+                target.write("hello");
+            } finally {
+                target.close();
+            }
+            
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(temp), "UTF-8"));
+            final String contents = reader.readLine();
+            assertEquals("hello", contents);
         } finally {
-            target.close();
+            if (temp.exists()) {
+                temp.delete();
+            }
         }
-        
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(temp), "UTF-8"));
-        final String contents = reader.readLine();
-        assertEquals("hello", contents);
     }
     
     @Test
     public void testExistingFile() throws IOException {
-        final File temp = File.createTempFile("testFactory", "java");
-        temp.createNewFile();
-        final FileTarget target = new FileTarget(temp.getAbsolutePath());
-        try {
-            target.write("hello");
+            final File temp = File.createTempFile("testFactory", "java");
+            try {
+            temp.createNewFile();
+            final FileTarget target = new FileTarget(temp.getAbsolutePath());
+            try {
+                target.write("hello");
+            } finally {
+                target.close();
+            }
+            
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(temp), "UTF-8"));
+            final String contents = reader.readLine();
+            assertEquals("hello", contents);
         } finally {
-            target.close();
+            if(temp.exists()) {
+                temp.delete();
+            }
         }
-        
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(temp), "UTF-8"));
-        final String contents = reader.readLine();
-        assertEquals("hello", contents);
     }
     
 }

@@ -15,15 +15,29 @@ limitations under the License.
 */
 package pogofish.jadt.source;
 
+/**
+ * Factory that creates StringSources, mostly useful for testing
+ *
+ * @author jiry
+ */
 public class StringSourceFactory implements SourceFactory {
+    /**
+     * The string that will be read by the source
+     */
     private final String source;
-    
-    
+        
+    /**
+     * Create a factory that will create StringSources that will read from the given string
+     * @param source
+     */
     public StringSourceFactory(String source) {
         super();
         this.source = source;
     }
 
+    /**
+     * Create a StringSource - the sourceFileName will be used as the srcInfo in the resulting Source
+     */
     @Override
     public Source createSource(String sourceFileName) {
         return new StringSource(sourceFileName, source);

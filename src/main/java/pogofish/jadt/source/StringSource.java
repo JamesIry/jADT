@@ -19,9 +19,21 @@ import java.io.*;
 
 import pogofish.jadt.util.IOExceptionAction;
 
+/**
+ * A Source that reads from a supplied string, mostly useful for testing
+ *
+ * @author jiry
+ */
 public class StringSource implements Source {
+    /**
+     * Internal reader used to read from the string
+     */
     private final Reader reader;
+    /**
+     * Information about the source
+     */
     private final String srcInfo;
+
     
     public StringSource(String srcInfo, String source) {
         this.srcInfo = srcInfo;

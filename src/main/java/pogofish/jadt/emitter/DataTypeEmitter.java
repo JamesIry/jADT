@@ -16,10 +16,22 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import pogofish.jadt.ast.DataType;
+import pogofish.jadt.target.Target;
 
-
+/**
+ * Emits a DataType
+ *
+ * @author jiry
+ */
 public interface DataTypeEmitter {
 
+    /**
+     * Emit a datatype
+     * 
+     * @param target Target for output
+     * @param dataType DataType to output
+     * @param header String preamble with things like package and imports
+     */
     public abstract void emit(Target target, DataType dataType, String header);
 
 }

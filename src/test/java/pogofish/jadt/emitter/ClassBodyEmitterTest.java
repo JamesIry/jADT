@@ -27,6 +27,7 @@ import static pogofish.jadt.util.Util.list;
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
+import pogofish.jadt.target.StringTarget;
 import pogofish.jadt.util.Util;
 
 

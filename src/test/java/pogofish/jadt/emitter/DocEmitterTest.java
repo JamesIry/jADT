@@ -27,6 +27,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
+import pogofish.jadt.target.StringTargetFactory;
 import pogofish.jadt.util.Util;
 
 
@@ -115,9 +116,9 @@ public class DocEmitterTest {
                 ))
                 
         ));
-        final StringTargetFactory factory = new StringTargetFactory();
-        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter());
-        emitter.emit(doc);
+        final StringTargetFactory factory = new StringTargetFactory("whatever");
+        final DocEmitter emitter = new StandardDocEmitter(new DummyDataTypeEmitter());
+        emitter.emit(factory, doc);
         final Map<String, String> results = factory.getResults();
         assertEquals("Got the wrong number of results", 2, results.size());
         final String foobar = results.get("some.package.FooBar");
@@ -140,9 +141,9 @@ public class DocEmitterTest {
                 ))
                 
         ));
-        final StringTargetFactory factory = new StringTargetFactory();
-        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter());
-        emitter.emit(doc);
+        final StringTargetFactory factory = new StringTargetFactory("whatever");
+        final DocEmitter emitter = new StandardDocEmitter(new DummyDataTypeEmitter());
+        emitter.emit(factory, doc);
         final Map<String, String> results = factory.getResults();
         assertEquals("Got the wrong number of results", 2, results.size());
         final String foobar = results.get("some.package.FooBar");
@@ -165,9 +166,9 @@ public class DocEmitterTest {
                 ))
                 
         ));
-        final StringTargetFactory factory = new StringTargetFactory();
-        final DocEmitter emitter = new StandardDocEmitter(factory, new DummyDataTypeEmitter());
-        emitter.emit(doc);
+        final StringTargetFactory factory = new StringTargetFactory("whatever");
+        final DocEmitter emitter = new StandardDocEmitter(new DummyDataTypeEmitter());
+        emitter.emit(factory, doc);
         final Map<String, String> results = factory.getResults();
         assertEquals("Got the wrong number of results", 2, results.size());
         final String foobar = results.get("FooBar");

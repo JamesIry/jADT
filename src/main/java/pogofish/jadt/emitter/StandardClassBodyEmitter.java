@@ -22,6 +22,7 @@ import pogofish.jadt.ast.RefType.ClassType;
 import pogofish.jadt.ast.Type.Primitive;
 import pogofish.jadt.ast.Type.Ref;
 import pogofish.jadt.printer.Printer;
+import pogofish.jadt.target.Target;
 
 public class StandardClassBodyEmitter implements ClassBodyEmitter {
     

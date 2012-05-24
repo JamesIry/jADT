@@ -13,9 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package pogofish.jadt.emitter;
+package pogofish.jadt.source;
 
+import java.io.Reader;
 
-public interface TargetFactory {
-    public Target createTarget(String className);
+/**
+ * A source for the parser
+ *
+ * @author jiry
+ */
+public interface Source {
+    public Reader getReader();
+    
+    public String getSrcInfo();
+
+    public void close();
 }

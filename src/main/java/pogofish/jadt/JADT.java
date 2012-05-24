@@ -15,7 +15,6 @@ limitations under the License.
 */
 package pogofish.jadt;
 
-import java.io.*;
 import java.util.Set;
 
 import pogofish.jadt.ast.Doc;
@@ -23,52 +22,100 @@ import pogofish.jadt.checker.*;
 import pogofish.jadt.emitter.*;
 import pogofish.jadt.parser.Parser;
 import pogofish.jadt.parser.StandardParser;
+import pogofish.jadt.source.*;
+import pogofish.jadt.target.*;
 
-
+/**
+ * Programmatic and command line driver that launches parser, then checker, then emitter, weaving everything together
+ *
+ * @author jiry
+ */
 public class JADT {
-    private final Parser parser;
-    private final DocEmitter emitter;
-    private final Checker checker;
+    final Parser parser;
+    final DocEmitter emitter;
+    final Checker checker;
+    final SourceFactory sourceFactory;
+    final TargetFactoryFactory factoryFactory;
+
+    /**
+     * Takes the names of a source file and output directory and does the JADT thing to them
+     * 
+     * @param args
+     * @throws Exception
+     */
+    public static void main(String[] args) {
+        standardConfigDriver().parseAndEmit(args);
+    }
     
-    public JADT(Parser parser, Checker checker, DocEmitter emitter) {
+    /**
+     * Convenient factory method to create a complete standard configuration
+     * 
+     * @return Driver configured with all the Standard bits
+     */
+    public static JADT standardConfigDriver() {
+        final SourceFactory sourceFactory = new FileSourceFactory();
+        final ClassBodyEmitter classBodyEmitter = new StandardClassBodyEmitter();
+        final ConstructorEmitter constructorEmitter = new StandardConstructorEmitter(classBodyEmitter);
+        final DataTypeEmitter dataTypeEmitter = new StandardDataTypeEmitter(classBodyEmitter, constructorEmitter);
+        final DocEmitter docEmitter = new StandardDocEmitter(dataTypeEmitter);      
+        final Parser parser = new StandardParser();
+        final Checker checker = new StandardChecker();
+        final TargetFactoryFactory factoryFactory = new FileTargetFactoryFactory();
+        
+        return new JADT(sourceFactory, parser, checker, docEmitter, factoryFactory);
+    }
+    
+    /**
+     * Constructs a driver with the given components.
+     * 
+     * @param parser Parser to read JADT files
+     * @param checker Checker to validate JADT structures
+     * @param emitter Emitter to spit out Java files
+     */
+    public JADT(SourceFactory sourceFactory, Parser parser, Checker checker, DocEmitter emitter, TargetFactoryFactory factoryFactory) {
         super();
+        this.sourceFactory = sourceFactory;
         this.parser = parser;
         this.emitter = emitter;
         this.checker = checker;
+        this.factoryFactory = factoryFactory;
     }
-
-    public static void main(String[] args) throws Exception {
+    
+    /**
+     * Do the JADT thing based on an array of String args.  There must be 2 and the must be the source file and destination directory
+     * 
+     * @param args
+     */
+    public void parseAndEmit(String[] args) {
         if (args.length != 2) {
-            System.err.println("usage: java sfdc.adt.ADT [source file] [output directory]");
-            System.exit(1);
+            throw new IllegalArgumentException("usage: java sfdc.adt.JADT [source file] [output directory]");
         }
+        
         final String srcFileName = args[0];
         final String destDirName = args[1];
-        
-        final JADT adt = new JADT(new StandardParser(), new StandardChecker(), new StandardDocEmitter(new FileTargetFactory(destDirName), new StandardDataTypeEmitter(new StandardClassBodyEmitter(), new StandardConstructorEmitter(new StandardClassBodyEmitter()))));        
-        adt.parseAndEmit(srcFileName);
+
+        parseAndEmit(srcFileName, destDirName);        
     }
-    
-    public void parseAndEmit(String srcFileName) {
+
+    /**
+     * Do the JADT thing given the srceFileName and destination directory
+     * 
+     * @param srcFileName full name of the source directory
+     * @param destDir full name of the desintation directory (trailing slash is optional)
+     */
+    public void parseAndEmit(String srcFileName, String destDir) {
+        final Source source = sourceFactory.createSource(srcFileName);
         try {
-            final File srcFile = new File(srcFileName);
-            final Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), "UTF-8"));
-            try {
-                parseAndEmit(srcFile.getAbsolutePath(), reader);            
-            } finally {
-                reader.close();
+            final Doc doc = parser.parse(source.getSrcInfo(), source.getReader());
+            final Set<SemanticException> errors = checker.check(doc);
+            if (!errors.isEmpty()) {
+                throw new SemanticExceptions(errors);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            final TargetFactory targetFactory = factoryFactory.createTargetFactory(destDir);
+            emitter.emit(targetFactory, doc);
+        } finally {
+            source.close();
         }
     }
-    
-    public void parseAndEmit(String srcInfo, Reader src) {
-        final Doc doc = parser.parse(srcInfo, src);
-        final Set<SemanticException> errors = checker.check(doc);
-        if (!errors.isEmpty()) {
-            throw new SemanticExceptions(errors);
-        }
-        emitter.emit(doc);                
-    }
+
 }

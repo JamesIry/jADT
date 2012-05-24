@@ -25,11 +25,12 @@ import static pogofish.jadt.util.Util.list;
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
+import pogofish.jadt.target.StringTarget;
 import pogofish.jadt.util.Util;
 
 
 public class ConstructorEmitterTest {
-    private static final String NON_PRIMITIVE = 
+    private static final String CONSTRUCTOR_CLASS = 
     "   public static final class Foo extends NonPrimitive {\n" +
     "/* constructor method Foo*/\n" +
     "\n" +
@@ -78,6 +79,6 @@ public class ConstructorEmitterTest {
         }
         System.out.println("--------");
         System.out.println(target.result());
-        assertEquals(NON_PRIMITIVE, target.result());
+        assertEquals(CONSTRUCTOR_CLASS, target.result());
     }
 }

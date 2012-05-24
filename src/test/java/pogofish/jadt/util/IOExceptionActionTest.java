@@ -1,10 +1,11 @@
-package pogofish.jadt.emitter;
+package pogofish.jadt.util;
 
 import static org.junit.Assert.*;
 
 import java.io.IOException;
 
 import org.junit.Test;
+
 
 public class IOExceptionActionTest {
     @Test

@@ -17,6 +17,7 @@ package pogofish.jadt.emitter;
 
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.ast.DataType;
+import pogofish.jadt.target.Target;
 
 
 public class StandardDataTypeEmitter implements DataTypeEmitter {

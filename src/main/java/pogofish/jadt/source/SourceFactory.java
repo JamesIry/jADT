@@ -13,13 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package pogofish.jadt.emitter;
+package pogofish.jadt.source;
 
-
-public interface Target {
-
-    public abstract void close();
-
-    public abstract void write(String data);
-
+/**
+ * Factory for creating sources
+ *
+ * @author jiry
+ */
+public interface SourceFactory {
+    /**
+     * Returns a source for the given name
+     *
+     * @param sourceFileName
+     * @return
+     */
+    public Source createSource(String sourceFileName);
 }

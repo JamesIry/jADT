@@ -16,17 +16,55 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import pogofish.jadt.ast.Constructor;
+import pogofish.jadt.target.Target;
 
+/**
+ * Emitter for the methods that go in a constructor body
+ *
+ * @author jiry
+ */
 public interface ClassBodyEmitter {
 
+    /**
+     * The constructor factory 
+     * 
+     * @param target Target for output
+     * @param dataTypeName name of the DataType to return from the factory
+     * @param factoryName name of the factory method/constant to create
+     * @param constructor the Constructor with information about arguments
+     */
     public abstract void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor);
 
+    /**
+     * Emit the Java constructor for the constructor class
+     * 
+     * @param target Target for output
+     * @param constructor Constructor with information about arguments
+     */
     public abstract void emitConstructorMethod(Target target, Constructor constructor);
 
+    /**
+     * Emit a toString method
+     * 
+     * @param target Target for output
+     * @param constructor Constructor with information about arguments
+     */
     public abstract void emitToString(Target target, Constructor constructor);
 
+    /**
+     * Emit an equals method
+     * 
+     * @param target Target for output
+     * @param constructor Constructor with information about arguments
+     */
     public abstract void emitEquals(Target target, Constructor constructor);
 
+    /**
+     * Emit a hashCode method
+     * 
+     * @param target Target for output
+     * @param constructor Constructor with information about arguments
+     */
     public abstract void emitHashCode(Target target, Constructor constructor);
 
 }

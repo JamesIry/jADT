@@ -16,10 +16,21 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import pogofish.jadt.ast.Doc;
+import pogofish.jadt.target.TargetFactory;
 
-
+/**
+ * Emitter for a whole document
+ *
+ * @author jiry
+ */
 public interface DocEmitter {
 
-    public abstract void emit(Doc doc);
+    /**
+     * Emits a document to targets created by the specified factory
+     * 
+     * @param factory TargetFactory that will produce targets for output
+     * @param doc Document to output
+     */
+    public abstract void emit(TargetFactory factory, Doc doc);
 
 }

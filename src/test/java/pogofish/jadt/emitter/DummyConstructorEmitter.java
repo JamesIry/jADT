@@ -16,6 +16,7 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import pogofish.jadt.ast.Constructor;
+import pogofish.jadt.target.Target;
 
 public class DummyConstructorEmitter implements ConstructorEmitter {
 

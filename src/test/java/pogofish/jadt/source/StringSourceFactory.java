@@ -13,22 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package pogofish.jadt;
+package pogofish.jadt.source;
 
-import java.util.Set;
+public class StringSourceFactory implements SourceFactory {
+    private final String source;
+    
+    
+    public StringSourceFactory(String source) {
+        super();
+        this.source = source;
+    }
 
-import pogofish.jadt.checker.SemanticException;
-import pogofish.jadt.util.Util;
-
-/**
- * Exception thrown when there are one or more semantic exceptions
- * 
- * @author jiry
- */
-public class SemanticExceptions extends RuntimeException {
-
-    public SemanticExceptions(Set<SemanticException> errors) {
-        super(Util.makeString(errors, "\n\n "));
+    @Override
+    public Source createSource(String sourceFileName) {
+        return new StringSource(sourceFileName, source);
     }
 
 }

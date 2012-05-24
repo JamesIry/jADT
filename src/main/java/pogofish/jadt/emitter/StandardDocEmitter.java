@@ -18,15 +18,15 @@ package pogofish.jadt.emitter;
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
 import pogofish.jadt.printer.Printer;
+import pogofish.jadt.target.Target;
+import pogofish.jadt.target.TargetFactory;
 
 
 public class StandardDocEmitter implements DocEmitter {    
-    private final TargetFactory factory;
     private final DataTypeEmitter dataTypeEmitter;
         
-    public StandardDocEmitter(TargetFactory factory, DataTypeEmitter dataTypeEmitter) {
+    public StandardDocEmitter(DataTypeEmitter dataTypeEmitter) {
         super();
-        this.factory = factory;
         this.dataTypeEmitter = dataTypeEmitter;
     }
 
@@ -34,7 +34,7 @@ public class StandardDocEmitter implements DocEmitter {
      * @see sfdc.adt.emitter.Emitter#emit(sfdc.adt.ast.Doc, sfdc.adt.emitter.TargetFactory)
      */
     @Override
-    public void emit(Doc doc) {
+    public void emit(TargetFactory factory, Doc doc) {
         final StringBuilder header = new StringBuilder(doc.pkg.isEmpty() ? "" : ("package " + doc.pkg + ";\n\n"));
         if (!doc.imports.isEmpty()) {
             for (String imp : doc.imports) {

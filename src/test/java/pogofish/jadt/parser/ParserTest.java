@@ -334,7 +334,7 @@ public class ParserTest {
     public void testFull() {
         final Parser parser = new StandardParser();
         final Doc doc = parser.parse(new StringSource("ParserTest",
-                "package hello.world import wow.man import flim.flam "
+                "//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
                         + "FooBar = foo | bar(int hey, String[] yeah) " + "whatever = whatever"));
 
         assertEquals(

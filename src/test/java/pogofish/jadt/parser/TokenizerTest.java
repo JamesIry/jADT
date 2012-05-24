@@ -93,12 +93,13 @@ public class TokenizerTest {
     /**
      * Comments should be invisible in the output other than separating tokens
      */
+    @Test
     public void testComments() {
-        final Tokenizer tokenizer = tokenizer("hello//comment\nworld/*another comment*/oh");
-        check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
-        check(tokenizer, "world", TokenType.IDENTIFIER, 1);
-        check(tokenizer, "oh", TokenType.IDENTIFIER, 1);
-        check(tokenizer, "<EOF>", TokenType.EOF, 1);
+        final Tokenizer tokenizer = tokenizer("/*\nCopyright*/hello//comment\nworld/*another comment*/oh");
+        check(tokenizer, "hello", TokenType.IDENTIFIER, 2);
+        check(tokenizer, "world", TokenType.IDENTIFIER, 3);
+        check(tokenizer, "oh", TokenType.IDENTIFIER, 3);
+        check(tokenizer, "<EOF>", TokenType.EOF, 3);
     }
     
     /**
@@ -157,7 +158,7 @@ public class TokenizerTest {
      */
     @Test
     public void testPunctuation() {
-        final Tokenizer tokenizer = tokenizer("<>=(),[]|{");
+        final Tokenizer tokenizer = tokenizer("<>=(),[]|*");
         check(tokenizer, "<", TokenType.LANGLE, 1);
         check(tokenizer, ">", TokenType.RANGLE, 1);
         check(tokenizer, "=", TokenType.EQUALS, 1);
@@ -168,7 +169,7 @@ public class TokenizerTest {
         check(tokenizer, "]", TokenType.RBRACKET, 1);
         check(tokenizer, "|", TokenType.BAR, 1);
         // this one is tested to provide coverage of a default case in the Tokenizer
-        check(tokenizer, "{", TokenType.UNKNOWN, 1);
+        check(tokenizer, "*", TokenType.UNKNOWN, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);        
     }
 

@@ -11,21 +11,21 @@ package pogofish.jadt.ast
 
 import java.util.List
 
-data Doc =
+Doc =
     Doc(String srcInfo, String pkg, List<String> imports, List<DataType> dataTypes)
-data DataType =
+DataType =
     DataType(String name, List<Constructor> constructors)
-data Constructor =
+Constructor =
     Constructor(String name, List<Arg> args)
-data Arg =
+Arg =
     Arg(Type type, String name)
-data Type =
+Type =
     Ref(RefType type)
   | Primitive(PrimitiveType type)
-data RefType =
+RefType =
     ClassType(String baseName, List<RefType> typeArguments)
   | ArrayType(Type heldType)
-data PrimitiveType =
+PrimitiveType =
     BooleanType
   | CharType
   | DoubleType

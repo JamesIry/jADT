@@ -128,8 +128,6 @@ class Tokenizer {
         srcInfo = source.getSrcInfo();
         tokenizer = new StreamTokenizer(source.getReader());
         tokenizer.resetSyntax();
-        tokenizer.slashSlashComments(true);
-        tokenizer.slashStarComments(true);
         tokenizer.wordChars(0, Integer.MAX_VALUE);
         tokenizer.ordinaryChar('<');
         tokenizer.ordinaryChar('>');
@@ -140,12 +138,15 @@ class Tokenizer {
         tokenizer.ordinaryChar('|');
         tokenizer.ordinaryChar('[');
         tokenizer.ordinaryChar(']');
-        tokenizer.ordinaryChar('{'); // added just for coverage of the unknown token type case
         tokenizer.whitespaceChars(' ', ' ');
         tokenizer.whitespaceChars('\t', '\t');
         tokenizer.whitespaceChars('\n', '\n');
         tokenizer.whitespaceChars('\r', '\r');
         tokenizer.eolIsSignificant(false);
+        tokenizer.ordinaryChar('/');
+        tokenizer.ordinaryChar('*');
+        tokenizer.slashSlashComments(true);
+        tokenizer.slashStarComments(true);
     }
 
     /**

@@ -106,7 +106,7 @@ public class JADT {
     public void parseAndEmit(String srcFileName, String destDir) {
         final Source source = sourceFactory.createSource(srcFileName);
         try {
-            final Doc doc = parser.parse(source.getSrcInfo(), source.getReader());
+            final Doc doc = parser.parse(source);
             final Set<SemanticException> errors = checker.check(doc);
             if (!errors.isEmpty()) {
                 throw new SemanticExceptions(errors);

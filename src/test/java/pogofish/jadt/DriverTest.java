@@ -46,10 +46,10 @@ public class DriverTest {
         }
 
         @Override
-        public Doc parse(String srcInfo, Reader reader) {
-            assertEquals(srcInfo, srcInfo);                        
+        public Doc parse(Source source) {
+            assertEquals("srcInfo", source.getSrcInfo());                        
             try {
-                assertEquals(testString, new BufferedReader(reader).readLine());
+                assertEquals(testString, new BufferedReader(source.getReader()).readLine());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

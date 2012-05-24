@@ -15,9 +15,8 @@ limitations under the License.
 */
 package pogofish.jadt.parser;
 
-import java.io.Reader;
-
 import pogofish.jadt.ast.Doc;
+import pogofish.jadt.source.Source;
 
 /**
  * Interface for the JADT description file parsers.
@@ -30,12 +29,11 @@ public interface Parser {
      * Parse a complete document
      * The project README.md has a BNF style grammar for the parser.
      * 
-     * @param srcInfo String information about the source used for error reporting
-     * @param reader Reader with the source 
+     * @param source Source to be parsed
      * @return a Document
      * @throws RuntimeException with an IOExceptino if there are any problems reading
      * @throws SyntaxException if there are any problems with the source
      */
-    public abstract Doc parse(String srcInfo, Reader reader);
+    public abstract Doc parse(Source source);
 
 }

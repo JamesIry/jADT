@@ -15,11 +15,14 @@ limitations under the License.
 */
 package pogofish.jadt.parser;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.StreamTokenizer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import pogofish.jadt.source.Source;
 
 /**
  * Modeled after the interface of a subset of Java's StreamTokenizer, but returns TokenTypes designed for
@@ -102,6 +105,8 @@ class Tokenizer {
         KEYWORDS.put("while", TokenType.JAVA_KEYWORD);
     }
     
+    private final String srcInfo;
+    
     /**
      * Current implementation uses a StreamTokenizer under the hood
      */
@@ -117,8 +122,9 @@ class Tokenizer {
      * 
      * @param reader the reader with the JADT source to be tokenized
      */
-    public Tokenizer(final Reader reader) {
-        tokenizer = new StreamTokenizer(reader);
+    public Tokenizer(Source source) {
+        srcInfo = source.getSrcInfo();
+        tokenizer = new StreamTokenizer(source.getReader());
         tokenizer.resetSyntax();
         tokenizer.slashSlashComments(true);
         tokenizer.slashStarComments(true);
@@ -248,6 +254,14 @@ class Tokenizer {
      */
     public int lineno() {
         return tokenizer.lineno();
+    }
+    
+    /**
+     * Return info about the source from which this tokenizer was created
+     * @return
+     */
+    public String srcInfo() {
+        return srcInfo;
     }
 
 }

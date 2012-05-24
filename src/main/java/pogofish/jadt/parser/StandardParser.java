@@ -21,12 +21,12 @@ import static pogofish.jadt.ast.RefType._ClassType;
 import static pogofish.jadt.ast.Type._Primitive;
 import static pogofish.jadt.ast.Type._Ref;
 
-import java.io.Reader;
 import java.util.*;
 
 import pogofish.jadt.ast.*;
 import pogofish.jadt.ast.Type.Primitive;
 import pogofish.jadt.ast.Type.Ref;
+import pogofish.jadt.source.Source;
 import pogofish.jadt.util.Util;
 
 /**
@@ -41,9 +41,9 @@ public class StandardParser implements Parser {
      * @see sfdc.adt.IParser#parse(java.lang.String, java.io.Reader)
      */
     @Override
-    public Doc parse(String srcInfo, Reader reader)  {
-        final Tokenizer tokenizer = new Tokenizer(reader);
-        final Impl impl = new Impl(srcInfo, tokenizer);
+    public Doc parse(Source source)  {
+        final Tokenizer tokenizer = new Tokenizer(source);
+        final Impl impl = new Impl(tokenizer);
         return impl.doc();
     }
     
@@ -57,10 +57,6 @@ public class StandardParser implements Parser {
          * Tokenizer to be parsed
          */
         private final Tokenizer tokenizer;
-        /**
-         * Information about the source that will be used during error reporting
-         */
-        private final String srcInfo;
         
 
         /**
@@ -69,9 +65,8 @@ public class StandardParser implements Parser {
          * @param srcInfo String information about the source that is used when throwing a syntax exception
          * @param tokenizer Tokenizer to be parsed
          */
-        public Impl(String srcInfo, Tokenizer tokenizer) {
+        public Impl(Tokenizer tokenizer) {
             this.tokenizer = tokenizer;
-            this.srcInfo = srcInfo;
         }
 
         /**
@@ -80,7 +75,7 @@ public class StandardParser implements Parser {
          * @return Doc
          */
         public Doc doc() {
-            return new Doc(srcInfo, pkg(), imports(), dataTypes());
+            return new Doc(tokenizer.srcInfo(), pkg(), imports(), dataTypes());
         }
 
         /** 
@@ -323,7 +318,7 @@ public class StandardParser implements Parser {
          * @return A SyntaxException with information about where the problem occurred, what was expected, and what was found
          */
         private SyntaxException syntaxException(String expected) {
-            return new SyntaxException("While parsing " + srcInfo + ". Expected " + expected + " but found " + tokenizer.lastSymbol() + " at line " + tokenizer.lineno());        
+            return new SyntaxException("While parsing " + tokenizer.srcInfo() + ". Expected " + expected + " but found " + tokenizer.lastSymbol() + " at line " + tokenizer.lineno());        
         }
         
     }

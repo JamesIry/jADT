@@ -27,20 +27,20 @@ import static pogofish.jadt.ast.Type._Primitive;
 import static pogofish.jadt.ast.Type._Ref;
 import static pogofish.jadt.util.Util.list;
 
-import java.io.StringReader;
 import java.util.List;
 
 import org.junit.Test;
 
 import pogofish.jadt.ast.*;
 import pogofish.jadt.parser.StandardParser.Impl;
+import pogofish.jadt.source.StringSource;
 import pogofish.jadt.util.Util;
 
 
 public class ParserTest {
 
     private Impl parserImpl(final String text) {
-        return new StandardParser.Impl("ParserTest", new Tokenizer(new StringReader(text)));
+        return new StandardParser.Impl(new Tokenizer(new StringSource("ParserTest", text)));
     }
     
     @Test
@@ -265,7 +265,7 @@ public class ParserTest {
     @Test
     public void testMinimal() {
         final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader("Foo = Foo"));
+        final Doc doc = parser.parse(new StringSource("ParserTest","Foo = Foo"));
 
         assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list()))))), doc);
     }
@@ -274,7 +274,7 @@ public class ParserTest {
     @Test
     public void testFull() {
         final Parser parser = new StandardParser();
-        final Doc doc = parser.parse("ParserTest", new StringReader(
+        final Doc doc = parser.parse(new StringSource("ParserTest",
                 "package hello.world import wow.man import flim.flam "
                         + "FooBar = foo | bar(int hey, String[] yeah) " + "whatever = whatever"));
 

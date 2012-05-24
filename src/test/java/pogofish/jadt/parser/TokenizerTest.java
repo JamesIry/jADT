@@ -2,15 +2,19 @@ package pogofish.jadt.parser;
 
 import static org.junit.Assert.*;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 
 import org.junit.Test;
+
+import pogofish.jadt.source.Source;
+import pogofish.jadt.source.StringSource;
 
 public class TokenizerTest {
 
     @Test
     public void testIOException() {
-        final Tokenizer tokenizer = new Tokenizer(new Reader() {
+        final Reader reader = new Reader() {
             @Override
             public int read(char[] cbuf, int off, int len) throws IOException {
                 throw new IOException("TestException");
@@ -20,7 +24,30 @@ public class TokenizerTest {
             public void close() throws IOException {
                 throw new IOException("TestException");
             }
-        });
+        };
+        
+        final Source source = new Source() {            
+            @Override
+            public String getSrcInfo() {
+                return "TokenizerTest";
+            }
+            
+            @Override
+            public Reader getReader() {
+                return reader;
+            }
+            
+            @Override
+            public void close() {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        
+        final Tokenizer tokenizer = new Tokenizer(source);
 
         try {
             tokenizer.peek();
@@ -29,10 +56,14 @@ public class TokenizerTest {
             assertTrue("Got wrong exception " + e, e.getCause() instanceof IOException);
         }
     }
-
+    
+    private Tokenizer tokenizer(String testString) {
+        return new Tokenizer(new StringSource("TokenizerTest", testString));
+    }
+    
     @Test
     public void testWhitespace() {
-        final Tokenizer tokenizer = new Tokenizer(new StringReader("hello    world   "));
+        final Tokenizer tokenizer = tokenizer("hello    world   ");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
         check(tokenizer, "world", TokenType.IDENTIFIER, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);
@@ -40,17 +71,17 @@ public class TokenizerTest {
 
     @Test
     public void testEol() {
-        final Tokenizer tokenizer = new Tokenizer(new StringReader("hello\nworld\ryeah\r\noh"));
+        final Tokenizer tokenizer = tokenizer("hello\nworld\ryeah\r\noh");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
         check(tokenizer, "world", TokenType.IDENTIFIER, 2);
         check(tokenizer, "yeah", TokenType.IDENTIFIER, 3);
         check(tokenizer, "oh", TokenType.IDENTIFIER, 4);
         check(tokenizer, "<EOF>", TokenType.EOF, 4);
     }
-    
+
     @Test
     public void testIdentifiers() {
-        final Tokenizer tokenizer = new Tokenizer(new StringReader("hello hello.world hello. 42 ?"));
+        final Tokenizer tokenizer = tokenizer("hello hello.world hello. 42 ?");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
         check(tokenizer, "hello.world", TokenType.DOTTED_IDENTIFIER, 1);
         check(tokenizer, "hello.", TokenType.UNKNOWN, 1);
@@ -61,7 +92,7 @@ public class TokenizerTest {
     
     @Test
     public void testPunctuation() {
-        final Tokenizer tokenizer = new Tokenizer(new StringReader("<>=(),[]|"));
+        final Tokenizer tokenizer = tokenizer("<>=(),[]|");
         check(tokenizer, "<", TokenType.LANGLE, 1);
         check(tokenizer, ">", TokenType.RANGLE, 1);
         check(tokenizer, "=", TokenType.EQUALS, 1);
@@ -76,11 +107,10 @@ public class TokenizerTest {
 
     @Test
     public void testKeywords() {
-        final Tokenizer tokenizer = new Tokenizer(
-                new StringReader(
+        final Tokenizer tokenizer = tokenizer(
                         "import package boolean double char float int long short abstract assert break byte case catch class const continue "
                                 + "default do else enum extends final finally for goto if implements instanceof interface native new private protected public return "
-                                + "static strictfp super switch synchronized this throw throws transient try void volatile while"));
+                                + "static strictfp super switch synchronized this throw throws transient try void volatile while");
 
         check(tokenizer, "import", TokenType.IMPORT, 1);
         check(tokenizer, "package", TokenType.PACKAGE, 1);

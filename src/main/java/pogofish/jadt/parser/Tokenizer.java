@@ -140,6 +140,7 @@ class Tokenizer {
         tokenizer.ordinaryChar('|');
         tokenizer.ordinaryChar('[');
         tokenizer.ordinaryChar(']');
+        tokenizer.ordinaryChar('{'); // added just for coverage of the unknown token type case
         tokenizer.whitespaceChars(' ', ' ');
         tokenizer.whitespaceChars('\t', '\t');
         tokenizer.whitespaceChars('\n', '\n');

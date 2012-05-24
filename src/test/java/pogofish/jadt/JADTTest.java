@@ -34,7 +34,7 @@ import pogofish.jadt.target.*;
 import pogofish.jadt.util.Util;
 
 
-public class DriverTest {
+public class JADTTest {
     
     private final class DummyParser implements Parser {
         private final Doc doc;
@@ -66,7 +66,7 @@ public class DriverTest {
         assertTrue("Standard driver had wrong emitter", driver.emitter instanceof StandardDocEmitter);
         assertTrue("Standard driver had wrong target factory factory", driver.factoryFactory instanceof FileTargetFactoryFactory);
     }
-
+    
     @Test
     public void testDriverBadArgs() throws IOException {
         final String testString = "hello";
@@ -140,6 +140,59 @@ public class DriverTest {
             writer.close();
         }
         assertEquals("", writer.toString());
+    }
+    
+    @Test
+    public void testMain() throws IOException {
+        final File srcFile = File.createTempFile("tmp", ".jadt");
+        try {
+            final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(srcFile), "UTF-8"));
+            try {
+                writer.write("Foo = Foo");
+                writer.close();
+                final File tmpDir = createTmpDir();
+                try {
+                   JADT.main(new String[]{srcFile.getAbsolutePath(), tmpDir.getAbsolutePath()});
+                   final File outputFile = new File(tmpDir, "Foo.java");
+                   try {
+                       assertTrue("Could not find output file at " + outputFile.getAbsolutePath(), outputFile.exists());
+                       final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(outputFile), "UTF-8"));
+                       try {
+                           startsWith("/*", reader.readLine());
+                           startsWith("This file was generated based on ", reader.readLine());
+                       } finally {
+                           reader.close();
+                       }
+                   } finally {
+                       outputFile.delete();
+                   }
+                } finally {
+                    tmpDir.delete();
+                }
+            } finally {
+                writer.close();
+            }
+        } finally {
+            srcFile.delete();
+        }
+    }
+    
+    private void startsWith(String expected, String actual) {
+        assertTrue("Line was expected to start with '" + expected + "' but was '" + actual + "'", actual.startsWith(expected));
+    }
+
+    private File createTmpDir() throws IOException {
+        final File tmp = File.createTempFile("tmp", "" + System.nanoTime());
+
+        if (!tmp.delete()) {
+            throw new IOException("Couldn't delete tmp file " + tmp.getAbsolutePath()); 
+         }
+
+        if (!tmp.mkdir()) { 
+            throw new IOException("Couldn't create tmp directory " + tmp.getAbsolutePath()); 
+         }
+
+        return tmp;
     }
     
 }

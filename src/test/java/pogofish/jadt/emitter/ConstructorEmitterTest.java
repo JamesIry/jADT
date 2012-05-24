@@ -61,7 +61,6 @@ public class ConstructorEmitterTest {
         } finally {
             target.close();
         }
-        System.out.println(target.result());
         assertEquals(FACTORY, target.result());
     }
     
@@ -77,8 +76,6 @@ public class ConstructorEmitterTest {
         } finally {
             target.close();
         }
-        System.out.println("--------");
-        System.out.println(target.result());
         assertEquals(CONSTRUCTOR_CLASS, target.result());
     }
 }

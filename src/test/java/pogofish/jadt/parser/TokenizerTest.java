@@ -102,7 +102,7 @@ public class TokenizerTest {
     
     @Test
     public void testPunctuation() {
-        final Tokenizer tokenizer = tokenizer("<>=(),[]|");
+        final Tokenizer tokenizer = tokenizer("<>=(),[]|{");
         check(tokenizer, "<", TokenType.LANGLE, 1);
         check(tokenizer, ">", TokenType.RANGLE, 1);
         check(tokenizer, "=", TokenType.EQUALS, 1);
@@ -112,6 +112,7 @@ public class TokenizerTest {
         check(tokenizer, "[", TokenType.LBRACKET, 1);
         check(tokenizer, "]", TokenType.RBRACKET, 1);
         check(tokenizer, "|", TokenType.BAR, 1);
+        check(tokenizer, "{", TokenType.UNKNOWN, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);        
     }
 

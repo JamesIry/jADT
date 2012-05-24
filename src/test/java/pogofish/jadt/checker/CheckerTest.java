@@ -1,3 +1,18 @@
+/*
+Copyright 2012 James Iry
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package pogofish.jadt.checker;
 
 import static org.junit.Assert.assertEquals;
@@ -11,8 +26,15 @@ import org.junit.Test;
 import pogofish.jadt.ast.*;
 import pogofish.jadt.util.Util;
 
+/**
+ * Test the StandardChecker
+ *
+ * @author jiry
+ */
 public class CheckerTest {
-    
+    /**
+     * Check with duplicate data types
+     */
     @Test
     public void testDuplicateDataType() {
         final Checker checker = new StandardChecker();
@@ -23,6 +45,9 @@ public class CheckerTest {
         assertTrue(errors.contains(new DuplicateDataTypeException(dataType.name)));
     }
     
+    /**
+     * Check with duplicate constructors for one data type
+     */
     @Test
     public void testDuplicateConstructor() {
         final Checker checker = new StandardChecker();
@@ -34,6 +59,9 @@ public class CheckerTest {
         assertTrue(errors.contains(new DuplicateConstructorException(dataType.name, constructor.name)));
     }
     
+    /**
+     * Check when there's a conflict in the name of a data type and one of its constructors
+     */
     @Test
     public void testConstructorDataTypeConflict() {
         final Checker checker = new StandardChecker();

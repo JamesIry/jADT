@@ -26,7 +26,11 @@ import pogofish.jadt.ast.*;
 import pogofish.jadt.target.StringTarget;
 import pogofish.jadt.util.Util;
 
-
+/**
+ * Test the StandardDataTypeEmitter
+ *
+ * @author jiry
+ */
 public class DataTypeEmitterTest {
     private static final String HEADER = "/*header*/\n";
     private static final String MULTI_CONSTRUCTOR = 
@@ -76,47 +80,47 @@ public class DataTypeEmitterTest {
     "\n" +
     "}";
     
-   @Test
+    /**
+     * Test that multiple constructors does its thing correctly
+     */
+    @Test
     public void testMultipleConstructors() {
-        final DataType fooBar =
-                new DataType("FooBar", list(
-                        new Constructor("Foo", list(
-                                new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
-                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
-                        )),
-                        new Constructor("Bar", Util.<Arg>list())
-                ));
-        
+        final DataType fooBar = new DataType("FooBar", list(
+                new Constructor("Foo", list(new Arg(_Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
+                        new Arg(_Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor("Bar",
+                        Util.<Arg> list())));
+
         final StringTarget target = new StringTarget();
         try {
-            final DataTypeEmitter emitter = new StandardDataTypeEmitter(new DummyClassBodyEmitter(), new DummyConstructorEmitter());
-            
-            emitter.emit(target,  fooBar, HEADER);
+            final DataTypeEmitter emitter = new StandardDataTypeEmitter(new DummyClassBodyEmitter(),
+                    new DummyConstructorEmitter());
+
+            emitter.emit(target, fooBar, HEADER);
         } finally {
-            target.close();            
+            target.close();
         }
-        assertEquals(HEADER+MULTI_CONSTRUCTOR, target.result());
+        assertEquals(HEADER + MULTI_CONSTRUCTOR, target.result());
     }
    
-   @Test
-   public void testSingleConstructor() {
-       final DataType fooBar =
-               new DataType("FooBar", list(
-                       new Constructor("Foo", list(
-                               new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
-                               new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
-                       ))
-               ));
-       
-       final StringTarget target = new StringTarget();
-       try {
-           final DataTypeEmitter emitter = new StandardDataTypeEmitter(new DummyClassBodyEmitter(), new DummyConstructorEmitter());
-           
-           emitter.emit(target,  fooBar, HEADER);
-       } finally {
-           target.close();            
-       }
-       assertEquals(HEADER+SINGLE_CONSTRUCTOR, target.result());
-   }
+    /**
+     * Test that single constructor does its thing properly
+     */
+    @Test
+    public void testSingleConstructor() {
+        final DataType fooBar = new DataType("FooBar", list(new Constructor("Foo", list(
+                new Arg(_Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
+                new Arg(_Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
+
+        final StringTarget target = new StringTarget();
+        try {
+            final DataTypeEmitter emitter = new StandardDataTypeEmitter(new DummyClassBodyEmitter(),
+                    new DummyConstructorEmitter());
+
+            emitter.emit(target, fooBar, HEADER);
+        } finally {
+            target.close();
+        }
+        assertEquals(HEADER + SINGLE_CONSTRUCTOR, target.result());
+    }
    
 }

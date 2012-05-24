@@ -30,7 +30,11 @@ import pogofish.jadt.ast.*;
 import pogofish.jadt.target.StringTarget;
 import pogofish.jadt.util.Util;
 
-
+/**
+ * Test the StandardClassBodyEmitter
+ *
+ * @author jiry
+ */
 public class ClassBodyEmitterTest {
           
     private static final String NO_ARG_FACTORY =
@@ -110,6 +114,9 @@ public class ClassBodyEmitterTest {
     
     private final ClassBodyEmitter emitter = new StandardClassBodyEmitter();
     
+    /**
+     * If a factory has no args it should be a constant
+     */
     @Test
     public void testNoArgFactory() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
@@ -122,6 +129,9 @@ public class ClassBodyEmitterTest {
         assertEquals(NO_ARG_FACTORY, target.result());
     }
 
+    /**
+     * If a factory has args then it must be a method
+     */
     @Test
     public void testArgsFactory() {
         final Constructor constructor = new Constructor("Foo", list(
@@ -139,6 +149,9 @@ public class ClassBodyEmitterTest {
         assertEquals(ARGS_FACTORY, target.result());
     }
 
+    /**
+     * How does the Java class constructor look?
+     */
     @Test
     public void testConstructorMethod() {
         final Constructor constructor = new Constructor("Foo",
@@ -153,8 +166,10 @@ public class ClassBodyEmitterTest {
         }
         assertEquals(CONSTRUCTOR_METHOD, target.result());
     }
-    
-    
+        
+    /**
+     * toString with no args
+     */
     @Test
     public void testNoArgToString() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
@@ -169,6 +184,9 @@ public class ClassBodyEmitterTest {
         assertEquals(NO_ARG_TO_STRING, target.result());         
     }
     
+    /**
+     * toString with one arg
+     */
     @Test
     public void testOneArgToString() {
         final Constructor constructor = new Constructor("Foo", list(
@@ -185,6 +203,9 @@ public class ClassBodyEmitterTest {
         assertEquals(ONE_ARG_TO_STRING, target.result());         
     }
     
+    /**
+     * toString with multiple args
+     */
     @Test
     public void testArgsToString() {
         final Constructor constructor = new Constructor("Foo", list(
@@ -202,6 +223,9 @@ public class ClassBodyEmitterTest {
         assertEquals(ARGS_TO_STRING, target.result());         
     }
     
+    /**
+     * equals with no args
+     */
     @Test
     public void testNoArgsEquals() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
@@ -216,6 +240,9 @@ public class ClassBodyEmitterTest {
         assertEquals(NO_ARG_EQUALS, target.result());                 
     }
     
+    /**
+     * equals with args
+     */
     @Test
     public void testArgsEquals() {
         final Constructor constructor = new Constructor("Foo", list(
@@ -234,6 +261,9 @@ public class ClassBodyEmitterTest {
         assertEquals(ARGS_EQUALS, target.result());                 
     }
     
+    /**
+     * hashCode with no args
+     */
     @Test
     public void testNoArgHashCode() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
@@ -249,6 +279,9 @@ public class ClassBodyEmitterTest {
         
     }
     
+    /**
+     * hashCode with args
+     */
     @Test
     public void testArgHashCode() {
         final Constructor constructor = new Constructor("Foo", list(

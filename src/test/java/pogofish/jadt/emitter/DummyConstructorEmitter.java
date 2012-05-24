@@ -18,6 +18,11 @@ package pogofish.jadt.emitter;
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.target.Target;
 
+/**
+ * Dummy ConstructorEmitter that outputs simple comments with data type name and constructor name
+ *
+ * @author jiry
+ */
 public class DummyConstructorEmitter implements ConstructorEmitter {
 
     @Override

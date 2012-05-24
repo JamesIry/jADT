@@ -30,7 +30,12 @@ import pogofish.jadt.ast.*;
 import pogofish.jadt.target.StringTargetFactory;
 import pogofish.jadt.util.Util;
 
-
+/**
+ * Test the StandardDocEmitter.  Only shallow testing is performed here, the pieces of the doc emitter
+ * are tested more thoroughly elsewhere
+ *
+ * @author jiry
+ */
 public class DocEmitterTest {
     private static final String FULL_HEADER =
     "package some.package;\n" +
@@ -101,6 +106,9 @@ public class DocEmitterTest {
     private static final String WHATEVER =
     "Whatever";
     
+    /**
+     * Test a reasonably fully document with pacakge, imports, and datatypes
+     */
     @Test
     public void testFull() {
         final Doc doc = new Doc("EmitterTest", "some.package", list("wow.man", "flim.flam"), list(
@@ -126,6 +134,9 @@ public class DocEmitterTest {
         assertEquals(FULL_HEADER+WHATEVER, results.get("some.package.Whatever"));
     }
 
+    /**
+     * Test a doc with no imports
+     */
     @Test
     public void testNoImports() {
         final Doc doc = new Doc("EmitterTest", "some.package", Util.<String>list(), list(
@@ -151,6 +162,9 @@ public class DocEmitterTest {
         assertEquals(NO_IMPORTS_HEADER+WHATEVER, results.get("some.package.Whatever"));
     }
     
+    /**
+     * Test a doc with no package declaration
+     */
     @Test
     public void testNoPackage() {
         final Doc doc = new Doc("EmitterTest", "", list("wow.man", "flim.flam"), list(

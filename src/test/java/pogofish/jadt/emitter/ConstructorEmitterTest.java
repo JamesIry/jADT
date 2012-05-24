@@ -28,7 +28,11 @@ import pogofish.jadt.ast.*;
 import pogofish.jadt.target.StringTarget;
 import pogofish.jadt.util.Util;
 
-
+/**
+ * Test the StandardConstructorEmitter
+ *
+ * @author jiry
+ */
 public class ConstructorEmitterTest {
     private static final String CONSTRUCTOR_CLASS = 
     "   public static final class Foo extends NonPrimitive {\n" +
@@ -49,6 +53,9 @@ public class ConstructorEmitterTest {
     private static final String FACTORY = 
     "/* constructor factory SomeDataType Foo Foo*/";    
     
+    /**
+     * Create a factory
+     */
     @Test
     public void testFactory() {
         final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType), "yeah")));
@@ -64,6 +71,9 @@ public class ConstructorEmitterTest {
         assertEquals(FACTORY, target.result());
     }
     
+    /**
+     * Create a constructor class
+     */
     @Test
     public void testConstrucorDeclaration() {
         final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType), "yeah")));

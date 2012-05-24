@@ -22,7 +22,16 @@ import java.io.*;
 
 import org.junit.Test;
 
+/**
+ * Make sure FileSourceFactory does its job properly
+ *
+ * @author jiry
+ */
 public class FileSourceFactoryTest {
+    /**
+     * On a valid file should get the data from the file.  This test must write to the file system
+     * @throws IOException
+     */
     @Test
     public void testValidFile() throws IOException {
         final File temp = File.createTempFile("testFactory", "java");
@@ -48,6 +57,9 @@ public class FileSourceFactoryTest {
         }
     }
 
+    /**
+     * This tst attempts to open a file that does not exist which should result in an exception.  It should not create any files
+     */
     @Test
     public void testInValidFile() throws IOException {
         final File temp = File.createTempFile("testFactory", "java");

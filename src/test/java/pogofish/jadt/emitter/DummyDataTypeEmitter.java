@@ -18,7 +18,9 @@ package pogofish.jadt.emitter;
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.target.Target;
 
-
+/**
+ * Dummy DataTypeEmitter that just outputs the header and the datatype name
+ */
 public class DummyDataTypeEmitter implements DataTypeEmitter {
 
     @Override

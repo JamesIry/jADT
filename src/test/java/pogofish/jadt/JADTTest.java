@@ -18,45 +18,35 @@ package pogofish.jadt;
 import static org.junit.Assert.*;
 
 import java.io.*;
-import java.util.Set;
+import java.util.Collections;
 
 import org.junit.Test;
 
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
 import pogofish.jadt.checker.*;
-import pogofish.jadt.emitter.DocEmitter;
-import pogofish.jadt.emitter.StandardDocEmitter;
-import pogofish.jadt.parser.Parser;
-import pogofish.jadt.parser.StandardParser;
+import pogofish.jadt.emitter.*;
+import pogofish.jadt.parser.*;
 import pogofish.jadt.source.*;
-import pogofish.jadt.target.*;
+import pogofish.jadt.target.FileTargetFactoryFactory;
+import pogofish.jadt.target.StringTargetFactoryFactory;
 import pogofish.jadt.util.Util;
 
-
+/**
+ * Test for the main JADT driver
+ *
+ * @author jiry
+ */
 public class JADTTest {
     
-    private final class DummyParser implements Parser {
-        private final Doc doc;
-        private final String testString;
+    private static final String TEST_CLASS_NAME = "someClass";
+    private static final String TEST_STRING = "hello";
+    private static final String TEST_SRC_INFO = "source";
+    private static final String TEST_DIR = "test dir";
 
-        private DummyParser(Doc doc, String testString) {
-            this.doc = doc;
-            this.testString = testString;
-        }
-
-        @Override
-        public Doc parse(Source source) {
-            assertEquals("srcInfo", source.getSrcInfo());                        
-            try {
-                assertEquals(testString, new BufferedReader(source.getReader()).readLine());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return doc;
-        }
-    }
-
+    /**
+     * Ensure that the standard config JADT has all the right parts.  The various bits are tested separately
+     */
     @Test
     public void testStandardConfig() {
         final JADT driver = JADT.standardConfigDriver();
@@ -67,81 +57,65 @@ public class JADTTest {
         assertTrue("Standard driver had wrong target factory factory", driver.factoryFactory instanceof FileTargetFactoryFactory);
     }
     
+    /**
+     * Create a dummy configged JADT based on the provided checker, send it the provided args and return the
+     * resulting string (or throw the resulting exception 
+     */
+    private String dummyJADT(String[] args, Checker checker) {
+        final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();  
+        final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);
+        final Doc doc = new Doc(TEST_SRC_INFO, "pkg", Util.<String> list(), Util.<DataType> list());
+        final DocEmitter docEmitter = new DummyDocEmitter(doc,  TEST_CLASS_NAME);
+        final Parser parser = new DummyParser(doc, TEST_SRC_INFO, TEST_STRING);
+        new JADT(sourceFactory, parser, checker, docEmitter, factory).parseAndEmit(args);
+        return factory.results().get(TEST_DIR).get(0).getResults().get(TEST_CLASS_NAME);
+    }
+    
+    /**
+     * Ensure that sending bad args to parseAndEmit gets an IllegalArgumentException
+     */
     @Test
-    public void testDriverBadArgs() throws IOException {
-        final String testString = "hello";
-        final StringWriter writer = new StringWriter();
+    public void testDriverBadArgs() {
+        
         try {
-            final SourceFactory sourceFactory = new StringSourceFactory(testString);
-            final Doc doc = new Doc("srcInfo", "pkg", Util.<String>list(), Util.<DataType>list());
-            final DummyChecker checker = new DummyChecker();
-            final JADT adt = new JADT(sourceFactory, new DummyParser(doc, testString), checker, new DocEmitter(){    
-                @Override
-                public void emit(TargetFactory factory, Doc arg) {
-                }}, new StringTargetFactoryFactory());
-            adt.parseAndEmit(new String[]{"srcInfo"});
-            fail("Did not get an exception from bad arguments");
+            final String result = dummyJADT(new String[]{TEST_SRC_INFO}, new DummyChecker(Collections.<SemanticException>emptySet()));
+            fail("Did not get an exception from bad arguments, got " + result);
         } catch(IllegalArgumentException e) {
             // yay
-        } finally {
-            writer.close();
         }        
     }
 
+    /**
+     * Test the happy path using dummy everything
+     */
     @Test
-    public void testDriverGood() throws IOException {
-        final String testString = "hello";
-        final StringWriter writer = new StringWriter();
-        try {
-            final SourceFactory sourceFactory = new StringSourceFactory(testString);
-            final Doc doc = new Doc("srcInfo", "pkg", Util.<String>list(), Util.<DataType>list());
-            final DummyChecker checker = new DummyChecker();
-            final JADT adt = new JADT(sourceFactory, new DummyParser(doc, testString), checker, new DocEmitter(){
-    
-                @Override
-                public void emit(TargetFactory factory, Doc arg) {
-                    assertSame(doc, arg);
-                    writer.write("all good!");
-                }}, new StringTargetFactoryFactory());
-            adt.parseAndEmit(new String[]{"srcInfo", "whatever"});
-            assertSame("Checker was not called", doc, checker.lastDoc());
-        } finally {
-            writer.close();
-        }
-        assertEquals("all good!", writer.toString());
+    public void testDriverGood() {
+        final String result = dummyJADT(new String[]{TEST_SRC_INFO, TEST_DIR}, new DummyChecker(Collections.<SemanticException>emptySet()));
+        
+        assertEquals(TEST_SRC_INFO, result);
     }
     
+    /**
+     * Test that semantic errors from the checker get bundled up and thrown properly
+     */
     @Test
-    public void testDriverSemanticIssue() throws IOException {
-        final String testString = "hello";
-        final StringWriter writer = new StringWriter();
+    public void testDriverSemanticIssue() {
         try {
-            final Doc doc = new Doc("srcInfo", "pkg", Util.<String>list(), Util.<DataType>list());
-            final SourceFactory sourceFactory = new StringSourceFactory(testString);
-            final Checker checker = new Checker() {
-                @Override
-                public Set<SemanticException> check(Doc doc) {
-                    return Util.<SemanticException>set(new DuplicateConstructorException("Foo", "Bar"), new ConstructorDataTypeConflictException("Foo", "Foo"));
-                }
-                
-            };
-            final JADT adt = new JADT(sourceFactory, new DummyParser(doc, testString), checker, new DocEmitter(){
-    
-                @Override
-                public void emit(TargetFactory factory, Doc arg) {
-                    assertSame(doc, arg);
-                    writer.write("all good!");
-                }}, new StringTargetFactoryFactory());
-            adt.parseAndEmit("srcInfo", "something");
-            fail("Did not get a SemanticExceptions");
+            final Checker checker = new DummyChecker(Util.<SemanticException>set(new DuplicateConstructorException("Foo", "Bar"), new ConstructorDataTypeConflictException("Foo", "Foo")));
+            final String result = dummyJADT(new String[]{TEST_SRC_INFO, TEST_DIR}, checker);
+            fail("Did not get a SemanticExceptions, got " + result);
         } catch (SemanticExceptions e) {
             // yay
-        } finally {
-            writer.close();
         }
-        assertEquals("", writer.toString());
     }
     
+    /**
+     * Test the happy path of the main method.  That means outputting real files to the real file system.
+     * Only minimal testing is done around source and output - all the various components are tested
+     * more thoroughly elsewhere
+     * 
+     * @throws IOException
+     */
     @Test
     public void testMain() throws IOException {
         final File srcFile = File.createTempFile("tmp", ".jadt");
@@ -158,8 +132,8 @@ public class JADTTest {
                        assertTrue("Could not find output file at " + outputFile.getAbsolutePath(), outputFile.exists());
                        final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(outputFile), "UTF-8"));
                        try {
-                           startsWith("/*", reader.readLine());
-                           startsWith("This file was generated based on ", reader.readLine());
+                           assertStartsWith("/*", reader.readLine());
+                           assertStartsWith("This file was generated based on ", reader.readLine());
                        } finally {
                            reader.close();
                        }
@@ -177,10 +151,21 @@ public class JADTTest {
         }
     }
     
-    private void startsWith(String expected, String actual) {
+    /**
+     * Assert that the actual string provided starts with the expected string
+     * @param expected
+     * @param actual
+     */
+    private void assertStartsWith(String expected, String actual) {
         assertTrue("Line was expected to start with '" + expected + "' but was '" + actual + "'", actual.startsWith(expected));
     }
 
+    /**
+     * Create a temporary directory and return it - Java 6 JDK doesn't have this functionality
+     * 
+     * @return
+     * @throws IOException
+     */
     private File createTmpDir() throws IOException {
         final File tmp = File.createTempFile("tmp", "" + System.nanoTime());
 

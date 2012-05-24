@@ -1,3 +1,18 @@
+/*
+Copyright 2012 James Iry
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package pogofish.jadt.parser;
 
 import static org.junit.Assert.*;
@@ -10,10 +25,19 @@ import org.junit.Test;
 import pogofish.jadt.source.Source;
 import pogofish.jadt.source.StringSource;
 
+/**
+ * Test the tokenizer separately from the parser because it's easier that way
+ *
+ * @author jiry
+ */
 public class TokenizerTest {
 
+    /**
+     * Test that an IOException in the tokenizer is converted to a RuntimeException
+     */
     @Test
     public void testIOException() {
+        // a dummy reader that throws an exception on any action
         final Reader reader = new Reader() {
             @Override
             public int read(char[] cbuf, int off, int len) throws IOException {
@@ -26,6 +50,7 @@ public class TokenizerTest {
             }
         };
         
+        // a dummy source that uses that reader
         final Source source = new Source() {            
             @Override
             public String getSrcInfo() {
@@ -50,6 +75,7 @@ public class TokenizerTest {
         final Tokenizer tokenizer = new Tokenizer(source);
 
         try {
+            // should throw
             tokenizer.peek();
             fail("Did not get an exception from tokenizer");
         } catch (RuntimeException e) {
@@ -57,10 +83,16 @@ public class TokenizerTest {
         }
     }
     
+    /**
+     * Create a tokenizer that will read from the given string
+     */
     private Tokenizer tokenizer(String testString) {
         return new Tokenizer(new StringSource("TokenizerTest", testString));
     }
     
+    /**
+     * Comments should be invisible in the output other than separating tokens
+     */
     public void testComments() {
         final Tokenizer tokenizer = tokenizer("hello//comment\nworld/*another comment*/oh");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
@@ -69,6 +101,9 @@ public class TokenizerTest {
         check(tokenizer, "<EOF>", TokenType.EOF, 1);
     }
     
+    /**
+     * Whitespace should be invisible in the output other than separating tokens
+     */
     @Test
     public void testWhitespace() {
         final Tokenizer tokenizer = tokenizer("hello    world   \toh");
@@ -78,6 +113,9 @@ public class TokenizerTest {
         check(tokenizer, "<EOF>", TokenType.EOF, 1);
     }
 
+    /**
+     * End of line should be invisible in the output other than separating tokens and incrementing the line number
+     */
     @Test
     public void testEol() {
         final Tokenizer tokenizer = tokenizer("hello\nworld\ryeah\r\noh");
@@ -88,18 +126,35 @@ public class TokenizerTest {
         check(tokenizer, "<EOF>", TokenType.EOF, 4);
     }
 
+    /**
+     * Various classes of non-keyword identifiers
+     */
     @Test
     public void testIdentifiers() {
-        final Tokenizer tokenizer = tokenizer("hello hello.world \u00a5123\u00a512342 hello. 42 ?");
+        final Tokenizer tokenizer = tokenizer("hello hello.world \u00a5123\u00a512342");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
         check(tokenizer, "hello.world", TokenType.DOTTED_IDENTIFIER, 1);
         check(tokenizer, "\u00a5123\u00a512342", TokenType.IDENTIFIER, 1);
-        check(tokenizer, "hello.", TokenType.UNKNOWN, 1);
-        check(tokenizer, "42", TokenType.UNKNOWN, 1);
-        check(tokenizer, "?", TokenType.UNKNOWN, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);                
     }
     
+    /**
+     * Various types of invalid identifier
+     */
+    @Test
+    public void testBadIdentifiers() {
+        final Tokenizer tokenizer = tokenizer("hello. 42 ?");
+        // bad because of the trailing dot
+        check(tokenizer, "hello.", TokenType.UNKNOWN, 1);
+        // bad because identifiers can't start with numbers (JADT doesn't care about numbers)
+        check(tokenizer, "42", TokenType.UNKNOWN, 1);
+        // just bad
+        check(tokenizer, "?", TokenType.UNKNOWN, 1);        
+    }
+    
+    /**
+     * Test various kinds of punctuation
+     */
     @Test
     public void testPunctuation() {
         final Tokenizer tokenizer = tokenizer("<>=(),[]|{");
@@ -112,10 +167,14 @@ public class TokenizerTest {
         check(tokenizer, "[", TokenType.LBRACKET, 1);
         check(tokenizer, "]", TokenType.RBRACKET, 1);
         check(tokenizer, "|", TokenType.BAR, 1);
+        // this one is tested to provide coverage of a default case in the Tokenizer
         check(tokenizer, "{", TokenType.UNKNOWN, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);        
     }
 
+    /**
+     * Test all the reserved keywords
+     */
     @Test
     public void testKeywords() {
         final Tokenizer tokenizer = tokenizer(
@@ -123,8 +182,11 @@ public class TokenizerTest {
                                 + "default do else enum extends final finally for goto if implements instanceof interface native new private protected public return "
                                 + "static strictfp super switch synchronized this throw throws transient try void volatile while");
 
+        // keywords used by JADT
         check(tokenizer, "import", TokenType.IMPORT, 1);
         check(tokenizer, "package", TokenType.PACKAGE, 1);
+        
+        // primitive Java types
         check(tokenizer, "boolean", TokenType.BOOLEAN, 1);
         check(tokenizer, "double", TokenType.DOUBLE, 1);
         check(tokenizer, "char", TokenType.CHAR, 1);
@@ -132,6 +194,8 @@ public class TokenizerTest {
         check(tokenizer, "int", TokenType.INT, 1);
         check(tokenizer, "long", TokenType.LONG, 1);
         check(tokenizer, "short", TokenType.SHORT, 1);
+        
+        // Java keywords not used by JADT but reserved to prevent bad Java generation
         check(tokenizer, "abstract", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "assert", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "break", TokenType.JAVA_KEYWORD, 1);
@@ -176,6 +240,9 @@ public class TokenizerTest {
         check(tokenizer, "<EOF>", TokenType.EOF, 1);
     }
 
+    /**
+     * Check that the next tokenType, symbol, and lineNo from the tokenizer are as expected
+     */
     private void check(Tokenizer tokenizer, String symbol, TokenType tokenType, int lineNo) {
         assertTrue("Expected token type " + tokenType + " with symbol " + symbol + " but got " + tokenizer.peek()
                 + " with symbol " + tokenizer.lastSymbol(), tokenizer.accept(tokenType));

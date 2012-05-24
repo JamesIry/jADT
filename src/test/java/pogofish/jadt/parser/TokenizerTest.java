@@ -61,11 +61,20 @@ public class TokenizerTest {
         return new Tokenizer(new StringSource("TokenizerTest", testString));
     }
     
-    @Test
-    public void testWhitespace() {
-        final Tokenizer tokenizer = tokenizer("hello    world   ");
+    public void testComments() {
+        final Tokenizer tokenizer = tokenizer("hello//comment\nworld/*another comment*/oh");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
         check(tokenizer, "world", TokenType.IDENTIFIER, 1);
+        check(tokenizer, "oh", TokenType.IDENTIFIER, 1);
+        check(tokenizer, "<EOF>", TokenType.EOF, 1);
+    }
+    
+    @Test
+    public void testWhitespace() {
+        final Tokenizer tokenizer = tokenizer("hello    world   \toh");
+        check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
+        check(tokenizer, "world", TokenType.IDENTIFIER, 1);
+        check(tokenizer, "oh", TokenType.IDENTIFIER, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);
     }
 
@@ -81,9 +90,10 @@ public class TokenizerTest {
 
     @Test
     public void testIdentifiers() {
-        final Tokenizer tokenizer = tokenizer("hello hello.world hello. 42 ?");
+        final Tokenizer tokenizer = tokenizer("hello hello.world \u00a5123\u00a512342 hello. 42 ?");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
         check(tokenizer, "hello.world", TokenType.DOTTED_IDENTIFIER, 1);
+        check(tokenizer, "\u00a5123\u00a512342", TokenType.IDENTIFIER, 1);
         check(tokenizer, "hello.", TokenType.UNKNOWN, 1);
         check(tokenizer, "42", TokenType.UNKNOWN, 1);
         check(tokenizer, "?", TokenType.UNKNOWN, 1);

@@ -50,9 +50,11 @@ class Tokenizer {
     private static final Map<String, TokenType> KEYWORDS = new HashMap<String, TokenType>();
     
     {        
+        // keywords actually used by JADT
         KEYWORDS.put("import", TokenType.IMPORT);
         KEYWORDS.put("package", TokenType.PACKAGE);
 
+        // Java primitive types
         KEYWORDS.put("boolean", TokenType.BOOLEAN);
         KEYWORDS.put("double", TokenType.DOUBLE);
         KEYWORDS.put("char", TokenType.CHAR);
@@ -128,12 +130,9 @@ class Tokenizer {
         tokenizer.resetSyntax();
         tokenizer.slashSlashComments(true);
         tokenizer.slashStarComments(true);
-        tokenizer.wordChars('a', 'z');
-        tokenizer.wordChars('A', 'Z');
-        tokenizer.wordChars('0', '9');
-        tokenizer.wordChars('.', '.');
-        tokenizer.ordinaryChars('<', '<');
-        tokenizer.ordinaryChars('>', '>');
+        tokenizer.wordChars(0, Integer.MAX_VALUE);
+        tokenizer.ordinaryChar('<');
+        tokenizer.ordinaryChar('>');
         tokenizer.ordinaryChar('=');
         tokenizer.ordinaryChar('(');
         tokenizer.ordinaryChar(')');
@@ -142,6 +141,7 @@ class Tokenizer {
         tokenizer.ordinaryChar('[');
         tokenizer.ordinaryChar(']');
         tokenizer.whitespaceChars(' ', ' ');
+        tokenizer.whitespaceChars('\t', '\t');
         tokenizer.whitespaceChars('\n', '\n');
         tokenizer.whitespaceChars('\r', '\r');
         tokenizer.eolIsSignificant(false);

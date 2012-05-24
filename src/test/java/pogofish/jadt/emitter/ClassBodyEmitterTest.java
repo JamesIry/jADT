@@ -38,7 +38,7 @@ import pogofish.jadt.util.Util;
 public class ClassBodyEmitterTest {
           
     private static final String NO_ARG_FACTORY =
-    "   public static SomeDataType _SomeFactory = new Whatever();";
+    "   public static final SomeDataType _SomeFactory = new Whatever();";
     
     private static final String ARGS_FACTORY = 
     "   public static final SomeDataType _SomeFactory(Integer yeah, String hmmm) { return new Foo(yeah, hmmm); }";    

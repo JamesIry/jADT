@@ -25,7 +25,7 @@ public interface SourceFactory {
      * Returns a source for the given name
      *
      * @param sourceFileName
-     * @return
+     * @return a Source
      */
     public Source createSource(String sourceFileName);
 }

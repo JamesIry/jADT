@@ -88,7 +88,7 @@ public class Printer  {
      * name("("arg(", "arg)*")")?
      * 
      * @param constructor
-     * @return
+     * @return pretty string
      */
     public static String print(Constructor constructor) {
         final StringBuilder builder = new StringBuilder(constructor.name);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+   <Match>
+   <!-- sometimes you genuinely don't care -->
+      <Class name="pogofish.jadt.target.FileTarget$1"/>
+      <Method name="doAction"/>
+      <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />      
+   </Match>
+</FindBugsFilter>

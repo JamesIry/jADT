@@ -32,7 +32,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     @Override
     public void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor) {
         if (constructor.args.isEmpty()) {
-            target.write("   public static " + dataTypeName + " _" + factoryName + " = new " + constructor.name + "();");
+            target.write("   public static final " + dataTypeName + " _" + factoryName + " = new " + constructor.name + "();");
         } else {
             target.write("   public static final " + dataTypeName + " _" + factoryName + "(");
             constructorArgs(target, constructor, true);

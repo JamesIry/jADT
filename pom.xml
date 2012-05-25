@@ -169,7 +169,6 @@
         <description>${project.version} release of ${project.name}</description>
         <override>true</override>
         <includeAttached>true</includeAttached>
-        <dryRun>true</dryRun>
       </configuration>
       <executions>
         <execution>
@@ -242,7 +241,6 @@
           <version>0.6</version>
           <configuration>
             <message>Creating site for ${project.version}</message>
-            <dryRun>true</dryRun>
           </configuration>
           <executions>
             <execution>

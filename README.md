@@ -40,11 +40,15 @@ To generate using ant create a build.xml along these lines
    
     <?xml version="1.0"?>
 
-    <project name="OwnTaskExample" default="main" basedir=".">
+    <project name="JADTTaskExample" default="compile" basedir=".">
       <taskdef name="jadt" classname="pogofish.jadt.ant.JADTAntTask"/>
 
-      <target name="generate JADT">
-        <jadt srcFile="full path of input file" destDir = "base directory for output"/>
+      <target name="compile" depeneds="generate">
+        <!-- normal compile stuff -->
+      </target>
+      
+      <target name="generate">
+        <jadt srcFile="full path of input file" destDir = "base directory for Java output"/>
       </target>
     </project>
     

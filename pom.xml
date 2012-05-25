@@ -18,7 +18,8 @@
   <description>
         JADT turns simple descriptions of Algebraic Data Types (ADTs) into Java code with visitors to emulate pattern matching.
   </description>
-      
+
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -64,6 +65,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!-- authenticatin information for github is in home/.m2/settings.xml -->
+    <github.global.server>github</github.global.server>
   </properties>
   
   <build>
@@ -146,7 +149,7 @@
           <effort>Max</effort>
           <threshold>Default</threshold>
           <xmlOutput>true</xmlOutput>
-          <excludeFilterFile>${basedir}/findbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>${basedir}/../findbugs-exclude.xml</excludeFilterFile>
         </configuration>
         <executions>
           <execution>
@@ -156,6 +159,27 @@
           </execution>
         </executions>
       </plugin>
+
+<!-- upload jars to github -->
+    <plugin>
+      <groupId>com.github.github</groupId>
+      <artifactId>downloads-maven-plugin</artifactId>
+      <version>0.5</version>
+      <configuration>
+        <description>${project.version} release of ${project.name}</description>
+        <override>true</override>
+        <includeAttached>true</includeAttached>
+        <dryRun>true</dryRun>
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>upload</goal>
+          </goals>
+          <phase>install</phase>
+       </execution>
+     </executions>      
+    </plugin>
       
 <!-- project site config -->
       <plugin>
@@ -210,6 +234,25 @@
          </reportPlugins>
        </configuration>
      </plugin>      
+
+<!-- put site on github -->
+        <plugin>
+          <groupId>com.github.github</groupId>
+          <artifactId>site-maven-plugin</artifactId>
+          <version>0.6</version>
+          <configuration>
+            <message>Creating site for ${project.version}</message>
+            <dryRun>true</dryRun>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>site</goal>
+              </goals>
+              <phase>site</phase>
+            </execution>
+          </executions>
+        </plugin>
 
     </plugins>
     

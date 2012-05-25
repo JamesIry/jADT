@@ -12,9 +12,9 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/package pogofish.jadt.emitter;
+*/
+package pogofish.jadt.emitter;
 
-import static org.junit.Assert.assertSame;
 import pogofish.jadt.ast.Doc;
 import pogofish.jadt.target.Target;
 import pogofish.jadt.target.TargetFactory;
@@ -41,7 +41,9 @@ public class DummyDocEmitter implements DocEmitter {
 
     @Override
     public void emit(TargetFactory factory, Doc doc) {
-        assertSame(testDoc, doc);
+        if (testDoc != doc) {
+            throw new RuntimeException("testDoc and doc argument were not the same");
+        }
         final Target target = factory.createTarget(className);
         try {
             target.write(doc.srcInfo);

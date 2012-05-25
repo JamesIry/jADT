@@ -17,13 +17,14 @@ package pogofish.jadt;
 
 import java.util.Set;
 
+import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
 import pogofish.jadt.checker.*;
 import pogofish.jadt.emitter.*;
-import pogofish.jadt.parser.Parser;
-import pogofish.jadt.parser.StandardParser;
+import pogofish.jadt.parser.*;
 import pogofish.jadt.source.*;
 import pogofish.jadt.target.*;
+import pogofish.jadt.util.Util;
 
 /**
  * Programmatic and command line driver that launches parser, then checker, then emitter, weaving everything together
@@ -31,6 +32,11 @@ import pogofish.jadt.target.*;
  * @author jiry
  */
 public class JADT {
+    public static final String TEST_CLASS_NAME = "someClass";
+    private static final String TEST_STRING = "hello";
+    public static final String TEST_SRC_INFO = "source";
+    public static final String TEST_DIR = "test dir";    
+    
     final Parser parser;
     final DocEmitter emitter;
     final Checker checker;
@@ -117,5 +123,17 @@ public class JADT {
             source.close();
         }
     }
+
+    /**
+     * Create a dummy configged JADT based on the provided checker and target factory
+     */
+    public static JADT createDummyJADT(Checker checker, TargetFactoryFactory factory) {
+        final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);
+        final Doc doc = new Doc(TEST_SRC_INFO, "pkg", Util.<String> list(), Util.<DataType> list());
+        final DocEmitter docEmitter = new DummyDocEmitter(doc,  TEST_CLASS_NAME);
+        final Parser parser = new DummyParser(doc, TEST_SRC_INFO, TEST_STRING);
+        final JADT jadt = new JADT(sourceFactory, parser, checker, docEmitter, factory);
+        return jadt;
+    }    
 
 }

@@ -22,12 +22,10 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import pogofish.jadt.ast.DataType;
-import pogofish.jadt.ast.Doc;
 import pogofish.jadt.checker.*;
-import pogofish.jadt.emitter.*;
-import pogofish.jadt.parser.*;
-import pogofish.jadt.source.*;
+import pogofish.jadt.emitter.StandardDocEmitter;
+import pogofish.jadt.parser.StandardParser;
+import pogofish.jadt.source.FileSourceFactory;
 import pogofish.jadt.target.FileTargetFactoryFactory;
 import pogofish.jadt.target.StringTargetFactoryFactory;
 import pogofish.jadt.util.Util;
@@ -39,11 +37,6 @@ import pogofish.jadt.util.Util;
  */
 public class JADTTest {
     
-    private static final String TEST_CLASS_NAME = "someClass";
-    private static final String TEST_STRING = "hello";
-    private static final String TEST_SRC_INFO = "source";
-    private static final String TEST_DIR = "test dir";
-
     /**
      * Ensure that the standard config JADT has all the right parts.  The various bits are tested separately
      */
@@ -61,15 +54,13 @@ public class JADTTest {
      * Create a dummy configged JADT based on the provided checker, send it the provided args and return the
      * resulting string (or throw the resulting exception 
      */
-    private String dummyJADT(String[] args, Checker checker) {
-        final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();  
-        final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);
-        final Doc doc = new Doc(TEST_SRC_INFO, "pkg", Util.<String> list(), Util.<DataType> list());
-        final DocEmitter docEmitter = new DummyDocEmitter(doc,  TEST_CLASS_NAME);
-        final Parser parser = new DummyParser(doc, TEST_SRC_INFO, TEST_STRING);
-        new JADT(sourceFactory, parser, checker, docEmitter, factory).parseAndEmit(args);
-        return factory.results().get(TEST_DIR).get(0).getResults().get(TEST_CLASS_NAME);
+    private String testWithDummyJADT(String[] args, Checker checker) {
+        final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();
+        JADT.createDummyJADT(checker, factory).parseAndEmit(args);
+        return factory.results().get(JADT.TEST_DIR).get(0).getResults().get(JADT.TEST_CLASS_NAME);
     }
+
+
     
     /**
      * Ensure that sending bad args to parseAndEmit gets an IllegalArgumentException
@@ -78,7 +69,7 @@ public class JADTTest {
     public void testDriverBadArgs() {
         
         try {
-            final String result = dummyJADT(new String[]{TEST_SRC_INFO}, new DummyChecker(Collections.<SemanticException>emptySet()));
+            final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO}, new DummyChecker(Collections.<SemanticException>emptySet()));
             fail("Did not get an exception from bad arguments, got " + result);
         } catch(IllegalArgumentException e) {
             // yay
@@ -90,9 +81,9 @@ public class JADTTest {
      */
     @Test
     public void testDriverGood() {
-        final String result = dummyJADT(new String[]{TEST_SRC_INFO, TEST_DIR}, new DummyChecker(Collections.<SemanticException>emptySet()));
+        final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR}, new DummyChecker(Collections.<SemanticException>emptySet()));
         
-        assertEquals(TEST_SRC_INFO, result);
+        assertEquals(JADT.TEST_SRC_INFO, result);
     }
     
     /**
@@ -102,7 +93,7 @@ public class JADTTest {
     public void testDriverSemanticIssue() {
         try {
             final Checker checker = new DummyChecker(Util.<SemanticException>set(new DuplicateConstructorException("Foo", "Bar"), new ConstructorDataTypeConflictException("Foo", "Foo")));
-            final String result = dummyJADT(new String[]{TEST_SRC_INFO, TEST_DIR}, checker);
+            final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR}, checker);
             fail("Did not get a SemanticExceptions, got " + result);
         } catch (SemanticExceptions e) {
             // yay

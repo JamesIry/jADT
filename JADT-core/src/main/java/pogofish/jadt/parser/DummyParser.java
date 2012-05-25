@@ -15,9 +15,6 @@ limitations under the License.
 */
 package pogofish.jadt.parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -52,11 +49,17 @@ public class DummyParser implements Parser {
      */
     @Override
     public Doc parse(Source source) {
-        assertEquals(testSrcInfo, source.getSrcInfo());                        
+        if (!testSrcInfo.equals(source.getSrcInfo())) {
+            throw new RuntimeException("testSrcInfo and source.getSrcInfo were not equal");
+        }
         try {
             BufferedReader reader = new BufferedReader(source.getReader());
-            assertEquals(testString, reader.readLine());
-            assertNull(reader.readLine());            
+            if (!testString.equals(reader.readLine())) {
+                throw new RuntimeException("testString and reader.readLine() were not equal");
+            }
+            if (reader.readLine() != null) {
+                throw new RuntimeException("got a second line from the reader");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

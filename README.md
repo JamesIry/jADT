@@ -32,9 +32,26 @@ Here's a sample AST for a fragment of a language
 
 Usage
 =====
-To generate  use
+To generate from the command line use
 
-    java -cp path_to_JADT pogofish.JADT full_path_of_input_file base_directory_for_output
+    java -cp "path to JADT-core" pogofish.JADT "full path of input file" "base directory for output"
+
+To generate using ant create a build.xml along these lines
+   
+    <?xml version="1.0"?>
+
+    <project name="OwnTaskExample" default="main" basedir=".">
+      <taskdef name="jadt" classname="pogofish.jadt.ant.JADTAntTask"/>
+
+      <target name="generate JADT">
+        <jadt srcFile="full path of input file" destDir = "base directory for output"/>
+      </target>
+    </project>
+    
+And then run ant, telling it where to find JADT-core and JADT-ant
+    
+    ant -lib "directory that has both JADT-core and JADT-ant"
+
     
 To use the generated Java, you'll need some imports
 

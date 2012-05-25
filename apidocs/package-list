@@ -1,1 +1,10 @@
+pogofish.jadt
 pogofish.jadt.ant
+pogofish.jadt.ast
+pogofish.jadt.checker
+pogofish.jadt.emitter
+pogofish.jadt.parser
+pogofish.jadt.printer
+pogofish.jadt.source
+pogofish.jadt.target
+pogofish.jadt.util

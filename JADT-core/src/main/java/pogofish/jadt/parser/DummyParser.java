@@ -54,11 +54,16 @@ public class DummyParser implements Parser {
         }
         try {
             BufferedReader reader = new BufferedReader(source.getReader());
-            if (!testString.equals(reader.readLine())) {
-                throw new RuntimeException("testString and reader.readLine() were not equal");
-            }
-            if (reader.readLine() != null) {
-                throw new RuntimeException("got a second line from the reader");
+            try {
+                if (!testString.equals(reader.readLine())) {
+                    throw new RuntimeException("testString and reader.readLine() were not equal");
+                }
+                final String secondLine = reader.readLine();
+                if (secondLine != null) {
+                    throw new RuntimeException("got a second line '" + secondLine + "' from the reader");
+                }
+            } finally {
+                reader.close();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

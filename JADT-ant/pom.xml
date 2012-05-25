@@ -15,6 +15,14 @@
   <artifactId>JADT-ant</artifactId>
   <name>JADT Ant Task</name>
   <description>Ant Task for doing JADT processing</description>
+  <url>http://jamesiry.github.com/JADT/ant/</url>
+  
+  <distributionManagement>
+    <site>
+      <id>ant</id>
+      <url>scp://jamesiry.github.com/JADT/ant/</url>
+    </site>
+  </distributionManagement>
   
   <dependencies>
     <dependency>

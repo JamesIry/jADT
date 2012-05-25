@@ -14,12 +14,18 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>JADT</name>
-  <url>http://github.com/JamesIry/JADT</url>
+  <url>http://jamesiry.github.com/JADT/</url>
   <description>
         JADT turns simple descriptions of Algebraic Data Types (ADTs) into Java code with visitors to emulate pattern matching.
   </description>
 
-  
+  <distributionManagement>
+    <site>
+      <id>JADT</id>
+      <url>scp://jamesiry.github.com/JADT/</url>
+    </site>
+  </distributionManagement>
+    
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

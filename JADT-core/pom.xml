@@ -46,6 +46,26 @@
           </execution>
         </executions>
       </plugin>
+
+<!-- put module site on github pages -->
+        <plugin>
+          <groupId>com.github.github</groupId>
+          <artifactId>site-maven-plugin</artifactId>
+          <version>0.6</version>
+          <configuration>
+            <message>Creating site for ${project.artifactId} ${project.version}</message>
+            <path>core</path>
+            <merge>true</merge>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>site</goal>
+              </goals>
+              <phase>site</phase>
+            </execution>
+          </executions>
+        </plugin>
   
     </plugins>
   </build>

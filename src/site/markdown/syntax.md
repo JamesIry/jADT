@@ -1,0 +1,35 @@
+Syntax
+======
+
+The syntax of a JADT file is
+
+    DOC : PACKAGE IMPORTS DATATYPES
+    PACKAGE : "package" PACKAGENAME
+    IMPORTS : IMPORT*
+    IMPORT : "import" PACKAGENAME
+    DATATYPE : DATATYPE+
+    DATATYPE : DATATYPENAME "=" CONSTRUCTORS
+    DATATYPENAME : IDENTIFIER
+    CONSTRUCTORS : CONSTRUCTOR ("|" CONSTRUCTORS)?
+    CONSTRUCTOR : CONSTRUCTORNAME ("(" ARGS ")")?
+    ARGS : ARG ("," ARGS)?
+    ARG : TYPE ARGNAME
+    TYPE : ARRAY | JAVAPRIMITIVE | TYPENAME ("<" TYPELIST ">")?
+    ARRAY : TYPE "[]"
+    JAVAPRIMITIVE : "boolean" | "char" | "double" |
+                    "float" | "int" | "long" | "short"
+    TYPENAME : IDENTIFIER
+    TYPELIST : TYPE ("," TYPELIST )?
+    ARGNAME : IDENTIFIER
+    PACKAGENAME : valid Java package name
+    IDENTIFIER : valid Java identifier
+    
+Lexical conventions    
+
+* JADT is case sensitive.
+* Java style comments, both end of line (//) and block (/* */), are allowed.
+* Whitespace isn't significant other than for separating tokens.
+* End of line characters are just treated as whitespace.  
+* There's no need for semicolons or other end markers.
+* Java keywords cannot be used as identifiers or package names.
+* The punctuation "=" "," "<" ">" "(" ")" serves as both tokens and token separators.  E.g. the data type definition "Foo=Bar|Baz" is parsed the same as "Foo = Bar | Baz"

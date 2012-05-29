@@ -10,7 +10,7 @@
     <groupId>pogofish.JADT</groupId>
     <artifactId>JADT</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-  </parent>
+  </parent>  
 
   <artifactId>JADT-ant</artifactId>
   <name>JADT Ant Task</name>
@@ -43,7 +43,7 @@
         <plugin>
           <groupId>com.github.github</groupId>
           <artifactId>site-maven-plugin</artifactId>
-          <version>0.6</version>
+          <version>${site.maven.plugin.version}</version>
           <configuration>
             <message>Creating site for ${project.artifactId} ${project.version}</message>
             <path>ant</path>

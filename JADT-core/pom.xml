@@ -51,7 +51,7 @@
         <plugin>
           <groupId>com.github.github</groupId>
           <artifactId>site-maven-plugin</artifactId>
-          <version>0.6</version>
+          <version>${site.maven.plugin.version}</version>
           <configuration>
             <message>Creating site for ${project.artifactId} ${project.version}</message>
             <path>core</path>

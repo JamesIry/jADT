@@ -16,8 +16,7 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import static org.junit.Assert.assertEquals;
-import static pogofish.jadt.ast.PrimitiveType._IntType;
-import static pogofish.jadt.ast.PrimitiveType._LongType;
+import static pogofish.jadt.ast.PrimitiveType.*;
 import static pogofish.jadt.ast.RefType._ArrayType;
 import static pogofish.jadt.ast.RefType._ClassType;
 import static pogofish.jadt.ast.Type._Primitive;
@@ -106,6 +105,7 @@ public class ClassBodyEmitterTest {
     "          final int prime = 31;\n" +
     "          int result = 1;\n" +
     "          result = prime * result + um;\n" +
+    "          result = prime * result + (bool ? 1 : 0);\n" +
     "          result = prime * result + (int)shorty;\n" +
     "          result = prime * result + ((yeah == null) ? 0 : yeah.hashCode());\n" +
     "          result = prime * result + java.util.Arrays.hashCode(oh);\n" +
@@ -286,6 +286,7 @@ public class ClassBodyEmitterTest {
     public void testArgHashCode() {
         final Constructor constructor = new Constructor("Foo", list(
                 new Arg(_Primitive(_IntType), "um"),
+                new Arg(_Primitive(_BooleanType), "bool"),
                 new Arg(_Primitive(_LongType), "shorty"),
                 new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
                 new Arg(_Ref(_ArrayType(_Primitive(_IntType))), "oh")
@@ -297,6 +298,7 @@ public class ClassBodyEmitterTest {
         } finally {
             target.close();            
         }
+        System.out.println(target.result());
         assertEquals(ARGS_HASHCODE, target.result());                 
         
     }    

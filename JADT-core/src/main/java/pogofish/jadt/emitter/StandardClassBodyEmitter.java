@@ -16,6 +16,7 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import pogofish.jadt.ast.*;
+import pogofish.jadt.ast.PrimitiveType.BooleanType;
 import pogofish.jadt.ast.PrimitiveType.IntType;
 import pogofish.jadt.ast.RefType.ArrayType;
 import pogofish.jadt.ast.RefType.ClassType;
@@ -177,6 +178,12 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
                     @Override
                     public Void visit(Primitive x) {
                         x.type.accept(new PrimitiveType.VisitorWithDefault<Void>() {
+
+                            @Override
+                            public Void visit(BooleanType x) {
+                                target.write("          result = prime * result + (" + arg.name + " ? 1 : 0);\n");
+                                return null;
+                            }
 
                             @Override
                             public Void visit(IntType x) {

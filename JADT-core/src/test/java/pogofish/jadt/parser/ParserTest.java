@@ -75,6 +75,7 @@ public class ParserTest {
     @Test
     public void testClassType() {
         assertEquals(_ClassType("Foo", Util.<RefType>list()), parserImpl("Foo").classType());
+        assertEquals(_ClassType("package.Foo", Util.<RefType>list()), parserImpl("package.Foo").classType());
         assertEquals(_ClassType("Foo", list(_ClassType("Bar", Util.<RefType>list()))), parserImpl("Foo<Bar>").classType());
         assertEquals(_ClassType("Foo", list(_ArrayType(_Primitive(_IntType)))), parserImpl("Foo<int[]>").classType());
         assertEquals(_ClassType("Foo", list(_ClassType("Bar", Util.<RefType>list()), _ClassType("Baz", Util.<RefType>list()))), parserImpl("Foo<Bar, Baz>").classType());

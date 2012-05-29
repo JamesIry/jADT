@@ -268,7 +268,7 @@ public class StandardParser implements Parser {
          * @return RefType
          */
         public RefType classType() {
-            if (!tokenizer.accept(TokenType.IDENTIFIER)) {
+            if (!tokenizer.accept(TokenType.IDENTIFIER) && (!tokenizer.accept(TokenType.DOTTED_IDENTIFIER))) {
                 throw syntaxException("a type");
             } else {
                 final String baseName = tokenizer.lastSymbol();

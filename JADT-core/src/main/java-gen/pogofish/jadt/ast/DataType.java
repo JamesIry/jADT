@@ -37,7 +37,7 @@ PrimitiveType =
 */
 public final class DataType {
 
-   public static final DataType _DataType(String name, List<String> typeArguments, List<Constructor> constructors) { return new DataType(name, typeArguments, constructors); }
+   public static final  DataType _DataType(String name, List<String> typeArguments, List<Constructor> constructors) { return new DataType(name, typeArguments, constructors); }
 
       public final String name;
       public final List<String> typeArguments;

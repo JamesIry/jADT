@@ -39,13 +39,20 @@ public abstract class PrimitiveType {
    private PrimitiveType() {
    }
 
-   public static final PrimitiveType _BooleanType = new BooleanType();
-   public static final PrimitiveType _CharType = new CharType();
-   public static final PrimitiveType _DoubleType = new DoubleType();
-   public static final PrimitiveType _FloatType = new FloatType();
-   public static final PrimitiveType _IntType = new IntType();
-   public static final PrimitiveType _LongType = new LongType();
-   public static final PrimitiveType _ShortType = new ShortType();
+   private static final PrimitiveType _BooleanType = new BooleanType();
+   public static final  PrimitiveType _BooleanType() { return _BooleanType; }
+   private static final PrimitiveType _CharType = new CharType();
+   public static final  PrimitiveType _CharType() { return _CharType; }
+   private static final PrimitiveType _DoubleType = new DoubleType();
+   public static final  PrimitiveType _DoubleType() { return _DoubleType; }
+   private static final PrimitiveType _FloatType = new FloatType();
+   public static final  PrimitiveType _FloatType() { return _FloatType; }
+   private static final PrimitiveType _IntType = new IntType();
+   public static final  PrimitiveType _IntType() { return _IntType; }
+   private static final PrimitiveType _LongType = new LongType();
+   public static final  PrimitiveType _LongType() { return _LongType; }
+   private static final PrimitiveType _ShortType = new ShortType();
+   public static final  PrimitiveType _ShortType() { return _ShortType; }
 
    public static interface Visitor<A> {
       A visit(BooleanType x);

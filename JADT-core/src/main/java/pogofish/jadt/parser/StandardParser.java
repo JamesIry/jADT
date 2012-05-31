@@ -298,19 +298,19 @@ public class StandardParser implements Parser {
          */
         public PrimitiveType primitiveType() {
             if (tokenizer.accept(TokenType.BOOLEAN)) {
-                return(_BooleanType); 
+                return(_BooleanType()); 
             } else if (tokenizer.accept(TokenType.CHAR)) {
-                return(_CharType); 
+                return(_CharType()); 
             } else if (tokenizer.accept(TokenType.SHORT)) {
-                return(_ShortType); 
+                return(_ShortType()); 
             } else if (tokenizer.accept(TokenType.INT)) {
-                return(_IntType); 
+                return(_IntType()); 
             } else if (tokenizer.accept(TokenType.LONG)) {
-                return(_LongType); 
+                return(_LongType()); 
             } else if (tokenizer.accept(TokenType.FLOAT)) {
-                return(_FloatType); 
+                return(_FloatType()); 
             } else if (tokenizer.accept(TokenType.DOUBLE)) {
-                return(_DoubleType);
+                return(_DoubleType());
             } else {
                 return null;
             }            

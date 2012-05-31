@@ -35,5 +35,5 @@ Expression =
     Add(Expression left, Expression right)
   | Variable(String name)
   | Literal(int value)
-  
-  
+ 
+Option A = Some(A value) | None

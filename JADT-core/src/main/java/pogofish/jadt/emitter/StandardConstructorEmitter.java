@@ -15,6 +15,9 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.target.Target;
 
@@ -27,24 +30,28 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
     }
 
     @Override
-    public void constructorFactory(Target target, String dataTypeName, Constructor constructor) {
-        classBodyEmitter.constructorFactory(target, dataTypeName, constructor.name, constructor);
+    public void constructorFactory(Target target, String dataTypeName, List<String> typeParameters, Constructor constructor) {
+        classBodyEmitter.constructorFactory(target, dataTypeName, constructor.name, typeParameters, constructor);
     }
     
     @Override
-    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName) {
-        target.write("   public static final class " + constructor.name + " extends " + dataTypeName + " {\n");
+    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName, List<String> typeParameters) {
+        target.write("   public static final class " + constructor.name);
+        classBodyEmitter.emitParameterizedTypeName(target, typeParameters);
+        target.write(" extends " + dataTypeName);
+        classBodyEmitter.emitParameterizedTypeName(target, typeParameters);
+        target.write(" {\n");
         
         classBodyEmitter.emitConstructorMethod(target, constructor);
         target.write("\n\n");
         
-        emitAccept(target);
+        emitAccept(target, typeParameters);
         target.write("\n\n");
         
         classBodyEmitter.emitHashCode(target, constructor);
         target.write("\n\n");
         
-        classBodyEmitter.emitEquals(target, constructor);
+        classBodyEmitter.emitEquals(target, constructor, typeParameters);
         target.write("\n\n");
         
         classBodyEmitter.emitToString(target, constructor);
@@ -53,12 +60,19 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
         target.write("   }");
     }
     
-    private void emitAccept(Target target) {
+    private void emitAccept(Target target, List<String> typeArguments) {
+        final List<String> visitorTypeArguments = new ArrayList<String>(typeArguments);
+        visitorTypeArguments.add("ResultType");
+        
         target.write("      @Override\n");
-        target.write("      public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }\n");
+        target.write("      public <ResultType> ResultType accept(Visitor");
+        classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
+        target.write(" visitor) { return visitor.visit(this); }\n");
         target.write("\n");
         target.write("      @Override\n");
-        target.write("      public void accept(VoidVisitor visitor) { visitor.visit(this); }");
+        target.write("      public void accept(VoidVisitor");
+        classBodyEmitter.emitParameterizedTypeName(target, typeArguments);
+        target.write(" visitor) { visitor.visit(this); }");
     }
 
     

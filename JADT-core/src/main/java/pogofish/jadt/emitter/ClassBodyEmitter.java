@@ -15,6 +15,8 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
+import java.util.List;
+
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.target.Target;
 
@@ -31,9 +33,10 @@ public interface ClassBodyEmitter {
      * @param target Target for output
      * @param dataTypeName name of the DataType to return from the factory
      * @param factoryName name of the factory method/constant to create
+     * @param typeParameters List of String names for type parameters
      * @param constructor the Constructor with information about arguments
      */
-    public abstract void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor);
+    public abstract void constructorFactory(Target target, String dataTypeName, String factoryName, List<String> typeParameters, Constructor constructor);
 
     /**
      * Emit the Java constructor for the constructor class
@@ -56,8 +59,9 @@ public interface ClassBodyEmitter {
      * 
      * @param target Target for output
      * @param constructor Constructor with information about arguments
+     * @param typeArguments List of names of types that parameterize the datatype
      */
-    public abstract void emitEquals(Target target, Constructor constructor);
+    public abstract void emitEquals(Target target, Constructor constructor, List<String> typeArguments);
 
     /**
      * Emit a hashCode method
@@ -66,5 +70,11 @@ public interface ClassBodyEmitter {
      * @param constructor Constructor with information about arguments
      */
     public abstract void emitHashCode(Target target, Constructor constructor);
-
+       
+    /**
+     * Emit a list of type arg names if any
+     * @param target Target for output
+     * @param typeArguments list of type argument names
+     */
+    public void emitParameterizedTypeName(Target target, List<String> typeArguments);
 }

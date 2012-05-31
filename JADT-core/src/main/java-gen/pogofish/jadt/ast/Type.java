@@ -39,8 +39,8 @@ public abstract class Type {
    private Type() {
    }
 
-   public static final Type _Ref(RefType type) { return new Ref(type); }
-   public static final Type _Primitive(PrimitiveType type) { return new Primitive(type); }
+   public static final  Type _Ref(RefType type) { return new Ref(type); }
+   public static final  Type _Primitive(PrimitiveType type) { return new Primitive(type); }
 
    public static interface Visitor<A> {
       A visit(Ref x);

@@ -37,7 +37,7 @@ PrimitiveType =
 */
 public final class Doc {
 
-   public static final Doc _Doc(String srcInfo, String pkg, List<String> imports, List<DataType> dataTypes) { return new Doc(srcInfo, pkg, imports, dataTypes); }
+   public static final  Doc _Doc(String srcInfo, String pkg, List<String> imports, List<DataType> dataTypes) { return new Doc(srcInfo, pkg, imports, dataTypes); }
 
       public final String srcInfo;
       public final String pkg;

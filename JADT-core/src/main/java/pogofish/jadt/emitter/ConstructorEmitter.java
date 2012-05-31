@@ -15,6 +15,8 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
+import java.util.List;
+
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.target.Target;
 
@@ -31,7 +33,7 @@ public interface ConstructorEmitter {
      * @param dataTypeName name of the DataType to return from the factory
      * @param constructor the Constructor with information about arguments
      */
-    public void constructorFactory(Target target, String dataTypeName, Constructor constructor);
+    public void constructorFactory(Target target, String dataTypeName, List<String> typeParameters, Constructor constructor);
 
     /**
      * The complete declaration of the constructor class
@@ -39,6 +41,7 @@ public interface ConstructorEmitter {
      * @param target Target for output
      * @param constructor the Constructor with information about arguments
      * @param dataTypeName name of the DataType that the Constructor class will extend
+     * @param typeParameters names of type arguments to apply to the constructor's class and the class it extends
      */
-    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName);
+    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName, List<String> typeParameters);
 }

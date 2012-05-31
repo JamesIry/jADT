@@ -37,7 +37,7 @@ PrimitiveType =
 */
 public final class Constructor {
 
-   public static final Constructor _Constructor(String name, List<Arg> args) { return new Constructor(name, args); }
+   public static final  Constructor _Constructor(String name, List<Arg> args) { return new Constructor(name, args); }
 
       public final String name;
       public final List<Arg> args;

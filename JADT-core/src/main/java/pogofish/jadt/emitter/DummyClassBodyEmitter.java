@@ -8,6 +8,8 @@
  */
 package pogofish.jadt.emitter;
 
+import java.util.List;
+
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.target.Target;
 
@@ -17,7 +19,7 @@ import pogofish.jadt.target.Target;
 public class DummyClassBodyEmitter implements ClassBodyEmitter {
 
     @Override
-    public void constructorFactory(Target target, String dataTypeName, String factoryName, Constructor constructor) {
+    public void constructorFactory(Target target, String dataTypeName, String factoryName, List<String> typeParameters, Constructor constructor) {
         target.write("/* constructor factory " + dataTypeName + " " + factoryName + " " + constructor.name + "*/");
 
     }
@@ -33,7 +35,7 @@ public class DummyClassBodyEmitter implements ClassBodyEmitter {
     }
 
     @Override
-    public void emitEquals(Target target, Constructor constructor) {
+    public void emitEquals(Target target, Constructor constructor, List<String> typeArguments) {
         target.write("/* equals method " + constructor.name + "*/");
     }
 
@@ -41,5 +43,11 @@ public class DummyClassBodyEmitter implements ClassBodyEmitter {
     public void emitHashCode(Target target, Constructor constructor) {
         target.write("/* hashCode method " + constructor.name + "*/");
     }
+    
+    @Override
+	public void emitParameterizedTypeName(Target target,
+			List<String> typeArguments) {
+		target.write("/* type arguments */");
+	}   
 
 }

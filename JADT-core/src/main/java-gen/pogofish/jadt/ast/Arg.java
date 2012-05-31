@@ -36,7 +36,7 @@ PrimitiveType =
 */
 public final class Arg {
 
-   public static final Arg _Arg(Type type, String name) { return new Arg(type, name); }
+   public static final  Arg _Arg(Type type, String name) { return new Arg(type, name); }
 
       public final Type type;
       public final String name;

@@ -22,7 +22,10 @@ import static pogofish.jadt.sampleast.Function._Function;
 import static pogofish.jadt.sampleast.Statement._Return;
 import static pogofish.jadt.sampleast.Type._Int;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import pogofish.jadt.sampleast.Expression.Add;
 import pogofish.jadt.sampleast.Expression.Literal;
@@ -31,7 +34,7 @@ import pogofish.jadt.sampleast.Statement.Return;
 
 public class SampleConsumer {
     public Function sampleFunction() {   
-        return _Function(_Int, "addTwo", list(_Arg(_Int, "x"), _Arg(_Int, "y")), list(
+        return _Function(_Int(), "addTwo", list(_Arg(_Int(), "x"), _Arg(_Int(), "y")), list(
                 _Return(_Add(_Variable("x"), _Variable("y")))
                 ));
     }

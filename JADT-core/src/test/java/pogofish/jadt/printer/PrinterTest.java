@@ -51,13 +51,13 @@ public class PrinterTest {
      */
     @Test
     public void testPrimitiveTypes() {
-        assertEquals("boolean", print(_Primitive(_BooleanType)));
-        assertEquals("char", print(_Primitive(_CharType)));
-        assertEquals("short", print(_Primitive(_ShortType)));
-        assertEquals("int", print(_Primitive(_IntType)));
-        assertEquals("long", print(_Primitive(_LongType)));
-        assertEquals("float", print(_Primitive(_FloatType)));
-        assertEquals("double", print(_Primitive(_DoubleType)));
+        assertEquals("boolean", print(_Primitive(_BooleanType())));
+        assertEquals("char", print(_Primitive(_CharType())));
+        assertEquals("short", print(_Primitive(_ShortType())));
+        assertEquals("int", print(_Primitive(_IntType())));
+        assertEquals("long", print(_Primitive(_LongType())));
+        assertEquals("float", print(_Primitive(_FloatType())));
+        assertEquals("double", print(_Primitive(_DoubleType())));
     }
 
     /**
@@ -82,7 +82,7 @@ public class PrinterTest {
     @Test
     public void testArrayTypes() {
         // single level
-        assertEquals("boolean[]", print(_Ref(_ArrayType(_Primitive(_BooleanType)))));
+        assertEquals("boolean[]", print(_Ref(_ArrayType(_Primitive(_BooleanType())))));
         // double level
         assertEquals("String[][]",
                 print(_Ref(_ArrayType(_Ref(_ArrayType(_Ref(_ClassType("String", Util.<RefType> list()))))))));
@@ -93,7 +93,7 @@ public class PrinterTest {
      */
     @Test
     public void testArg() {      
-        assertEquals("boolean[] Foo", print(new Arg(_Ref(_ArrayType(_Primitive(_BooleanType))), "Foo")));
+        assertEquals("boolean[] Foo", print(new Arg(_Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
     }
 
     /**
@@ -105,7 +105,7 @@ public class PrinterTest {
         assertEquals("Foo", print(new Constructor("Foo", Util.<Arg> list())));
         // constructor with args
         assertEquals("Foo(boolean hello, int World)", print(new Constructor("Foo", list(new Arg(
-                _Primitive(_BooleanType), "hello"), new Arg(_Primitive(_IntType), "World")))));
+                _Primitive(_BooleanType()), "hello"), new Arg(_Primitive(_IntType()), "World")))));
     }
 
     /**

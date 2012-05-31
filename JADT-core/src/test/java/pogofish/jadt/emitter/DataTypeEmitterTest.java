@@ -34,7 +34,7 @@ import pogofish.jadt.util.Util;
 public class DataTypeEmitterTest {
     private static final String HEADER = "/*header*/\n";
     private static final String MULTI_CONSTRUCTOR = 
-    "public abstract class FooBar {\n" +
+    "public abstract class FooBar/* type arguments */ {\n" +
     "\n" +
     "   private FooBar() {\n" +
     "   }\n" +
@@ -42,48 +42,48 @@ public class DataTypeEmitterTest {
     "/* factory FooBar Foo */\n" +
     "/* factory FooBar Bar */\n" +
     "\n" +
-    "   public static interface Visitor<A> {\n" +
-    "      A visit(Foo x);\n" +
-    "      A visit(Bar x);\n" +
+    "   public static interface Visitor/* type arguments */ {\n" +
+    "      ResultType visit(Foo/* type arguments */ x);\n" +
+    "      ResultType visit(Bar/* type arguments */ x);\n" +
     "   }\n" +
     "\n" +
-    "   public static abstract class VisitorWithDefault<A> implements Visitor<A> {\n" +
+    "   public static abstract class VisitorWithDefault/* type arguments */ implements Visitor/* type arguments */ {\n" +
     "      @Override\n" +
-    "      public A visit(Foo x) { return getDefault(x); }\n" +
+    "      public ResultType visit(Foo/* type arguments */ x) { return getDefault(x); }\n" +
     "\n" +
     "      @Override\n" +
-    "      public A visit(Bar x) { return getDefault(x); }\n" +    
+    "      public ResultType visit(Bar/* type arguments */ x) { return getDefault(x); }\n" +    
     "\n" +
-    "      protected abstract A getDefault(FooBar x);\n" +
+    "      protected abstract ResultType getDefault(FooBar/* type arguments */ x);\n" +
     "   }\n" +
     "\n" +
-    "   public static interface VoidVisitor {\n" +
-    "      void visit(Foo x);\n" +
-    "      void visit(Bar x);\n" +
+    "   public static interface VoidVisitor/* type arguments */ {\n" +
+    "      void visit(Foo/* type arguments */ x);\n" +
+    "      void visit(Bar/* type arguments */ x);\n" +
     "   }\n" +
     "\n" +
-    "   public static abstract class VoidVisitorWithDefault implements VoidVisitor {\n" +
+    "   public static abstract class VoidVisitorWithDefault/* type arguments */ implements VoidVisitor/* type arguments */ {\n" +
     "      @Override\n" +
-    "      public void visit(Foo x) { doDefault(x); }\n" +
+    "      public void visit(Foo/* type arguments */ x) { doDefault(x); }\n" +
     "\n" +
     "      @Override\n" +
-    "      public void visit(Bar x) { doDefault(x); }\n" +    
+    "      public void visit(Bar/* type arguments */ x) { doDefault(x); }\n" +    
     "\n" +
-    "      protected abstract void doDefault(FooBar x);\n" +
+    "      protected abstract void doDefault(FooBar/* type arguments */ x);\n" +
     "   }\n" +
     "\n" +    
     "/* declaration FooBar Foo */\n" +
     "\n" +
     "/* declaration FooBar Bar */\n" +
     "\n" +
-    "   public abstract <A> A accept(Visitor<A> visitor);\n" +
+    "   public abstract <ResultType> ResultType accept(Visitor/* type arguments */ visitor);\n" +
     "\n" +
-    "   public abstract void accept(VoidVisitor visitor);\n" +
+    "   public abstract void accept(VoidVisitor/* type arguments */ visitor);\n" +
     "\n" +
     "}";
     
     private static final String SINGLE_CONSTRUCTOR = 
-    "public final class FooBar {\n" +
+    "public final class FooBar/* type arguments */ {\n" +
     "\n" +
     "/* constructor factory FooBar Foo FooBar*/\n" +
     "\n" +

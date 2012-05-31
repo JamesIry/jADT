@@ -40,8 +40,8 @@ public abstract class RefType {
    private RefType() {
    }
 
-   public static final RefType _ClassType(String baseName, List<RefType> typeArguments) { return new ClassType(baseName, typeArguments); }
-   public static final RefType _ArrayType(Type heldType) { return new ArrayType(heldType); }
+   public static final  RefType _ClassType(String baseName, List<RefType> typeArguments) { return new ClassType(baseName, typeArguments); }
+   public static final  RefType _ArrayType(Type heldType) { return new ArrayType(heldType); }
 
    public static interface Visitor<A> {
       A visit(ClassType x);

@@ -24,7 +24,9 @@ import static pogofish.jadt.util.Util.list;
 
 import org.junit.Test;
 
-import pogofish.jadt.ast.*;
+import pogofish.jadt.ast.Arg;
+import pogofish.jadt.ast.Constructor;
+import pogofish.jadt.ast.RefType;
 import pogofish.jadt.target.StringTarget;
 import pogofish.jadt.util.Util;
 
@@ -35,14 +37,14 @@ import pogofish.jadt.util.Util;
  */
 public class ConstructorEmitterTest {
     private static final String CONSTRUCTOR_CLASS = 
-    "   public static final class Foo extends NonPrimitive {\n" +
+    "   public static final class Foo/* type arguments */ extends NonPrimitive/* type arguments */ {\n" +
     "/* constructor method Foo*/\n" +
     "\n" +
     "      @Override\n" +
-    "      public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }\n" +
+    "      public <ResultType> ResultType accept(Visitor/* type arguments */ visitor) { return visitor.visit(this); }\n" +
     "\n" +
     "      @Override\n" +
-    "      public void accept(VoidVisitor visitor) { visitor.visit(this); }\n" +
+    "      public void accept(VoidVisitor/* type arguments */ visitor) { visitor.visit(this); }\n" +
     "\n" +
     "/* hashCode method Foo*/\n" +
     "\n" +
@@ -61,13 +63,13 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testFactory() {
-        final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType), "yeah")));
+        final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType()), "yeah")));
 
         final StringTarget target = new StringTarget();
         try {
             final ConstructorEmitter emitter = new StandardConstructorEmitter(new DummyClassBodyEmitter());
 
-            emitter.constructorFactory(target, "SomeDataType", constructor);
+            emitter.constructorFactory(target, "SomeDataType", Util.<String>list(), constructor);
         } finally {
             target.close();
         }
@@ -79,13 +81,13 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testConstrucorDeclaration() {
-        final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType), "yeah")));
+        final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType()), "yeah")));
 
         final StringTarget target = new StringTarget();
         try {
             final ConstructorEmitter emitter = new StandardConstructorEmitter(new DummyClassBodyEmitter());
 
-            emitter.constructorDeclaration(target, constructor, "NonPrimitive");
+            emitter.constructorDeclaration(target, constructor, "NonPrimitive", Util.<String>list());
         } finally {
             target.close();
         }

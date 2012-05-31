@@ -15,6 +15,9 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.target.Target;
@@ -36,7 +39,6 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
     @Override
     public void emit(Target target, DataType dataType, String header) {
         target.write(header);
-        
         if (dataType.constructors.size() == 1) {
             emitSingleConstructor(target, dataType, header);
             
@@ -49,8 +51,12 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         final Constructor originalConstructor = dataType.constructors.get(0);
         final Constructor pseudoConstructor = new Constructor(dataType.name, originalConstructor.args);
         
-        target.write("public final class " + dataType.name + " {\n\n");
-        classBodyEmitter.constructorFactory(target, dataType.name, originalConstructor.name, pseudoConstructor);
+        target.write("public final class " + dataType.name);
+        classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+        target.write(" {\n\n");
+        
+        
+        classBodyEmitter.constructorFactory(target, dataType.name, originalConstructor.name, dataType.typeArguments, pseudoConstructor);
         target.write("\n\n");
         
         classBodyEmitter.emitConstructorMethod(target, pseudoConstructor);
@@ -59,7 +65,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         classBodyEmitter.emitHashCode(target, pseudoConstructor);
         target.write("\n\n");
         
-        classBodyEmitter.emitEquals(target, pseudoConstructor);
+        classBodyEmitter.emitEquals(target, pseudoConstructor, dataType.typeArguments);
         target.write("\n\n");
         
         classBodyEmitter.emitToString(target, pseudoConstructor);
@@ -70,60 +76,90 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
     }
 
     private void emitMultipleConstructor(Target target, DataType dataType, String header) {
-        target.write("public abstract class " + dataType.name + " {\n\n");
+        target.write("public abstract class " + dataType.name);
+        classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+        target.write(" {\n\n");
+        
         target.write("   private " + dataType.name + "() {\n");
         target.write("   }\n");
         
         for(Constructor constructor : dataType.constructors) {
             target.write("\n");
-            constructorEmitter.constructorFactory(target, dataType.name, constructor);
+            constructorEmitter.constructorFactory(target, dataType.name, dataType.typeArguments, constructor);
         }
         target.write("\n\n");
         
-        target.write("   public static interface Visitor<A> {\n");
+        final List<String> visitorTypeArguments = new ArrayList<String>(dataType.typeArguments);
+        visitorTypeArguments.add("ResultType");
+        
+        target.write("   public static interface Visitor"); 
+        classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
+        target.write(" {\n");
         for(Constructor constructor : dataType.constructors) {
-            target.write("      A visit(" + constructor.name + " x);");
-            target.write("\n");
+            target.write("      ResultType visit(" + constructor.name);
+            classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+            target.write(" x);\n");
         }
         target.write("   }\n\n");
         
-        target.write("   public static abstract class VisitorWithDefault<A> implements Visitor<A> {\n");
+        target.write("   public static abstract class VisitorWithDefault"); 
+        classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
+        target.write(" implements Visitor"); 
+        classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
+        target.write(" {\n");
         for(Constructor constructor : dataType.constructors) {
             target.write("      @Override\n");
-            target.write("      public A visit(" + constructor.name + " x) { return getDefault(x); }\n\n");
+            target.write("      public ResultType visit(" + constructor.name);
+            classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+            target.write(" x) { return getDefault(x); }\n\n");
         }
-        target.write("      protected abstract A getDefault(" + dataType.name + " x);\n");
+        target.write("      protected abstract ResultType getDefault(" + dataType.name);
+        classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+        target.write(" x);\n");
         target.write("   }");
         
         target.write("\n\n");
         
-        target.write("   public static interface VoidVisitor {\n");
+        target.write("   public static interface VoidVisitor");
+        classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+        target.write(" {\n");
         for(Constructor constructor : dataType.constructors) {
-            target.write("      void visit(" + constructor.name + " x);");
-            target.write("\n");
+            target.write("      void visit(" + constructor.name);
+            classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+            target.write(" x);\n");
         }
         target.write("   }\n\n");
         
-        target.write("   public static abstract class VoidVisitorWithDefault implements VoidVisitor {\n");
+        target.write("   public static abstract class VoidVisitorWithDefault");
+        classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+        target.write(" implements VoidVisitor");
+        classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+        target.write(" {\n");
         for(Constructor constructor : dataType.constructors) {
             target.write("      @Override\n");
-            target.write("      public void visit(" + constructor.name + " x) { doDefault(x); }\n\n");
+            target.write("      public void visit(" + constructor.name);
+            classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);            
+            target.write(" x) { doDefault(x); }\n\n");
         }
-        target.write("      protected abstract void doDefault(" + dataType.name + " x);\n");
+        target.write("      protected abstract void doDefault(" + dataType.name);
+        classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);        
+        target.write(" x);\n");
         target.write("   }");
         
         for(Constructor constructor : dataType.constructors) {
             target.write("\n\n");
-            constructorEmitter.constructorDeclaration(target, constructor, dataType.name);
+            constructorEmitter.constructorDeclaration(target, constructor, dataType.name, dataType.typeArguments);
         }
-        target.write("\n\n   public abstract <A> A accept(Visitor<A> visitor);\n\n");
+        target.write("\n\n   public abstract <ResultType> ResultType accept(Visitor");
+        classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
+        target.write(" visitor);\n\n");
         
-        target.write("   public abstract void accept(VoidVisitor visitor);\n\n");
+        target.write("   public abstract void accept(VoidVisitor");
+        classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
+        target.write(" visitor);\n\n");
         
         target.write("}");
     }
-
-
 
 
 

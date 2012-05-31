@@ -58,13 +58,13 @@ public class ParserTest {
      */
     @Test
     public void testPrimitive() {
-        assertEquals(_BooleanType, parserImpl("boolean").primitiveType());
-        assertEquals(_ShortType, parserImpl("short").primitiveType());
-        assertEquals(_CharType, parserImpl("char").primitiveType());
-        assertEquals(_IntType, parserImpl("int").primitiveType());
-        assertEquals(_LongType, parserImpl("long").primitiveType());
-        assertEquals(_DoubleType, parserImpl("double").primitiveType());
-        assertEquals(_FloatType, parserImpl("float").primitiveType());
+        assertEquals(_BooleanType(), parserImpl("boolean").primitiveType());
+        assertEquals(_ShortType(), parserImpl("short").primitiveType());
+        assertEquals(_CharType(), parserImpl("char").primitiveType());
+        assertEquals(_IntType(), parserImpl("int").primitiveType());
+        assertEquals(_LongType(), parserImpl("long").primitiveType());
+        assertEquals(_DoubleType(), parserImpl("double").primitiveType());
+        assertEquals(_FloatType(), parserImpl("float").primitiveType());
         // make sure noise returns a null
         assertEquals(null, parserImpl("flurbis").primitiveType());
     }
@@ -77,7 +77,7 @@ public class ParserTest {
         assertEquals(_ClassType("Foo", Util.<RefType>list()), parserImpl("Foo").classType());
         assertEquals(_ClassType("package.Foo", Util.<RefType>list()), parserImpl("package.Foo").classType());
         assertEquals(_ClassType("Foo", list(_ClassType("Bar", Util.<RefType>list()))), parserImpl("Foo<Bar>").classType());
-        assertEquals(_ClassType("Foo", list(_ArrayType(_Primitive(_IntType)))), parserImpl("Foo<int[]>").classType());
+        assertEquals(_ClassType("Foo", list(_ArrayType(_Primitive(_IntType())))), parserImpl("Foo<int[]>").classType());
         assertEquals(_ClassType("Foo", list(_ClassType("Bar", Util.<RefType>list()), _ClassType("Baz", Util.<RefType>list()))), parserImpl("Foo<Bar, Baz>").classType());
         try {
             final RefType result = parserImpl("int").classType();
@@ -102,11 +102,11 @@ public class ParserTest {
      */
     @Test
     public void testArray() {
-        assertEquals(_Primitive(_IntType), parserImpl(" whatever").array(_Primitive(_IntType)));
-        assertEquals(_Ref(_ArrayType(_Primitive(_IntType))), parserImpl("[]").array(_Primitive(_IntType)));
-        assertEquals(_Ref(_ArrayType(_Ref(_ArrayType(_Primitive(_IntType))))), parserImpl("[][]").array(_Primitive(_IntType)));
+        assertEquals(_Primitive(_IntType()), parserImpl(" whatever").array(_Primitive(_IntType())));
+        assertEquals(_Ref(_ArrayType(_Primitive(_IntType()))), parserImpl("[]").array(_Primitive(_IntType())));
+        assertEquals(_Ref(_ArrayType(_Ref(_ArrayType(_Primitive(_IntType()))))), parserImpl("[][]").array(_Primitive(_IntType())));
         try {
-            final Type result = parserImpl("[ whatever").array(_Primitive(_IntType));
+            final Type result = parserImpl("[ whatever").array(_Primitive(_IntType()));
             fail("No syntax exception from missing right square bracket, got " + result);
         } catch (SyntaxException e) {            
         }                
@@ -117,9 +117,9 @@ public class ParserTest {
      */
     @Test
     public void testType() {
-        assertEquals(_Primitive(_IntType), parserImpl("int").type());
+        assertEquals(_Primitive(_IntType()), parserImpl("int").type());
         assertEquals(_Ref(_ClassType("Foo", Util.<RefType>list())), parserImpl("Foo").type());
-        assertEquals(_Ref(_ArrayType(_Primitive(_IntType))), parserImpl("int[]").type());
+        assertEquals(_Ref(_ArrayType(_Primitive(_IntType()))), parserImpl("int[]").type());
         assertEquals(_Ref(_ArrayType(_Ref(_ClassType("Foo", Util.<RefType>list())))), parserImpl("Foo[]").type());
         try {
             final Type result = parserImpl("").type();
@@ -134,7 +134,7 @@ public class ParserTest {
     @Test
     public void testRefType() {
         assertEquals(_ClassType("Foo", Util.<RefType>list()), parserImpl("Foo").refType());
-        assertEquals(_ArrayType(_Primitive(_IntType)), parserImpl("int[]").refType());
+        assertEquals(_ArrayType(_Primitive(_IntType())), parserImpl("int[]").refType());
         assertEquals(_ArrayType(_Ref(_ClassType("Foo", Util.<RefType>list()))), parserImpl("Foo[]").refType());
         try {
             final RefType result = parserImpl("int").refType();
@@ -148,7 +148,7 @@ public class ParserTest {
      */
     @Test
     public void testArg() {
-        assertEquals(_Arg(_Primitive(_IntType), "Foo"), parserImpl("int Foo").arg());        
+        assertEquals(_Arg(_Primitive(_IntType()), "Foo"), parserImpl("int Foo").arg());        
         try {
             final Arg result = parserImpl("foo").arg();
             fail("No syntax exception from missing type, got " + result);
@@ -166,8 +166,8 @@ public class ParserTest {
      */
     @Test
     public void testArgs() {
-        assertEquals(list(_Arg(_Primitive(_IntType), "Foo")), parserImpl("int Foo").args());        
-        assertEquals(list(_Arg(_Primitive(_IntType), "Foo"), _Arg(_Primitive(_BooleanType), "Bar")), parserImpl("int Foo, boolean Bar").args());        
+        assertEquals(list(_Arg(_Primitive(_IntType()), "Foo")), parserImpl("int Foo").args());        
+        assertEquals(list(_Arg(_Primitive(_IntType()), "Foo"), _Arg(_Primitive(_BooleanType()), "Bar")), parserImpl("int Foo, boolean Bar").args());        
         try {
             final List<Arg> result = parserImpl("").args();
             fail("No syntax exception from empty arg list, got " + result);
@@ -189,7 +189,7 @@ public class ParserTest {
         // no arg
         assertEquals(_Constructor("Foo", Util.<Arg>list()), parserImpl("Foo").constructor());
         // args
-        assertEquals(_Constructor("Foo", list(_Arg(_Primitive(_IntType), "Bar"))), parserImpl("Foo(int Bar)").constructor());
+        assertEquals(_Constructor("Foo", list(_Arg(_Primitive(_IntType()), "Bar"))), parserImpl("Foo(int Bar)").constructor());
         try {
             final Constructor result = parserImpl("").constructor();
             fail("No syntax exception from empty constructor, got " + result);
@@ -344,7 +344,7 @@ public class ParserTest {
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
                         new DataType("FooBar", Util.<String>list(), Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
                                 "bar", list(
-                                        new Arg(_Primitive(_IntType), "hey"), 
+                                        new Arg(_Primitive(_IntType()), "hey"), 
                                         new Arg(_Ref(_ArrayType(_Ref(_ClassType("String", Util.<RefType>list())))), "yeah"))))), 
                                  new DataType("whatever", Util.<String>list(), list(new Constructor("whatever", Util.<Arg> list()))))), doc);
     }    

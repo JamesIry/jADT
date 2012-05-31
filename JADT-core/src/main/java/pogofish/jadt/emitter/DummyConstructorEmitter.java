@@ -15,6 +15,8 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
+import java.util.List;
+
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.target.Target;
 
@@ -26,12 +28,12 @@ import pogofish.jadt.target.Target;
 public class DummyConstructorEmitter implements ConstructorEmitter {
 
     @Override
-    public void constructorFactory(Target target, String dataTypeName, Constructor constructor) {
+    public void constructorFactory(Target target, String dataTypeName, List<String> typeParameters, Constructor constructor) {
         target.write("/* factory " + dataTypeName + " " + constructor.name + " */");
     }
 
     @Override
-    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName) {
+    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName, List<String> typeParamters) {
         target.write("/* declaration " + dataTypeName + " " + constructor.name + " */");
     }
 

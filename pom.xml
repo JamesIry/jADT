@@ -91,6 +91,7 @@
       </plugin>                      
 
 <!-- run test classes in parallel -->
+<!-- commented out while I try to figure out why this is causing tests to fail on my mac https://github.com/JamesIry/JADT/issues/12
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -99,6 +100,7 @@
           <parallel>classes</parallel>
         </configuration>
       </plugin>
+-->
             
 <!-- code coverage - ignore the generated ast -->      
       <plugin>

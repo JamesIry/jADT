@@ -22,7 +22,9 @@ package pogofish.jadt.checker;
  */
 public abstract class SemanticException extends RuntimeException {
 
-    public SemanticException(String msg) {
+	private static final long serialVersionUID = 6663550218226785742L;
+
+	public SemanticException(String msg) {
         super(msg);
     }
 

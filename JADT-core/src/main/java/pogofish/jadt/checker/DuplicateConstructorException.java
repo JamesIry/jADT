@@ -21,7 +21,9 @@ package pogofish.jadt.checker;
  * @author jiry
  */
 public class DuplicateConstructorException extends SemanticException {
-    private final String dataTypeName;
+
+	private static final long serialVersionUID = -7976814593071084025L;
+	private final String dataTypeName;
     private final String constructorName;
     
     public DuplicateConstructorException(String dataTypeName, String constructorName) {

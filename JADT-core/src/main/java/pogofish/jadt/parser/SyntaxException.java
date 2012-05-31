@@ -22,7 +22,9 @@ package pogofish.jadt.parser;
  */
 public class SyntaxException extends RuntimeException {
 
-    /**
+	private static final long serialVersionUID = -8863574669612380241L;
+
+	/**
      * Constructor based on a message with the problem
      * 
      * @param msg String explaining what went wrong

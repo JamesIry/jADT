@@ -22,7 +22,9 @@ package pogofish.jadt.checker;
  * @author jiry
  */
 public class ConstructorDataTypeConflictException extends SemanticException {
-    private final String dataTypeName;
+
+	private static final long serialVersionUID = -3910178888465174226L;
+	private final String dataTypeName;
     private final String constructorName;
     
     public ConstructorDataTypeConflictException(String dataTypeName, String constructorName) {

@@ -27,7 +27,9 @@ import pogofish.jadt.util.Util;
  */
 public class SemanticExceptions extends RuntimeException {
 
-    public SemanticExceptions(Set<SemanticException> errors) {
+	private static final long serialVersionUID = 799507299528324679L;
+
+	public SemanticExceptions(Set<SemanticException> errors) {
         super(Util.makeString(errors, "\n\n "));
     }
 

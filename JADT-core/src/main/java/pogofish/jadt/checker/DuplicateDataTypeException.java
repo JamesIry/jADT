@@ -21,7 +21,11 @@ package pogofish.jadt.checker;
  * @author jiry
  */
 public class DuplicateDataTypeException extends SemanticException {
-    private String dataTypeName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7966096437224245037L;
+	private String dataTypeName;
     
     public DuplicateDataTypeException(String dataTypeName) {
         super("Cannot have two datatypes named " + dataTypeName);

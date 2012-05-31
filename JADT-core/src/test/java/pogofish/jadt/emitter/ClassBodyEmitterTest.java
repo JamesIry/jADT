@@ -298,7 +298,6 @@ public class ClassBodyEmitterTest {
         } finally {
             target.close();            
         }
-        System.out.println(target.result());
         assertEquals(ARGS_HASHCODE, target.result());                 
         
     }    

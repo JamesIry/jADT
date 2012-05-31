@@ -334,9 +334,9 @@ public class ParserTest {
     @Test
     public void testFull() {
         final Parser parser = new StandardParser();
-        final Doc doc = parser.parse(new StringSource("ParserTest",
-                "//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
-                        + "FooBar = foo | bar(int hey, String[] yeah) " + "whatever = whatever"));
+        final String source = "//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
+        + "FooBar = foo | bar(int hey, String[] yeah) whatever = whatever";
+		final Doc doc = parser.parse(new StringSource("ParserTest", source));
 
         assertEquals(
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
@@ -347,3 +347,4 @@ public class ParserTest {
                                  new DataType("whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
     }    
 }
+

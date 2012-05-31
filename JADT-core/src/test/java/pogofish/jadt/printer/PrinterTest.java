@@ -113,7 +113,7 @@ public class PrinterTest {
      */
     @Test
     public void testDataTypes() {
-        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType("Foo", list(new Constructor("Bar",
+        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType("Foo", Util.<String>list(), list(new Constructor("Bar",
                 Util.<Arg> list()), new Constructor("Baz", Util.<Arg> list())))));
     }
 
@@ -135,7 +135,7 @@ public class PrinterTest {
                 "PrinterTest", "some.package", list("number.one", "number.two"), Util.<DataType> list())));
         // package, imports and datatypes
         assertEquals("package some.package\n\nimport number.one\nimport number.two\n\nFoo =\n    Bar\n", print(new Doc(
-                "PrinterTest", "some.package", list("number.one", "number.two"), list(new DataType("Foo",
+                "PrinterTest", "some.package", list("number.one", "number.two"), list(new DataType("Foo", Util.<String>list(), 
                         list(new Constructor("Bar", Util.<Arg> list())))))));
     }
 }

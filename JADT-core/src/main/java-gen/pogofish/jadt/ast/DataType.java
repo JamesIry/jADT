@@ -3,7 +3,7 @@ package pogofish.jadt.ast;
 import java.util.List;
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/JADT-core/src/main/jadt/jadt.jadt. Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADTGeneric/JADT-core/src/main/jadt/jadt.jadt. Please do not modify directly.
 
 The source was parsed as: 
 
@@ -14,7 +14,7 @@ import java.util.List
 Doc =
     Doc(String srcInfo, String pkg, List<String> imports, List<DataType> dataTypes)
 DataType =
-    DataType(String name, List<Constructor> constructors)
+    DataType(String name, List<String> typeArguments, List<Constructor> constructors)
 Constructor =
     Constructor(String name, List<Arg> args)
 Arg =
@@ -37,13 +37,15 @@ PrimitiveType =
 */
 public final class DataType {
 
-   public static final DataType _DataType(String name, List<Constructor> constructors) { return new DataType(name, constructors); }
+   public static final DataType _DataType(String name, List<String> typeArguments, List<Constructor> constructors) { return new DataType(name, typeArguments, constructors); }
 
       public final String name;
+      public final List<String> typeArguments;
       public final List<Constructor> constructors;
 
-      public DataType(String name, List<Constructor> constructors) {
+      public DataType(String name, List<String> typeArguments, List<Constructor> constructors) {
          this.name = name;
+         this.typeArguments = typeArguments;
          this.constructors = constructors;
       }
 
@@ -52,6 +54,7 @@ public final class DataType {
           final int prime = 31;
           int result = 1;
           result = prime * result + ((name == null) ? 0 : name.hashCode());
+          result = prime * result + ((typeArguments == null) ? 0 : typeArguments.hashCode());
           result = prime * result + ((constructors == null) ? 0 : constructors.hashCode());
           return result;
       }
@@ -65,6 +68,9 @@ public final class DataType {
          if (name == null) {
             if (other.name != null) return false;
          } else if (!name.equals(other.name)) return false;
+         if (typeArguments == null) {
+            if (other.typeArguments != null) return false;
+         } else if (!typeArguments.equals(other.typeArguments)) return false;
          if (constructors == null) {
             if (other.constructors != null) return false;
          } else if (!constructors.equals(other.constructors)) return false;
@@ -73,7 +79,7 @@ public final class DataType {
 
       @Override
       public String toString() {
-         return "DataType(name = " + name + ", constructors = " + constructors + ")";
+         return "DataType(name = " + name + ", typeArguments = " + typeArguments + ", constructors = " + constructors + ")";
       }
 
 }

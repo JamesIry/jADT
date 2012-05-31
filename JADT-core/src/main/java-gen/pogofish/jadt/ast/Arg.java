@@ -2,7 +2,7 @@ package pogofish.jadt.ast;
 
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/JADT-core/src/main/jadt/jadt.jadt. Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADTGeneric/JADT-core/src/main/jadt/jadt.jadt. Please do not modify directly.
 
 The source was parsed as: 
 
@@ -13,7 +13,7 @@ import java.util.List
 Doc =
     Doc(String srcInfo, String pkg, List<String> imports, List<DataType> dataTypes)
 DataType =
-    DataType(String name, List<Constructor> constructors)
+    DataType(String name, List<String> typeArguments, List<Constructor> constructors)
 Constructor =
     Constructor(String name, List<Arg> args)
 Arg =

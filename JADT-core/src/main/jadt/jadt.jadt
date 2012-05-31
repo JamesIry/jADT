@@ -19,7 +19,7 @@ import java.util.List
 
 Doc = Doc(String srcInfo, String pkg, List<String> imports, List<DataType> dataTypes) 
 
-DataType = DataType(String name, List<Constructor> constructors)
+DataType = DataType(String name, List<String> typeArguments, List<Constructor> constructors)
 
 Constructor = Constructor(String name, List<Arg> args)
 

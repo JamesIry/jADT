@@ -138,17 +138,22 @@ public class StandardParser implements Parser {
         }
 
         /**
-         * Parses a reqiored dataType which is (name "=" constructors)
+         * Parses a dataType which is (name "=" constructors)
          * 
          * @return DataType
          */
         public DataType dataType() {
             if (!tokenizer.accept(TokenType.IDENTIFIER)) { throw syntaxException("a data type name"); }
             final String name = tokenizer.lastSymbol();
+            
+            final List<String> typeArguments = new ArrayList<String>();
+            while(tokenizer.accept(TokenType.IDENTIFIER)) {
+            	typeArguments.add(tokenizer.lastSymbol());
+            }
 
             if (!tokenizer.accept(TokenType.EQUALS)) { throw syntaxException("'='"); }
 
-            return new DataType(name, constructors());
+            return new DataType(name, typeArguments, constructors());
 
         }
 

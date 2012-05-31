@@ -232,7 +232,9 @@ public class ParserTest {
      */
     @Test
     public void testDataType() {
-        assertEquals(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo=Foo").dataType());
+        assertEquals(_DataType("Foo", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo=Foo").dataType());
+        assertEquals(_DataType("Foo", list("A"), list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo A=Foo").dataType());
+        assertEquals(_DataType("Foo", list("A", "B"), list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo A B=Foo").dataType());
         try {
             final DataType result = parserImpl("").dataType();
             fail("No syntax exception from empty dataType, got " + result);
@@ -250,8 +252,8 @@ public class ParserTest {
      */
     @Test
     public void testDataTypes() {
-        assertEquals(list(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list())))), parserImpl("Foo=Foo").dataTypes());
-        assertEquals(list(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list()))), _DataType("Bar", list(_Constructor("Bar", Util.<Arg>list())))), parserImpl("Foo=Foo Bar = Bar").dataTypes());
+        assertEquals(list(_DataType("Foo", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list())))), parserImpl("Foo=Foo").dataTypes());
+        assertEquals(list(_DataType("Foo", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), _DataType("Bar", Util.<String>list(), list(_Constructor("Bar", Util.<Arg>list())))), parserImpl("Foo=Foo Bar = Bar").dataTypes());
         try {
             final List<DataType> result = parserImpl("").dataTypes();
             fail("No syntax exception from empty dataType list, got " + result);
@@ -324,7 +326,7 @@ public class ParserTest {
         final Parser parser = new StandardParser();
         final Doc doc = parser.parse(new StringSource("ParserTest","Foo = Foo"));
 
-        assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(_DataType("Foo", list(_Constructor("Foo", Util.<Arg>list()))))), doc);
+        assertEquals(new Doc("ParserTest", "", Util.<String> list(), list(_DataType("Foo", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))))), doc);
     }
 
     
@@ -340,11 +342,11 @@ public class ParserTest {
 
         assertEquals(
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
-                        new DataType("FooBar", Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
+                        new DataType("FooBar", Util.<String>list(), Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
                                 "bar", list(
                                         new Arg(_Primitive(_IntType), "hey"), 
                                         new Arg(_Ref(_ArrayType(_Ref(_ClassType("String", Util.<RefType>list())))), "yeah"))))), 
-                                 new DataType("whatever", list(new Constructor("whatever", Util.<Arg> list()))))), doc);
+                                 new DataType("whatever", Util.<String>list(), list(new Constructor("whatever", Util.<Arg> list()))))), doc);
     }    
 }
 

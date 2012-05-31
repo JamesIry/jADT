@@ -2,7 +2,7 @@ package pogofish.jadt.ast;
 
 
 /*
-This file was generated based on /home/jiry/workspace/JADT/src/main/jadt/jadt.jadt. Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/JADT-core/src/main/jadt/jadt.jadt. Please do not modify directly.
 
 The source was parsed as: 
 
@@ -54,7 +54,22 @@ public abstract class Type {
       @Override
       public A visit(Primitive x) { return getDefault(x); }
 
-      public abstract A getDefault(Type x);
+      protected abstract A getDefault(Type x);
+   }
+
+   public static interface VoidVisitor {
+      void visit(Ref x);
+      void visit(Primitive x);
+   }
+
+   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+      @Override
+      public void visit(Ref x) { doDefault(x); }
+
+      @Override
+      public void visit(Primitive x) { doDefault(x); }
+
+      protected abstract void doDefault(Type x);
    }
 
    public static final class Ref extends Type {
@@ -66,6 +81,9 @@ public abstract class Type {
 
       @Override
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
+
+      @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
 
       @Override
       public int hashCode() {
@@ -105,6 +123,9 @@ public abstract class Type {
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
 
       @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+
+      @Override
       public int hashCode() {
           final int prime = 31;
           int result = 1;
@@ -132,5 +153,7 @@ public abstract class Type {
    }
 
    public abstract <A> A accept(Visitor<A> visitor);
+
+   public abstract void accept(VoidVisitor visitor);
 
 }

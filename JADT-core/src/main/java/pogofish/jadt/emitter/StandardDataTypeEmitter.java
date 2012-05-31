@@ -92,7 +92,24 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
             target.write("      @Override\n");
             target.write("      public A visit(" + constructor.name + " x) { return getDefault(x); }\n\n");
         }
-        target.write("      public abstract A getDefault(" + dataType.name + " x);\n");
+        target.write("      protected abstract A getDefault(" + dataType.name + " x);\n");
+        target.write("   }");
+        
+        target.write("\n\n");
+        
+        target.write("   public static interface VoidVisitor {\n");
+        for(Constructor constructor : dataType.constructors) {
+            target.write("      void visit(" + constructor.name + " x);");
+            target.write("\n");
+        }
+        target.write("   }\n\n");
+        
+        target.write("   public static abstract class VoidVisitorWithDefault implements VoidVisitor {\n");
+        for(Constructor constructor : dataType.constructors) {
+            target.write("      @Override\n");
+            target.write("      public void visit(" + constructor.name + " x) { doDefault(x); }\n\n");
+        }
+        target.write("      protected abstract void doDefault(" + dataType.name + " x);\n");
         target.write("   }");
         
         for(Constructor constructor : dataType.constructors) {
@@ -100,6 +117,8 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
             constructorEmitter.constructorDeclaration(target, constructor, dataType.name);
         }
         target.write("\n\n   public abstract <A> A accept(Visitor<A> visitor);\n\n");
+        
+        target.write("   public abstract void accept(VoidVisitor visitor);\n\n");
         
         target.write("}");
     }

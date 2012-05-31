@@ -2,7 +2,7 @@ package pogofish.jadt.ast;
 
 
 /*
-This file was generated based on /home/jiry/workspace/JADT/src/main/jadt/jadt.jadt. Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/JADT-core/src/main/jadt/jadt.jadt. Please do not modify directly.
 
 The source was parsed as: 
 

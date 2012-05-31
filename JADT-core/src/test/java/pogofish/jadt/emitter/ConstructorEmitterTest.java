@@ -41,6 +41,9 @@ public class ConstructorEmitterTest {
     "      @Override\n" +
     "      public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }\n" +
     "\n" +
+    "      @Override\n" +
+    "      public void accept(VoidVisitor visitor) { visitor.visit(this); }\n" +
+    "\n" +
     "/* hashCode method Foo*/\n" +
     "\n" +
     "/* equals method Foo*/\n" +

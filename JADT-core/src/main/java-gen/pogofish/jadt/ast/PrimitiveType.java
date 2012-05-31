@@ -2,7 +2,7 @@ package pogofish.jadt.ast;
 
 
 /*
-This file was generated based on /home/jiry/workspace/JADT/src/main/jadt/jadt.jadt. Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/JADT-core/src/main/jadt/jadt.jadt. Please do not modify directly.
 
 The source was parsed as: 
 
@@ -79,7 +79,42 @@ public abstract class PrimitiveType {
       @Override
       public A visit(ShortType x) { return getDefault(x); }
 
-      public abstract A getDefault(PrimitiveType x);
+      protected abstract A getDefault(PrimitiveType x);
+   }
+
+   public static interface VoidVisitor {
+      void visit(BooleanType x);
+      void visit(CharType x);
+      void visit(DoubleType x);
+      void visit(FloatType x);
+      void visit(IntType x);
+      void visit(LongType x);
+      void visit(ShortType x);
+   }
+
+   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+      @Override
+      public void visit(BooleanType x) { doDefault(x); }
+
+      @Override
+      public void visit(CharType x) { doDefault(x); }
+
+      @Override
+      public void visit(DoubleType x) { doDefault(x); }
+
+      @Override
+      public void visit(FloatType x) { doDefault(x); }
+
+      @Override
+      public void visit(IntType x) { doDefault(x); }
+
+      @Override
+      public void visit(LongType x) { doDefault(x); }
+
+      @Override
+      public void visit(ShortType x) { doDefault(x); }
+
+      protected abstract void doDefault(PrimitiveType x);
    }
 
    public static final class BooleanType extends PrimitiveType {
@@ -89,6 +124,9 @@ public abstract class PrimitiveType {
 
       @Override
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
+
+      @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
 
       @Override
       public int hashCode() {
@@ -119,6 +157,9 @@ public abstract class PrimitiveType {
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
 
       @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+
+      @Override
       public int hashCode() {
           return 0;
       }
@@ -145,6 +186,9 @@ public abstract class PrimitiveType {
 
       @Override
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
+
+      @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
 
       @Override
       public int hashCode() {
@@ -175,6 +219,9 @@ public abstract class PrimitiveType {
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
 
       @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+
+      @Override
       public int hashCode() {
           return 0;
       }
@@ -201,6 +248,9 @@ public abstract class PrimitiveType {
 
       @Override
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
+
+      @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
 
       @Override
       public int hashCode() {
@@ -231,6 +281,9 @@ public abstract class PrimitiveType {
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
 
       @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+
+      @Override
       public int hashCode() {
           return 0;
       }
@@ -259,6 +312,9 @@ public abstract class PrimitiveType {
       public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }
 
       @Override
+      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+
+      @Override
       public int hashCode() {
           return 0;
       }
@@ -279,5 +335,7 @@ public abstract class PrimitiveType {
    }
 
    public abstract <A> A accept(Visitor<A> visitor);
+
+   public abstract void accept(VoidVisitor visitor);
 
 }

@@ -52,16 +52,33 @@ public class DataTypeEmitterTest {
     "      public A visit(Foo x) { return getDefault(x); }\n" +
     "\n" +
     "      @Override\n" +
-    "      public A visit(Bar x) { return getDefault(x); }\n" +
+    "      public A visit(Bar x) { return getDefault(x); }\n" +    
     "\n" +
-    "      public abstract A getDefault(FooBar x);\n" +
+    "      protected abstract A getDefault(FooBar x);\n" +
     "   }\n" +
     "\n" +
+    "   public static interface VoidVisitor {\n" +
+    "      void visit(Foo x);\n" +
+    "      void visit(Bar x);\n" +
+    "   }\n" +
+    "\n" +
+    "   public static abstract class VoidVisitorWithDefault implements VoidVisitor {\n" +
+    "      @Override\n" +
+    "      public void visit(Foo x) { doDefault(x); }\n" +
+    "\n" +
+    "      @Override\n" +
+    "      public void visit(Bar x) { doDefault(x); }\n" +    
+    "\n" +
+    "      protected abstract void doDefault(FooBar x);\n" +
+    "   }\n" +
+    "\n" +    
     "/* declaration FooBar Foo */\n" +
     "\n" +
     "/* declaration FooBar Bar */\n" +
     "\n" +
     "   public abstract <A> A accept(Visitor<A> visitor);\n" +
+    "\n" +
+    "   public abstract void accept(VoidVisitor visitor);\n" +
     "\n" +
     "}";
     

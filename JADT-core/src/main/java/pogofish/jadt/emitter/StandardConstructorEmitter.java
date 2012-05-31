@@ -55,7 +55,10 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
     
     private void emitAccept(Target target) {
         target.write("      @Override\n");
-        target.write("      public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }");
+        target.write("      public <A> A accept(Visitor<A> visitor) { return visitor.visit(this); }\n");
+        target.write("\n");
+        target.write("      @Override\n");
+        target.write("      public void accept(VoidVisitor visitor) { visitor.visit(this); }");
     }
 
     

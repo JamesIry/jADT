@@ -138,23 +138,49 @@ public class StandardParser implements Parser {
         }
 
         /**
-         * Parses a dataType which is (name "=" constructors)
+         * Parses a dataType which is (name typeArguments? "=" constructors)
          * 
          * @return DataType
          */
         public DataType dataType() {
             if (!tokenizer.accept(TokenType.IDENTIFIER)) { throw syntaxException("a data type name"); }
             final String name = tokenizer.lastSymbol();
-            
-            final List<String> typeArguments = new ArrayList<String>();
-            while(tokenizer.accept(TokenType.IDENTIFIER)) {
-            	typeArguments.add(tokenizer.lastSymbol());
-            }
+            final List<String> typeArguments = typeArguments();
 
             if (!tokenizer.accept(TokenType.EQUALS)) { throw syntaxException("'='"); }
 
             return new DataType(name, typeArguments, constructors());
-
+        }
+        
+        /**
+         * Parses an optional type arguments which is ('<' typeArgument (',' typeArgument)* '>')?
+         * 
+         * @return list of string names of type arguments. Empty if none
+         */
+        public List<String> typeArguments() {
+            final List<String> typeArguments = new ArrayList<String>();
+        	
+            if(tokenizer.accept(TokenType.LANGLE)) {
+            	typeArguments.add(typeArgument());
+	            while (tokenizer.accept(TokenType.COMMA)) {
+	            	typeArguments.add(typeArgument());
+	            }
+	            if (!tokenizer.accept(TokenType.RANGLE)) {
+	            	throw syntaxException("'>'");
+	            }
+            }
+            return typeArguments;
+        }
+        
+        /**
+         * A required type argument which is just any identifier
+         */
+        public String typeArgument() {
+            if (!tokenizer.accept(TokenType.IDENTIFIER)) {
+            	throw syntaxException("a type parameter");
+            }
+            
+            return tokenizer.lastSymbol();        	
         }
 
         /**

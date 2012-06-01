@@ -233,8 +233,8 @@ public class ParserTest {
     @Test
     public void testDataType() {
         assertEquals(_DataType("Foo", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo=Foo").dataType());
-        assertEquals(_DataType("Foo", list("A"), list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo A=Foo").dataType());
-        assertEquals(_DataType("Foo", list("A", "B"), list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo A B=Foo").dataType());
+        assertEquals(_DataType("Foo", list("A"), list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo<A>=Foo").dataType());
+        assertEquals(_DataType("Foo", list("A", "B"), list(_Constructor("Foo", Util.<Arg>list()))), parserImpl("Foo<A, B>=Foo").dataType());
         try {
             final DataType result = parserImpl("").dataType();
             fail("No syntax exception from empty dataType, got " + result);

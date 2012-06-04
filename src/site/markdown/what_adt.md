@@ -3,7 +3,7 @@ What is an Algebraic DataType?
 
 This page explains what an ADT is, but it doesn't cover [why to use them](why_adt.html) or [how to use them](how_adt.html).
 
-An algebraic datatype (abbreviated ADT, but not to be confused with abstract datatypes) is something easy to express in many statically typed functional languages, but that has poor support in Java. An ADT is a very simple datastructure type that consists of an choice of some finite number of alternative "constructors" each of which requires a finite number of fields.  Some concrete examples should help clarify.
+An algebraic datatype (abbreviated ADT, but not to be confused with abstract datatypes) is something easy to express in many statically typed functional languages, but that has poor support in Java. An ADT is a very simple data structure type that consists of a choice of some finite number of alternative "constructors" each of which requires a finite number of fields.  Some concrete examples should help clarify.
 
 One of the simplest ADTs in JADT syntax would look like
 
@@ -31,5 +31,11 @@ Finally, nothing prevents an ADT from being recursive.  A binary tree of integer
     IntBinaryTree = Node(int value, IntBinaryTree left, IntBinaryTree right) | EmptyNode
     
 Which says that an IntBinaryTree is either empty or it is a Node with an integer value, a left subtree, and a right subtree.
+
+An ADT can also be generic
+
+    BinaryTree<T> = Node(int value, IntBinaryTree left, IntBinaryTree right) | EmptyNode
+
+Which says that a BinaryTree<T> is either a Node<T> or an EmptyNode<T>.
 
 Now that you know what an ADT is, you might want to check out [why to use them](why_adt.html) or [how to use them](how_adt.html).

@@ -5,7 +5,7 @@ This page explains why to use ADTs is, but it doesn't cover [what they are](what
 
 Why use Algebraic DataTypes?  Can't regular OO constructs get the job done?
 
-Yes.  And no.  Yes because in the end JADT just generates pretty ordinary Java [Visitor](http://en.wikipedia.org/wiki/Visitor_pattern) code.  No because that ordinary code expresses a design approach that is atypical in OO programming.
+Yes.  And no.  "Yes" because in the end JADT just generates pretty ordinary Java [Visitor](http://en.wikipedia.org/wiki/Visitor_pattern) code.  "No" because that ordinary code expresses a design approach that is atypical in OO programming.
 
 It's worth explaining the difference.
 
@@ -18,10 +18,12 @@ Abstract Syntax Tree Example
 
 A concrete example might help.  In language processing it is common to parse raw source code into an Abstract Syntax Tree (AST) - a tree shaped structure that captures the essence of the source but strips out whitespace, comments, punctuation, and other syntactic noise.  Once you've got an AST there are many things you might want to do with it: pretty print it, interpret it, etc.
 
-In the standard OO approach you have a root class that declares methods for print, interpret, etc.  It's easy to extends this language by adding another node in the hierarchy, but it's hard to add additional operations on the AST.  If a separate team wants to create a static analysis that finds errors or does type checking then they have a problem if they don't have access to the AST's source. They either have to do error prone instanceof style checks or they have to do an error prone reimplementation of the parser to generate an instances of an AST that meets their needs.
+In the standard OO approach you have a root class that declares methods for print, interpret, etc.  It's easy to extends this language by adding another node in the hierarchy, but it's hard to add additional operations on the AST.  If a separate team wants to create a static analysis that finds errors or does type checking then they have a problem if they don't have access to the AST's source. They either have to do error prone instanceof style checks or they have to do an error prone re-implementation of the parser to generate an instances of an AST that meets their needs.
 
 If the original AST were defined using ADTs then the third party would do just fine.  They can add operations that use the ADTs matching capability without having to touch any source that they don't own.
 
 Of course, if the AST is defined using ADTs then it's hard for a third party to extend the language.
 
-But in practice it's FAR more common for third parties to want to add operations on an existing than to want to change the definition of a language. 
+But in practice it's FAR more common for third parties to want to add operations on an existing AST than to want to change the definition of a language.
+
+The choice of ADT vs OO style inheritance hierarchy comes down to which direction needs extension most: if you need to add cases, choose OO.  If you need to add operations, choose ADTs

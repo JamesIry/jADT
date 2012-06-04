@@ -9,4 +9,4 @@ A: If you are in a position where you can then by all means do!  JADT can't hope
 
 Q: Why isn't JADT written in Scala or language X
 
-A: That was a touch call.  I would have preferred to write JADT in Scala since it excels at language processing.  However, I finally landed on using Java because the target audience would be Java users and in open source your contributor pool comes from your user pool.
+A: That was a tough call.  I would have preferred to write JADT in Scala since it excels at language processing.  However, I finally landed on using Java because the target audience would be Java users and in open source your contributor pool comes from your user pool. Plus, not using Scala means one less runtime dependency.

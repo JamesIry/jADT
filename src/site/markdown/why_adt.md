@@ -26,4 +26,4 @@ Of course, if the AST is defined using ADTs then it's hard for a third party to 
 
 But in practice it's FAR more common for third parties to want to add operations on an existing AST than to want to change the definition of a language.
 
-The choice of ADT vs OO style inheritance hierarchy comes down to which direction needs extension most: if you need to add cases, choose OO.  If you need to add operations, choose ADTs
+The choice of ADT vs OO style inheritance hierarchy comes down to which direction needs extension most: if you need to add cases, choose OO.  If you need to add operations, choose ADTs.

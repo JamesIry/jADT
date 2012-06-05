@@ -106,4 +106,3 @@ A few rules of thumb for when to use instanceof vs a Visitor.
 
 1. If you find yourself casting, stop, use the Visitor
 2. If you have a bunch of instanceofs in a row then odds are pretty good you'll make a mistake.  Seriously consider using Visitor.
-

@@ -1,6 +1,6 @@
-JADT generates [Java source files](how_adt.html) from [algebraic datatype](what_adt.html) description [files](syntax.html. The resulting Java is easy to [use](how_adt.html).
+JADT turns [algebraic datatype](what_adt.html) description [files](syntax.html) into [Java source files](how_adt.html). The resulting Java is nearly as easy to use as an Enum, but [far more flexible](why_adt.html).
 
-JADT uses very liberal [licensing](licensing.html).
+JADT uses very liberal [licensing](license.html).
 
 Sample
 ======
@@ -32,29 +32,7 @@ Here's a sample JADT file that describes the abstract syntax tree for a fragment
 
 Usage
 =====
-To generate Java from the command line use
-
-    java -cp "path to JADT-core" pogofish.JADT "full path of input file" "base directory for output"
-
-To generate using ant create a build.xml along these lines
-   
-    <?xml version="1.0"?>
-
-    <project name="JADTTaskExample" default="compile" basedir=".">
-      <taskdef name="jadt" classname="pogofish.jadt.ant.JADTAntTask"/>
-
-      <target name="compile" depeneds="generate">
-        <!-- normal compile stuff -->
-      </target>
-      
-      <target name="generate">
-        <jadt srcFile="full path of input file" destDir = "base directory for Java output"/>
-      </target>
-    </project>
-    
-And then run ant, telling it where to find JADT-core and JADT-ant
-    
-    ant -lib "directory that has both JADT-core and JADT-ant"
+Java can be generated from JADT files using [Apache Ant](ant/index.html) or from the [command line](core/index.html).
 
     
 To use the generated Java, you'll need some imports
@@ -127,4 +105,3 @@ And here's a sample function that returns true only if a list of statements has 
         }
         return hasReturn;
     }
-

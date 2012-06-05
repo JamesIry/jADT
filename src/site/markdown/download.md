@@ -25,6 +25,8 @@ Get familiar with [Github](https://help.github.com/categories/54/articles) and [
     
     mvn package # to create the jars in myprojectworkspace/JADT/JADT-core/target
                 # and myprojectworkspace/JADT/JADT-ant/target
-                
+
+    mvn install # to install the jars in your local maven repository
+                    
     mvn site:site site:stage # to create all this pretty documentation 
                              # at myprojectworkspace/JADT/target/staging/index.html

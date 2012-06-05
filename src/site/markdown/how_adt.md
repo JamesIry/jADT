@@ -23,7 +23,7 @@ You can create a new Tree with code like
  JADT also allows ADTs to be generic. The IntBinaryTree above could be replaced with a more generic version
  
      BinaryTree<A> = 
-        Node(int value, IntBinaryTree left, IntBinaryTree right)
+        Node(int value, BinaryTree<A> left, BinaryTree<A> right)
       | EmptyTree
  
  With that you can create a Tree with code like

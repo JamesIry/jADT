@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import pogofish.jadt.Version;
 import pogofish.jadt.ast.*;
 import pogofish.jadt.target.StringTargetFactory;
 import pogofish.jadt.util.Util;
@@ -37,6 +38,14 @@ import pogofish.jadt.util.Util;
  * @author jiry
  */
 public class DocEmitterTest {
+	private static final String VERSION = new Version().getVersion();
+	private static final String BOILERPLATE = 
+    "This file was generated based on EmitterTest using JADT version " + VERSION + " (http://jamesiry.github.com/JADT/). Please do not modify directly.\n" +
+    "\n" +
+    "The source was parsed as: \n" +
+    "\n";
+
+	
     private static final String FULL_HEADER =
     "package some.package;\n" +
     "\n" +
@@ -44,10 +53,7 @@ public class DocEmitterTest {
     "import flim.flam;\n" +
     "\n" +
     "/*\n" +
-    "This file was generated based on EmitterTest. Please do not modify directly.\n" +
-    "\n" +
-    "The source was parsed as: \n" +
-    "\n" +
+    BOILERPLATE +
     "package some.package\n" +
     "\n" +
     "import wow.man\n" +
@@ -66,10 +72,7 @@ public class DocEmitterTest {
     "import flim.flam;\n" +
     "\n" +
     "/*\n" +
-    "This file was generated based on EmitterTest. Please do not modify directly.\n" +
-    "\n" +
-    "The source was parsed as: \n" +
-    "\n" +
+    BOILERPLATE +
     "import wow.man\n" +
     "import flim.flam\n" +
     "\n" +
@@ -86,10 +89,7 @@ public class DocEmitterTest {
     "package some.package;\n" +
     "\n" +
     "/*\n" +
-    "This file was generated based on EmitterTest. Please do not modify directly.\n" +
-    "\n" +
-    "The source was parsed as: \n" +
-    "\n" +
+    BOILERPLATE +
     "package some.package\n" +
     "\n" +
     "FooBar =\n" +

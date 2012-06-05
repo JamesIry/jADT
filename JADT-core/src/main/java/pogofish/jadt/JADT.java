@@ -94,7 +94,8 @@ public class JADT {
      */
     public void parseAndEmit(String[] args) {
         if (args.length != 2) {
-            throw new IllegalArgumentException("usage: java sfdc.adt.JADT [source file] [output directory]");
+        	final String version = new Version().getVersion();
+            throw new IllegalArgumentException("\nJADT version " + version + "\nusage: java sfdc.adt.JADT [source file] [output directory]");
         }
         
         final String srcFileName = args[0];

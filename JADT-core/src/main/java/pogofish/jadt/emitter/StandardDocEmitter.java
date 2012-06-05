@@ -15,6 +15,7 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
+import pogofish.jadt.Version;
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
 import pogofish.jadt.printer.Printer;
@@ -42,7 +43,8 @@ public class StandardDocEmitter implements DocEmitter {
             }
             header.append("\n");
         }
-        header.append("/*\nThis file was generated based on " + doc.srcInfo + ". Please do not modify directly.\n\n");
+        final String version = new Version().getVersion();
+        header.append("/*\nThis file was generated based on " + doc.srcInfo + " using JADT version " + version + " (http://jamesiry.github.com/JADT/). Please do not modify directly.\n\n");
         header.append("The source was parsed as: \n\n");
         header.append(Printer.print(doc));
         header.append("\n*/\n");

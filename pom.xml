@@ -76,9 +76,8 @@
     <site.maven.plugin.version>0.6</site.maven.plugin.version>
   </properties>
   
-  <build>
-    <plugins>
-    
+  <build>    
+     <plugins>
  <!-- compiler config -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

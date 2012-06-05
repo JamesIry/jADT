@@ -28,10 +28,17 @@ import pogofish.jadt.util.IOExceptionAction;
 public class StringTarget implements Target {
     private final StringWriter writer;
     private boolean closed = false;
+    private final String name;
     
-    public StringTarget() {
+    @Override
+	public String getInfo() {
+		return name;
+	}
+
+	public StringTarget(final String name) {
         super();
         this.writer = new StringWriter();
+        this.name = name;
     }
     
     @Override

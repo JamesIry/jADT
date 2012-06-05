@@ -21,6 +21,10 @@ package pogofish.jadt.target;
  * @author jiry
  */
 public interface Target {
+	/**
+	 * Information about where this target is going
+	 */
+	public String getInfo();
 
     /**
      * Close this target.  Any further writes will result in an exception

@@ -65,7 +65,7 @@ public class ConstructorEmitterTest {
     public void testFactory() {
         final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType()), "yeah")));
 
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             final ConstructorEmitter emitter = new StandardConstructorEmitter(new DummyClassBodyEmitter());
 
@@ -83,7 +83,7 @@ public class ConstructorEmitterTest {
     public void testConstrucorDeclaration() {
         final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType()), "yeah")));
 
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             final ConstructorEmitter emitter = new StandardConstructorEmitter(new DummyClassBodyEmitter());
 

@@ -24,21 +24,18 @@ package pogofish.jadt.checker;
 public class ConstructorDataTypeConflictException extends SemanticException {
 
 	private static final long serialVersionUID = -3910178888465174226L;
-	private final String dataTypeName;
-    private final String constructorName;
+	private final String name;
     
-    public ConstructorDataTypeConflictException(String dataTypeName, String constructorName) {
-        super("Data type " + dataTypeName + " cannot have a constructor with the name " + constructorName +".  Only single constructor data types may have constructors with the same name");
-        this.dataTypeName = dataTypeName;
-        this.constructorName = constructorName;
+    public ConstructorDataTypeConflictException(String name) {
+        super("Data type " + name + " cannot have a constructor with the name " + name +".  Only single constructor data types may have constructors with the same name");
+        this.name = name;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + constructorName.hashCode();
-        result = prime * result + dataTypeName.hashCode();
+        result = prime * result + name.hashCode();
         return result;
     }
 
@@ -48,8 +45,7 @@ public class ConstructorDataTypeConflictException extends SemanticException {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         ConstructorDataTypeConflictException other = (ConstructorDataTypeConflictException)obj;
-        if (!constructorName.equals(other.constructorName)) return false;
-        if (!dataTypeName.equals(other.dataTypeName)) return false;
+        if (!name.equals(other.name)) return false;
         return true;
     }
 }

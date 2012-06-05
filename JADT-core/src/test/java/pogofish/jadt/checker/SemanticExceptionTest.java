@@ -32,14 +32,12 @@ public class SemanticExceptionTest {
      */
     @Test
     public void testConstructorDataTypeConflictException() {        
-        final ConstructorDataTypeConflictException ex1 = new ConstructorDataTypeConflictException("Foo", "Bar");
-        final ConstructorDataTypeConflictException ex2 = new ConstructorDataTypeConflictException("Foo", "Bar");
-        final ConstructorDataTypeConflictException ex3 = new ConstructorDataTypeConflictException("Baz", "Bar");
-        final ConstructorDataTypeConflictException ex4 = new ConstructorDataTypeConflictException("Foo", "Baz");
+        final ConstructorDataTypeConflictException ex1 = new ConstructorDataTypeConflictException("Foo");
+        final ConstructorDataTypeConflictException ex2 = new ConstructorDataTypeConflictException("Foo");
+        final ConstructorDataTypeConflictException ex3 = new ConstructorDataTypeConflictException("Bar");
         checkEquals(ex1, ex1);
         checkEquals(ex1, ex2);
         checkNotEquals(ex1, ex3);
-        checkNotEquals(ex1, ex4);
         checkNotEquals(ex1, null);
         checkNotEquals(ex1, "hello");
     }

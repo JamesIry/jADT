@@ -17,6 +17,7 @@ package pogofish.jadt.emitter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.ast.DataType;
@@ -24,6 +25,7 @@ import pogofish.jadt.target.Target;
 
 
 public class StandardDataTypeEmitter implements DataTypeEmitter {
+	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     private final ConstructorEmitter constructorEmitter;
     private final ClassBodyEmitter classBodyEmitter;
     
@@ -38,6 +40,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
      */
     @Override
     public void emit(Target target, DataType dataType, String header) {
+    	logger.fine("Generating data type " + dataType.name + ".");
         target.write(header);
         if (dataType.constructors.size() == 1) {
             emitSingleConstructor(target, dataType, header);
@@ -48,6 +51,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
     }
 
     private void emitSingleConstructor(Target target, DataType dataType, String header) {
+    	logger.finer("Generating single constructor for " + dataType.name + ".");
         final Constructor originalConstructor = dataType.constructors.get(0);
         final Constructor pseudoConstructor = new Constructor(dataType.name, originalConstructor.args);
         
@@ -76,6 +80,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
     }
 
     private void emitMultipleConstructor(Target target, DataType dataType, String header) {
+       	logger.finer("Generating multiple constructors for " + dataType.name + ".");
         target.write("public abstract class " + dataType.name);
         classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
         target.write(" {\n\n");

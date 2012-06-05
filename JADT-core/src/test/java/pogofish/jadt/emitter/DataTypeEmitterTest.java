@@ -107,7 +107,7 @@ public class DataTypeEmitterTest {
                         new Arg(_Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor("Bar",
                         Util.<Arg> list())));
 
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             final DataTypeEmitter emitter = new StandardDataTypeEmitter(new DummyClassBodyEmitter(),
                     new DummyConstructorEmitter());
@@ -128,7 +128,7 @@ public class DataTypeEmitterTest {
                 new Arg(_Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                 new Arg(_Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             final DataTypeEmitter emitter = new StandardDataTypeEmitter(new DummyClassBodyEmitter(),
                     new DummyConstructorEmitter());

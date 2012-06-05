@@ -36,4 +36,4 @@ Expression =
   | Variable(String name)
   | Literal(int value)
  
-Option A = Some(A value) | None
+Option<A> = Some(A value) | None

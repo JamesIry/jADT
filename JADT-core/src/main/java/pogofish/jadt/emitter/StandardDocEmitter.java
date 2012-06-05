@@ -15,6 +15,8 @@ limitations under the License.
 */
 package pogofish.jadt.emitter;
 
+import java.util.logging.Logger;
+
 import pogofish.jadt.Version;
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
@@ -24,6 +26,7 @@ import pogofish.jadt.target.TargetFactory;
 
 
 public class StandardDocEmitter implements DocEmitter {    
+	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     private final DataTypeEmitter dataTypeEmitter;
         
     public StandardDocEmitter(DataTypeEmitter dataTypeEmitter) {
@@ -36,6 +39,7 @@ public class StandardDocEmitter implements DocEmitter {
      */
     @Override
     public void emit(TargetFactory factory, Doc doc) {
+    	logger.fine("Generating Java source based on " + doc.srcInfo);
         final StringBuilder header = new StringBuilder(doc.pkg.isEmpty() ? "" : ("package " + doc.pkg + ";\n\n"));
         if (!doc.imports.isEmpty()) {
             for (String imp : doc.imports) {
@@ -50,7 +54,8 @@ public class StandardDocEmitter implements DocEmitter {
         header.append("\n*/\n");
         
         for (DataType dataType : doc.dataTypes) {
-            Target target = factory.createTarget(doc.pkg.isEmpty() ? dataType.name : doc.pkg + "." + dataType.name);
+            final Target target = factory.createTarget(doc.pkg.isEmpty() ? dataType.name : doc.pkg + "." + dataType.name);
+            logger.info("Generating " + target.getInfo());
             try {
                 dataTypeEmitter.emit(target, dataType, header.toString());
             } finally {

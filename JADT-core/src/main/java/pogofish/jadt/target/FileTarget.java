@@ -21,7 +21,12 @@ public class FileTarget implements Target {
     private final Writer writer;
     final File outputFile;
 
-    /**
+    @Override
+	public String getInfo() {
+		return outputFile.getAbsolutePath();
+	}
+
+	/**
      * Creates a FileTarget based on a complete file name
      * 
      * @param outputFileName String full name of the file to be output

@@ -31,7 +31,7 @@ public class StringTargetTest {
      */
     @Test
     public void testHappy() {
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             target.write("world");
         } finally {
@@ -45,7 +45,7 @@ public class StringTargetTest {
      */
     @Test
     public void testExceptionIfNotClosed() {
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             target.write("world");
             final String result = target.result();

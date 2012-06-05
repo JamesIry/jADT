@@ -15,15 +15,30 @@ limitations under the License.
 */
 package pogofish.jadt.parser;
 
-import static pogofish.jadt.ast.PrimitiveType.*;
+import static pogofish.jadt.ast.PrimitiveType._BooleanType;
+import static pogofish.jadt.ast.PrimitiveType._CharType;
+import static pogofish.jadt.ast.PrimitiveType._DoubleType;
+import static pogofish.jadt.ast.PrimitiveType._FloatType;
+import static pogofish.jadt.ast.PrimitiveType._IntType;
+import static pogofish.jadt.ast.PrimitiveType._LongType;
+import static pogofish.jadt.ast.PrimitiveType._ShortType;
 import static pogofish.jadt.ast.RefType._ArrayType;
 import static pogofish.jadt.ast.RefType._ClassType;
 import static pogofish.jadt.ast.Type._Primitive;
 import static pogofish.jadt.ast.Type._Ref;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
 
-import pogofish.jadt.ast.*;
+import pogofish.jadt.ast.Arg;
+import pogofish.jadt.ast.Constructor;
+import pogofish.jadt.ast.DataType;
+import pogofish.jadt.ast.Doc;
+import pogofish.jadt.ast.PrimitiveType;
+import pogofish.jadt.ast.RefType;
+import pogofish.jadt.ast.Type;
 import pogofish.jadt.ast.Type.Primitive;
 import pogofish.jadt.ast.Type.Ref;
 import pogofish.jadt.source.Source;
@@ -35,6 +50,7 @@ import pogofish.jadt.util.Util;
  * @author jiry
  */
 public class StandardParser implements Parser {
+	private static final Logger logger = Logger.getLogger(StandardParser.class.toString());
 
     
     /* (non-Javadoc)
@@ -42,6 +58,7 @@ public class StandardParser implements Parser {
      */
     @Override
     public Doc parse(Source source)  {
+    	logger.fine("Parsing " + source.getSrcInfo());
         final Tokenizer tokenizer = new Tokenizer(source);
         final Impl impl = new Impl(tokenizer);
         return impl.doc();
@@ -75,6 +92,8 @@ public class StandardParser implements Parser {
          * @return Doc
          */
         public Doc doc() {
+        	logger.finer("Parsing doc");
+        	logger.finer("Parsing header");
             return new Doc(tokenizer.srcInfo(), pkg(), imports(), dataTypes());
         }
 
@@ -84,9 +103,13 @@ public class StandardParser implements Parser {
          * @return String the package name, or, because package is optional returns an empty string ""
          */
         public String pkg() {
+        	logger.finer("Parsing package");
             if (tokenizer.accept(TokenType.PACKAGE)) {
-                return packageName();
+                final String name = packageName();
+                logger.finer("package " + name);
+                return name;
             } else {
+            	logger.finer("no package");
                 return "";
             }
         }
@@ -112,10 +135,13 @@ public class StandardParser implements Parser {
          * @return List<String> possibly empty list of imports
          */
         public List<String> imports() {
+        	logger.finer("Parsing imports");
             final List<String> imports = new ArrayList<String>();
             
             while (tokenizer.accept(TokenType.IMPORT)) {
-                imports.add(packageName());
+            	final String name = packageName();
+            	logger.finer("import " + name);
+                imports.add(name);
             }
             return imports;
             
@@ -127,6 +153,7 @@ public class StandardParser implements Parser {
          * @return List<DataType> non empty list of DataTypes
          */
         public List<DataType> dataTypes() {
+        	logger.finer("Parsing datatypes");
             final List<DataType> dataTypes = new ArrayList<DataType>();
 
             dataTypes.add(dataType());
@@ -143,8 +170,10 @@ public class StandardParser implements Parser {
          * @return DataType
          */
         public DataType dataType() {
+        	logger.finer("Parsing datatype");
             if (!tokenizer.accept(TokenType.IDENTIFIER)) { throw syntaxException("a data type name"); }
             final String name = tokenizer.lastSymbol();
+            logger.finer("datatype " + name );
             final List<String> typeArguments = typeArguments();
 
             if (!tokenizer.accept(TokenType.EQUALS)) { throw syntaxException("'='"); }
@@ -158,6 +187,7 @@ public class StandardParser implements Parser {
          * @return list of string names of type arguments. Empty if none
          */
         public List<String> typeArguments() {
+            logger.finest("parsing type arguments");
             final List<String> typeArguments = new ArrayList<String>();
         	
             if(tokenizer.accept(TokenType.LANGLE)) {
@@ -168,6 +198,8 @@ public class StandardParser implements Parser {
 	            if (!tokenizer.accept(TokenType.RANGLE)) {
 	            	throw syntaxException("'>'");
 	            }
+            } else {
+            	logger.finest("no type arguments");
             }
             return typeArguments;
         }
@@ -179,7 +211,8 @@ public class StandardParser implements Parser {
             if (!tokenizer.accept(TokenType.IDENTIFIER)) {
             	throw syntaxException("a type parameter");
             }
-            
+            final String name = tokenizer.lastSymbol();
+            logger.finest("type argument " + name);
             return tokenizer.lastSymbol();        	
         }
 
@@ -189,6 +222,7 @@ public class StandardParser implements Parser {
          * @return List<Constructor> non empty List of constructors
          */
         public List<Constructor> constructors() {
+        	logger.finer("parsing constructors");
             final List<Constructor> constructors = new ArrayList<Constructor>();
             constructors.add(constructor());
             while (tokenizer.accept(TokenType.BAR)) {
@@ -203,8 +237,10 @@ public class StandardParser implements Parser {
          * @return Constructor
          */
         public Constructor constructor() {
+        	logger.finer("parsing constructor");
             if (!tokenizer.accept(TokenType.IDENTIFIER)) { throw syntaxException("a constructor name"); }
             final String name = tokenizer.lastSymbol();
+            logger.finer("constructor " + name);
             if (tokenizer.accept(TokenType.LPAREN)) {
                 final List<Arg> args = args();
                 if (!tokenizer.accept(TokenType.RPAREN)) {
@@ -223,6 +259,7 @@ public class StandardParser implements Parser {
          * @return List<Arg> non-empty list of args
          */
         public List<Arg> args() {
+        	logger.finest("parsing args");
             final List<Arg> args = new ArrayList<Arg>();
             args.add(arg());
             while (tokenizer.accept(TokenType.COMMA)) {
@@ -243,6 +280,7 @@ public class StandardParser implements Parser {
                 throw syntaxException("an argument name");
             } else {
                 final String name = tokenizer.lastSymbol();
+                logger.finest("arg " + name);
                 return new Arg(type, name);
             }
         }
@@ -273,8 +311,9 @@ public class StandardParser implements Parser {
          */
         public Type type() {
             final PrimitiveType primitive = primitiveType();
-            final Type baseType = primitive == null ? _Ref(classType()) : _Primitive(primitive);
-            return array(baseType);
+            final Type type = primitive == null ? _Ref(classType()) : _Primitive(primitive);
+           	logger.finest("type " + type);
+            return array(type);
         }
         
         /**
@@ -349,7 +388,9 @@ public class StandardParser implements Parser {
          * @return A SyntaxException with information about where the problem occurred, what was expected, and what was found
          */
         private SyntaxException syntaxException(String expected) {
-            return new SyntaxException("While parsing " + tokenizer.srcInfo() + ". Expected " + expected + " but found " + tokenizer.lastSymbol() + " at line " + tokenizer.lineno());        
+        	final String msg = "While parsing " + tokenizer.srcInfo() + ". Expected " + expected + " but found " + tokenizer.lastSymbol() + " at line " + tokenizer.lineno();
+        	logger.info(msg);
+            return new SyntaxException(msg);
         }
         
     }

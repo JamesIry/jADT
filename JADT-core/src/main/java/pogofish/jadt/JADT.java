@@ -16,6 +16,7 @@ limitations under the License.
 package pogofish.jadt;
 
 import java.util.Set;
+import java.util.logging.Logger;
 
 import pogofish.jadt.ast.DataType;
 import pogofish.jadt.ast.Doc;
@@ -32,6 +33,8 @@ import pogofish.jadt.util.Util;
  * @author jiry
  */
 public class JADT {
+	private static final Logger logger = Logger.getLogger(JADT.class.toString());
+	
     public static final String TEST_CLASS_NAME = "someClass";
     private static final String TEST_STRING = "hello";
     public static final String TEST_SRC_INFO = "source";
@@ -59,6 +62,7 @@ public class JADT {
      * @return Driver configured with all the Standard bits
      */
     public static JADT standardConfigDriver() {
+    	logger.fine("Using standard configuration.");
         final SourceFactory sourceFactory = new FileSourceFactory();
         final ClassBodyEmitter classBodyEmitter = new StandardClassBodyEmitter();
         final ConstructorEmitter constructorEmitter = new StandardConstructorEmitter(classBodyEmitter);
@@ -93,8 +97,12 @@ public class JADT {
      * @param args
      */
     public void parseAndEmit(String[] args) {
+    	logger.finest("Checking command line arguments.");
         if (args.length != 2) {
         	final String version = new Version().getVersion();
+        	logger.info("JADT version " + version + ".");
+        	logger.info("Not enough arguments provided to JADT");
+        	logger.info("usage: java sfdc.adt.JADT [source file] [output directory]");
             throw new IllegalArgumentException("\nJADT version " + version + "\nusage: java sfdc.adt.JADT [source file] [output directory]");
         }
         
@@ -110,7 +118,12 @@ public class JADT {
      * @param srcFileName full name of the source directory
      * @param destDir full name of the desintation directory (trailing slash is optional)
      */
-    public void parseAndEmit(String srcFileName, String destDir) {
+    public void parseAndEmit(String srcFileName, String destDir) {    	
+    	final String version = new Version().getVersion();
+    	logger.info("JADT version " + version + ".");
+    	logger.info("Will read from srcFile " + srcFileName);
+    	logger.info("Will write to destDir " + destDir);
+   	
         final Source source = sourceFactory.createSource(srcFileName);
         try {
             final Doc doc = parser.parse(source);

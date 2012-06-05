@@ -17,11 +17,13 @@ package pogofish.jadt.emitter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import pogofish.jadt.ast.Constructor;
 import pogofish.jadt.target.Target;
 
 public class StandardConstructorEmitter implements ConstructorEmitter {
+	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     private final ClassBodyEmitter classBodyEmitter;
     
     public StandardConstructorEmitter(ClassBodyEmitter classBodyEmitter) {
@@ -36,7 +38,8 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
     
     @Override
     public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName, List<String> typeParameters) {
-        target.write("   public static final class " + constructor.name);
+    	logger.finer("Generating constructor class for " + constructor.name + " in datatype " + dataTypeName);
+    	target.write("   public static final class " + constructor.name);
         classBodyEmitter.emitParameterizedTypeName(target, typeParameters);
         target.write(" extends " + dataTypeName);
         classBodyEmitter.emitParameterizedTypeName(target, typeParameters);

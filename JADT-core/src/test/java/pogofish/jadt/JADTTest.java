@@ -92,7 +92,7 @@ public class JADTTest {
     @Test
     public void testDriverSemanticIssue() {
         try {
-            final Checker checker = new DummyChecker(Util.<SemanticException>set(new DuplicateConstructorException("Foo", "Bar"), new ConstructorDataTypeConflictException("Foo", "Foo")));
+            final Checker checker = new DummyChecker(Util.<SemanticException>set(new DuplicateConstructorException("Foo", "Bar"), new ConstructorDataTypeConflictException("Foo")));
             final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR}, checker);
             fail("Did not get a SemanticExceptions, got " + result);
         } catch (SemanticExceptions e) {

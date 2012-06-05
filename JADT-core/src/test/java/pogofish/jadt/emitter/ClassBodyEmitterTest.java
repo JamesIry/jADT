@@ -150,7 +150,7 @@ public class ClassBodyEmitterTest {
      * Make sure non parameterized type names are handled properly
      */
     public void testNonParameterizedTypeName() {
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             emitter.emitParameterizedTypeName(target, Util.<String>list());
         } finally {
@@ -163,7 +163,7 @@ public class ClassBodyEmitterTest {
      * Make sure parameterized type names with one type parameter are handled properly
      */
     public void testOneParameterizedTypeName() {
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             emitter.emitParameterizedTypeName(target, list("A"));
         } finally {
@@ -177,7 +177,7 @@ public class ClassBodyEmitterTest {
      * Make sure parameterized type names with multiple type parameters are handled properly
      */
     public void testMultiParameterizedTypeName() {
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             emitter.emitParameterizedTypeName(target, list("A", "B", "C"));
         } finally {
@@ -193,7 +193,7 @@ public class ClassBodyEmitterTest {
     @Test
     public void testNoArgNoTypesFactory() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             emitter.constructorFactory(target, "SomeDataType", "SomeFactory", Util.<String>list(), constructor);
         } finally {
@@ -208,7 +208,7 @@ public class ClassBodyEmitterTest {
     @Test
     public void testNoArgTypesFactory() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             emitter.constructorFactory(target, "SomeDataType", "SomeFactory", list("A", "B"), constructor);
         } finally {
@@ -227,7 +227,7 @@ public class ClassBodyEmitterTest {
                                 new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.constructorFactory(target, "SomeDataType", "SomeFactory", Util.<String>list(), constructor);
@@ -247,7 +247,7 @@ public class ClassBodyEmitterTest {
                                 new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.constructorFactory(target, "SomeDataType", "SomeFactory", list("A", "B"), constructor);
@@ -265,7 +265,7 @@ public class ClassBodyEmitterTest {
                 list(new Arg(_Ref(_ClassType("String", Util.<RefType> list())), "um"), new Arg(_Primitive(_IntType()),
                         "yeah")));
 
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             emitter.emitConstructorMethod(target, constructor);
         } finally {
@@ -281,7 +281,7 @@ public class ClassBodyEmitterTest {
     public void testNoArgToString() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.emitToString(target, constructor);
@@ -300,7 +300,7 @@ public class ClassBodyEmitterTest {
                 new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "um")
         ));
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.emitToString(target, constructor);
@@ -320,7 +320,7 @@ public class ClassBodyEmitterTest {
                 new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "yeah")
         ));
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.emitToString(target, constructor);
@@ -337,7 +337,7 @@ public class ClassBodyEmitterTest {
     public void testNoArgsNoTypesEquals() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.emitEquals(target, constructor, Util.<String>list());
@@ -359,7 +359,7 @@ public class ClassBodyEmitterTest {
                 new Arg(_Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.emitEquals(target, constructor, Util.<String>list());
@@ -380,7 +380,7 @@ public class ClassBodyEmitterTest {
                 new Arg(_Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.emitEquals(target, constructor, list("A", "B"));
@@ -397,7 +397,7 @@ public class ClassBodyEmitterTest {
     public void testNoArgHashCode() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {
             
             emitter.emitHashCode(target, constructor);
@@ -421,7 +421,7 @@ public class ClassBodyEmitterTest {
                 new Arg(_Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
-        final StringTarget target = new StringTarget();
+        final StringTarget target = new StringTarget("test");
         try {            
             emitter.emitHashCode(target, constructor);
         } finally {

@@ -16,6 +16,7 @@ limitations under the License.
 package pogofish.jadt.emitter;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import pogofish.jadt.ast.Arg;
 import pogofish.jadt.ast.Constructor;
@@ -32,6 +33,7 @@ import pogofish.jadt.printer.Printer;
 import pogofish.jadt.target.Target;
 
 public class StandardClassBodyEmitter implements ClassBodyEmitter {
+	private static final Logger logger = Logger.getLogger(StandardClassBodyEmitter.class.toString());
     
     /* (non-Javadoc)
      * @see pogofish.jadt.emitter.ClassBodyEmitter#constructorFactory(pogofish.jadt.emitter.Target, java.lang.String, java.lang.String, pogofish.jadt.ast.Constructor)
@@ -39,7 +41,10 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     @Override
     public void constructorFactory(Target target, String dataTypeName, String factoryName, List<String> typeParametrs, Constructor constructor) {
         if (constructor.args.isEmpty()) {
-        	if (!typeParametrs.isEmpty()) {
+        	if (typeParametrs.isEmpty()) {
+            	logger.finest("Generating no args, no types factory for " + constructor.name);
+        	} else {
+            	logger.finest("Generating no args, type arguments factory for " + constructor.name);
         		target.write("   @SuppressWarnings(\"rawtypes\")\n");
         	}
             target.write("   private static final " + dataTypeName + " _" + factoryName + " = new " + constructor.name + "();\n");
@@ -53,6 +58,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
         	emitParameterizedTypeName(target, typeParametrs);
         	target.write(" _" + factoryName + "() { return _" + factoryName + "; }");
         } else {
+        	logger.finest("Generating args factory for " + constructor.name);
             target.write("   public static final ");
             emitParameterizedTypeName(target, typeParametrs);
         	target.write(" ");
@@ -86,6 +92,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      */
     @Override
     public void emitConstructorMethod(Target target, Constructor constructor) {
+    	logger.finest("Generating constructor method for " + constructor.name);
         for (Arg arg : constructor.args) {
             target.write("      public final " + Printer.print(arg.type) + " " + arg.name + ";\n");
         }
@@ -103,6 +110,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      */
     @Override
     public void emitToString(Target target, Constructor constructor) {
+    	logger.finest("Generating toString() for " + constructor.name);
         target.write("      @Override\n");
         target.write("      public String toString() {\n");
         target.write("         return \"" + constructor.name);
@@ -128,6 +136,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      */
     @Override
     public void emitEquals(final Target target, Constructor constructor, List<String> typeArguments) {
+    	logger.finest("Generating equals() for " + constructor.name);
         target.write("      @Override\n");
         target.write("      public boolean equals(Object obj) {\n");
         target.write("         if (this == obj) return true;\n");
@@ -172,6 +181,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      */
     @Override
     public void emitHashCode(final Target target, Constructor constructor) {
+    	logger.finest("Generating hashCode() for " + constructor.name);
         target.write("      @Override\n");
         target.write("      public int hashCode() {\n");
         if (constructor.args.isEmpty()) {

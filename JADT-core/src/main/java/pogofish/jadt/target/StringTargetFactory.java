@@ -38,7 +38,7 @@ public class StringTargetFactory implements TargetFactory {
 
     @Override
     public Target createTarget(String className) {
-        StringTarget target = new StringTarget();
+        StringTarget target = new StringTarget(className);
         targets.put(className, target);
         return target;
     }

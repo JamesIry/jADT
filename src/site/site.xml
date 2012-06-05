@@ -25,18 +25,29 @@
     </custom>
 
     <body>
-        <menu name="JADT User Documentation">
-            <item name="About" href="index.html"/>
-            <item name="License" href="license.html"/>
-            <item name="What is an ADT?" href="what_adt.html"/>
-            <item name="Why use ADTs?" href="why_adt.html"/>
-            <item name="How can ADTs be used?" href="how_adt.html"/>
-            <item name="JADT syntax" href="syntax.html"/>
-            <item name="Limitations" href="limitations.html"/>
-            <item name="FAQ" href="faq.html"/>
-            <item name="Core Module" href="core/index.html"/>
-            <item name="Ant Task Module" href="ant/index.html"/>
+        <links>
+            <item name="James Iry's blog&nbsp;&nbsp;&nbsp;" href="http://james-iry.blogspot.com"/>
+        </links>
+        
+        <breadcrumbs>
+          <item name="JADT" href="index.html"/>
+        </breadcrumbs>        
+    
+        <menu name="JADT User Documentation" inherit="top">
+            <item name="About" href="index.html" collapse="false"/>
+            <item name="License" href="license.html" collapse="false"/>
+            <item name="Download" href="download.html" collapse="false"/>
+            <item name="What is an ADT?" href="what_adt.html" collapse="false"/>
+            <item name="Why use ADTs?" href="why_adt.html" collapse="false"/>
+            <item name="How can ADTs be used?" href="how_adt.html" collapse="false"/>
+            <item name="JADT syntax" href="syntax.html" collapse="false"/>
+            <item name="Limitations" href="limitations.html" collapse="false"/>
+            <item name="FAQ" href="faq.html" collapse="false"/>
+            <item name="Core Module" href="core/index.html" collapse="false"/>
+            <item name="Ant Task Module" href="ant/index.html" collapse="false"/>
         </menu>
+    
+        <menu ref="reports"/>       
         
         <footer>&copy;2012 James Iry. All rights reserved.</footer>        
     </body>

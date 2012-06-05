@@ -1,6 +1,10 @@
+About JADT
+==========
 JADT turns [algebraic datatype](what_adt.html) description [files](syntax.html) into [Java source files](how_adt.html). The resulting Java is nearly as easy to use as an Enum, but [far more flexible](why_adt.html).
 
 JADT uses very liberal [licensing](license.html).
+
+[Download Now](download.html).
 
 Sample
 ======
@@ -32,7 +36,7 @@ Here's a sample JADT file that describes the abstract syntax tree for a fragment
 
 Usage
 =====
-Java can be generated from JADT files using [Apache Ant](ant/index.html) or from the [command line](core/index.html).
+Java can be generated from JADT files using [Apache Ant](ant/index.html) or from the [shell](core/index.html).
 
     
 To use the generated Java, you'll need some imports

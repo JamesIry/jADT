@@ -1,6 +1,7 @@
-This is the Apache Ant task module for [JADT](../index.html).
+JADT Ant Module
+===============
 
-To use it create a taskdef and task like in the following.
+To use [JADT](../index.html) in  [Apache Ant](http://ant.apache.org/), create a taskdef and task like in the following sample build.xml.
 
     <?xml version="1.0"?>
 
@@ -16,4 +17,4 @@ To use it create a taskdef and task like in the following.
       </target>
     </project>
 
-To generate from the command line see the [Core module](../core/index.html).
+To generate from the shell see the [Core module](../core/index.html).

@@ -11,7 +11,7 @@ If you have an ADT definition in JADT's [syntax](syntax.html) for a binary tree
         Node(int value, IntBinaryTree left, IntBinaryTree right)
       | EmptyTree
 
-JADT generates codes such that with a couple of imports
+Using [ant](ant/index.html) or the [shell](core/index.html) JADT generates Java code such that with a couple of imports
 
     import my.package.IntBinaryTree.*
     import static my.package.IntBinaryTree.*
@@ -42,7 +42,7 @@ You can also achieve the same thing with 'new BinaryTree.Node<String>("hello"...
 Matching on an ADT
 =================
 
-In Java you can use "switch" to decide what do you based on specific values of primitives and Enums.  If the primitive happens to be a boolean then you can use "if" or the ternary operation (x ? y : z).  But what about ADTs?  If somebody hands you an IntBinaryTree how do you find the max number in it?
+In Java you can use "switch" to decide what to do you based on specific values of primitives and Enums.  If the primitive happens to be a boolean then you can also use "if" or the ternary operation (x ? y : z).  But what about ADTs?  How do you decide what to do based on a specific ADT constructor?
 
 Most statically typed functional programming languages have a pattern matching for making decisions based on ADTs.  Java doesn't.  So with JADT you have a couple of choices, you can use instanceof and casting or preferably you can use the [Visitor](http://en.wikipedia.org/wiki/Visitor_pattern) pattern interfaces that JADT generates.  
 

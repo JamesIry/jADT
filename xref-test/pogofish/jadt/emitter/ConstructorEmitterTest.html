@@ -75,7 +75,7 @@
 <a class="jxr_linenumber" name="65" href="#65">65</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testFactory() {
 <a class="jxr_linenumber" name="66" href="#66">66</a>          <strong class="jxr_keyword">final</strong> Constructor constructor = <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(<strong class="jxr_keyword">new</strong> Arg(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"um"</span>), <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"yeah"</span>)));
 <a class="jxr_linenumber" name="67" href="#67">67</a>  
-<a class="jxr_linenumber" name="68" href="#68">68</a>          <strong class="jxr_keyword">final</strong> StringTarget target = <strong class="jxr_keyword">new</strong> StringTarget();
+<a class="jxr_linenumber" name="68" href="#68">68</a>          <strong class="jxr_keyword">final</strong> StringTarget target = <strong class="jxr_keyword">new</strong> StringTarget(<span class="jxr_string">"test"</span>);
 <a class="jxr_linenumber" name="69" href="#69">69</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="70" href="#70">70</a>              <strong class="jxr_keyword">final</strong> ConstructorEmitter emitter = <strong class="jxr_keyword">new</strong> StandardConstructorEmitter(<strong class="jxr_keyword">new</strong> DummyClassBodyEmitter());
 <a class="jxr_linenumber" name="71" href="#71">71</a>  
@@ -93,7 +93,7 @@
 <a class="jxr_linenumber" name="83" href="#83">83</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstrucorDeclaration() {
 <a class="jxr_linenumber" name="84" href="#84">84</a>          <strong class="jxr_keyword">final</strong> Constructor constructor = <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(<strong class="jxr_keyword">new</strong> Arg(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"um"</span>), <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"yeah"</span>)));
 <a class="jxr_linenumber" name="85" href="#85">85</a>  
-<a class="jxr_linenumber" name="86" href="#86">86</a>          <strong class="jxr_keyword">final</strong> StringTarget target = <strong class="jxr_keyword">new</strong> StringTarget();
+<a class="jxr_linenumber" name="86" href="#86">86</a>          <strong class="jxr_keyword">final</strong> StringTarget target = <strong class="jxr_keyword">new</strong> StringTarget(<span class="jxr_string">"test"</span>);
 <a class="jxr_linenumber" name="87" href="#87">87</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="88" href="#88">88</a>              <strong class="jxr_keyword">final</strong> ConstructorEmitter emitter = <strong class="jxr_keyword">new</strong> StandardConstructorEmitter(<strong class="jxr_keyword">new</strong> DummyClassBodyEmitter());
 <a class="jxr_linenumber" name="89" href="#89">89</a>  

@@ -41,7 +41,7 @@
 <a class="jxr_linenumber" name="31" href="#31">31</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="32" href="#32">32</a>      @Test
 <a class="jxr_linenumber" name="33" href="#33">33</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testHappy() {
-<a class="jxr_linenumber" name="34" href="#34">34</a>          <strong class="jxr_keyword">final</strong> StringTarget target = <strong class="jxr_keyword">new</strong> StringTarget();
+<a class="jxr_linenumber" name="34" href="#34">34</a>          <strong class="jxr_keyword">final</strong> StringTarget target = <strong class="jxr_keyword">new</strong> StringTarget(<span class="jxr_string">"test"</span>);
 <a class="jxr_linenumber" name="35" href="#35">35</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="36" href="#36">36</a>              target.write(<span class="jxr_string">"world"</span>);
 <a class="jxr_linenumber" name="37" href="#37">37</a>          } <strong class="jxr_keyword">finally</strong> {
@@ -55,7 +55,7 @@
 <a class="jxr_linenumber" name="45" href="#45">45</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="46" href="#46">46</a>      @Test
 <a class="jxr_linenumber" name="47" href="#47">47</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testExceptionIfNotClosed() {
-<a class="jxr_linenumber" name="48" href="#48">48</a>          <strong class="jxr_keyword">final</strong> StringTarget target = <strong class="jxr_keyword">new</strong> StringTarget();
+<a class="jxr_linenumber" name="48" href="#48">48</a>          <strong class="jxr_keyword">final</strong> StringTarget target = <strong class="jxr_keyword">new</strong> StringTarget(<span class="jxr_string">"test"</span>);
 <a class="jxr_linenumber" name="49" href="#49">49</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="50" href="#50">50</a>              target.write(<span class="jxr_string">"world"</span>);
 <a class="jxr_linenumber" name="51" href="#51">51</a>              <strong class="jxr_keyword">final</strong> String result = target.result();

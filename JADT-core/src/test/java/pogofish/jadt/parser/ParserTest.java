@@ -113,7 +113,7 @@ public class ParserTest {
     }
     
     /**
-     * Make sure types pare properly
+     * Make sure types parse properly
      */
     @Test
     public void testType() {
@@ -259,6 +259,25 @@ public class ParserTest {
             fail("No syntax exception from empty dataType list, got " + result);
         } catch (SyntaxException e) {            
         }
+    }
+    
+    /**
+     * Make sure type arguments on data types parse properly
+     */
+    @Test
+    public void testTypeArguments() {
+    	assertEquals("Invalid parse of empty type arguments", Util.<String>list(), parserImpl("").typeArguments());
+    	assertEquals("Invalid parse of a single type argument", list("A"), parserImpl("<A>").typeArguments());
+    	assertEquals("Invalid parse of mulitple type arguments", list("A", "B", "C"), parserImpl("<A,B, C>").typeArguments());        try {
+            final List<String> result = parserImpl("<>").typeArguments();
+            fail("No syntax exception from empty argument list, got " + result);
+        } catch (SyntaxException e) {            
+        }
+		try {
+			final List<String> result = parserImpl("<A").typeArguments();
+			fail("No syntax exception from missing right angle bracket, get " + result);
+		} catch (SyntaxException e) {
+		}
     }
     
     /**

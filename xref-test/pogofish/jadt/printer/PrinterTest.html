@@ -61,13 +61,13 @@
 <a class="jxr_linenumber" name="51" href="#51">51</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="52" href="#52">52</a>      @Test
 <a class="jxr_linenumber" name="53" href="#53">53</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testPrimitiveTypes() {
-<a class="jxr_linenumber" name="54" href="#54">54</a>          assertEquals(<span class="jxr_string">"boolean"</span>, print(_Primitive(_BooleanType)));
-<a class="jxr_linenumber" name="55" href="#55">55</a>          assertEquals(<span class="jxr_string">"char"</span>, print(_Primitive(_CharType)));
-<a class="jxr_linenumber" name="56" href="#56">56</a>          assertEquals(<span class="jxr_string">"short"</span>, print(_Primitive(_ShortType)));
-<a class="jxr_linenumber" name="57" href="#57">57</a>          assertEquals(<span class="jxr_string">"int"</span>, print(_Primitive(_IntType)));
-<a class="jxr_linenumber" name="58" href="#58">58</a>          assertEquals(<span class="jxr_string">"long"</span>, print(_Primitive(_LongType)));
-<a class="jxr_linenumber" name="59" href="#59">59</a>          assertEquals(<span class="jxr_string">"float"</span>, print(_Primitive(_FloatType)));
-<a class="jxr_linenumber" name="60" href="#60">60</a>          assertEquals(<span class="jxr_string">"double"</span>, print(_Primitive(_DoubleType)));
+<a class="jxr_linenumber" name="54" href="#54">54</a>          assertEquals(<span class="jxr_string">"boolean"</span>, print(_Primitive(_BooleanType())));
+<a class="jxr_linenumber" name="55" href="#55">55</a>          assertEquals(<span class="jxr_string">"char"</span>, print(_Primitive(_CharType())));
+<a class="jxr_linenumber" name="56" href="#56">56</a>          assertEquals(<span class="jxr_string">"short"</span>, print(_Primitive(_ShortType())));
+<a class="jxr_linenumber" name="57" href="#57">57</a>          assertEquals(<span class="jxr_string">"int"</span>, print(_Primitive(_IntType())));
+<a class="jxr_linenumber" name="58" href="#58">58</a>          assertEquals(<span class="jxr_string">"long"</span>, print(_Primitive(_LongType())));
+<a class="jxr_linenumber" name="59" href="#59">59</a>          assertEquals(<span class="jxr_string">"float"</span>, print(_Primitive(_FloatType())));
+<a class="jxr_linenumber" name="60" href="#60">60</a>          assertEquals(<span class="jxr_string">"double"</span>, print(_Primitive(_DoubleType())));
 <a class="jxr_linenumber" name="61" href="#61">61</a>      }
 <a class="jxr_linenumber" name="62" href="#62">62</a>  
 <a class="jxr_linenumber" name="63" href="#63">63</a>      <em class="jxr_javadoccomment">/**</em>
@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="82" href="#82">82</a>      @Test
 <a class="jxr_linenumber" name="83" href="#83">83</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testArrayTypes() {
 <a class="jxr_linenumber" name="84" href="#84">84</a>          <em class="jxr_comment">// single level</em>
-<a class="jxr_linenumber" name="85" href="#85">85</a>          assertEquals(<span class="jxr_string">"boolean[]"</span>, print(_Ref(_ArrayType(_Primitive(_BooleanType)))));
+<a class="jxr_linenumber" name="85" href="#85">85</a>          assertEquals(<span class="jxr_string">"boolean[]"</span>, print(_Ref(_ArrayType(_Primitive(_BooleanType())))));
 <a class="jxr_linenumber" name="86" href="#86">86</a>          <em class="jxr_comment">// double level</em>
 <a class="jxr_linenumber" name="87" href="#87">87</a>          assertEquals(<span class="jxr_string">"String[][]"</span>,
 <a class="jxr_linenumber" name="88" href="#88">88</a>                  print(_Ref(_ArrayType(_Ref(_ArrayType(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt; list()))))))));
@@ -103,7 +103,7 @@
 <a class="jxr_linenumber" name="93" href="#93">93</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="94" href="#94">94</a>      @Test
 <a class="jxr_linenumber" name="95" href="#95">95</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testArg() {      
-<a class="jxr_linenumber" name="96" href="#96">96</a>          assertEquals(<span class="jxr_string">"boolean[] Foo"</span>, print(<strong class="jxr_keyword">new</strong> Arg(_Ref(_ArrayType(_Primitive(_BooleanType))), <span class="jxr_string">"Foo"</span>)));
+<a class="jxr_linenumber" name="96" href="#96">96</a>          assertEquals(<span class="jxr_string">"boolean[] Foo"</span>, print(<strong class="jxr_keyword">new</strong> Arg(_Ref(_ArrayType(_Primitive(_BooleanType()))), <span class="jxr_string">"Foo"</span>)));
 <a class="jxr_linenumber" name="97" href="#97">97</a>      }
 <a class="jxr_linenumber" name="98" href="#98">98</a>  
 <a class="jxr_linenumber" name="99" href="#99">99</a>      <em class="jxr_javadoccomment">/**</em>
@@ -115,7 +115,7 @@
 <a class="jxr_linenumber" name="105" href="#105">105</a>         assertEquals(<span class="jxr_string">"Foo"</span>, print(<strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, Util.&lt;Arg&gt; list())));
 <a class="jxr_linenumber" name="106" href="#106">106</a>         <em class="jxr_comment">// constructor with args</em>
 <a class="jxr_linenumber" name="107" href="#107">107</a>         assertEquals(<span class="jxr_string">"Foo(boolean hello, int World)"</span>, print(<strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(<strong class="jxr_keyword">new</strong> Arg(
-<a class="jxr_linenumber" name="108" href="#108">108</a>                 _Primitive(_BooleanType), <span class="jxr_string">"hello"</span>), <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType), <span class="jxr_string">"World"</span>)))));
+<a class="jxr_linenumber" name="108" href="#108">108</a>                 _Primitive(_BooleanType()), <span class="jxr_string">"hello"</span>), <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"World"</span>)))));
 <a class="jxr_linenumber" name="109" href="#109">109</a>     }
 <a class="jxr_linenumber" name="110" href="#110">110</a> 
 <a class="jxr_linenumber" name="111" href="#111">111</a>     <em class="jxr_javadoccomment">/**</em>
@@ -123,7 +123,7 @@
 <a class="jxr_linenumber" name="113" href="#113">113</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="114" href="#114">114</a>     @Test
 <a class="jxr_linenumber" name="115" href="#115">115</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDataTypes() {
-<a class="jxr_linenumber" name="116" href="#116">116</a>         assertEquals(<span class="jxr_string">"Foo =\n"</span> + <span class="jxr_string">"    Bar\n"</span> + <span class="jxr_string">"  | Baz"</span>, print(<strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Foo"</span>, list(<strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>,
+<a class="jxr_linenumber" name="116" href="#116">116</a>         assertEquals(<span class="jxr_string">"Foo =\n"</span> + <span class="jxr_string">"    Bar\n"</span> + <span class="jxr_string">"  | Baz"</span>, print(<strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Foo"</span>, Util.&lt;String&gt;list(), list(<strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>,
 <a class="jxr_linenumber" name="117" href="#117">117</a>                 Util.&lt;Arg&gt; list()), <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Baz"</span>, Util.&lt;Arg&gt; list())))));
 <a class="jxr_linenumber" name="118" href="#118">118</a>     }
 <a class="jxr_linenumber" name="119" href="#119">119</a> 
@@ -145,7 +145,7 @@
 <a class="jxr_linenumber" name="135" href="#135">135</a>                 <span class="jxr_string">"PrinterTest"</span>, <span class="jxr_string">"some.package"</span>, list(<span class="jxr_string">"number.one"</span>, <span class="jxr_string">"number.two"</span>), Util.&lt;DataType&gt; list())));
 <a class="jxr_linenumber" name="136" href="#136">136</a>         <em class="jxr_comment">// package, imports and datatypes</em>
 <a class="jxr_linenumber" name="137" href="#137">137</a>         assertEquals(<span class="jxr_string">"package some.package\n\nimport number.one\nimport number.two\n\nFoo =\n    Bar\n"</span>, print(<strong class="jxr_keyword">new</strong> Doc(
-<a class="jxr_linenumber" name="138" href="#138">138</a>                 <span class="jxr_string">"PrinterTest"</span>, <span class="jxr_string">"some.package"</span>, list(<span class="jxr_string">"number.one"</span>, <span class="jxr_string">"number.two"</span>), list(<strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Foo"</span>,
+<a class="jxr_linenumber" name="138" href="#138">138</a>                 <span class="jxr_string">"PrinterTest"</span>, <span class="jxr_string">"some.package"</span>, list(<span class="jxr_string">"number.one"</span>, <span class="jxr_string">"number.two"</span>), list(<strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Foo"</span>, Util.&lt;String&gt;list(), 
 <a class="jxr_linenumber" name="139" href="#139">139</a>                         list(<strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>, Util.&lt;Arg&gt; list())))))));
 <a class="jxr_linenumber" name="140" href="#140">140</a>     }
 <a class="jxr_linenumber" name="141" href="#141">141</a> }

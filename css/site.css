@@ -1,1 +1,5 @@
-/* You can override this file with your own styles */
+#bannerRight {
+  position:absolute;
+  top:0px;
+  right:0px;
+}

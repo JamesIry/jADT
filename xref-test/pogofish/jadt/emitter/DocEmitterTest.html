@@ -122,14 +122,14 @@
 <a class="jxr_linenumber" name="112" href="#112">112</a>     @Test
 <a class="jxr_linenumber" name="113" href="#113">113</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testFull() {
 <a class="jxr_linenumber" name="114" href="#114">114</a>         <strong class="jxr_keyword">final</strong> Doc doc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"EmitterTest"</span>, <span class="jxr_string">"some.package"</span>, list(<span class="jxr_string">"wow.man"</span>, <span class="jxr_string">"flim.flam"</span>), list(
-<a class="jxr_linenumber" name="115" href="#115">115</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, list(
+<a class="jxr_linenumber" name="115" href="#115">115</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="116" href="#116">116</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(
-<a class="jxr_linenumber" name="117" href="#117">117</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType), <span class="jxr_string">"yeah"</span>),
+<a class="jxr_linenumber" name="117" href="#117">117</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
 <a class="jxr_linenumber" name="118" href="#118">118</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
 <a class="jxr_linenumber" name="119" href="#119">119</a>                         )),
 <a class="jxr_linenumber" name="120" href="#120">120</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="121" href="#121">121</a>                 )),
-<a class="jxr_linenumber" name="122" href="#122">122</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Whatever"</span>, list(
+<a class="jxr_linenumber" name="122" href="#122">122</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Whatever"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="123" href="#123">123</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Whatever"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="124" href="#124">124</a>                 ))
 <a class="jxr_linenumber" name="125" href="#125">125</a>                 
@@ -150,14 +150,14 @@
 <a class="jxr_linenumber" name="140" href="#140">140</a>     @Test
 <a class="jxr_linenumber" name="141" href="#141">141</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testNoImports() {
 <a class="jxr_linenumber" name="142" href="#142">142</a>         <strong class="jxr_keyword">final</strong> Doc doc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"EmitterTest"</span>, <span class="jxr_string">"some.package"</span>, Util.&lt;String&gt;list(), list(
-<a class="jxr_linenumber" name="143" href="#143">143</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, list(
+<a class="jxr_linenumber" name="143" href="#143">143</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="144" href="#144">144</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(
-<a class="jxr_linenumber" name="145" href="#145">145</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType), <span class="jxr_string">"yeah"</span>),
+<a class="jxr_linenumber" name="145" href="#145">145</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
 <a class="jxr_linenumber" name="146" href="#146">146</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
 <a class="jxr_linenumber" name="147" href="#147">147</a>                         )),
 <a class="jxr_linenumber" name="148" href="#148">148</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="149" href="#149">149</a>                 )),
-<a class="jxr_linenumber" name="150" href="#150">150</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Whatever"</span>, list(
+<a class="jxr_linenumber" name="150" href="#150">150</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Whatever"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="151" href="#151">151</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Whatever"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="152" href="#152">152</a>                 ))
 <a class="jxr_linenumber" name="153" href="#153">153</a>                 
@@ -178,14 +178,14 @@
 <a class="jxr_linenumber" name="168" href="#168">168</a>     @Test
 <a class="jxr_linenumber" name="169" href="#169">169</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testNoPackage() {
 <a class="jxr_linenumber" name="170" href="#170">170</a>         <strong class="jxr_keyword">final</strong> Doc doc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"EmitterTest"</span>, <span class="jxr_string">""</span>, list(<span class="jxr_string">"wow.man"</span>, <span class="jxr_string">"flim.flam"</span>), list(
-<a class="jxr_linenumber" name="171" href="#171">171</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, list(
+<a class="jxr_linenumber" name="171" href="#171">171</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="172" href="#172">172</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(
-<a class="jxr_linenumber" name="173" href="#173">173</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType), <span class="jxr_string">"yeah"</span>),
+<a class="jxr_linenumber" name="173" href="#173">173</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
 <a class="jxr_linenumber" name="174" href="#174">174</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
 <a class="jxr_linenumber" name="175" href="#175">175</a>                         )),
 <a class="jxr_linenumber" name="176" href="#176">176</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="177" href="#177">177</a>                 )),
-<a class="jxr_linenumber" name="178" href="#178">178</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Whatever"</span>, list(
+<a class="jxr_linenumber" name="178" href="#178">178</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"Whatever"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="179" href="#179">179</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Whatever"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="180" href="#180">180</a>                 ))
 <a class="jxr_linenumber" name="181" href="#181">181</a>                 

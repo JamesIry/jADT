@@ -34,7 +34,7 @@ Which says that an IntBinaryTree is either empty or it is a Node with an integer
 
 An ADT can also be generic
 
-    BinaryTree<T> = Node(int value, IntBinaryTree left, IntBinaryTree right) | EmptyNode
+    BinaryTree<T> = Node(int value, BinaryTree<T> left, BinaryTree<T> right) | EmptyNode
 
 Which says that a BinaryTree<T> is either a Node<T> or an EmptyNode<T>.
 

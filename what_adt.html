@@ -168,7 +168,7 @@ char = 'a' | 'b' | 'c' | ...
 
 <p>An ADT can also be generic</p>
 
-<pre><code>BinaryTree&lt;T&gt; = Node(int value, BinaryTree&lt;T&gt; left, BinaryTree&lt;T&gt; right) | EmptyNode
+<pre><code>BinaryTree&lt;T&gt; = Node(T value, BinaryTree&lt;T&gt; left, BinaryTree&lt;T&gt; right) | EmptyNode
 </code></pre>
 
 <p>Which says that a BinaryTree&lt;T> is either a Node&lt;T> or an EmptyNode&lt;T>.</p>

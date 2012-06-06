@@ -12,7 +12,6 @@
         <href>https://github.com/jamesiry/JADT/</href>
         <src>https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png</src>
     </bannerRight>
-    
     <skin>
         <groupId>org.apache.maven.skins</groupId>
         <artifactId>maven-fluido-skin</artifactId>
@@ -21,6 +20,7 @@
     <custom>
         <fluidoSkin>
             <sideBarEnabled>true</sideBarEnabled>
+            <googleSearch/>
         </fluidoSkin>
     </custom>
 

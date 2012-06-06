@@ -1,0 +1,22 @@
+    package pogofish.jadt.samples.ast
+    
+    import java.util.List
+    
+    Type =
+         Int
+       | Long
+    
+    Function = Function(Type returnType, String name, List<Arg> args, List<Statement> statements)
+    
+    Arg = Arg(Type type, String name)
+    
+    Statement =
+        Declaration(Type type, String name, Expression expression)
+      | Assignment(String name, Expression expression)
+      | Return(Expression expression)
+    
+    Expression =
+        Add(Expression left, Expression right)
+      | Variable(String name)
+      | IntLiteral(int value)
+      | LongLiteral(long value)

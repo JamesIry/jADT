@@ -38,6 +38,7 @@
   <modules>
     <module>JADT-core</module>
     <module>JADT-ant</module>
+    <module>JADT-samples</module>
   </modules>  
   <licenses>
     <license>

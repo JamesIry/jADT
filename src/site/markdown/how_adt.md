@@ -28,9 +28,9 @@ You can create a new Tree with code like
  
  With that you can create a Tree with code like
  
-    BinaryTree<String> empty = BinaryTree.<String>_EmptyTree();
-  
-    BinaryTree<String> tree = _Node("hello", _Node("goodbye", empty, empty), _Node("whatever", empty, _Node("foo", empty, empty)));
+     BinaryTree<String> empty = BinaryTree.<String>_EmptyTree();
+
+     return _Node("hello", _Node("goodbye", empty, empty), _Node("whatever", empty, _Node("foo", empty, empty)));        
 
 You can also achieve the same thing with 'new BinaryTree.Node<String>("hello"...)' and 'new BinaryTree.EmptyTree<String>()' but that
 
@@ -80,19 +80,19 @@ Given the ADT
     
 You can see if an TPS report was approved by
 
-     public boolean isApproved(TPSReportStatus status) {
+    public boolean isApproved(TPSReportStatus status) {
         return status.accept(new TPSReportStatus.VisitorWithDefault<Boolean>() {
-           @Override
-           public Boolean visit(Approved x) {
-              return true;
-           }
-           
-           @Override
-           public Boolean getDefault() {
-              return false;
-           }
+            @Override
+            public Boolean visit(Approved x) {
+                return true;
+            }
+
+            @Override
+            protected Boolean getDefault(TPSReportStatus x) {
+                return false;
+            }
         });
-      } 
+    }
 
 So for Approved the result is true, but for all other statuses (Pending and Denied) the result is false.
 

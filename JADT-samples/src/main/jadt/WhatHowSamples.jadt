@@ -1,0 +1,21 @@
+package pogofish.jadt.samples.whathow
+
+// samples used in the what and how pages
+
+IntBinaryTree = 
+    Node(int value, IntBinaryTree left, IntBinaryTree right)
+  | EmptyTree
+
+OptionalInt = Some(int value) | None
+
+BinaryTree<T> = 
+    Node(T value, BinaryTree<T> left, BinaryTree<T> right) 
+  | EmptyTree
+
+Manager = Manager(String name)
+  
+TPSReportStatus=
+    Pending 
+  | Approved(Manager approver)
+  | Denied(Manager rejector)
+  

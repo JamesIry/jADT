@@ -18,12 +18,15 @@ package pogofish.jadt.samples.whathow;
 import pogofish.jadt.samples.whathow.TPSReportStatus.*;
 
 /**
- * Example usage of TPSReport for the how page
+ * Example usage of TPSReportStatus for the how page
+ * It is marked up with START SNIPPET and END SNIPPET boundaries to support
+ * /JADT/src/site/apt/*.apt
  */
-public class TPSReportUsage {
+public class TPSReportStatusUsage {
     /**
      * Get approval status of TPSReport
      */
+    // START SNIPPET: isApproved
     public boolean isApproved(TPSReportStatus status) {
         return status.accept(new TPSReportStatus.VisitorWithDefault<Boolean>() {
             @Override
@@ -37,11 +40,14 @@ public class TPSReportUsage {
             }
         });
     }
+    // END SNIPPET: isApproved
     
     /**
      * Same thing using instancof
      */
+    // START SNIPPET: isApprovedV2
     public boolean isApprovedV2(TPSReportStatus status) {
         return status instanceof TPSReportStatus.Approved;
      }    
+    // END SNIPPET: isApprovedV2
 }

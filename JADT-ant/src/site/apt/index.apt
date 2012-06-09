@@ -1,8 +1,8 @@
 JADT Ant Module
-===============
 
-To use [JADT](../index.html) in  [Apache Ant](http://ant.apache.org/), create a taskdef and task like in the following sample build.xml.
+    To use {{{./../index.html}JADT}} in  {{{http://ant.apache.org/}Apache Ant}}, create a taskdef and task like in the following sample build.xml.
 
++----
     <?xml version="1.0"?>
 
     <project name="JADTTaskExample" default="compile" basedir=".">
@@ -16,5 +16,6 @@ To use [JADT](../index.html) in  [Apache Ant](http://ant.apache.org/), create a 
         <jadt srcFile="full path of input file" destDir = "base directory for Java output"/>
       </target>
     </project>
++----
 
-To generate from the shell see the [Core module](../core/index.html).
+    To generate from the shell see the {{{./../core/index.html}Core module}}.

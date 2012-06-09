@@ -20,6 +20,8 @@ import static pogofish.jadt.samples.whathow.BinaryTree.*;
 
 /**
  * Example usage of an GenericBinaryTree used in the how page
+ * It is marked up with START SNIPPET and END SNIPPET boundaries to support
+ * /JADT/src/site/apt/*.apt
  * 
  * @author jiry
  */
@@ -28,16 +30,18 @@ public class GenericBinaryTreeUsage {
      * Creates an example IntBinaryTree with some fixed values
      */
     public BinaryTree<String> createExample() {
-        
+        // START SNIPPET: sampleTree
         BinaryTree<String> empty = BinaryTree.<String>_EmptyTree();
 
         return _Node("hello", _Node("goodbye", empty, empty), _Node("whatever", empty, _Node("foo", empty, empty)));        
+        // END SNIPPET: sampleTree
     } 
     
     /**
      * Find the string that sorts highest in a tree where null 
      * is considered smallest and otherwise strings are compared with compareTo
      */
+    // START SNIPPET: max
     public String max(BinaryTree<String> tree)  {
         return tree.accept(new BinaryTree.Visitor<String, String>() {
            @Override
@@ -55,10 +59,8 @@ public class GenericBinaryTreeUsage {
         });
      }
     
-    /**
-     * Find the max of two Strings where null is smaller than all strings and otherwise strings are compared with compareTo
-     */
     private String maxString(String l, String r) {
         return l == null ? r : (r == null ? l : (l.compareTo(r) >= 0 ? l : r));
     }
+    // END SNIPPET: max
 }

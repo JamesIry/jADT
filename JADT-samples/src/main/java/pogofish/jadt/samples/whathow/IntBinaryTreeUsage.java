@@ -15,11 +15,15 @@ limitations under the License.
 */
 package pogofish.jadt.samples.whathow;
 
+// START SNIPPET: imports
 import pogofish.jadt.samples.whathow.IntBinaryTree.*;
 import static pogofish.jadt.samples.whathow.IntBinaryTree.*;
+// END SNIPPET: imports    
 
 /**
  * Example usage of an IntBinaryTree used in the how page
+ * It is marked up with START SNIPPET and END SNIPPET boundaries to support
+ * /JADT/src/site/apt/*.apt
  * 
  * @author jiry
  */
@@ -28,12 +32,17 @@ public class IntBinaryTreeUsage {
      * Creates an example IntBinaryTree with some fixed values
      */
     public IntBinaryTree createExample() {
-        return _Node(42, _Node(12, _EmptyTree(), _EmptyTree()), _Node(103, _EmptyTree(), _Node(110, _EmptyTree(), _EmptyTree())));
+        // START SNIPPET: sampleTree    
+        IntBinaryTree tree = _Node(42, _Node(12, _EmptyTree(), _EmptyTree()), _Node(103, _EmptyTree(), _Node(110, _EmptyTree(), _EmptyTree())));
+        // END SNIPPET: sampleTree
+        
+        return tree;
     }
     
     /**
      * Find the max Integer of a tree where null means empty tree
      */
+    // START SNIPPET: max  
     public Integer max(IntBinaryTree tree)  {
         return tree.accept(new IntBinaryTree.Visitor<Integer>() {
            @Override
@@ -53,4 +62,5 @@ public class IntBinaryTreeUsage {
            }
         });
      }
+    // END SNIPPET: max  
  }

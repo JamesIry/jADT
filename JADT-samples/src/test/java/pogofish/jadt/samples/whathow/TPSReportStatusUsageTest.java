@@ -29,7 +29,7 @@ import org.junit.Test;
 public class TPSReportStatusUsageTest {
     @Test
     public void testWithVisitor() {
-        final TPSReportUsage usage = new TPSReportUsage();
+        final TPSReportStatusUsage usage = new TPSReportStatusUsage();
         assertFalse(usage.isApproved(_Denied(_Manager("Foo"))));
         assertFalse(usage.isApproved(_Pending()));
         assertTrue(usage.isApproved(_Approved(_Manager("Foo"))));
@@ -37,7 +37,7 @@ public class TPSReportStatusUsageTest {
     
     @Test
     public void testWithInstanceOf() {
-        final TPSReportUsage usage = new TPSReportUsage();
+        final TPSReportStatusUsage usage = new TPSReportStatusUsage();
         assertFalse(usage.isApprovedV2(_Denied(_Manager("Foo"))));
         assertFalse(usage.isApprovedV2(_Pending()));
         assertTrue(usage.isApprovedV2(_Approved(_Manager("Foo"))));

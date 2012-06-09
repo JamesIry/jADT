@@ -1,0 +1,35 @@
+About JADT
+
+    JADT turns {{{./what_adt.html}algebraic datatype}} description {{{./syntax.html}files}} into {{{./how_adt.html}Java source files}}. 
+The resulting Java is nearly as easy to use as an Enum, but {{{./why_adt.html}far more flexible}}.
+
+    JADT uses very liberal {{{./license.html}licensing}}.
+
+    {{{./download.html}Download Now}}.
+
+Sample
+
+    Here's a sample JADT file that describes the abstract syntax tree for a fragment of a fictional language
+
+%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/SampleAST.jadt|id=everything}    
+
+Usage
+
+    Java can be generated from JADT files using {{{./ant/index.html}Apache Ant}} or from {{{./core/index.html}the shell}}.
+
+    To use the generated Java, you'll need some imports
+
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/ast/Usage.java|id=imports}    
+    
+    Here's an example of creating a complete function using generated factory methods
+    
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/ast/Usage.java|id=sampleFunction}    
+    
+    Here's a sample function that returns all the integer literals in an expression
+    
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/ast/Usage.java|id=expressionLiterals}    
+    
+    And here's a sample function that returns true only if a list of statements has a return statement. 
+Unlike the previous example, this one uses a VisitorWithDefault so that only relevant cases need to be considered.
+
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/ast/Usage.java|id=hasReturn}    

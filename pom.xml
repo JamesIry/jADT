@@ -114,6 +114,8 @@
           <instrumentation>
             <excludes>
               <exclude>**/pogofish/jadt/ast/*.class</exclude>
+              <exclude>**/pogofish/jadt/samples/ast/data/*.class</exclude>
+              <exclude>**/pogofish/jadt/samples/whathow/data/*.class</exclude>
             </excludes>            
           </instrumentation>
         </configuration>        

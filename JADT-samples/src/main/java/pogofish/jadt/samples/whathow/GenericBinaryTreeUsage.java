@@ -15,8 +15,9 @@ limitations under the License.
 */
 package pogofish.jadt.samples.whathow;
 
-import pogofish.jadt.samples.whathow.BinaryTree.*;
-import static pogofish.jadt.samples.whathow.BinaryTree.*;
+import pogofish.jadt.samples.whathow.data.BinaryTree;
+import pogofish.jadt.samples.whathow.data.BinaryTree.*;
+import static pogofish.jadt.samples.whathow.data.BinaryTree.*;
 
 /**
  * Example usage of an GenericBinaryTree used in the how page

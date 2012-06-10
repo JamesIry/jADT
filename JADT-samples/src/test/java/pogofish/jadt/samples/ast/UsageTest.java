@@ -22,13 +22,15 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import pogofish.jadt.samples.ast.data.*;
+
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
-import static pogofish.jadt.samples.ast.Arg._Arg;
-import static pogofish.jadt.samples.ast.Expression.*;
-import static pogofish.jadt.samples.ast.Function.*;
-import static pogofish.jadt.samples.ast.Statement.*;
-import static pogofish.jadt.samples.ast.Type.*;
+import static pogofish.jadt.samples.ast.data.Arg._Arg;
+import static pogofish.jadt.samples.ast.data.Expression.*;
+import static pogofish.jadt.samples.ast.data.Function.*;
+import static pogofish.jadt.samples.ast.data.Statement.*;
+import static pogofish.jadt.samples.ast.data.Type.*;
 
 /**
  * Make sure the sample usage does what it says it does

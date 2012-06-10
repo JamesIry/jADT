@@ -20,7 +20,7 @@ limitations under the License.
  * to support /JADT/src/site/apt/index.apt
  */
 // START SNIPPET: everything
-    package pogofish.jadt.samples.ast
+    package pogofish.jadt.samples.ast.data
     
     import java.util.List
     

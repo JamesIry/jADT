@@ -15,8 +15,8 @@ limitations under the License.
 */
 package pogofish.jadt.samples.whathow;
 
-import static pogofish.jadt.samples.whathow.IntBinaryTree._EmptyTree;
-import static pogofish.jadt.samples.whathow.IntBinaryTree._Node;
+import static pogofish.jadt.samples.whathow.data.IntBinaryTree._EmptyTree;
+import static pogofish.jadt.samples.whathow.data.IntBinaryTree._Node;
 
 import static org.junit.Assert.*;
 

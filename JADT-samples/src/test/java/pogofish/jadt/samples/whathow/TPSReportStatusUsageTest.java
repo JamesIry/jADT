@@ -17,8 +17,8 @@ package pogofish.jadt.samples.whathow;
 
 
 import static org.junit.Assert.*;
-import static pogofish.jadt.samples.whathow.TPSReportStatus.*;
-import static pogofish.jadt.samples.whathow.Manager.*;
+import static pogofish.jadt.samples.whathow.data.TPSReportStatus.*;
+import static pogofish.jadt.samples.whathow.data.Manager.*;
 
 import org.junit.Test;
 /**

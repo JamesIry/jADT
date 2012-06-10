@@ -17,8 +17,10 @@ package pogofish.jadt.samples.whathow;
 
 import org.junit.Test;
 
+import pogofish.jadt.samples.whathow.data.BinaryTree;
+
 import static org.junit.Assert.*;
-import static pogofish.jadt.samples.whathow.BinaryTree.*;
+import static pogofish.jadt.samples.whathow.data.BinaryTree.*;
 
 /**
  * Test to make sure the example generic binary tree usage does what it says it does

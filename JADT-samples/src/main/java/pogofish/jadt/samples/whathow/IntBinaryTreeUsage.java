@@ -16,8 +16,9 @@ limitations under the License.
 package pogofish.jadt.samples.whathow;
 
 // START SNIPPET: imports
-import pogofish.jadt.samples.whathow.IntBinaryTree.*;
-import static pogofish.jadt.samples.whathow.IntBinaryTree.*;
+import pogofish.jadt.samples.whathow.data.IntBinaryTree;
+import pogofish.jadt.samples.whathow.data.IntBinaryTree.*;
+import static pogofish.jadt.samples.whathow.data.IntBinaryTree.*;
 // END SNIPPET: imports    
 
 /**

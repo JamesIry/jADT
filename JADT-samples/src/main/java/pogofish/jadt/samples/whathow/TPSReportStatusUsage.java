@@ -15,7 +15,8 @@ limitations under the License.
 */
 package pogofish.jadt.samples.whathow;
 
-import pogofish.jadt.samples.whathow.TPSReportStatus.*;
+import pogofish.jadt.samples.whathow.data.TPSReportStatus;
+import pogofish.jadt.samples.whathow.data.TPSReportStatus.*;
 
 /**
  * Example usage of TPSReportStatus for the how page

@@ -16,12 +16,14 @@ limitations under the License.
 package pogofish.jadt.samples.ast;
 
 // START SNIPPET: imports
+import pogofish.jadt.samples.ast.data.*;
+
 import static java.util.Arrays.asList;
-import static pogofish.jadt.samples.ast.Arg.*;
-import static pogofish.jadt.samples.ast.Expression.*;
-import static pogofish.jadt.samples.ast.Function.*;
-import static pogofish.jadt.samples.ast.Statement.*;
-import static pogofish.jadt.samples.ast.Type.*;
+import static pogofish.jadt.samples.ast.data.Arg.*;
+import static pogofish.jadt.samples.ast.data.Expression.*;
+import static pogofish.jadt.samples.ast.data.Function.*;
+import static pogofish.jadt.samples.ast.data.Statement.*;
+import static pogofish.jadt.samples.ast.data.Type.*;
 
 import java.util.HashSet;
 import java.util.List;

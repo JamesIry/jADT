@@ -16,6 +16,9 @@ limitations under the License.
 package pogofish.jadt.samples.whathow;
 
 import pogofish.jadt.samples.whathow.data.TPSReportStatus;
+import pogofish.jadt.samples.whathow.data.TPSReportStatus.Approved;
+import pogofish.jadt.samples.whathow.data.TPSReportStatus.Denied;
+import pogofish.jadt.samples.whathow.data.TPSReportStatus.Pending;
 import pogofish.jadt.samples.whathow.data.TPSReportStatus.*;
 
 /**
@@ -43,6 +46,66 @@ public class TPSReportStatusUsage {
     }
     // END SNIPPET: isApproved
     
+    // START SNIPPET: message
+    public String message(TPSReportStatus status) {
+        return status.accept(new TPSReportStatus.Visitor<String>() {
+            @Override
+            public String visit(Pending x) {
+                return "Pending";
+            }
+
+            @Override
+            public String visit(Approved x) {
+                return "Approved by " + x.approver;
+            }
+
+            @Override
+            public String visit(Denied x) {
+                return "Denied by " + x.rejector;
+            }
+        });
+    }
+    // END SNIPPET: message
+    
+    // START SNIPPET: notify
+    public void notify(TPSReportStatus status, final StatusNotifier notifier) {
+        status.accept(new VoidVisitor() {
+            
+            @Override
+            public void visit(Denied x) {
+                notifier.notifyDenied();
+            }
+            
+            @Override
+            public void visit(Approved x) {
+                notifier.notifyApproved();                
+            }
+            
+            @Override
+            public void visit(Pending x) {
+                notifier.notifyPending();
+            }
+        });
+    }
+    // END SNIPPET: notify
+    
+    // START SNIPPET: notifyDenied
+    public void notifyDenied(TPSReportStatus status, final StatusNotifier notifier) {
+        status.accept(new VoidVisitorWithDefault() {
+            
+            @Override
+            public void visit(Denied x) {
+                notifier.notifyDenied();
+            }
+
+            @Override
+            protected void doDefault(TPSReportStatus x) {
+                // nothing to do if it wasn't denied                
+            }
+        });
+    }
+    // END SNIPPET: notifyDenied
+    
     /**
      * Same thing using instancof
      */
@@ -51,4 +114,14 @@ public class TPSReportStatusUsage {
         return status instanceof TPSReportStatus.Approved;
      }    
     // END SNIPPET: isApprovedV2
+    
+    public static interface StatusNotifier {
+
+        void notifyApproved();
+
+        void notifyPending();
+
+        void notifyDenied();
+        
+    }
 }

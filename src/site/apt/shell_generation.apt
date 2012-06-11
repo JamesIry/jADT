@@ -1,6 +1,6 @@
 Generating Java from the Shell
 
-    {{{./how_adt.html}\<\< How Can Algebraic DataTypes (ADTs) Be Used? }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}
+    {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}
 
     To use {{{./index.html}JADT}} to generate Java from the shell use you'll need to {{{./download.html}download}} the executable jar JADT-core-<version>.jar.
 
@@ -14,5 +14,5 @@ Generating Java from the Shell
     ["path to java"]java -cp "path to JADT-core-<version>.jar" pogofish.jadt.JADT "path of input file" "base directory for output"
 ----
 
-    {{{./how_adt.html}\<\< How Can Algebraic DataTypes (ADTs) Be Used? }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}
+    {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}
     

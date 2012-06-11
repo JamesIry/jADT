@@ -6,7 +6,7 @@ Why use Algebraic DataTypes?
     
     Why use Algebraic DataTypes?  Can't regular OO constructs get the job done?
     
-    Yes.  And no.  "Yes" because in the end JADT just generates pretty ordinary Java {{{./visitors.html}Visitor}} code.  "No" because that ordinary code expresses a design approach that is atypical in OO programming.
+    Yes.  And no.  "Yes" because in the end JADT just generates pretty ordinary Java {{{./visitor.html}Visitor}} code.  "No" because that ordinary code expresses a design approach that is atypical in OO programming.
     
     It's worth explaining the difference.
     

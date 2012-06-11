@@ -2,7 +2,7 @@ Generating Java from Apache Ant
 
      {{{./shell_generation.html}\<\< Generating Java from the Shell }} | {{{./limitations.html} Known Limitations \>\>}}
 
-    To use {{{./index.html}JADT}} in  {{{http://ant.apache.org/}Apache Ant}} you'll need to {{{./download.apt}download}} both JADT-core-<version>.jar and JADT-ant-<version>.jar.  
+    To use {{{./index.html}JADT}} in  {{{http://ant.apache.org/}Apache Ant}} you'll need to {{{./download.html}download}} both JADT-core-<version>.jar and JADT-ant-<version>.jar.  
 Then create a taskdef and task like in the following sample build.xml.
 
 +----

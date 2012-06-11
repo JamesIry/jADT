@@ -1,0 +1,76 @@
+Visitor Variations
+
+     {{{./how_adt.html}\<\< How can Algebraic DataTypes (ADTs) Be Used? }} | {{{./shell_generation.html} Generating Java from the Shell \>\>}}
+
+     The Java generated from a {{{./index.html}JADT}} definition supports several 
+different variations on the {{{./visitor.html}Visitor pattern}}, each specialized to a particular need.
+Visitors vary on whether a useful result value is computed vs returning void, and whether
+all cases must be explicitly handled vs having a default.  Thus for the ADT DataType\<T1, T2\>, 
+the four possible visitors interfaces are DataType.Visitor\<ResultType, T1, T2\>, 
+DataType.VisitorWithDefault\<ResultType, T1, T2\>, DataType.VoidVisitor\<T1, T2\>, DataType.VoidVisitorWithDefault\<T1, T2\>.
+
+
+*------------------+------------------------------+----------------------------------+
+||                 || explcitly handle all cases  || default handler                 |
+*------------------+------------------------------+----------------------------------+
+||useful result    | Visitor\<ResultType\>        | VisitorWithDefault\<ResultType\> |
+*------------------+------------------------------+----------------------------------+
+||effects only     | VoidVisitor                  | VoidVisitorWithDefault           |
+*------------------+------------------------------+----------------------------------+
+Visitor Variations
+
+    In example Java is based on visitors generated from this sample enterprisey ADT
+    
+%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=TPSReportStatus}    
+
+Visitor\<ResultType\>
+
+    Implementations of the standard Visitor\<ResultType\> interface must have vist* methods for all cases.  Use this kind of visitor when you want to return a 
+ useful result and when every case requires its own treatment. 
+ 
+    For instance, if you want to get a message for a UI or for logging then a standard Visitor is probably the right answer.
+
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=message}    
+ 
+    The non-generic ADT "DataType" will get an interface DataType.Visitor\<ResultType\> where ResultType is the type of the value that the Visitor's visit
+ methods will return. The generic ADT "DataType\<T1,T2\> will get DataType.Visitor\<ResultType, T1, T2\>.  
+  
+VisitorWithDefault\<ResultType\>
+
+    Implementations of the VisitorWithDefault\<ResultType\> base class
+ must at least specify a getDefault method and may optionally override the various visit* methods to compute something other than the default.  
+ Use this kind of visitor when you want to return a useful result and when only a few cases require special treatment. 
+ 
+    Often when querying for a property that is true only in a few cases but false in most (or vice versa), VisitorWithDefault is the right answer
+     
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=isApproved}    
+
+   The non-generic ADT "DataType" will get an abstract base class DataType.VisitorWithDefault\<ResultType\> where ResultType is the type of the value that the VisitorWithDefault's visit
+ methods will return. The generic ADT "DataType\<T1,T2\> will get DataType.VisitorWithDefault\<ResultType, T1, T2\>.  
+
+VoidVisitor
+
+    Implementations of the VoidVisitor interface
+ must have vist* methods for all cases.  Use this kind of visitor when you want only effects and when every case requires its own treatment. 
+
+    For example, if you need to notify another system (e.g. a network service) of a TPSReport, a VoidVisitor will do the job.
+     
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=notify}    
+
+    The non-generic ADT "DataType" will get an interface DataType.VoidVisitor\<ResultType\> where the Visitor's visit
+ methods will return type void. The generic ADT "DataType\<T1,T2\> will get DataType.VoidVisitor\<T1, T2\>.  
+ 
+VoidVisitorWithDefault
+
+    Implementations of the VoidVisitorWithDefault base class
+ must at least specify a doDefault method and may optionally override the various visit* methods to perform some action than the default.  
+ Use this kind of visitor when you only want effects and when only a few cases require special treatment. 
+
+    For example, if you need to notify another system (e.g. a network service) only if a TPSReport is denied then VoidVisitorWithDefault will do the job.
+
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=notifyDenied}    
+
+    The non-generic ADT "DataType" will get an abstract base class DataType.VoidVisitorWithDefault where the VisitorWithDefault's visit
+ methods will return type void. The generic ADT "DataType\<T1,T2\> will get DataType.VoidVisitorWithDefault\<T1, T2\>.  
+ 
+    {{{./how_adt.html}\<\< How can Algebraic DataTypes (ADTs) Be Used? }} | {{{./shell_generation.html} Generating Java from the Shell \>\>}}

@@ -1,5 +1,7 @@
 Syntax
 
+    {{{./faq.html}\<\< FAQ }} |
+
     The syntax of a JADT file is
 
 +---
@@ -11,9 +13,9 @@ Syntax
     DATATYPE : DATATYPENAME TYPEARGS? "=" CONSTRUCTORS
     DATATYPENAME : IDENTIFIER
     TYPEARGS : "<" IDENTIFIER ("," IDENTIFIER)* ">"
-    CONSTRUCTORS : CONSTRUCTOR ("|" CONSTRUCTORS)?
+    CONSTRUCTORS : CONSTRUCTOR ("|" CONSTRUCTOR)*
     CONSTRUCTOR : CONSTRUCTORNAME ("(" ARGS ")")?
-    ARGS : ARG ("," ARGS)?
+    ARGS : ARG ("," ARG)*
     ARG : TYPE ARGNAME
     TYPE : ARRAY | JAVAPRIMITIVE | TYPENAME ("<" TYPELIST ">")?
     ARRAY : TYPE "[]"
@@ -41,3 +43,6 @@ Syntax
       * Java keywords cannot be used as identifiers or package names.
 
       * The punctuation "=" "," "<" ">" "(" ")" serves as both tokens and token separators.  E.g. the data type definition "Foo=Bar|Baz" is parsed the same as "Foo = Bar | Baz"
+
+    {{{./faq.html}\<\< FAQ }} |
+      

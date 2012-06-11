@@ -1,10 +1,12 @@
 Why use Algebraic DataTypes?
 
+    {{{./download.html}\<\< Downloading}} | {{{./what_adt.html} What is an AlgebraicDataType(ADT)? \>\>}}
+
     This page explains why to use ADTs is, but it doesn't cover {{{./what_adt.html}what they are}} in detail or {{{./how_adt.html}how to use them}}.
     
     Why use Algebraic DataTypes?  Can't regular OO constructs get the job done?
     
-    Yes.  And no.  "Yes" because in the end JADT just generates pretty ordinary Java {{{http://en.wikipedia.org/wiki/Visitor_pattern}Visitor}} code.  "No" because that ordinary code expresses a design approach that is atypical in OO programming.
+    Yes.  And no.  "Yes" because in the end JADT just generates pretty ordinary Java {{{./visitors.html}Visitor}} code.  "No" because that ordinary code expresses a design approach that is atypical in OO programming.
     
     It's worth explaining the difference.
     
@@ -25,3 +27,6 @@ Abstract Syntax Tree Example
     But in practice it's FAR more common for third parties to want to add operations on an existing AST than to want to change the definition of a language.
     
     The choice of ADT vs OO style inheritance hierarchy comes down to which direction needs extension most: if you need to add cases, choose OO.  If you need to add operations, choose ADTs.
+
+    {{{./download.html}\<\< Downloading}} | {{{./what_adt.html} What is an AlgebraicDataType(ADT)? \>\>}}
+    

@@ -1,5 +1,7 @@
 What is an Algebraic DataType?
 
+    {{{./why_adt.html}\<\< Why Use Algebraic DataTypes(ADTs)? }} | {{{./visitor.html} Visitor Pattern \>\>}}
+
     This page explains what an ADT is, but it doesn't cover {{{./why_adt.html}why to use them}} or {{{./how_adt.html}how to use them}}.
 
     An algebraic datatype (abbreviated ADT, but not to be confused with abstract datatypes) is something easy to express in many statically typed functional languages, but that has poor support in Java. An ADT is a very simple data structure type that consists of a choice of some finite number of alternative "constructors" each of which requires a finite number of fields.  Some concrete examples should help clarify.
@@ -40,3 +42,5 @@ What is an Algebraic DataType?
     Which says that a BinaryTree\<T\> is either a Node\<T\> or an EmptyTree\<T\>.
 
     Now that you know what an ADT is, you might want to check out {{{./why_adt.html}why to use them}} or {{{./how_adt.html}how to use them}}.
+    
+    {{{./why_adt.html}\<\< Why Use Algebraic DataTypes(ADTs)? }} | {{{./visitor.html} Visitor Pattern \>\>}}

@@ -33,18 +33,22 @@
           <item name="JADT" href="index.html"/>
         </breadcrumbs>        
     
-        <menu name="JADT User Documentation" inherit="top">
-            <item name="About" href="index.html" collapse="false"/>
-            <item name="License" href="license.html" collapse="false"/>
-            <item name="Download" href="download.html" collapse="false"/>
-            <item name="What is an ADT?" href="what_adt.html" collapse="false"/>
-            <item name="Why use ADTs?" href="why_adt.html" collapse="false"/>
-            <item name="How can ADTs be used?" href="how_adt.html" collapse="false"/>
-            <item name="JADT syntax" href="syntax.html" collapse="false"/>
-            <item name="Limitations" href="limitations.html" collapse="false"/>
-            <item name="FAQ" href="faq.html" collapse="false"/>
-            <item name="Core Module" href="core/index.html" collapse="false"/>
-            <item name="Ant Task Module" href="ant/index.html" collapse="false"/>
+        <menu name="JADT Manual" inherit="top">
+            <item name="About" href="index.html" collapse="true"/>
+            <item name="License" href="jadt_license.html" collapse="true"/>
+            <item name="Download" href="download.html" collapse="true"/>
+            <item name="Why use ADTs?" href="why_adt.html" collapse="true"/>
+            <item name="What is an ADT?" href="what_adt.html" collapse="true"/>
+            <item name="Visitor Pattern" href="visitor.html" collapse="true"/>
+            <item name="How can ADTs be used?" href="how_adt.html" collapse="true"/>
+            <item name="Generating Java from the Shell" href="shell_generation.html" collapse="true"/>
+            <item name="Generating Java from Apache Ant" href="ant_generation.html" collapse="true"/>
+            <item name="Limitations" href="limitations.html" collapse="true"/>
+            <item name="FAQ" href="faq.html" collapse="true"/>
+        </menu>
+    
+       <menu name="JADT Specification" inherit="top">
+            <item name="JADT syntax" href="syntax.html" collapse="true"/>
         </menu>
     
         <menu ref="reports"/>       

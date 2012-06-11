@@ -1,5 +1,8 @@
 Downloading Precompiled Jars
 
+    {{{./jadt_license.html}\<\< Licensing }} | {{{./why_adt.html} Why use Algebraic DataTypes(ADTs)? \>\>}}
+
+
     Eventually JADT jars will be hosted in a Maven repository. For now download JADT from its {{{https://github.com/JamesIry/JADT/downloads}Github download page}}. 
     
     At minimum, you'll need JADT-core-_version_.jar.
@@ -32,3 +35,5 @@ Building From Source
     mvn site:site site:stage # to create all this pretty documentation 
                              # at myprojectworkspace/JADT/target/staging/index.html
 +---
+
+    {{{./jadt_license.html}\<\< Licensing }} | {{{./why_adt.html} Why use Algebraic DataTypes(ADTs)? \>\>}}

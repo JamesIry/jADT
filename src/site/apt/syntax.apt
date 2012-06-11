@@ -2,31 +2,106 @@ Syntax
 
     {{{./faq.html}\<\< FAQ }} |
 
-    The syntax of a JADT file is
+    This shows the syntax of a JADT file in EBNF notation with informal commentary interspersed
 
 +---
-    DOC : PACKAGE IMPORTS DATATYPES
+    DOC : PACKAGE? IMPORTS DATATYPES
++---
+
+    A JADT document has an optional package followed by imports and datatypes.
+    
++---
     PACKAGE : "package" PACKAGENAME
++---
+
+    The package declaration (if it exists) is the keyword "package" followed by a package name.  No semicolon required.
+
++---
     IMPORTS : IMPORT*
     IMPORT : "import" PACKAGENAME
-    DATATYPE : DATATYPE+
++---
+
+    A JADT document may specify any number (including 0) of package names to import.  Each one is the keyword "import" followed by a package name.
+No semicolon required.
+
++---
+    PACKAGENAME : valid Java package name
++---
+
+    A package name used in a package or import declaration must be a valid Java package name.
+    
++---
+    DATATYPES : DATATYPE+
     DATATYPE : DATATYPENAME TYPEARGS? "=" CONSTRUCTORS
-    DATATYPENAME : IDENTIFIER
-    TYPEARGS : "<" IDENTIFIER ("," IDENTIFIER)* ">"
+    DATATYPENAME : a valid Java identifier, not qualified with a package
++---
+
+    A JADT document must have at least one datatype, but may have as many as you'd like.  Each datatype consists 
+of a name, optional type arguments, "=" and a list of constructors.
+
++---
+    TYPEARGS : "<" TYPEARG ("," TYPEARG)* ">"
+    TYPEARG: a valid Java identifier
++---
+
+    As in Java, the type arguments for a data type are specfied with \<Arg1, Arg2, Arg3, etc\>.
+
++---
     CONSTRUCTORS : CONSTRUCTOR ("|" CONSTRUCTOR)*
     CONSTRUCTOR : CONSTRUCTORNAME ("(" ARGS ")")?
+    CONSTRUCTORNAME : a valid Java identifier
++---
+
+    A datatype must have a list of one or more constructors separated by "|".  Each constructor is a name followed by an optional list of argument fields
+surrounded by "(" and ")".  If a constructor has no args then it must not have a "(" ")" pair.
+
++---
     ARGS : ARG ("," ARG)*
     ARG : TYPE ARGNAME
-    TYPE : ARRAY | JAVAPRIMITIVE | TYPENAME ("<" TYPELIST ">")?
-    ARRAY : TYPE "[]"
-    JAVAPRIMITIVE : "boolean" | "char" | "double" |
+    ARGNAME : a valid Java identifier
++---
+
+    If a constructor has an argument field list then it must have a least  one argument.  An argument is a type followed by a name.  Multiple
+args are separated by ",".
+
++---
+    TYPE : PRIMITIVETYPE | REFTYPE
++---
+
+   A type is a primitive or reference type.
+
++---
+    REFTYPE : ARRAYTYPE | CLASSTYPE
++---
+  
+   A reference type is an array type or a classtype.
+
++---
+    ARRAYTYPE : TYPE "[]"
++---
+
+   An array is any type followed by "[]".
+
++---
+    CLASSTYPE : CLASSNAME("<" TYPEPARAMS ">")?
+    CLASSNAME : a valid Java class name, possibly qualified with a package
++---
+
+   A class type is a valid Java class name (which may be qualfied as in foo.bar.Baz), optionally followed by type parameters surrounded by "<" and ">".
+
++---
+    TYPEPARAMS : REFTYPE ("," REFTYPE)*
++---
+
+   Type params must be a series of 1 or more reference types separated by ",".
+
++---
+    PRIMITIVETYPE : "boolean" | "char" | "double" |
                     "float" | "int" | "long" | "short"
-    TYPENAME : IDENTIFIER
-    TYPELIST : TYPE ("," TYPELIST )?
-    ARGNAME : IDENTIFIER
-    PACKAGENAME : valid Java package name
-    IDENTIFIER : valid Java identifier
-+--- 
++---
+
+    Primitives types are the Java primitive types.
+
     
     Lexical conventions    
 
@@ -42,7 +117,7 @@ Syntax
 
       * Java keywords cannot be used as identifiers or package names.
 
-      * The punctuation "=" "," "<" ">" "(" ")" serves as both tokens and token separators.  E.g. the data type definition "Foo=Bar|Baz" is parsed the same as "Foo = Bar | Baz"
+      * The punctuation characters "=" "," "<" ">" "(" ")" serve as both tokens and token separators.  E.g. the data type definition "Foo=Bar|Baz" is parsed the same as "Foo = Bar | Baz"
 
     {{{./faq.html}\<\< FAQ }} |
       

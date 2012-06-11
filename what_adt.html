@@ -44,7 +44,7 @@
                 
             
                   <li id="publishDate">Last Published: 2012-06-11</li>
-                  <li class="divider">|</li> <li id="projectVersion">Version: 0.0.2-SNAPSHOT</li>
+                  <li class="divider">|</li> <li id="projectVersion">Version: 0.0.1</li>
                           <li class="divider">|</li>             <li class="">
                     <a href="index.html" title="JADT">JADT</a>
         <li class="divider ">/</li>
@@ -66,37 +66,28 @@
           <div class="well sidebar-nav">
                 
             
-                                    <h3>JADT Manual</h3>
+                                    <h3>JADT User Documentation</h3>
                   <ul>
                   <li class="none">
                           <a href="index.html" title="About">About</a>
             </li>
                   <li class="none">
-                          <a href="jadt_license.html" title="License">License</a>
+                          <a href="license.html" title="License">License</a>
             </li>
                   <li class="none">
                           <a href="download.html" title="Download">Download</a>
             </li>
                   <li class="none">
-                          <a href="why_adt.html" title="Why use ADTs?">Why use ADTs?</a>
-            </li>
-                  <li class="none">
             <strong>What is an ADT?</strong>
           </li>
                   <li class="none">
-                          <a href="visitor.html" title="Visitor Pattern">Visitor Pattern</a>
+                          <a href="why_adt.html" title="Why use ADTs?">Why use ADTs?</a>
             </li>
                   <li class="none">
                           <a href="how_adt.html" title="How can ADTs be used?">How can ADTs be used?</a>
             </li>
                   <li class="none">
-                          <a href="visitor_variations.html" title="Visitor Variations">Visitor Variations</a>
-            </li>
-                  <li class="none">
-                          <a href="shell_generation.html" title="Generating Java from the Shell">Generating Java from the Shell</a>
-            </li>
-                  <li class="none">
-                          <a href="ant_generation.html" title="Generating Java from Apache Ant">Generating Java from Apache Ant</a>
+                          <a href="syntax.html" title="JADT syntax">JADT syntax</a>
             </li>
                   <li class="none">
                           <a href="limitations.html" title="Limitations">Limitations</a>
@@ -104,11 +95,11 @@
                   <li class="none">
                           <a href="faq.html" title="FAQ">FAQ</a>
             </li>
-          </ul>
-                        <h3>JADT Specification</h3>
-                  <ul>
                   <li class="none">
-                          <a href="syntax.html" title="JADT syntax">JADT syntax</a>
+                          <a href="core/index.html" title="Core Module">Core Module</a>
+            </li>
+                  <li class="none">
+                          <a href="ant/index.html" title="Ant Task Module">Ant Task Module</a>
             </li>
           </ul>
                         <h3>Project Documentation</h3>
@@ -122,13 +113,7 @@
           </ul>
                       
             
-                            <form id="search-form" action="http://www.google.com/search" method="get" >
-    
-  <input value="jamesiry.github.com/JADT/" name="sitesearch" type="hidden"/>
-  <input class="span2 search-query" name="q" id="query" type="text" />
-</form>
-<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=search-form"></script>
-          
+                
           <hr class="divider" />
 
            <div id="poweredBy">
@@ -144,22 +129,52 @@
         
         <div id="bodyColumn"  class="span9" >
                                   
-            <div class="section"><h2>What is an Algebraic DataType?<a name="What_is_an_Algebraic_DataType"></a></h2><p><a href="./why_adt.html">&lt;&lt; Why Use Algebraic DataTypes(ADTs)? </a> | <a href="./visitor.html"> Visitor Pattern &gt;&gt;</a></p><p>This page explains what an ADT is, but it doesn't cover <a href="./why_adt.html">why to use them</a> or <a href="./how_adt.html">how to use them</a>.</p><p>An algebraic datatype (abbreviated ADT, but not to be confused with abstract datatypes) is something easy to express in many statically typed functional languages, but that has poor support in Java. An ADT is a very simple data structure type that consists of a choice of some finite number of alternative &quot;constructors&quot; each of which requires a finite number of fields. Some concrete examples should help clarify.</p><p>One of the simplest ADTs in JADT syntax would look like</p><div class="source"><pre class="prettyprint">    Boolean = True | False</pre></div><p>A Boolean type can be constructed using either True or False. Which looks a lot like the built in Java boolean. In fact, all the Java primitives are ADTs the same way. Effectively, Java primitives behave as if there were ADT declarations like</p><div class="source"><pre class="prettyprint">    boolean = true | false    
-    int = 0 | 1 | -1 | 2 | -2 ... MAX_INT | MIN_INT
-    char = 'a' | 'b' | 'c' | ...
-    // etc</pre></div><p>If that's all there was to ADTs then we'd just use primitive or Enums and be done with it. But with an ADT, each constructor can have fields as well, something that Java primitives and Enums can't.</p><p>Here's example from an Enterprise style app might be</p><div class="source"><pre class="prettyprint">TPSReportStatus=
-    Pending 
-  | Approved(Manager approver)
-  | Denied(Manager rejector)
-</pre></div><p>So a TPSReport can be in one of 3 statuses. Pending, Approved, or Denied. If Approved or Denied it must have a an associated manager that did the approval or rejection.</p><p>Nothing prevents an ADT from being recursive. A binary tree of integers can be described as</p><div class="source"><pre class="prettyprint">    package pogofish.jadt.samples.whathow.data
+            <h1>What is an Algebraic DataType?</h1>
 
-    IntBinaryTree = 
-        Node(int value, IntBinaryTree left, IntBinaryTree right)
-      | EmptyTree
-</pre></div><p>Which says that an IntBinaryTree is either empty or it is a Node with an integer value, a left subtree, and a right subtree.</p><p>An ADT can also be generic</p><div class="source"><pre class="prettyprint">BinaryTree&lt;T&gt; = 
-    Node(T value, BinaryTree&lt;T&gt; left, BinaryTree&lt;T&gt; right) 
-  | EmptyTree
-</pre></div><p>Which says that a BinaryTree&lt;T&gt; is either a Node&lt;T&gt; or an EmptyTree&lt;T&gt;.</p><p>Now that you know what an ADT is, you might want to check out <a href="./why_adt.html">why to use them</a> or <a href="./how_adt.html">how to use them</a>.</p><p><a href="./why_adt.html">&lt;&lt; Why Use Algebraic DataTypes(ADTs)? </a> | <a href="./visitor.html"> Visitor Pattern &gt;&gt;</a></p></div>
+<p>This page explains what an ADT is, but it doesn't cover <a href="why_adt.html">why to use them</a> or <a href="how_adt.html">how to use them</a>.</p>
+
+<p>An algebraic datatype (abbreviated ADT, but not to be confused with abstract datatypes) is something easy to express in many statically typed functional languages, but that has poor support in Java. An ADT is a very simple data structure type that consists of a choice of some finite number of alternative "constructors" each of which requires a finite number of fields.  Some concrete examples should help clarify.</p>
+
+<p>One of the simplest ADTs in JADT syntax would look like</p>
+
+<pre><code>Boolean = True | False
+</code></pre>
+
+<p>A Boolean type can be constructed using either True or False. Which looks a lot like the built in Java boolean.  In fact, all the Java primitives are ADTs the same way.  Effectively, Java primitives behave as if there were ADT declarations like</p>
+
+<pre><code>boolean = true | false    
+int = 0 | 1 | -1 | 2 | -2 ... MAX_INT | MIN_INT
+char = 'a' | 'b' | 'c' | ...
+// etc
+</code></pre>
+
+<p>If that's all there was to ADTs then we'd just use primitive or Enums and be done with it.  But with an ADT, each constructor can have fields as well, something that Java primitives and Enums can't.</p>
+
+<pre><code>OptionalInt = Some(int value) | None
+</code></pre>
+
+<p>That says that an OptionalInt is always either None (i.e. no int) or it is Some with an int value.  In effect that replicates using an java.lang.Integer which is allowed to be either null or a valid int value. But we haven't had to use null.  A more complicated example from an Enterprise style app might be</p>
+
+<p>   TPSReportStatus = Pending | Approved(Manager approver) | Denied(Manager rejector)</p>
+
+<p>So a TPSReport can be in one of 3 statuses.  Pending, Approved, or Denied.  If Approved or Denied it must have a an associated manager that did the approval or rejection.</p>
+
+<p>Finally, nothing prevents an ADT from being recursive.  A binary tree of integers can be described as</p>
+
+<pre><code>IntBinaryTree = Node(int value, IntBinaryTree left, IntBinaryTree right) | EmptyNode
+</code></pre>
+
+<p>Which says that an IntBinaryTree is either empty or it is a Node with an integer value, a left subtree, and a right subtree.</p>
+
+<p>An ADT can also be generic</p>
+
+<pre><code>BinaryTree&lt;T&gt; = Node(int value, IntBinaryTree left, IntBinaryTree right) | EmptyNode
+</code></pre>
+
+<p>Which says that a BinaryTree&lt;T> is either a Node&lt;T> or an EmptyNode&lt;T>.</p>
+
+<p>Now that you know what an ADT is, you might want to check out <a href="why_adt.html">why to use them</a> or <a href="how_adt.html">how to use them</a>.</p>
+
                   </div>
             </div>
       

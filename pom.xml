@@ -219,7 +219,7 @@
               <goals>
                 <goal>site</goal>
               </goals>
-              <phase>site</phase>
+              <phase>deploy</phase>
             </execution>
           </executions>
         </plugin>
@@ -229,14 +229,14 @@
   
   <reporting>
     <plugins>
-    
+<!-- bloody thing cauess site to be uploaded    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-linkcheck-plugin</artifactId>
         <version>1.1</version>
         <configuration/>
       </plugin>
-    
+  -->  
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>

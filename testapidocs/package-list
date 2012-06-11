@@ -4,6 +4,8 @@ pogofish.jadt.checker
 pogofish.jadt.emitter
 pogofish.jadt.parser
 pogofish.jadt.printer
+pogofish.jadt.samples.ast
+pogofish.jadt.samples.whathow
 pogofish.jadt.source
 pogofish.jadt.target
 pogofish.jadt.util

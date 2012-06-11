@@ -44,9 +44,13 @@
                 
             
                   <li id="publishDate">Last Published: 2012-06-11</li>
-                  <li class="divider">|</li> <li id="projectVersion">Version: 0.0.1</li>
+                  <li class="divider">|</li> <li id="projectVersion">Version: 0.0.2-SNAPSHOT</li>
                           <li class="divider">|</li>             <li class="">
                     <a href="../index.html" title="JADT">JADT</a>
+        <li class="divider ">/</li>
+      </li>
+            <li class="">
+                    <a href="../modules.html" title="Project Modules">Project Modules</a>
         <li class="divider ">/</li>
       </li>
             <li class="">
@@ -70,28 +74,37 @@
           <div class="well sidebar-nav">
                 
             
-                                    <h3>JADT User Documentation</h3>
+                                    <h3>JADT Manual</h3>
                   <ul>
                   <li class="none">
                           <a href="../index.html" title="About">About</a>
             </li>
                   <li class="none">
-                          <a href="../license.html" title="License">License</a>
+                          <a href="../jadt_license.html" title="License">License</a>
             </li>
                   <li class="none">
                           <a href="../download.html" title="Download">Download</a>
             </li>
                   <li class="none">
+                          <a href="../why_adt.html" title="Why use ADTs?">Why use ADTs?</a>
+            </li>
+                  <li class="none">
                           <a href="../what_adt.html" title="What is an ADT?">What is an ADT?</a>
             </li>
                   <li class="none">
-                          <a href="../why_adt.html" title="Why use ADTs?">Why use ADTs?</a>
+                          <a href="../visitor.html" title="Visitor Pattern">Visitor Pattern</a>
             </li>
                   <li class="none">
                           <a href="../how_adt.html" title="How can ADTs be used?">How can ADTs be used?</a>
             </li>
                   <li class="none">
-                          <a href="../syntax.html" title="JADT syntax">JADT syntax</a>
+                          <a href="../visitor_variations.html" title="Visitor Variations">Visitor Variations</a>
+            </li>
+                  <li class="none">
+                          <a href="../shell_generation.html" title="Generating Java from the Shell">Generating Java from the Shell</a>
+            </li>
+                  <li class="none">
+                          <a href="../ant_generation.html" title="Generating Java from Apache Ant">Generating Java from Apache Ant</a>
             </li>
                   <li class="none">
                           <a href="../limitations.html" title="Limitations">Limitations</a>
@@ -99,11 +112,11 @@
                   <li class="none">
                           <a href="../faq.html" title="FAQ">FAQ</a>
             </li>
+          </ul>
+                        <h3>JADT Specification</h3>
+                  <ul>
                   <li class="none">
-                          <a href="../core/index.html" title="Core Module">Core Module</a>
-            </li>
-                  <li class="none">
-                          <a href="../ant/index.html" title="Ant Task Module">Ant Task Module</a>
+                          <a href="../syntax.html" title="JADT syntax">JADT syntax</a>
             </li>
           </ul>
                         <h3>Project Documentation</h3>
@@ -158,7 +171,13 @@
           </ul>
                       
             
-                
+                            <form id="search-form" action="http://www.google.com/search" method="get" >
+    
+  <input value="jamesiry.github.com/JADT/ant/" name="sitesearch" type="hidden"/>
+  <input class="span2 search-query" name="q" id="query" type="text" />
+</form>
+<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=search-form"></script>
+          
           <hr class="divider" />
 
            <div id="poweredBy">
@@ -174,7 +193,7 @@
         
         <div id="bodyColumn"  class="span9" >
                                   
-            <a name="Project_Dependencies"></a><div class="section"><h2>Project Dependencies<a name="Project_Dependencies"></a></h2><a name="Project_Dependencies_compile"></a><div class="section"><h3>compile<a name="compile"></a></h3><p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th><th>Type</th><th>License</th></tr><tr class="b"><td>org.apache.ant</td><td><a class="externalLink" href="http://ant.apache.org/ant/">ant</a></td><td>1.8.3</td><td>jar</td><td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr><tr class="a"><td>pogofish.JADT</td><td><a class="externalLink" href="http://jamesiry.github.com/JADT/core/">JADT-core</a></td><td>0.0.1</td><td>jar</td><td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></td></tr></table></div><a name="Project_Dependencies_test"></a><div class="section"><h3>test<a name="test"></a></h3><p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th><th>Type</th><th>License</th></tr><tr class="b"><td>junit</td><td><a class="externalLink" href="http://junit.org">junit</a></td><td>4.10</td><td>jar</td><td><a class="externalLink" href="http://www.opensource.org/licenses/cpl1.0.txt">Common Public License Version 1.0</a></td></tr></table></div></div><a name="Project_Transitive_Dependencies"></a><div class="section"><h2>Project Transitive Dependencies<a name="Project_Transitive_Dependencies"></a></h2><p>The following is a list of transitive dependencies for this project. Transitive dependencies are the dependencies of the project dependencies.</p><a name="Project_Transitive_Dependencies_compile"></a><div class="section"><h3>compile<a name="compile"></a></h3><p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th><th>Type</th><th>License</th></tr><tr class="b"><td>org.apache.ant</td><td><a class="externalLink" href="http://ant.apache.org/ant-launcher/">ant-launcher</a></td><td>1.8.3</td><td>jar</td><td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr></table></div><a name="Project_Transitive_Dependencies_test"></a><div class="section"><h3>test<a name="test"></a></h3><p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th><th>Type</th><th>License</th></tr><tr class="b"><td>org.hamcrest</td><td>hamcrest-core</td><td>1.1</td><td>jar</td><td><a class="externalLink" href="http://www.opensource.org/licenses/bsd-license.php">BSD style</a></td></tr></table></div></div><a name="Project_Dependency_Graph"></a><div class="section"><h2>Project Dependency Graph<a name="Project_Dependency_Graph"></a></h2><script language="javascript" type="text/javascript">
+            <a name="Project_Dependencies"></a><div class="section"><h2>Project Dependencies<a name="Project_Dependencies"></a></h2><a name="Project_Dependencies_compile"></a><div class="section"><h3>compile<a name="compile"></a></h3><p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th><th>Type</th><th>License</th></tr><tr class="b"><td>org.apache.ant</td><td><a class="externalLink" href="http://ant.apache.org/ant/">ant</a></td><td>1.8.3</td><td>jar</td><td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr><tr class="a"><td>pogofish.JADT</td><td><a class="externalLink" href="http://jamesiry.github.com/JADT/core/">JADT-core</a></td><td>0.0.2-SNAPSHOT</td><td>jar</td><td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></td></tr></table></div><a name="Project_Dependencies_test"></a><div class="section"><h3>test<a name="test"></a></h3><p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th><th>Type</th><th>License</th></tr><tr class="b"><td>junit</td><td><a class="externalLink" href="http://junit.org">junit</a></td><td>4.10</td><td>jar</td><td><a class="externalLink" href="http://www.opensource.org/licenses/cpl1.0.txt">Common Public License Version 1.0</a></td></tr></table></div></div><a name="Project_Transitive_Dependencies"></a><div class="section"><h2>Project Transitive Dependencies<a name="Project_Transitive_Dependencies"></a></h2><p>The following is a list of transitive dependencies for this project. Transitive dependencies are the dependencies of the project dependencies.</p><a name="Project_Transitive_Dependencies_compile"></a><div class="section"><h3>compile<a name="compile"></a></h3><p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th><th>Type</th><th>License</th></tr><tr class="b"><td>org.apache.ant</td><td><a class="externalLink" href="http://ant.apache.org/ant-launcher/">ant-launcher</a></td><td>1.8.3</td><td>jar</td><td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr></table></div><a name="Project_Transitive_Dependencies_test"></a><div class="section"><h3>test<a name="test"></a></h3><p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p><table border="0" class="table table-striped"><tr class="a"><th>GroupId</th><th>ArtifactId</th><th>Version</th><th>Type</th><th>License</th></tr><tr class="b"><td>org.hamcrest</td><td>hamcrest-core</td><td>1.1</td><td>jar</td><td><a class="externalLink" href="http://www.opensource.org/licenses/bsd-license.php">BSD style</a></td></tr></table></div></div><a name="Project_Dependency_Graph"></a><div class="section"><h2>Project Dependency Graph<a name="Project_Dependency_Graph"></a></h2><script language="javascript" type="text/javascript">
       function toggleDependencyDetail( divId, imgId )
       {
         var div = document.getElementById( divId );
@@ -191,8 +210,8 @@
         }
       }
 </script>
-<a name="Dependency_Tree"></a><div class="section"><h3>Dependency Tree<a name="Dependency_Tree"></a></h3><ul><li>pogofish.JADT:JADT-ant:jar:0.0.1 <img id="_785248447" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_770488114', '_785248447' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_770488114" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>JADT Ant Task</th></tr><tr class="b"><td><p><b>Description: </b>Ant Task for doing JADT processing</p><p><b>URL: </b><a class="externalLink" href="http://jamesiry.github.com/JADT/ant/">http://jamesiry.github.com/JADT/ant/</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></p></td></tr></table></div><ul><li>pogofish.JADT:JADT-core:jar:0.0.1 (compile) <img id="_1682934407" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1714390648', '_1682934407' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1714390648" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>JADT core</th></tr><tr class="b"><td><p><b>Description: </b>The core processor for the JADT project</p><p><b>URL: </b><a class="externalLink" href="http://jamesiry.github.com/JADT/core/">http://jamesiry.github.com/JADT/core/</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></p></td></tr></table></div></li><li>org.apache.ant:ant:jar:1.8.3 (compile) <img id="_110461214" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_392098158', '_110461214' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_392098158" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>Apache Ant Core</th></tr><tr class="b"><td><p><b>Description: </b>master POM</p><p><b>URL: </b><a class="externalLink" href="http://ant.apache.org/ant/">http://ant.apache.org/ant/</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div><ul><li>org.apache.ant:ant-launcher:jar:1.8.3 (compile) <img id="_1715410482" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1789943923', '_1715410482' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1789943923" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>Apache Ant Launcher</th></tr><tr class="b"><td><p><b>Description: </b>master POM</p><p><b>URL: </b><a class="externalLink" href="http://ant.apache.org/ant-launcher/">http://ant.apache.org/ant-launcher/</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li></ul></li><li>junit:junit:jar:4.10 (test) <img id="_1667159243" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_678824913', '_1667159243' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_678824913" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>JUnit</th></tr><tr class="b"><td><p><b>Description: </b>JUnit is a regression testing framework written by Erich Gamma and Kent Beck.
-        It is used by the developer who implements unit tests in Java.</p><p><b>URL: </b><a class="externalLink" href="http://junit.org">http://junit.org</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/cpl1.0.txt">Common Public License Version 1.0</a></p></td></tr></table></div><ul><li>org.hamcrest:hamcrest-core:jar:1.1 (test) <img id="_1897151089" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1311361136', '_1897151089' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1311361136" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>Hamcrest Core</th></tr><tr class="b"><td><p><b>Description: </b>There is currently no description associated with this project.</p><p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/bsd-license.php">BSD style</a></p></td></tr></table></div></li></ul></li></ul></li></ul></div></div><a name="Licenses"></a><div class="section"><h2>Licenses<a name="Licenses"></a></h2><p><b>BSD style: </b>Hamcrest Core</p><p><b>Apache 2: </b>JADT Ant Task, JADT core</p><p><b>Common Public License Version 1.0: </b>JUnit</p><p><b>The Apache Software License, Version 2.0: </b>Apache Ant Core, Apache Ant Launcher</p></div>
+<a name="Dependency_Tree"></a><div class="section"><h3>Dependency Tree<a name="Dependency_Tree"></a></h3><ul><li>pogofish.JADT:JADT-ant:jar:0.0.2-SNAPSHOT <img id="_2048445354" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_46270283', '_2048445354' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_46270283" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>JADT Ant Task</th></tr><tr class="b"><td><p><b>Description: </b>Ant Task for doing JADT processing</p><p><b>URL: </b><a class="externalLink" href="http://jamesiry.github.com/JADT/ant/">http://jamesiry.github.com/JADT/ant/</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></p></td></tr></table></div><ul><li>pogofish.JADT:JADT-core:jar:0.0.2-SNAPSHOT (compile) <img id="_665333220" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1647939674', '_665333220' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1647939674" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>JADT core</th></tr><tr class="b"><td><p><b>Description: </b>The core processor for the JADT project</p><p><b>URL: </b><a class="externalLink" href="http://jamesiry.github.com/JADT/core/">http://jamesiry.github.com/JADT/core/</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2</a></p></td></tr></table></div></li><li>org.apache.ant:ant:jar:1.8.3 (compile) <img id="_1595852266" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1089833117', '_1595852266' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1089833117" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>Apache Ant Core</th></tr><tr class="b"><td><p><b>Description: </b>master POM</p><p><b>URL: </b><a class="externalLink" href="http://ant.apache.org/ant/">http://ant.apache.org/ant/</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div><ul><li>org.apache.ant:ant-launcher:jar:1.8.3 (compile) <img id="_2135713179" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1847270186', '_2135713179' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1847270186" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>Apache Ant Launcher</th></tr><tr class="b"><td><p><b>Description: </b>master POM</p><p><b>URL: </b><a class="externalLink" href="http://ant.apache.org/ant-launcher/">http://ant.apache.org/ant-launcher/</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li></ul></li><li>junit:junit:jar:4.10 (test) <img id="_10305540" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_882111732', '_10305540' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_882111732" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>JUnit</th></tr><tr class="b"><td><p><b>Description: </b>JUnit is a regression testing framework written by Erich Gamma and Kent Beck.
+        It is used by the developer who implements unit tests in Java.</p><p><b>URL: </b><a class="externalLink" href="http://junit.org">http://junit.org</a></p><p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/cpl1.0.txt">Common Public License Version 1.0</a></p></td></tr></table></div><ul><li>org.hamcrest:hamcrest-core:jar:1.1 (test) <img id="_2141774109" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1653001875', '_2141774109' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1653001875" style="display:none"><table border="0" class="table table-striped"><tr class="a"><th>Hamcrest Core</th></tr><tr class="b"><td><p><b>Description: </b>There is currently no description associated with this project.</p><p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/bsd-license.php">BSD style</a></p></td></tr></table></div></li></ul></li></ul></li></ul></div></div><a name="Licenses"></a><div class="section"><h2>Licenses<a name="Licenses"></a></h2><p><b>BSD style: </b>Hamcrest Core</p><p><b>Apache 2: </b>JADT Ant Task, JADT core</p><p><b>Common Public License Version 1.0: </b>JUnit</p><p><b>The Apache Software License, Version 2.0: </b>Apache Ant Core, Apache Ant Launcher</p></div>
                   </div>
             </div>
       

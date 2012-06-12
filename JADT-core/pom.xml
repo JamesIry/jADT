@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   
   <parent>  
-    <groupId>pogofish.JADT</groupId>
+    <groupId>pogofish.jadt</groupId>
     <artifactId>JADT</artifactId>
     <version>0.0.2-SNAPSHOT</version>
   </parent>

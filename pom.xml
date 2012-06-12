@@ -9,7 +9,7 @@
     <maven>3.0.0</maven>
   </prerequisites>
   
-  <groupId>pogofish.JADT</groupId>
+  <groupId>pogofish.jadt</groupId>
   <artifactId>JADT</artifactId>
   <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -25,6 +25,12 @@
       <url>scp://jamesiry.github.com/JADT/</url>
     </site>
   </distributionManagement>
+
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
     
   <dependencies>
     <dependency>
@@ -229,7 +235,7 @@
   
   <reporting>
     <plugins>
-<!-- bloody thing cauess site to be uploaded    
+<!-- bloody thing causes site to be uploaded    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-linkcheck-plugin</artifactId>
@@ -307,4 +313,34 @@
       </plugin>
     </plugins>
   </reporting>  
+
+	<profiles>
+	  <profile>
+	    <id>release-sign-artifacts</id>
+	    <activation>
+	      <property>
+	        <name>performRelease</name>
+	        <value>true</value>
+	      </property>
+	    </activation>
+	    <build>
+	      <plugins>
+	        <plugin>
+	          <groupId>org.apache.maven.plugins</groupId>
+	          <artifactId>maven-gpg-plugin</artifactId>
+	          <version>1.1</version>
+	          <executions>
+	            <execution>
+	              <id>sign-artifacts</id>
+	              <phase>verify</phase>
+	              <goals>
+	                <goal>sign</goal>
+	              </goals>
+	            </execution>
+	          </executions>
+	        </plugin>
+	      </plugins>
+	    </build>
+	  </profile>
+	</profiles>
 </project>

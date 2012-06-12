@@ -17,8 +17,9 @@ package pogofish.jadt.parser;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,68 +46,70 @@ class Tokenizer {
     private static final Pattern DOTTED_IDENTIFIER_REGEX = Pattern.compile("(" + IDENTIFIER_CHUNK + "\\.)+" + IDENTIFIER_CHUNK);
     
     /** 
-     * Map from keywords to their token type.  Must be a ConcurrentHashMap because multiple threads read from it and
-     * according to the java memory model a normal HashMap doesn't guarantee that all threads will see all the
-     * values in the HashMap even though they were all placed there in the static initializer
+     * Map from keywords to their token type.
      */
-    private static final Map<String, TokenType> KEYWORDS = new ConcurrentHashMap<String, TokenType>();
+    private static final Map<String, TokenType> KEYWORDS = createKeywords();
     
-    {       
+    private static Map<String, TokenType> createKeywords() {       
+        final Map<String, TokenType> keywords = new HashMap<String, TokenType>();
+        
         // keywords actually used by JADT
-        KEYWORDS.put("import", TokenType.IMPORT);
-        KEYWORDS.put("package", TokenType.PACKAGE);
+        keywords.put("import", TokenType.IMPORT);
+        keywords.put("package", TokenType.PACKAGE);
 
         // Java primitive types
-        KEYWORDS.put("boolean", TokenType.BOOLEAN);
-        KEYWORDS.put("double", TokenType.DOUBLE);
-        KEYWORDS.put("char", TokenType.CHAR);
-        KEYWORDS.put("float", TokenType.FLOAT);
-        KEYWORDS.put("int", TokenType.INT);
-        KEYWORDS.put("long", TokenType.LONG);
-        KEYWORDS.put("short", TokenType.SHORT);
+        keywords.put("boolean", TokenType.BOOLEAN);
+        keywords.put("double", TokenType.DOUBLE);
+        keywords.put("char", TokenType.CHAR);
+        keywords.put("float", TokenType.FLOAT);
+        keywords.put("int", TokenType.INT);
+        keywords.put("long", TokenType.LONG);
+        keywords.put("short", TokenType.SHORT);
         
         // most Java keywords are unused but reserved so they can't be used in an ADT definition and thus screw up the generated Java        
-        KEYWORDS.put("abstract", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("assert", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("break", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("byte", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("case", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("catch", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("class", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("const", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("continue", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("default", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("do", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("else", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("enum", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("extends", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("final", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("finally", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("for", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("goto", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("if", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("implements", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("instanceof", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("interface", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("native", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("new", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("private", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("protected", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("public", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("return", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("static", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("strictfp", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("super", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("switch", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("synchronized", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("this", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("throw", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("throws", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("transient", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("try", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("void", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("volatile", TokenType.JAVA_KEYWORD);
-        KEYWORDS.put("while", TokenType.JAVA_KEYWORD);
+        keywords.put("abstract", TokenType.JAVA_KEYWORD);
+        keywords.put("assert", TokenType.JAVA_KEYWORD);
+        keywords.put("break", TokenType.JAVA_KEYWORD);
+        keywords.put("byte", TokenType.JAVA_KEYWORD);
+        keywords.put("case", TokenType.JAVA_KEYWORD);
+        keywords.put("catch", TokenType.JAVA_KEYWORD);
+        keywords.put("class", TokenType.JAVA_KEYWORD);
+        keywords.put("const", TokenType.JAVA_KEYWORD);
+        keywords.put("continue", TokenType.JAVA_KEYWORD);
+        keywords.put("default", TokenType.JAVA_KEYWORD);
+        keywords.put("do", TokenType.JAVA_KEYWORD);
+        keywords.put("else", TokenType.JAVA_KEYWORD);
+        keywords.put("enum", TokenType.JAVA_KEYWORD);
+        keywords.put("extends", TokenType.JAVA_KEYWORD);
+        keywords.put("final", TokenType.JAVA_KEYWORD);
+        keywords.put("finally", TokenType.JAVA_KEYWORD);
+        keywords.put("for", TokenType.JAVA_KEYWORD);
+        keywords.put("goto", TokenType.JAVA_KEYWORD);
+        keywords.put("if", TokenType.JAVA_KEYWORD);
+        keywords.put("implements", TokenType.JAVA_KEYWORD);
+        keywords.put("instanceof", TokenType.JAVA_KEYWORD);
+        keywords.put("interface", TokenType.JAVA_KEYWORD);
+        keywords.put("native", TokenType.JAVA_KEYWORD);
+        keywords.put("new", TokenType.JAVA_KEYWORD);
+        keywords.put("private", TokenType.JAVA_KEYWORD);
+        keywords.put("protected", TokenType.JAVA_KEYWORD);
+        keywords.put("public", TokenType.JAVA_KEYWORD);
+        keywords.put("return", TokenType.JAVA_KEYWORD);
+        keywords.put("static", TokenType.JAVA_KEYWORD);
+        keywords.put("strictfp", TokenType.JAVA_KEYWORD);
+        keywords.put("super", TokenType.JAVA_KEYWORD);
+        keywords.put("switch", TokenType.JAVA_KEYWORD);
+        keywords.put("synchronized", TokenType.JAVA_KEYWORD);
+        keywords.put("this", TokenType.JAVA_KEYWORD);
+        keywords.put("throw", TokenType.JAVA_KEYWORD);
+        keywords.put("throws", TokenType.JAVA_KEYWORD);
+        keywords.put("transient", TokenType.JAVA_KEYWORD);
+        keywords.put("try", TokenType.JAVA_KEYWORD);
+        keywords.put("void", TokenType.JAVA_KEYWORD);
+        keywords.put("volatile", TokenType.JAVA_KEYWORD);
+        keywords.put("while", TokenType.JAVA_KEYWORD);
+        
+        return Collections.unmodifiableMap(keywords);
     }
     
     private final String srcInfo;

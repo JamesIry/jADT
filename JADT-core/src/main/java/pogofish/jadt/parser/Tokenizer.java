@@ -17,8 +17,8 @@ package pogofish.jadt.parser;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,11 +45,13 @@ class Tokenizer {
     private static final Pattern DOTTED_IDENTIFIER_REGEX = Pattern.compile("(" + IDENTIFIER_CHUNK + "\\.)+" + IDENTIFIER_CHUNK);
     
     /** 
-     * Map from keywords to their token type
+     * Map from keywords to their token type.  Must be a ConcurrentHashMap because multiple threads read from it and
+     * according to the java memory model a normal HashMap doesn't guarantee that all threads will see all the
+     * values in the HashMap even though they were all placed there in the static initializer
      */
-    private static final Map<String, TokenType> KEYWORDS = new HashMap<String, TokenType>();
+    private static final Map<String, TokenType> KEYWORDS = new ConcurrentHashMap<String, TokenType>();
     
-    {        
+    {       
         // keywords actually used by JADT
         KEYWORDS.put("import", TokenType.IMPORT);
         KEYWORDS.put("package", TokenType.PACKAGE);

@@ -61,28 +61,44 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-
-<!-- put module site on github pages -->
-        <plugin>
-          <groupId>com.github.github</groupId>
-          <artifactId>site-maven-plugin</artifactId>
-          <version>${site.maven.plugin.version}</version>
-          <configuration>
-            <message>Creating site for ${project.artifactId} ${project.version}</message>
-            <path>samples</path>
-            <merge>true</merge>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>site</goal>
-              </goals>
-              <phase>site</phase>
-            </execution>
-          </executions>
-        </plugin>
-  
+      </plugin>  
     </plugins>
   </build>
+
+  <profiles>
+      <profile>
+        <id>deploy-samples-site</id>
+        <activation>
+          <property>
+            <name>performRelease</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <build>
+          <plugins>
+<!-- put module site on github pages -->
+            <plugin>
+              <groupId>com.github.github</groupId>
+              <artifactId>site-maven-plugin</artifactId>
+              <version>${site.maven.plugin.version}</version>
+              <configuration>
+                <message>Creating site for ${project.artifactId} ${project.version}</message>
+                <path>samples</path>
+                <merge>true</merge>
+              </configuration>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>site</goal>
+                  </goals>
+                  <phase>deploy</phase>
+                </execution>
+              </executions>
+            </plugin>
+  
+          </plugins>
+        </build>
+      </profile>
+    </profiles>           
+  
 </project>

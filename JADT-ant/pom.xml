@@ -44,28 +44,40 @@
         <filtering>true</filtering>
       </resource>
     </resources>  
+  </build>
   
-    <plugins>
+  <profiles>
+      <profile>
+        <id>deploy-ant-site</id>
+        <activation>
+          <property>
+            <name>performRelease</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <build>
+          <plugins>
 <!-- put module site on github pages -->
-        <plugin>
-          <groupId>com.github.github</groupId>
-          <artifactId>site-maven-plugin</artifactId>
-          <version>${site.maven.plugin.version}</version>
-          <configuration>
-            <message>Creating site for ${project.artifactId} ${project.version}</message>
-            <path>ant</path>
-            <merge>true</merge>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>site</goal>
-              </goals>
-              <phase>site</phase>
-            </execution>
-          </executions>
-        </plugin>
-
-    </plugins>
-  </build>        
+	        <plugin>
+	          <groupId>com.github.github</groupId>
+	          <artifactId>site-maven-plugin</artifactId>
+	          <version>${site.maven.plugin.version}</version>
+	          <configuration>
+	            <message>Creating site for ${project.artifactId} ${project.version}</message>
+	            <path>ant</path>
+	            <merge>true</merge>
+	          </configuration>
+	          <executions>
+	            <execution>
+	              <goals>
+	                <goal>site</goal>
+	              </goals>
+	              <phase>deploy</phase>
+	            </execution>
+	          </executions>
+	        </plugin>
+	      </plugins>
+	    </build>
+	  </profile>
+	</profiles>           
 </project>

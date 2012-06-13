@@ -209,38 +209,12 @@
         </dependencies>        
      </plugin>      
 
-<!-- put site on github pages -->
-        <plugin>
-          <groupId>com.github.github</groupId>
-          <artifactId>site-maven-plugin</artifactId>
-          <version>0.6</version>
-          <configuration>
-            <message>Creating site for ${project.artifactId} ${project.version}</message>
-            <merge>false</merge>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>site</goal>
-              </goals>
-              <phase>deploy</phase>
-            </execution>
-          </executions>
-        </plugin>
-
     </plugins>    
   </build>    
   
   <reporting>
     <plugins>
-<!-- bloody thing causes site to be uploaded    
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-linkcheck-plugin</artifactId>
-        <version>1.1</version>
-        <configuration/>
-      </plugin>
-  -->  
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -340,5 +314,61 @@
 	      </plugins>
 	    </build>
 	  </profile>
+
+      <profile>
+        <id>deploy-site</id>
+        <activation>
+          <property>
+            <name>performRelease</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <build>
+          <plugins>
+          
+	        <plugin>
+	          <groupId>com.github.github</groupId>
+	          <artifactId>site-maven-plugin</artifactId>
+	          <version>0.6</version>
+	          <configuration>
+	            <message>Creating site for ${project.artifactId} ${project.version}</message>
+	            <merge>false</merge>
+	          </configuration>
+	          <executions>
+	            <execution>
+	              <goals>
+	                <goal>site</goal>
+	              </goals>
+	              <phase>deploy</phase>
+	            </execution>
+	          </executions>
+	        </plugin>
+	        
+          </plugins>
+        </build>
+      </profile>
+
+<!-- link checking is too expensive to do all the time -->
+      <profile>
+        <id>check-links</id>
+        <activation>
+          <property>
+            <name>checkLinks</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <reporting>
+          <plugins>
+		      <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-linkcheck-plugin</artifactId>
+		        <version>1.1</version>
+		        <configuration/>
+		      </plugin>
+		  </plugins>
+		</reporting>
+	  </profile>
+		
+
 	</profiles>
 </project>

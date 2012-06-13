@@ -319,7 +319,7 @@
         <id>deploy-site</id>
         <activation>
           <property>
-            <name>performRelease</name>
+            <name>deploySite</name>
             <value>true</value>
           </property>
         </activation>

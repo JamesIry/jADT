@@ -70,7 +70,7 @@
         <id>deploy-samples-site</id>
         <activation>
           <property>
-            <name>performRelease</name>
+            <name>deploySite</name>
             <value>true</value>
           </property>
         </activation>

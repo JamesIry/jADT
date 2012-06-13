@@ -11,7 +11,7 @@
   
   <groupId>com.pogofish.jadt</groupId>
   <artifactId>JADT</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>JADT</name>
   <url>http://jamesiry.github.com/JADT/</url>

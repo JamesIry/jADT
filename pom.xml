@@ -367,8 +367,7 @@
 		      </plugin>
 		  </plugins>
 		</reporting>
-	  </profile>
-		
+	  </profile>		
 
 	</profiles>
 </project>

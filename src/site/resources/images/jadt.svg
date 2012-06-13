@@ -46,6 +46,26 @@
        y2="38.862183"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.0002733,0,0,0.9197879,-2.3638492e-2,4.1172182)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3265"
+       id="linearGradient3327"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0002733,0,0,0.9197879,-2.3638492e-2,4.1172182)"
+       x1="20.350001"
+       y1="38.862183"
+       x2="152.64999"
+       y2="38.862183" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3265"
+       id="linearGradient3334"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0002733,0,0,0.9197879,-2.3638492e-2,4.1172182)"
+       x1="20.350001"
+       y1="38.862183"
+       x2="152.64999"
+       y2="38.862183" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -94,7 +114,7 @@
            y="320.93362"
            style="-inkscape-font-specification:Cambria Math;font-family:Cambria Math;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:40px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%" /></flowRegion><flowPara
          id="flowPara2391">⟨jADT⟩</flowPara></flowRoot>    <rect
-       style="fill:url(#linearGradient3271);fill-opacity:1;stroke:#ff8300;stroke-width:0.84404831999999985;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:url(#linearGradient3334);fill-opacity:1;stroke:#ff8300;stroke-width:0.84404832;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect3237"
        width="131.45595"
        height="45.455948"
@@ -115,5 +135,17 @@
    id="tspan3179">⟨</tspan>jADT<tspan
    style="fill:#ff8300;fill-opacity:1"
    id="tspan3193">⟩</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="167.54883"
+       y="52.397339"
+       id="text3340"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3342"
+         x="167.54883"
+         y="52.397339"
+         style="font-size:36px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#0080c0;fill-opacity:1;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans">Java Algebraic DataTypes</tspan></text>
   </g>
 </svg>

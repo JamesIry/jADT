@@ -44,7 +44,7 @@ import com.pogofish.jadt.util.Util;
 public class DocEmitterTest {
 	private static final String VERSION = new Version().getVersion();
 	private static final String BOILERPLATE = 
-    "This file was generated based on EmitterTest using JADT version " + VERSION + " (http://jamesiry.github.com/JADT/). Please do not modify directly.\n" +
+    "This file was generated based on EmitterTest using JADT version " + VERSION + " http://jamesiry.github.com/JADT/ . Please do not modify directly.\n" +
     "\n" +
     "The source was parsed as: \n" +
     "\n";

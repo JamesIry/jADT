@@ -11,7 +11,7 @@ Generating Java from the Shell
     If for some inexplicable reason that doesn't work for you, then
     
 ----
-    ["path to java"]java -cp "path to JADT-core-<version>.jar" pogofish.jadt.JADT "path of input file" "base directory for output"
+    ["path to java"]java -cp "path to JADT-core-<version>.jar" com.pogofish.jadt.JADT "path of input file" "base directory for output"
 ----
 
     {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}

@@ -9,7 +9,7 @@ Then create a taskdef and task like in the following sample build.xml.
     <?xml version="1.0"?>
 
     <project name="JADTTaskExample" default="compile" basedir=".">
-      <taskdef name="jadt" classname="pogofish.jadt.ant.JADTAntTask" classpath="directory that has JADT-core-<version>.jar and JADT-ant-<version>.jar/>
+      <taskdef name="jadt" classname="com.pogofish.jadt.ant.JADTAntTask" classpath="directory that has JADT-core-<version>.jar and JADT-ant-<version>.jar/>
 
       <target name="compile" depeneds="generate">
         <!-- normal compile stuff -->

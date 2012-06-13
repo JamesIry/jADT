@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   
   <parent>  
-    <groupId>pogofish.jadt</groupId>
+    <groupId>com.pogofish.jadt</groupId>
     <artifactId>JADT</artifactId>
     <version>0.0.2-SNAPSHOT</version>
   </parent>
@@ -48,7 +48,7 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
-                    <Main-Class>pogofish.jadt.JADT</Main-Class>
+                    <Main-Class>com.pogofish.jadt.JADT</Main-Class>
                   </manifestEntries>
                 </transformer>
               </transformers>

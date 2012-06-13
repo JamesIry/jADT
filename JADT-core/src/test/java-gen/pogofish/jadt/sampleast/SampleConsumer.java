@@ -13,24 +13,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package pogofish.jadt.sampleast;
+package com.pogofish.jadt.sampleast;
 
-import static pogofish.jadt.sampleast.Arg._Arg;
-import static pogofish.jadt.sampleast.Expression._Add;
-import static pogofish.jadt.sampleast.Expression._Variable;
-import static pogofish.jadt.sampleast.Function._Function;
-import static pogofish.jadt.sampleast.Statement._Return;
-import static pogofish.jadt.sampleast.Type._Int;
+import static com.pogofish.jadt.sampleast.Arg._Arg;
+import static com.pogofish.jadt.sampleast.Expression._Add;
+import static com.pogofish.jadt.sampleast.Expression._Variable;
+import static com.pogofish.jadt.sampleast.Function._Function;
+import static com.pogofish.jadt.sampleast.Statement._Return;
+import static com.pogofish.jadt.sampleast.Type._Int;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import pogofish.jadt.sampleast.Expression.Add;
-import pogofish.jadt.sampleast.Expression.Literal;
-import pogofish.jadt.sampleast.Expression.Variable;
-import pogofish.jadt.sampleast.Statement.Return;
+import com.pogofish.jadt.sampleast.Expression.Add;
+import com.pogofish.jadt.sampleast.Expression.Literal;
+import com.pogofish.jadt.sampleast.Expression.Variable;
+import com.pogofish.jadt.sampleast.Statement.Return;
 
 public class SampleConsumer {
     public Function sampleFunction() {   

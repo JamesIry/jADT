@@ -20,7 +20,7 @@ limitations under the License.
  * to support /JADT/src/site/apt/*.apt
  */
 // START SNIPPET: IntBinaryTree
-    package pogofish.jadt.samples.whathow.data
+    package com.pogofish.jadt.samples.whathow.data
 
     IntBinaryTree = 
         Node(int value, IntBinaryTree left, IntBinaryTree right)

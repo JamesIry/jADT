@@ -30,7 +30,7 @@ Visitor\<ResultType\>
  
     For instance, if you want to get a message for a UI or for logging then a standard Visitor is probably the right answer.
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=message}    
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=message}    
  
     The non-generic ADT "DataType" will get an interface DataType.Visitor\<ResultType\> where ResultType is the type of the value that the Visitor's visit
  methods will return. The generic ADT "DataType\<T1,T2\> will get DataType.Visitor\<ResultType, T1, T2\>.  
@@ -43,7 +43,7 @@ VisitorWithDefault\<ResultType\>
  
     Often when querying for a property that is true only in a few cases but false in most (or vice versa), VisitorWithDefault is the right answer
      
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=isApproved}    
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=isApproved}    
 
    The non-generic ADT "DataType" will get an abstract base class DataType.VisitorWithDefault\<ResultType\> where ResultType is the type of the value that the VisitorWithDefault's visit
  methods will return. The generic ADT "DataType\<T1,T2\> will get DataType.VisitorWithDefault\<ResultType, T1, T2\>.  
@@ -55,7 +55,7 @@ VoidVisitor
 
     For example, if you need to notify another system (e.g. a network service) of a TPSReport, a VoidVisitor will do the job.
      
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=notify}    
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=notify}    
 
     The non-generic ADT "DataType" will get an interface DataType.VoidVisitor\<ResultType\> where the Visitor's visit
  methods will return type void. The generic ADT "DataType\<T1,T2\> will get DataType.VoidVisitor\<T1, T2\>.  
@@ -68,7 +68,7 @@ VoidVisitorWithDefault
 
     For example, if you need to notify another system (e.g. a network service) only if a TPSReport is denied then VoidVisitorWithDefault will do the job.
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=notifyDenied}    
+%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=notifyDenied}    
 
     The non-generic ADT "DataType" will get an abstract base class DataType.VoidVisitorWithDefault where the VisitorWithDefault's visit
  methods will return type void. The generic ADT "DataType\<T1,T2\> will get DataType.VoidVisitorWithDefault\<T1, T2\>.  

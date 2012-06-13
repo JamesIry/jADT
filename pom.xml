@@ -9,7 +9,7 @@
     <maven>3.0.0</maven>
   </prerequisites>
   
-  <groupId>pogofish.jadt</groupId>
+  <groupId>com.pogofish.jadt</groupId>
   <artifactId>JADT</artifactId>
   <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -117,9 +117,9 @@
           </formats>
           <instrumentation>
             <excludes>
-              <exclude>**/pogofish/jadt/ast/*.class</exclude>
-              <exclude>**/pogofish/jadt/samples/ast/data/*.class</exclude>
-              <exclude>**/pogofish/jadt/samples/whathow/data/*.class</exclude>
+              <exclude>**/com/pogofish/jadt/ast/*.class</exclude>
+              <exclude>**/com/pogofish/jadt/samples/ast/data/*.class</exclude>
+              <exclude>**/com/pogofish/jadt/samples/whathow/data/*.class</exclude>
             </excludes>            
           </instrumentation>
         </configuration>        

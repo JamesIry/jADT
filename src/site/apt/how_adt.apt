@@ -4,11 +4,11 @@ How are Algebaric DataTypes used?
 
     This page explains how to use ADTs, but it doesn't cover exactly {{{./what_adt.html}what they are}} or {{{./why_adt.html}why to use them}}.
     
-    If you have an ADT definition in JADT's {{{./syntax.html}syntax}} for a binary tree
+    If you have an ADT definition in jADT's {{{./syntax.html}syntax}} for a binary tree
 
 %{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=IntBinaryTree}
 
-    Using {{{./ant_generation.html}ant}} or the {{{./shell_generation.html}shell}} JADT generates Java code such that with a couple of imports
+    Using {{{./ant_generation.html}ant}} or the {{{./shell_generation.html}shell}} jADT generates Java code such that with a couple of imports
 
 %{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=imports} 
     
@@ -16,7 +16,7 @@ How are Algebaric DataTypes used?
 
 %{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=sampleTree}    
  
-     JADT also allows ADTs to be generic. The IntBinaryTree above could be replaced with a more generic version
+     jADT also allows ADTs to be generic. The IntBinaryTree above could be replaced with a more generic version
  
 %{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=GenericBinaryTree}
  
@@ -38,7 +38,7 @@ Matching on an ADT
 
     In Java you can use "switch" to decide what to do you based on specific values of primitives and Enums.  If the primitive happens to be a boolean then you can also use "if" or the ternary operation (x ? y : z).  But what about ADTs?  How do you decide what to do based on a specific ADT constructor?
 
-    Most statically typed functional programming languages have a pattern matching for making decisions based on ADTs.  Java doesn't.  So with JADT you have a couple of choices, you can use instanceof and casting or preferably you can use the {{{./visitor_variations.html}visitor interfaces}} that JADT generates.  
+    Most statically typed functional programming languages have a pattern matching for making decisions based on ADTs.  Java doesn't.  So with jADT you have a couple of choices, you can use instanceof and casting or preferably you can use the {{{./visitor_variations.html}visitor interfaces}} that jADT generates.  
 
     Here's using a Visitor to find the max of an IntBinaryTree where null indicates an empty tree.
 
@@ -46,7 +46,7 @@ Matching on an ADT
     
     Which says that the max of an EmptyTree is null while the max of a Node is the max of the node's value compared with the max of the left tree compared with the max of the right tree.
 
-    Languages with pattern matching also generally allow a "don't care" case, a default for when no other case matches.  JADT emulates that using a small variation of the visitor pattern.  
+    Languages with pattern matching also generally allow a "don't care" case, a default for when no other case matches.  jADT emulates that using a small variation of the visitor pattern.  
 
     Given the ADT
 
@@ -68,7 +68,7 @@ Matching on an ADT
 
       [[2]] If you have a bunch of instanceofs in a row then odds are pretty good you'll make a mistake.  Seriously consider using Visitor.
       
-    Besides the Visitor and VisitorWithDefault variations seen on this page, JADT also supports {{{./visitor_variations.html}variations that return void}}.
+    Besides the Visitor and VisitorWithDefault variations seen on this page, jADT also supports {{{./visitor_variations.html}variations that return void}}.
 
     {{{./visitor.html}\<\< Visitor Pattern }} | {{{./visitor_variations.html} Visitor Variations \>\>}}
       

@@ -3,7 +3,7 @@ Downloading Precompiled Jars
     {{{./jadt_license.html}\<\< Licensing }} | {{{./why_adt.html} Why use Algebraic DataTypes(ADTs)? \>\>}}
 
 
-    Eventually JADT jars will be hosted in a Maven repository. For now download JADT from its {{{https://github.com/JamesIry/JADT/downloads}Github download page}}. 
+    Eventually jADT jars will be hosted in a Maven repository. For now download jADT from its {{{https://github.com/JamesIry/JADT/downloads}Github download page}}. 
     
     At minimum, you'll need JADT-core-_version_.jar.
     
@@ -18,22 +18,22 @@ Building From Source
 +---
     cd myprojectworkspace
     
-    git clone https://github.com/JamesIry/JADT.git JADT  # to fork into myprojectworkspace/JADT
+    git clone https://github.com/JamesIry/JADT.git jADT  # to fork into myprojectworkspace/jADT
     
-    cd JADT
+    cd jADT
     
-    mvn compile # to compile into myprojectworkspace/JADT/JADT-core/target/classes 
-                # and myprojectworkspace/JADT/JADT-ant/target/classes
+    mvn compile # to compile into myprojectworkspace/jADT/JADT-core/target/classes 
+                # and myprojectworkspace/jADT/JADT-ant/target/classes
                 
     mvn test    # to run the tests
     
-    mvn package # to create the jars in myprojectworkspace/JADT/JADT-core/target
-                # and myprojectworkspace/JADT/JADT-ant/target
+    mvn package # to create the jars in myprojectworkspace/jADT/JADT-core/target
+                # and myprojectworkspace/jADT/JADT-ant/target
 
     mvn install # to install the jars in your local maven repository
                     
     mvn site:site site:stage # to create all this pretty documentation 
-                             # at myprojectworkspace/JADT/target/staging/index.html
+                             # at myprojectworkspace/jADT/target/staging/index.html
 +---
 
     {{{./jadt_license.html}\<\< Licensing }} | {{{./why_adt.html} Why use Algebraic DataTypes(ADTs)? \>\>}}

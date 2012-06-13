@@ -14,7 +14,7 @@
 
   <artifactId>JADT-ant</artifactId>
   <name>JADT Ant Task</name>
-  <description>Ant Task for doing JADT processing</description>
+  <description>Ant Task for doing jADT processing</description>
   <url>http://jamesiry.github.com/JADT/ant/</url>
   
   <distributionManagement>

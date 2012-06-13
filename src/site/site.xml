@@ -36,10 +36,10 @@
         </links>
         
         <breadcrumbs>
-          <item name="JADT" href="index.html"/>
+          <item name="jADT" href="index.html"/>
         </breadcrumbs>        
     
-        <menu name="JADT Manual" inherit="top">
+        <menu name="jADT Manual" inherit="top">
             <item name="About" href="index.html" collapse="true"/>
             <item name="License" href="jadt_license.html" collapse="true"/>
             <item name="Download" href="download.html" collapse="true"/>
@@ -54,8 +54,8 @@
             <item name="FAQ" href="faq.html" collapse="true"/>
         </menu>
     
-       <menu name="JADT Specification" inherit="top">
-            <item name="JADT syntax" href="syntax.html" collapse="true"/>
+       <menu name="jADT Specification" inherit="top">
+            <item name="jADT syntax" href="syntax.html" collapse="true"/>
         </menu>
     
         <menu ref="reports"/>       

@@ -14,7 +14,7 @@
   
   <artifactId>JADT-core</artifactId>
   <name>JADT core</name>
-  <description>The core processor for the JADT project</description>
+  <description>The core processor for the jADT project</description>
   <url>http://jamesiry.github.com/JADT/core/</url>
 
   <distributionManagement>

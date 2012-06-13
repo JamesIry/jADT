@@ -1,23 +1,23 @@
-About JADT
+About jADT
 
     | {{{./jadt_license.html} Licensing \>\>}}
 
-    JADT turns {{{./what_adt.html}algebraic datatype}} description {{{./syntax.html}files}} into {{{./how_adt.html}Java source files}}. 
+    jADT turns {{{./what_adt.html}algebraic datatype}} description {{{./syntax.html}files}} into {{{./how_adt.html}Java source files}}. 
 The resulting Java is nearly as easy to use as an Enum, but {{{./why_adt.html}far more flexible}}.
 
-    JADT uses very liberal {{{./license.html}licensing}}.
+    jADT uses very liberal {{{./license.html}licensing}}.
 
     {{{./download.html}Download Now}}.
 
 Sample
 
-    Here's a sample JADT file that describes the abstract syntax tree for a fragment of a fictional language
+    Here's a sample jADT file that describes the abstract syntax tree for a fragment of a fictional language
 
 %{snippet|verbatim=true|file=JADT-samples/src/main/jadt/SampleAST.jadt|id=everything}    
 
 Usage
 
-    Java can be generated from JADT files using {{{./ant_generation.html}Apache Ant}} or from {{{./shell_generation.html}the shell}}.
+    Java can be generated from jADT files using {{{./ant_generation.html}Apache Ant}} or from {{{./shell_generation.html}the shell}}.
 
     To use the generated Java, you'll need some imports
 

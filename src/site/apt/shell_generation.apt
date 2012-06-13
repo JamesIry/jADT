@@ -2,7 +2,7 @@ Generating Java from the Shell
 
     {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}
 
-    To use {{{./index.html}JADT}} to generate Java from the shell use you'll need to {{{./download.html}download}} the executable jar JADT-core-<version>.jar.
+    To use {{{./index.html}jADT}} to generate Java from the shell use you'll need to {{{./download.html}download}} the executable jar JADT-core-<version>.jar.
 
 ----
     ["path to java"]java -jar "path to JADT-core-<version>.jar" "path of input file" "base directory for output"
@@ -11,7 +11,7 @@ Generating Java from the Shell
     If for some inexplicable reason that doesn't work for you, then
     
 ----
-    ["path to java"]java -cp "path to JADT-core-<version>.jar" com.pogofish.jadt.JADT "path of input file" "base directory for output"
+    ["path to java"]java -cp "path to JADT-core-<version>.jar" com.pogofish.jadt.jADT "path of input file" "base directory for output"
 ----
 
     {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}

@@ -14,7 +14,7 @@
   
   <artifactId>JADT-samples</artifactId>
   <name>JADT samples</name>
-  <description>Samples used in documenting the JADT project</description>
+  <description>Samples used in documenting the jADT project</description>
   <url>http://jamesiry.github.com/JADT/samples/</url>
 
   <distributionManagement>

@@ -2,7 +2,7 @@ Visitor Variations
 
      {{{./how_adt.html}\<\< How can Algebraic DataTypes (ADTs) Be Used? }} | {{{./shell_generation.html} Generating Java from the Shell \>\>}}
 
-     The Java generated from a {{{./index.html}JADT}} definition supports several 
+     The Java generated from a {{{./index.html}jADT}} definition supports several 
 different variations on the {{{./visitor.html}Visitor pattern}}, each specialized to a particular need.
 Visitors vary on whether a useful result value is computed vs returning void, and whether
 all cases must be explicitly handled vs having a default.  Thus for the ADT DataType\<T1, T2\>, 

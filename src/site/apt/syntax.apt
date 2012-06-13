@@ -2,13 +2,13 @@ Syntax
 
     {{{./faq.html}\<\< FAQ }} |
 
-    This shows the syntax of a JADT file in EBNF notation with informal commentary interspersed
+    This shows the syntax of a jADT file in EBNF notation with informal commentary interspersed
 
 +---
     DOC : PACKAGE? IMPORTS DATATYPES
 +---
 
-    A JADT document has an optional package followed by imports and datatypes.
+    A jADT document has an optional package followed by imports and datatypes.
     
 +---
     PACKAGE : "package" PACKAGENAME
@@ -21,7 +21,7 @@ Syntax
     IMPORT : "import" PACKAGENAME
 +---
 
-    A JADT document may specify any number (including 0) of package names to import.  Each one is the keyword "import" followed by a package name.
+    A jADT document may specify any number (including 0) of package names to import.  Each one is the keyword "import" followed by a package name.
 No semicolon required.
 
 +---
@@ -36,7 +36,7 @@ No semicolon required.
     DATATYPENAME : a valid Java identifier, not qualified with a package
 +---
 
-    A JADT document must have at least one datatype, but may have as many as you'd like.  Each datatype consists 
+    A jADT document must have at least one datatype, but may have as many as you'd like.  Each datatype consists 
 of a name, optional type arguments, "=" and a list of constructors.
 
 +---
@@ -105,7 +105,7 @@ args are separated by ",".
     
     Lexical conventions    
 
-      * JADT is case sensitive.
+      * jADT is case sensitive.
 
       * Java style comments, both end of line (//) and block (/* */), are allowed.
 

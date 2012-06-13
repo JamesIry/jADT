@@ -58,7 +58,7 @@ on the subclass.  That's also why the Visitor pattern effectively prevents addin
 it's possible to create <<<class MyOtherBoolean implemenets MyBoolean>>>, the only way to make it useful
 is to go back and add a <<<visitMyOtherBoolean>>> to <<<MyBooleanVisitor>>> and all its implementations.
 
-    All the Java code you've seen up to now is very similar to the Java that JADT generates, although JADT
+    All the Java code you've seen up to now is very similar to the Java that jADT generates, although jADT
 generates much more, including a Visitor interface variation when you just want effects, and Visitor variations
 that do default computations so you don't need to implement visit methods for every possible case.
    

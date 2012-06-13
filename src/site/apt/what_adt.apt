@@ -6,7 +6,7 @@ What is an Algebraic DataType?
 
     An algebraic datatype (abbreviated ADT, but not to be confused with abstract datatypes) is something easy to express in many statically typed functional languages, but that has poor support in Java. An ADT is a very simple data structure type that consists of a choice of some finite number of alternative "constructors" each of which requires a finite number of fields.  Some concrete examples should help clarify.
 
-    One of the simplest ADTs in JADT syntax would look like
+    One of the simplest ADTs in jADT syntax would look like
 
 +----
     Boolean = True | False

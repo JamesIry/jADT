@@ -20,7 +20,7 @@
     <site>
       <id>jADT</id>
       <!-- site is at http://jamesiry.github.com/jADT but I prefer to manage deployment to it separately from releaseing artifacts -->
-      <url>file:///tmp/</url>
+      <url>file:///tmp/jADT-${project.version}</url>
     </site>
   </distributionManagement>
 

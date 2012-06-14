@@ -17,7 +17,7 @@
   <distributionManagement>
     <site>
       <id>samples</id>
-      <url>scp://jamesiry.github.com/jADT/samples/</url>
+      <url>file:///tmp/jADT-${project.version}/samples/</url>
     </site>
   </distributionManagement>
   

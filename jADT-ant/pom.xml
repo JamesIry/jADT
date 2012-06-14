@@ -17,7 +17,7 @@
   <distributionManagement>
     <site>
       <id>ant</id>
-      <url>scp://jamesiry.github.com/jADT/ant/</url>
+      <url>file:///tmp/jADT-${project.version}/ant/</url>
     </site>
   </distributionManagement>
   

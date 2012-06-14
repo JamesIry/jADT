@@ -2,14 +2,14 @@ Generating Java from Apache Ant
 
      {{{./shell_generation.html}\<\< Generating Java from the Shell }} | {{{./limitations.html} Known Limitations \>\>}}
 
-    To use {{{./index.html}jADT}} in  {{{http://ant.apache.org/}Apache Ant}} you'll need to {{{./download.html}download}} both jADT-core-<version>.jar and jADT-ant-<version>.jar.  
+    To use {{{./index.html}jADT}} in  {{{http://ant.apache.org/}Apache Ant}} you'll need to {{{./download.html}download}} both jADT-core-${projectVersion}.jar and jADT-ant-${projectVersion}.jar.  
 Then create a taskdef and task like in the following sample build.xml.
 
 +----
     <?xml version="1.0"?>
 
     <project name="JADTTaskExample" default="compile" basedir=".">
-      <taskdef name="jadt" classname="com.pogofish.jadt.ant.JADTAntTask" classpath="directory that has jADT-core-<version>.jar and jADT-ant-<version>.jar/>
+      <taskdef name="jadt" classname="com.pogofish.jadt.ant.JADTAntTask" classpath="directory that has jADT-core-${projectVersion}.jar and jADT-ant-${projectVersion}.jar/>
 
       <target name="compile" depeneds="generate">
         <!-- normal compile stuff -->

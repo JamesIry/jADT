@@ -3,13 +3,25 @@ Downloading Precompiled Jars
     {{{./jadt_license.html}\<\< Licensing }} | {{{./why_adt.html} Why use Algebraic DataTypes(ADTs)? \>\>}}
 
 
-    Eventually jADT jars will be hosted in a Maven repository. For now download jADT from its {{{https://github.com/JamesIry/jADT/downloads}Github download page}}. 
+    You can download jADT from its {{{https://github.com/JamesIry/jADT/downloads}Github download page}}. 
     
-    At minimum, you'll need jADT-core-_version_.jar.
+    At minimum, you'll need jADT-core-${projectVersion}.jar.
     
-    If you're using Apache Ant you'll want jADT-ant-_version_.jar.
+    If you're using Apache Ant you'll want jADT-ant-${projectVersion}.jar.
     
     Source and javadoc jars may help in debugging issues, but probably aren't necessary for most people.
+    
+    If you want to develop something on top of jADT-core, e.g. a plugin for another build system, you may also acquire the core library from Maven central.
+    
++----
+<dependencies>
+    <dependency>
+        <groupId>com.pogofish.jadt</groupId>
+        <artifactId>jADT-core</artifactId>
+        <version>${projectVersion}</version>
+    </dependency>
+</dependencies>
++----
 
 Building From Source
 

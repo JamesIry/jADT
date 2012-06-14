@@ -81,6 +81,7 @@
     <!-- authenticatin information for github is in home/.m2/settings.xml -->
     <github.global.server>github</github.global.server>
     <site.maven.plugin.version>0.6</site.maven.plugin.version>
+    <projectVersion>${project.version}</projectVersion>
   </properties>
   
   <build>    

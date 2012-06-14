@@ -5,18 +5,20 @@
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
     <bannerLeft>
         <name>jADT : Java Algebraic DataTypes</name>
+        <alt>jADT : Java Algebraic DataTypes</alt>
         <src>images/jadt.png</src>
         <href>index.html</href>
     </bannerLeft>
     <bannerRight>
         <name>Fork me on GitHub</name>
+        <alt>Fork me on GitHub</alt>
         <href>https://github.com/jamesiry/JADT/</href>
         <src>https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png</src>
     </bannerRight>
     <poweredBy>
-        <logo name="hosted on GitHub" href="https://github.com/" img="http://github.com/github/media/raw/master/logos/github_logo_social_coding_outlined.png"/>
-        <logo name="built with Maven 3" href="http://maven.apache.org/" img="http://jamesiry.github.com/JADT/images/logos/maven-feather.png"/>
-        <logo name="built on DEV@cloud" href="http://www.cloudbees.com/dev.cb" img="http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png"/>
+        <logo name="hosted on GitHub" alt="hosted on GitHub" href="https://github.com/" img="http://github.com/github/media/raw/master/logos/github_logo_social_coding_outlined.png"/>
+        <logo name="built with Maven 3" alt="built with Maven 3" href="http://maven.apache.org/" img="http://jamesiry.github.com/JADT/images/logos/maven-feather.png"/>
+        <logo name="built on DEV@cloud" alt="built on DEV@cloud" href="http://www.cloudbees.com/dev.cb" img="http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png"/>
     </poweredBy>
     <skin>
         <groupId>org.apache.maven.skins</groupId>

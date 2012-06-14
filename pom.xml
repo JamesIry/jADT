@@ -22,7 +22,8 @@
   <distributionManagement>
     <site>
       <id>jADT</id>
-      <url>scp://jamesiry.github.com/jADT/</url>
+      <!-- site is at http://jamesiry.github.com/jADT but I prefer to manage deployment to it separately from releaseing artifacts -->
+      <url>file:///tmp/</url>
     </site>
   </distributionManagement>
 

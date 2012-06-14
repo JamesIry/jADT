@@ -6,23 +6,23 @@ How are Algebaric DataTypes used?
     
     If you have an ADT definition in jADT's {{{./syntax.html}syntax}} for a binary tree
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=IntBinaryTree}
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/WhatHowSamples.jadt|id=IntBinaryTree}
 
     Using {{{./ant_generation.html}ant}} or the {{{./shell_generation.html}shell}} jADT generates Java code such that with a couple of imports
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=imports} 
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=imports} 
     
     You can create a new Tree with code like
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=sampleTree}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=sampleTree}    
  
      jADT also allows ADTs to be generic. The IntBinaryTree above could be replaced with a more generic version
  
-%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=GenericBinaryTree}
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/WhatHowSamples.jadt|id=GenericBinaryTree}
  
     With that you can create a String BinaryTree with code like
  
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/GenericBinaryTreeUsage.java|id=sampleTree}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/GenericBinaryTreeUsage.java|id=sampleTree}    
 
     You can also achieve the same thing with 'new BinaryTree.Node\<String\>("hello"...)' and 'new BinaryTree.EmptyTree\<String\>()' but that
 
@@ -42,7 +42,7 @@ Matching on an ADT
 
     Here's using a Visitor to find the max of an IntBinaryTree where null indicates an empty tree.
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=max}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=max}    
     
     Which says that the max of an EmptyTree is null while the max of a Node is the max of the node's value compared with the max of the left tree compared with the max of the right tree.
 
@@ -50,17 +50,17 @@ Matching on an ADT
 
     Given the ADT
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=TPSReportStatus}
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/WhatHowSamples.jadt|id=TPSReportStatus}
     
     You can see if an TPS report was approved by
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=isApproved}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=isApproved}    
 
     So for Approved the result is true, but for all other statuses (Pending and Denied) the result is false.
 
     In this particular case the same thing could be achieved with instance of pretty nicely
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=isApprovedV2}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=isApprovedV2}    
 
     A few rules of thumb for when to use instanceof vs a Visitor.
 

@@ -8,12 +8,12 @@
   
   <parent>  
     <groupId>com.pogofish.jadt</groupId>
-    <artifactId>JADT</artifactId>
+    <artifactId>jADT</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>  
 
-  <artifactId>JADT-ant</artifactId>
-  <name>JADT Ant Task</name>
+  <artifactId>jADT-ant</artifactId>
+  <name>jADT Ant Task</name>
   <description>Ant Task for doing jADT processing</description>
   <url>http://jamesiry.github.com/JADT/ant/</url>
   
@@ -27,7 +27,7 @@
   <dependencies>
     <dependency>
       <groupId>com.pogofish.jadt</groupId>
-      <artifactId>JADT-core</artifactId>
+      <artifactId>jADT-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

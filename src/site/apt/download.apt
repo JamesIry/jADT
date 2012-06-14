@@ -5,9 +5,9 @@ Downloading Precompiled Jars
 
     Eventually jADT jars will be hosted in a Maven repository. For now download jADT from its {{{https://github.com/JamesIry/JADT/downloads}Github download page}}. 
     
-    At minimum, you'll need JADT-core-_version_.jar.
+    At minimum, you'll need jADT-core-_version_.jar.
     
-    If you're using Apache Ant you'll want JADT-ant-_version_.jar.
+    If you're using Apache Ant you'll want jADT-ant-_version_.jar.
     
     Source and javadoc jars may help in debugging issues, but probably aren't necessary for most people.
 
@@ -22,13 +22,13 @@ Building From Source
     
     cd jADT
     
-    mvn compile # to compile into myprojectworkspace/jADT/JADT-core/target/classes 
-                # and myprojectworkspace/jADT/JADT-ant/target/classes
+    mvn compile # to compile into myprojectworkspace/jADT/jADT-core/target/classes 
+                # and myprojectworkspace/jADT/jADT-ant/target/classes
                 
     mvn test    # to run the tests
     
-    mvn package # to create the jars in myprojectworkspace/jADT/JADT-core/target
-                # and myprojectworkspace/jADT/JADT-ant/target
+    mvn package # to create the jars in myprojectworkspace/jADT/jADT-core/target
+                # and myprojectworkspace/jADT/jADT-ant/target
 
     mvn install # to install the jars in your local maven repository
                     

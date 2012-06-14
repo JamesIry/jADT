@@ -10,10 +10,10 @@
   </prerequisites>
   
   <groupId>com.pogofish.jadt</groupId>
-  <artifactId>JADT</artifactId>
+  <artifactId>jADT</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>JADT</name>
+  <name>jADT</name>
   <url>http://jamesiry.github.com/JADT/</url>
   <description>
         jADT turns simple descriptions of Algebraic Data Types (ADTs) into Java code with visitors to emulate pattern matching.
@@ -21,7 +21,7 @@
 
   <distributionManagement>
     <site>
-      <id>JADT</id>
+      <id>jADT</id>
       <url>scp://jamesiry.github.com/JADT/</url>
     </site>
   </distributionManagement>
@@ -42,9 +42,9 @@
   </dependencies>
 
   <modules>
-    <module>JADT-core</module>
-    <module>JADT-ant</module>
-    <module>JADT-samples</module>
+    <module>jADT-core</module>
+    <module>jADT-ant</module>
+    <module>jADT-samples</module>
   </modules>  
   <licenses>
     <license>

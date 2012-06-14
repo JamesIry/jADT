@@ -13,7 +13,7 @@ Sample
 
     Here's a sample jADT file that describes the abstract syntax tree for a fragment of a fictional language
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/SampleAST.jadt|id=everything}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/SampleAST.jadt|id=everything}    
 
 Usage
 
@@ -21,19 +21,19 @@ Usage
 
     To use the generated Java, you'll need some imports
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=imports}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=imports}    
     
     Here's an example of creating a complete function using generated factory methods
     
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=sampleFunction}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=sampleFunction}    
     
     Here's a sample function that returns all the integer literals in an expression
     
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=expressionLiterals}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=expressionLiterals}    
     
     And here's a sample function that returns true only if a list of statements has a return statement. 
 Unlike the previous example, this one uses a VisitorWithDefault so that only relevant cases need to be considered.
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=hasReturn}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=hasReturn}    
 
     | {{{./jadt_license.html} Licensing \>\>}}

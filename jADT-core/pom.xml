@@ -8,12 +8,12 @@
   
   <parent>  
     <groupId>com.pogofish.jadt</groupId>
-    <artifactId>JADT</artifactId>
+    <artifactId>jADT</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>JADT-core</artifactId>
-  <name>JADT core</name>
+  <artifactId>jADT-core</artifactId>
+  <name>jADT core</name>
   <description>The core processor for the jADT project</description>
   <url>http://jamesiry.github.com/JADT/core/</url>
 

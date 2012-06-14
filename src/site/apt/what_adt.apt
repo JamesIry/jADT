@@ -25,19 +25,19 @@ What is an Algebraic DataType?
 
     Here's example from an Enterprise style app might be
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=TPSReportStatus}
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/WhatHowSamples.jadt|id=TPSReportStatus}
 
     So a TPSReport can be in one of 3 statuses.  Pending, Approved, or Denied.  If Approved or Denied it must have a an associated manager that did the approval or rejection.
 
     Nothing prevents an ADT from being recursive.  A binary tree of integers can be described as
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=IntBinaryTree}
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/WhatHowSamples.jadt|id=IntBinaryTree}
 
     Which says that an IntBinaryTree is either empty or it is a Node with an integer value, a left subtree, and a right subtree.
 
     An ADT can also be generic
 
-%{snippet|verbatim=true|file=JADT-samples/src/main/jadt/WhatHowSamples.jadt|id=GenericBinaryTree}
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/WhatHowSamples.jadt|id=GenericBinaryTree}
 
     Which says that a BinaryTree\<T\> is either a Node\<T\> or an EmptyTree\<T\>.
 

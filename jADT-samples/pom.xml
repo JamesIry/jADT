@@ -8,12 +8,12 @@
   
   <parent>  
     <groupId>com.pogofish.jadt</groupId>
-    <artifactId>JADT</artifactId>
+    <artifactId>jADT</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>JADT-samples</artifactId>
-  <name>JADT samples</name>
+  <artifactId>jADT-samples</artifactId>
+  <name>jADT samples</name>
   <description>Samples used in documenting the jADT project</description>
   <url>http://jamesiry.github.com/JADT/samples/</url>
 
@@ -27,7 +27,7 @@
   <dependencies>
     <dependency>
       <groupId>com.pogofish.jadt</groupId>
-      <artifactId>JADT-core</artifactId>
+      <artifactId>jADT-core</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

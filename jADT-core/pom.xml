@@ -15,12 +15,12 @@
   <artifactId>jADT-core</artifactId>
   <name>jADT core</name>
   <description>The core processor for the jADT project</description>
-  <url>http://jamesiry.github.com/JADT/core/</url>
+  <url>http://jamesiry.github.com/jADT/core/</url>
 
   <distributionManagement>
     <site>
       <id>core</id>
-      <url>scp://jamesiry.github.com/JADT/core/</url>
+      <url>scp://jamesiry.github.com/jADT/core/</url>
     </site>
   </distributionManagement>
   
@@ -57,7 +57,7 @@
         </executions>
       </plugin>
     
-  <!-- add generated JADT to sources -->
+  <!-- add generated jADT to sources -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>

@@ -11,7 +11,7 @@ import com.pogofish.jadt.util.IOExceptionAction;
 
 
 /**
- * Information about the version of JADT being used
+ * Information about the version of jADT being used
  * 
  * @author jiry
  */

@@ -14,7 +14,7 @@
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>jADT</name>
-  <url>http://jamesiry.github.com/JADT/</url>
+  <url>http://jamesiry.github.com/jADT/</url>
   <description>
         jADT turns simple descriptions of Algebraic Data Types (ADTs) into Java code with visitors to emulate pattern matching.
   </description>
@@ -22,7 +22,7 @@
   <distributionManagement>
     <site>
       <id>jADT</id>
-      <url>scp://jamesiry.github.com/JADT/</url>
+      <url>scp://jamesiry.github.com/jADT/</url>
     </site>
   </distributionManagement>
 
@@ -64,14 +64,14 @@
   </developers>  
   
   <scm>
-    <connection>scm:git:git://github.com/JamesIry/JADT.git</connection>
-    <developerConnection>scm:git:git@github.com:JamesIry/JADT.git</developerConnection>
-    <url>http://github.com/JamesIry/JADT</url>
+    <connection>scm:git:git://github.com/JamesIry/jADT.git</connection>
+    <developerConnection>scm:git:git@github.com:JamesIry/jADT.git</developerConnection>
+    <url>http://github.com/JamesIry/jADT</url>
   </scm>
 
   <issueManagement>
     <system>github</system>
-    <url>http://github.com/JamesIry/JADT/issues</url>
+    <url>http://github.com/JamesIry/jADT/issues</url>
   </issueManagement>
 
   

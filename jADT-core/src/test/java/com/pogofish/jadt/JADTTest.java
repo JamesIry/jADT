@@ -34,14 +34,14 @@ import com.pogofish.jadt.util.Util;
 
 
 /**
- * Test for the main JADT driver
+ * Test for the main jADT driver
  *
  * @author jiry
  */
 public class JADTTest {
     
     /**
-     * Ensure that the standard config JADT has all the right parts.  The various bits are tested separately
+     * Ensure that the standard config jADT has all the right parts.  The various bits are tested separately
      */
     @Test
     public void testStandardConfig() {
@@ -54,7 +54,7 @@ public class JADTTest {
     }
     
     /**
-     * Create a dummy configged JADT based on the provided checker, send it the provided args and return the
+     * Create a dummy configged jADT based on the provided checker, send it the provided args and return the
      * resulting string (or throw the resulting exception 
      */
     private String testWithDummyJADT(String[] args, Checker checker) {

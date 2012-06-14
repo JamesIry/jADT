@@ -3,7 +3,7 @@ Downloading Precompiled Jars
     {{{./jadt_license.html}\<\< Licensing }} | {{{./why_adt.html} Why use Algebraic DataTypes(ADTs)? \>\>}}
 
 
-    Eventually jADT jars will be hosted in a Maven repository. For now download jADT from its {{{https://github.com/JamesIry/JADT/downloads}Github download page}}. 
+    Eventually jADT jars will be hosted in a Maven repository. For now download jADT from its {{{https://github.com/JamesIry/jADT/downloads}Github download page}}. 
     
     At minimum, you'll need jADT-core-_version_.jar.
     
@@ -13,12 +13,12 @@ Downloading Precompiled Jars
 
 Building From Source
 
-    Get familiar with {{{https://help.github.com/categories/54/articles}Github}} and {{{http://maven.apache.org/guides/getting-started/index.html}Maven}} then {{{https://github.com/jamesiry/JADT/}fork}} and build.
+    Get familiar with {{{https://help.github.com/categories/54/articles}Github}} and {{{http://maven.apache.org/guides/getting-started/index.html}Maven}} then {{{https://github.com/jamesiry/jADT/}fork}} and build.
 
 +---
     cd myprojectworkspace
     
-    git clone https://github.com/JamesIry/JADT.git jADT  # to fork into myprojectworkspace/jADT
+    git clone https://github.com/JamesIry/jADT.git jADT  # to fork into myprojectworkspace/jADT
     
     cd jADT
     

@@ -2,7 +2,7 @@ package com.pogofish.jadt.ast;
 
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/JADT-core/src/main/jadt/jadt.jadt using JADT version 0.0.2-SNAPSHOT http://jamesiry.github.com/JADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 

@@ -21,7 +21,7 @@ import com.pogofish.jadt.samples.whathow.data.TPSReportStatus.*;
 /**
  * Example usage of TPSReportStatus for the how page
  * It is marked up with START SNIPPET and END SNIPPET boundaries to support
- * /JADT/src/site/apt/*.apt
+ * /jADT/src/site/apt/*.apt
  */
 public class TPSReportStatusUsage {
     /**

@@ -29,7 +29,7 @@ import com.pogofish.jadt.ast.Type.Primitive;
 import com.pogofish.jadt.ast.Type.Ref;
 
 /**
- * Pretty printer for the JADT AST.  Note that in the context of pretty printers "print" just means "make a nice looking string"
+ * Pretty printer for the jADT AST.  Note that in the context of pretty printers "print" just means "make a nice looking string"
  *
  * @author jiry
  */

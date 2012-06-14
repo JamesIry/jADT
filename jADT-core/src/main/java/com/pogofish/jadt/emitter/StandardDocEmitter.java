@@ -49,7 +49,7 @@ public class StandardDocEmitter implements DocEmitter {
             header.append("\n");
         }
         final String version = new Version().getVersion();
-        header.append("/*\nThis file was generated based on " + doc.srcInfo + " using JADT version " + version + " http://jamesiry.github.com/JADT/ . Please do not modify directly.\n\n");
+        header.append("/*\nThis file was generated based on " + doc.srcInfo + " using jADT version " + version + " http://jamesiry.github.com/jADT/ . Please do not modify directly.\n\n");
         header.append("The source was parsed as: \n\n");
         header.append(Printer.print(doc));
         header.append("\n*/\n");

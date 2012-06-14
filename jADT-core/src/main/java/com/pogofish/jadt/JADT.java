@@ -48,7 +48,7 @@ public class JADT {
     final TargetFactoryFactory factoryFactory;
 
     /**
-     * Takes the names of a source file and output directory and does the JADT thing to them
+     * Takes the names of a source file and output directory and does the jADT thing to them
      * 
      * @param args
      * @throws Exception
@@ -79,9 +79,9 @@ public class JADT {
     /**
      * Constructs a driver with the given components.
      * 
-     * @param parser Parser to read JADT files
-     * @param checker Checker to validate JADT structures
-     * @param emitter Emitter to spit out Java files
+     * @param parser Parser to read jADT files
+     * @param checker Checker to validate jADT structures
+     * @param emitter Emitter to spit out java files
      */
     public JADT(SourceFactory sourceFactory, Parser parser, Checker checker, DocEmitter emitter, TargetFactoryFactory factoryFactory) {
         super();
@@ -93,7 +93,7 @@ public class JADT {
     }
     
     /**
-     * Do the JADT thing based on an array of String args.  There must be 2 and the must be the source file and destination directory
+     * Do the jADT thing based on an array of String args.  There must be 2 and the must be the source file and destination directory
      * 
      * @param args
      */
@@ -101,10 +101,10 @@ public class JADT {
     	logger.finest("Checking command line arguments.");
         if (args.length != 2) {
         	final String version = new Version().getVersion();
-        	logger.info("JADT version " + version + ".");
-        	logger.info("Not enough arguments provided to JADT");
+        	logger.info("jADT version " + version + ".");
+        	logger.info("Not enough arguments provided to jADT");
         	logger.info("usage: java sfdc.adt.JADT [source file] [output directory]");
-            throw new IllegalArgumentException("\nJADT version " + version + "\nusage: java sfdc.adt.JADT [source file] [output directory]");
+            throw new IllegalArgumentException("\njADT version " + version + "\nusage: java sfdc.adt.JADT [source file] [output directory]");
         }
         
         final String srcFileName = args[0];
@@ -114,14 +114,14 @@ public class JADT {
     }
 
     /**
-     * Do the JADT thing given the srceFileName and destination directory
+     * Do the jADT thing given the srceFileName and destination directory
      * 
      * @param srcFileName full name of the source directory
      * @param destDir full name of the desintation directory (trailing slash is optional)
      */
     public void parseAndEmit(String srcFileName, String destDir) {    	
     	final String version = new Version().getVersion();
-    	logger.info("JADT version " + version + ".");
+    	logger.info("jADT version " + version + ".");
     	logger.info("Will read from srcFile " + srcFileName);
     	logger.info("Will write to destDir " + destDir);
    	
@@ -140,7 +140,7 @@ public class JADT {
     }
 
     /**
-     * Create a dummy configged JADT based on the provided checker and target factory
+     * Create a dummy configged jADT based on the provided checker and target factory
      */
     public static JADT createDummyJADT(Checker checker, TargetFactoryFactory factory) {
         final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);

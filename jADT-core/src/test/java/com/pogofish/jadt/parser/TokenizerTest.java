@@ -150,7 +150,7 @@ public class TokenizerTest {
         final Tokenizer tokenizer = tokenizer("hello. 42 ?");
         // bad because of the trailing dot
         check(tokenizer, "hello.", TokenType.UNKNOWN, 1);
-        // bad because identifiers can't start with numbers (JADT doesn't care about numbers)
+        // bad because identifiers can't start with numbers (jADT doesn't care about numbers)
         check(tokenizer, "42", TokenType.UNKNOWN, 1);
         // just bad
         check(tokenizer, "?", TokenType.UNKNOWN, 1);        
@@ -186,7 +186,7 @@ public class TokenizerTest {
                                 + "default do else enum extends final finally for goto if implements instanceof interface native new private protected public return "
                                 + "static strictfp super switch synchronized this throw throws transient try void volatile while");
 
-        // keywords used by JADT
+        // keywords used by jADT
         check(tokenizer, "import", TokenType.IMPORT, 1);
         check(tokenizer, "package", TokenType.PACKAGE, 1);
         
@@ -199,7 +199,7 @@ public class TokenizerTest {
         check(tokenizer, "long", TokenType.LONG, 1);
         check(tokenizer, "short", TokenType.SHORT, 1);
         
-        // Java keywords not used by JADT but reserved to prevent bad Java generation
+        // Java keywords not used by jADT but reserved to prevent bad Java generation
         check(tokenizer, "abstract", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "assert", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "break", TokenType.JAVA_KEYWORD, 1);

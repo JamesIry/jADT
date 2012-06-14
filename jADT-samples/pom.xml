@@ -15,12 +15,12 @@
   <artifactId>jADT-samples</artifactId>
   <name>jADT samples</name>
   <description>Samples used in documenting the jADT project</description>
-  <url>http://jamesiry.github.com/JADT/samples/</url>
+  <url>http://jamesiry.github.com/jADT/samples/</url>
 
   <distributionManagement>
     <site>
       <id>samples</id>
-      <url>scp://jamesiry.github.com/JADT/samples/</url>
+      <url>scp://jamesiry.github.com/jADT/samples/</url>
     </site>
   </distributionManagement>
   
@@ -42,7 +42,7 @@
   
     <plugins>
     
-  <!-- add generated JADT to sources -->
+  <!-- add generated jADT to sources -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>

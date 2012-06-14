@@ -2,7 +2,7 @@ package com.pogofish.jadt.samples.ast.data;
 
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/JADT-samples/../JADT-samples/src/main/jadt/SampleAST.jadt using JADT version null http://jamesiry.github.com/JADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/SampleAST.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 

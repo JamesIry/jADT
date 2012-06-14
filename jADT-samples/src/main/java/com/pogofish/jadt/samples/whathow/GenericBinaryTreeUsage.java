@@ -23,7 +23,7 @@ import static com.pogofish.jadt.samples.whathow.data.BinaryTree.*;
 /**
  * Example usage of an GenericBinaryTree used in the how page
  * It is marked up with START SNIPPET and END SNIPPET boundaries to support
- * /JADT/src/site/apt/*.apt
+ * /jADT/src/site/apt/*.apt
  * 
  * @author jiry
  */

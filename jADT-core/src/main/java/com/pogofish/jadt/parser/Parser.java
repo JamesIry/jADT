@@ -20,7 +20,7 @@ import com.pogofish.jadt.source.Source;
 
 
 /**
- * Interface for the JADT description file parsers.
+ * Interface for the jADT description file parsers.
  *
  * @author jiry
  */

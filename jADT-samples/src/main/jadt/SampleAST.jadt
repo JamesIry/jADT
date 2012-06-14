@@ -15,9 +15,9 @@ limitations under the License.
  */
  
  /*
- * This JADT file is an example AST for a toy language.
+ * This jADT file is an example AST for a toy language.
  * It is marked up with START SNIPPET and END SNIPPET boundaries 
- * to support /JADT/src/site/apt/index.apt
+ * to support /jADT/src/site/apt/index.apt
  */
 // START SNIPPET: everything
     package com.pogofish.jadt.samples.ast.data

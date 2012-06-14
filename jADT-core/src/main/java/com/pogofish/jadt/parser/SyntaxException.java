@@ -16,7 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.parser;
 
 /**
- * An exception occuring during the parsing of a JADT description file
+ * An exception occuring during the parsing of a jADT description file
  *
  * @author jiry
  */

@@ -25,7 +25,7 @@ import static com.pogofish.jadt.samples.whathow.data.IntBinaryTree.*;
 /**
  * Example usage of an IntBinaryTree used in the how page
  * It is marked up with START SNIPPET and END SNIPPET boundaries to support
- * /JADT/src/site/apt/*.apt
+ * /jADT/src/site/apt/*.apt
  * 
  * @author jiry
  */

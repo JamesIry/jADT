@@ -46,7 +46,7 @@ import com.pogofish.jadt.util.Util;
 
 
 /**
- * The standard parse for JADT description files
+ * The standard parse for jADT description files
  *
  * @author jiry
  */

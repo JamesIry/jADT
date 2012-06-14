@@ -22,7 +22,7 @@ import com.pogofish.jadt.JADT;
 
 
 /**
- * Task for running JADT during an Ant build
+ * Task for running jADT during an Ant build
  *
  * @author jiry
  */

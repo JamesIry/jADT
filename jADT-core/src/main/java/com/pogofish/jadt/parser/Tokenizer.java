@@ -28,7 +28,7 @@ import com.pogofish.jadt.source.Source;
 
 /**
  * Modeled after the interface of a subset of Java's StreamTokenizer, but returns TokenTypes designed for
- * JADT instead of StreamTokenizer's generic tokens
+ * jADT instead of StreamTokenizer's generic tokens
  *
  * @author jiry
  */
@@ -54,7 +54,7 @@ class Tokenizer {
     private static Map<String, TokenType> createKeywords() {       
         final Map<String, TokenType> keywords = new HashMap<String, TokenType>();
         
-        // keywords actually used by JADT
+        // keywords actually used by jADT
         keywords.put("import", TokenType.IMPORT);
         keywords.put("package", TokenType.PACKAGE);
 
@@ -128,7 +128,7 @@ class Tokenizer {
     /**
      * Constructs a Tokenizer that will tokenize the specified Reade
      * 
-     * @param reader the reader with the JADT source to be tokenized
+     * @param reader the reader with the jADT source to be tokenized
      */
     public Tokenizer(Source source) {
         srcInfo = source.getSrcInfo();

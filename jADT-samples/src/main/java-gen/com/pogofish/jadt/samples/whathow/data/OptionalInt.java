@@ -20,8 +20,8 @@ Manager =
     Manager(String name)
 TPSReportStatus =
     Pending
-  | Approved(Manager approver)
-  | Denied(Manager rejector)
+  | Approved(final Manager approver)
+  | Denied(final Manager rejector)
 
 */
 public abstract class OptionalInt {
@@ -64,7 +64,7 @@ public abstract class OptionalInt {
    }
 
    public static final class Some extends OptionalInt {
-      public final int value;
+      public int value;
 
       public Some(int value) {
          this.value = value;

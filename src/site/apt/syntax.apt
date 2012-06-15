@@ -57,12 +57,18 @@ surrounded by "(" and ")".  If a constructor has no args then it must not have a
 
 +---
     ARGS : ARG ("," ARG)*
-    ARG : TYPE ARGNAME
+    ARG : ARGMODIFIER* TYPE ARGNAME
     ARGNAME : a valid Java identifier
 +---
 
-    If a constructor has an argument field list then it must have a least  one argument.  An argument is a type followed by a name.  Multiple
+    If a constructor has an argument field list then it must have a least  one argument.  An argument is a list of argument modifiers (separated by whitespace) followed by a type followed by a name.  Multiple
 args are separated by ",".
+
++---
+   ARGMODIFIER : FINAL
+   FINAL : "final"
++---
+    Currently the only modifier allowed on an arg is "final."
 
 +---
     TYPE : PRIMITIVETYPE | REFTYPE

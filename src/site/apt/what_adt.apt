@@ -27,7 +27,7 @@ What is an Algebraic DataType?
 
 %{snippet|verbatim=true|file=jADT-samples/src/main/jadt/WhatHowSamples.jadt|id=TPSReportStatus}
 
-    So a TPSReport can be in one of 3 statuses.  Pending, Approved, or Denied.  If Approved or Denied it must have a an associated manager that did the approval or rejection.
+    So a TPSReport can be in one of 3 statuses.  Pending, Approved, or Denied.  If Approved or Denied it must have a an associated manager that did the approval or rejection.  The manager field cannot be changed, it's final.
 
     Nothing prevents an ADT from being recursive.  A binary tree of integers can be described as
 

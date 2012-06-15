@@ -28,18 +28,18 @@ limitations under the License.
          Int
        | Long
     
-    Function = Function(Type returnType, String name, List<Arg> args, List<Statement> statements)
+    Function = Function(final Type returnType, final String name, List<Arg> args, final List<Statement> statements)
     
-    Arg = Arg(Type type, String name)
+    Arg = Arg(final Type type, final String name)
     
     Statement =
-        Declaration(Type type, String name, Expression expression)
-      | Assignment(String name, Expression expression)
-      | Return(Expression expression)
+        Declaration(final Type type, final String name, final Expression expression)
+      | Assignment(final String name, final Expression expression)
+      | Return(final Expression expression)
     
     Expression =
-        Add(Expression left, Expression right)
-      | Variable(String name)
-      | IntLiteral(int value)
-      | LongLiteral(long value)
+        Add(final Expression left, final Expression right)
+      | Variable(final String name)
+      | IntLiteral(final int value)
+      | LongLiteral(final long value)
 // END SNIPPET: everything

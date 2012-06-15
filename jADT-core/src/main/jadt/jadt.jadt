@@ -17,18 +17,18 @@ package com.pogofish.jadt.ast
 
 import java.util.List
 
-Doc = Doc(String srcInfo, String pkg, List<String> imports, List<DataType> dataTypes) 
+Doc = Doc(final String srcInfo, final String pkg, final List<String> imports, final List<DataType> dataTypes) 
 
-DataType = DataType(String name, List<String> typeArguments, List<Constructor> constructors)
+DataType = DataType(final String name, final List<String> typeArguments, final List<Constructor> constructors)
 
-Constructor = Constructor(String name, List<Arg> args)
+Constructor = Constructor(final String name, final List<Arg> args)
 
-Arg = Arg(List<ArgModifier> modifiers, Type type, String name)
+Arg = Arg(final List<ArgModifier> modifiers, final Type type, final String name)
 
 ArgModifier = Final
 
-Type = Ref(RefType type) | Primitive(PrimitiveType type)
+Type = Ref(final RefType type) | Primitive(final PrimitiveType type)
 
-RefType = ClassType(String baseName, List<RefType> typeArguments) | ArrayType(Type heldType)
+RefType = ClassType(final String baseName, final List<RefType> typeArguments) | ArrayType(final Type heldType)
 
 PrimitiveType = BooleanType | CharType | DoubleType | FloatType | IntType | LongType | ShortType 

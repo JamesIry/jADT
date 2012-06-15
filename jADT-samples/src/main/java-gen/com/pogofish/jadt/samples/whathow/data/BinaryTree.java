@@ -20,8 +20,8 @@ Manager =
     Manager(String name)
 TPSReportStatus =
     Pending
-  | Approved(Manager approver)
-  | Denied(Manager rejector)
+  | Approved(final Manager approver)
+  | Denied(final Manager rejector)
 
 */
 public abstract class BinaryTree<T> {
@@ -66,9 +66,9 @@ public abstract class BinaryTree<T> {
    }
 
    public static final class Node<T> extends BinaryTree<T> {
-      public final T value;
-      public final BinaryTree<T> left;
-      public final BinaryTree<T> right;
+      public T value;
+      public BinaryTree<T> left;
+      public BinaryTree<T> right;
 
       public Node(T value, BinaryTree<T> left, BinaryTree<T> right) {
          this.value = value;

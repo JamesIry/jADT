@@ -20,15 +20,15 @@ Manager =
     Manager(String name)
 TPSReportStatus =
     Pending
-  | Approved(Manager approver)
-  | Denied(Manager rejector)
+  | Approved(final Manager approver)
+  | Denied(final Manager rejector)
 
 */
 public final class Manager {
 
    public static final  Manager _Manager(String name) { return new Manager(name); }
 
-      public final String name;
+      public String name;
 
       public Manager(String name) {
          this.name = name;

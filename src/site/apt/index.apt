@@ -11,7 +11,8 @@ The resulting Java is nearly as easy to use as an Enum, but {{{./why_adt.html}fa
 
 Sample
 
-    Here's a sample jADT file that describes the abstract syntax tree for a fragment of a fictional language
+    Here's a sample jADT file that describes the abstract syntax tree for a fragment of a fictional language.  
+All the fields are marked final (immutable) but need not be.
 
 %{snippet|verbatim=true|file=jADT-samples/src/main/jadt/SampleAST.jadt|id=everything}    
 

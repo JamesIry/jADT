@@ -2,7 +2,7 @@ package com.pogofish.jadt.samples.ast.data;
 
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/SampleAST.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/SampleAST.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
@@ -14,18 +14,18 @@ Type =
     Int
   | Long
 Function =
-    Function(Type returnType, String name, List<Arg> args, List<Statement> statements)
+    Function(final Type returnType, final String name, List<Arg> args, final List<Statement> statements)
 Arg =
-    Arg(Type type, String name)
+    Arg(final Type type, final String name)
 Statement =
-    Declaration(Type type, String name, Expression expression)
-  | Assignment(String name, Expression expression)
-  | Return(Expression expression)
+    Declaration(final Type type, final String name, final Expression expression)
+  | Assignment(final String name, final Expression expression)
+  | Return(final Expression expression)
 Expression =
-    Add(Expression left, Expression right)
-  | Variable(String name)
-  | IntLiteral(int value)
-  | LongLiteral(long value)
+    Add(final Expression left, final Expression right)
+  | Variable(final String name)
+  | IntLiteral(final int value)
+  | LongLiteral(final long value)
 
 */
 public abstract class Statement {

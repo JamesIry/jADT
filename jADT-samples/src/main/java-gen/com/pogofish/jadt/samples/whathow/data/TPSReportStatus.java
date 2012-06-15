@@ -20,8 +20,8 @@ Manager =
     Manager(String name)
 TPSReportStatus =
     Pending
-  | Approved(Manager approver)
-  | Denied(Manager rejector)
+  | Approved(final Manager approver)
+  | Denied(final Manager rejector)
 
 */
 public abstract class TPSReportStatus {

@@ -3,7 +3,7 @@ package com.pogofish.jadt.ast;
 import java.util.List;
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
@@ -12,21 +12,21 @@ package com.pogofish.jadt.ast
 import java.util.List
 
 Doc =
-    Doc(String srcInfo, String pkg, List<String> imports, List<DataType> dataTypes)
+    Doc(final String srcInfo, final String pkg, final List<String> imports, final List<DataType> dataTypes)
 DataType =
-    DataType(String name, List<String> typeArguments, List<Constructor> constructors)
+    DataType(final String name, final List<String> typeArguments, final List<Constructor> constructors)
 Constructor =
-    Constructor(String name, List<Arg> args)
+    Constructor(final String name, final List<Arg> args)
 Arg =
-    Arg(List<ArgModifier> modifiers, Type type, String name)
+    Arg(final List<ArgModifier> modifiers, final Type type, final String name)
 ArgModifier =
     Final
 Type =
-    Ref(RefType type)
-  | Primitive(PrimitiveType type)
+    Ref(final RefType type)
+  | Primitive(final PrimitiveType type)
 RefType =
-    ClassType(String baseName, List<RefType> typeArguments)
-  | ArrayType(Type heldType)
+    ClassType(final String baseName, final List<RefType> typeArguments)
+  | ArrayType(final Type heldType)
 PrimitiveType =
     BooleanType
   | CharType

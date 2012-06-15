@@ -43,7 +43,7 @@ limitations under the License.
 // START SNIPPET: TPSReportStatus
     TPSReportStatus=
         Pending 
-      | Approved(Manager approver)
-      | Denied(Manager rejector)
+      | Approved(final Manager approver)
+      | Denied(final Manager rejector)
 // END SNIPPET: TPSReportStatus
   

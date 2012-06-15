@@ -59,7 +59,7 @@ public class JADTTest {
      */
     private String testWithDummyJADT(String[] args, Checker checker) {
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();
-        JADT.createDummyJADT(checker, factory).parseAndEmit(args);
+        JADT.createDummyJADT(checker, JADT.TEST_SRC_INFO, factory).parseAndEmit(args);
         return factory.results().get(JADT.TEST_DIR).get(0).getResults().get(JADT.TEST_CLASS_NAME);
     }
 

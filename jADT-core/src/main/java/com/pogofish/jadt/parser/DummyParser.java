@@ -51,7 +51,7 @@ public class DummyParser implements Parser {
     @Override
     public Doc parse(Source source) {
         if (!testSrcInfo.equals(source.getSrcInfo())) {
-            throw new RuntimeException("testSrcInfo and source.getSrcInfo were not equal");
+            throw new RuntimeException("testSrcInfo and source.getSrcInfo were not equal. testSrcInfo = " + testSrcInfo + ", source.getSrcInfo = " + source.getSrcInfo());
         }
         try {
             BufferedReader reader = new BufferedReader(source.getReader());

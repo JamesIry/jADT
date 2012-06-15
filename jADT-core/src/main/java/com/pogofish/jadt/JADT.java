@@ -142,11 +142,11 @@ public class JADT {
     /**
      * Create a dummy configged jADT based on the provided checker and target factory
      */
-    public static JADT createDummyJADT(Checker checker, TargetFactoryFactory factory) {
+    public static JADT createDummyJADT(Checker checker, String testSrcInfo, TargetFactoryFactory factory) {
         final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);
         final Doc doc = new Doc(TEST_SRC_INFO, "pkg", Util.<String> list(), Util.<DataType> list());
         final DocEmitter docEmitter = new DummyDocEmitter(doc,  TEST_CLASS_NAME);
-        final Parser parser = new DummyParser(doc, TEST_SRC_INFO, TEST_STRING);
+        final Parser parser = new DummyParser(doc, testSrcInfo, TEST_STRING);
         final JADT jadt = new JADT(sourceFactory, parser, checker, docEmitter, factory);
         return jadt;
     }    

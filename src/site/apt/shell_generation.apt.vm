@@ -1,18 +1,22 @@
 Generating Java from the Shell
 
-    {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}
+    {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./maven_generation.html} Generating Java from Apache Maven \>\>}}
 
     To use {{{./index.html}jADT}} to generate Java from the shell use you'll need to {{{./download.html}download}} the executable jar jADT-core-${projectVersion}.jar.
 
-----
-    ["path to java"]java -jar "path to jADT-core-${projectVersion}.jar" "path of input file" "base directory for output"
+    java -jar <[path to /jADT-core-${projectVersion}.jar]> <[path of jadt file]> <[path of directory to receive the output]>, e.g.
+
+----    
+    java -jar lib/jADT-core-${projectVersion}.jar src/main/jadt/MyStuff.jadt target/generated-sources/jadt
 ----
 
     If for some inexplicable reason that doesn't work for you, then
     
-----
-    ["path to java"]java -cp "path to jADT-core-${projectVersion}.jar" com.pogofish.jadt.jADT "path of input file" "base directory for output"
+    java -cp <[path to /jADT-core-${projectVersion}.jar]> com.pogofish.jadt.JADT <[path of jadt file]> <[path of directory to receive the output]>, e.g.
+
+----    
+    java -cp lib/jADT-core-${projectVersion}.jar com.pogofish.jadt.JADT src/main/jadt/MyStuff.jadt target/generated-sources/jadt
 ----
 
-    {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}
+    {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./maven_generation.html} Generating Java from Apache Maven \>\>}}
     

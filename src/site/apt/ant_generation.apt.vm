@@ -1,6 +1,6 @@
 Generating Java from Apache Ant
 
-     {{{./shell_generation.html}\<\< Generating Java from the Shell }} | {{{./limitations.html} Known Limitations \>\>}}
+     {{{./maven_generation.html}\<\< Generating Java from Apache Maven }}} | {{{./limitations.html} Known Limitations \>\>}}
 
     To use {{{./index.html}jADT}} in  {{{http://ant.apache.org/}Apache Ant}} you'll need to {{{./download.html}download}} both jADT-core-${projectVersion}.jar and jADT-ant-${projectVersion}.jar.  
 Then create a taskdef and task like in the following sample build.xml.
@@ -9,16 +9,36 @@ Then create a taskdef and task like in the following sample build.xml.
     <?xml version="1.0"?>
 
     <project name="JADTTaskExample" default="compile" basedir=".">
-      <taskdef name="jadt" classname="com.pogofish.jadt.ant.JADTAntTask" classpath="directory that has jADT-core-${projectVersion}.jar and jADT-ant-${projectVersion}.jar/>
+    
+      <!-- jadt.classpath is the full path of a directory with both 
+           jADT-core-${projectVersion}.jar and jADT-ant-${projectVersion}.jar -->
+      <property name="jadt.classpath">${basedir}/lib</property>
 
-      <target name="compile" depeneds="generate">
+      <!-- jadt.srcFile is the full path the jADT file to be parsed -->
+      <property name="jadt.srcFile">${basedir}/src/main/jadt/MyStuff.jadt</property>
+
+      <!-- jadt.destDir is the full path of a directory where jADT will produce its java output -->
+      <property name="jadt.destDir">${basedir}/target/generated-sources/jadt</property>
+      
+      <taskdef name="jadt" classname="com.pogofish.jadt.ant.JADTAntTask" classpath="${jadt.classpath}" />
+
+      <target name="compile" depeneds="generateJADT">
         <!-- normal compile stuff -->
       </target>
-      
-      <target name="generate">
-        <jadt srcFile="full path of input file" destDir = "base directory for Java output"/>
+        
+      <target name="generateJADT">
+        <jadt srcFile="${jadt.srcFile}" destDir = "${jadt.destDir}" />
       </target>
+      
+      <target name="clean" depends="cleanJADT">
+        <!-- normal clean stuff -->
+      </target>
+
+      <target name="cleanJADT">
+         <delete dir="${jadt.destDir}" />
+      </target>
+      
     </project>
 +----
 
-     {{{./shell_generation.html}\<\< Generating Java from the Shell }} | {{{./limitations.html} Known Limitations \>\>}}
+     {{{./maven_generation.html}\<\< Generating Java from Apache Maven }}} | {{{./limitations.html} Known Limitations \>\>}}

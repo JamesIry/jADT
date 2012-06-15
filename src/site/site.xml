@@ -51,6 +51,7 @@
             <item name="How can ADTs be used?" href="how_adt.html" collapse="true"/>
             <item name="Visitor Variations" href="visitor_variations.html" collapse="true"/>
             <item name="Generating Java from the Shell" href="shell_generation.html" collapse="true"/>
+            <item name="Generating Java from Apache Maven" href="maven_generation.html" collapse="true"/>
             <item name="Generating Java from Apache Ant" href="ant_generation.html" collapse="true"/>
             <item name="Limitations" href="limitations.html" collapse="true"/>
             <item name="FAQ" href="faq.html" collapse="true"/>

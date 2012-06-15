@@ -1,0 +1,42 @@
+Generating Java from Apache Maven
+
+     {{{./shell_generation.html}\<\< Generating Java from the Shell }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}
+
+    To use {{{./index.html}jADT}} in  {{{http://maven.apache.org/}Apache Maven}} you just need to put the plugin in your project's build plugins in your pom.xml.
+
++----
+    <project>
+       ...
+       <build>
+          <plugins>
+             ...
+             <plugin>
+                <groupId>com.pogofish.jadt</groupId>
+                <artifactId>jADT-maven-plugin</artifactId>
+                <version>${projectVersion}</version>
+                <configuration>
+                
+                  <!-- project relative path of jadt source file -->
+                  <srcFile>src/main/jadt/MyStuff.jadt</srcFile>
+                  
+                  <!-- optional, defaults to target/generated-sources/jadt -->
+                  <!-- <destDir>target/generated-sources/myjadtstuff</destDir> -->
+                  
+                </configuration>
+                <executions>
+                   <execution>
+                      <goals>
+                         <goal>jADT</goal>
+                      </goals>
+                    </execution>
+                </executions>             
+             </plugin>
+             
+          </plugins>
+       </build>
+    </project>
++----
+
+    During the generate-sources phase (which automatically runs prior to the compile phase), Maven will produce the .java output files and add the desination directory to directories to be compiled.  You can also explicitly execute jADT by running mvn jADT:jADT.
+
+     {{{./shell_generation.html}\<\< Generating Java from the Shell }} | {{{./ant_generation.html} Generating Java from Apache Ant \>\>}}

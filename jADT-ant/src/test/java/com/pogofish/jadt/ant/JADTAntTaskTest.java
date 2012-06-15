@@ -42,7 +42,7 @@ public class JADTAntTaskTest {
     public void testHappy() {
         final JADTAntTask antTask = new JADTAntTask();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        antTask.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticException>emptySet()), factory);
+        antTask.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticException>emptySet()), JADT.TEST_SRC_INFO, factory);
         
         antTask.setSrcFile(JADT.TEST_SRC_INFO);
         antTask.setDestDir(JADT.TEST_DIR);
@@ -59,7 +59,7 @@ public class JADTAntTaskTest {
     public void testException() {
         final JADTAntTask antTask = new JADTAntTask();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        antTask.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticException>singleton(new DuplicateConstructorException("whatever", "something"))), factory);
+        antTask.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticException>singleton(new DuplicateConstructorException("whatever", "something"))), JADT.TEST_SRC_INFO, factory);
         
         antTask.setSrcFile(JADT.TEST_SRC_INFO);
         antTask.setDestDir(JADT.TEST_DIR);

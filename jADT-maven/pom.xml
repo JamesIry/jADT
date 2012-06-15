@@ -9,7 +9,7 @@
     <version>0.2.0-SNAPSHOT</version>
   </parent>  
 
-  <artifactId>jADT-maven-pluginm</artifactId>
+  <artifactId>jADT-maven-plugin</artifactId>
   <name>jADT Maven Plugin</name>
   <description>Maven Plugin for doing jADT processing</description>
   <url>http://jamesiry.github.com/jADT/maven/</url>
@@ -31,6 +31,11 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
+      <version>3.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
       <version>3.0.4</version>
     </dependency>
   </dependencies>  

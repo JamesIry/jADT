@@ -101,6 +101,7 @@ public class SemanticExceptionTest {
     /**
      * Test DuplicateModifierException
      */
+    @Test
     public void testDuplicateModiferException() {
         final DuplicateModifierException ex1 = new DuplicateModifierException("Foo", "Bar", "Baz", "Quux");
         final DuplicateModifierException ex2 = new DuplicateModifierException("Foo", "Bar", "Baz", "Quux");

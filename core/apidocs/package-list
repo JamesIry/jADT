@@ -1,0 +1,8 @@
+com.pogofish.jadt
+com.pogofish.jadt.checker
+com.pogofish.jadt.emitter
+com.pogofish.jadt.parser
+com.pogofish.jadt.printer
+com.pogofish.jadt.source
+com.pogofish.jadt.target
+com.pogofish.jadt.util

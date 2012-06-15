@@ -182,8 +182,8 @@ public class TokenizerTest {
     @Test
     public void testKeywords() {
         final Tokenizer tokenizer = tokenizer(
-                        "import package boolean double char float int long short abstract assert break byte case catch class const continue "
-                                + "default do else enum extends final finally for goto if implements instanceof interface native new private protected public return "
+                        "import package boolean double char float int long short final abstract assert break byte case catch class const continue "
+                                + "default do else enum extends finally for goto if implements instanceof interface native new private protected public return "
                                 + "static strictfp super switch synchronized this throw throws transient try void volatile while");
 
         // keywords used by jADT
@@ -198,6 +198,7 @@ public class TokenizerTest {
         check(tokenizer, "int", TokenType.INT, 1);
         check(tokenizer, "long", TokenType.LONG, 1);
         check(tokenizer, "short", TokenType.SHORT, 1);
+        check(tokenizer, "final", TokenType.FINAL, 1);
         
         // Java keywords not used by jADT but reserved to prevent bad Java generation
         check(tokenizer, "abstract", TokenType.JAVA_KEYWORD, 1);
@@ -214,7 +215,6 @@ public class TokenizerTest {
         check(tokenizer, "else", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "enum", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "extends", TokenType.JAVA_KEYWORD, 1);
-        check(tokenizer, "final", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "finally", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "for", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "goto", TokenType.JAVA_KEYWORD, 1);

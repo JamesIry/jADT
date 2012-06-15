@@ -118,8 +118,8 @@ public class DocEmitterTest {
         final Doc doc = new Doc("EmitterTest", "some.package", list("wow.man", "flim.flam"), list(
                 new DataType("FooBar", Util.<String>list(), list(
                         new Constructor("Foo", list(
-                                new Arg(_Primitive(_IntType()), "yeah"),
-                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
+                                new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
+                                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
                         new Constructor("Bar", Util.<Arg>list())
                 )),
@@ -146,8 +146,8 @@ public class DocEmitterTest {
         final Doc doc = new Doc("EmitterTest", "some.package", Util.<String>list(), list(
                 new DataType("FooBar", Util.<String>list(), list(
                         new Constructor("Foo", list(
-                                new Arg(_Primitive(_IntType()), "yeah"),
-                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
+                                new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
+                                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
                         new Constructor("Bar", Util.<Arg>list())
                 )),
@@ -174,8 +174,8 @@ public class DocEmitterTest {
         final Doc doc = new Doc("EmitterTest", "", list("wow.man", "flim.flam"), list(
                 new DataType("FooBar", Util.<String>list(), list(
                         new Constructor("Foo", list(
-                                new Arg(_Primitive(_IntType()), "yeah"),
-                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
+                                new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
+                                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
                         new Constructor("Bar", Util.<Arg>list())
                 )),

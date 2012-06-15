@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.emitter.ConstructorEmitter;
@@ -67,7 +68,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testFactory() {
-        final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor("Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringTarget target = new StringTarget("test");
         try {
@@ -85,7 +86,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testConstrucorDeclaration() {
-        final Constructor constructor = new Constructor("Foo", list(new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(_Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor("Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringTarget target = new StringTarget("test");
         try {

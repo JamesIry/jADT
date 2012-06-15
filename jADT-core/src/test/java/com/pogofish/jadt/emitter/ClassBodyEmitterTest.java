@@ -28,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.emitter.ClassBodyEmitter;
@@ -61,7 +62,7 @@ public class ClassBodyEmitterTest {
     "   public static final <A, B> SomeDataType<A, B> _SomeFactory(Integer yeah, String hmmm) { return new Foo<A, B>(yeah, hmmm); }";    
     
     private static final String CONSTRUCTOR_METHOD = 
-    "      public final String um;\n" +
+    "      public String um;\n" +
     "      public final int yeah;\n" +
     "\n" +
     "      public Foo(String um, int yeah) {\n" +
@@ -226,8 +227,8 @@ public class ClassBodyEmitterTest {
     @Test
     public void testArgsNoTypesFactory() {
         final Constructor constructor = new Constructor("Foo", list(
-                                new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
-                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
+                                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
+                                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
         
         final StringTarget target = new StringTarget("test");
@@ -246,8 +247,8 @@ public class ClassBodyEmitterTest {
     @Test
     public void testArgsTypesFactory() {
         final Constructor constructor = new Constructor("Foo", list(
-                                new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
-                                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
+                                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
+                                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
         
         final StringTarget target = new StringTarget("test");
@@ -265,7 +266,7 @@ public class ClassBodyEmitterTest {
     @Test
     public void testConstructorMethod() {
         final Constructor constructor = new Constructor("Foo",
-                list(new Arg(_Ref(_ClassType("String", Util.<RefType> list())), "um"), new Arg(_Primitive(_IntType()),
+                list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "um"), new Arg(Util.list(ArgModifier._Final()), _Primitive(_IntType()),
                         "yeah")));
 
         final StringTarget target = new StringTarget("test");
@@ -300,7 +301,7 @@ public class ClassBodyEmitterTest {
     @Test
     public void testOneArgToString() {
         final Constructor constructor = new Constructor("Foo", list(
-                new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "um")
+                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "um")
         ));
         
         final StringTarget target = new StringTarget("test");
@@ -319,8 +320,8 @@ public class ClassBodyEmitterTest {
     @Test
     public void testArgsToString() {
         final Constructor constructor = new Constructor("Foo", list(
-                new Arg(_Ref(_ClassType("Integer", Util.<RefType>list())), "um"),
-                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "yeah")
+                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "um"),
+                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah")
         ));
         
         final StringTarget target = new StringTarget("test");
@@ -357,9 +358,9 @@ public class ClassBodyEmitterTest {
     @Test
     public void testArgsNoTypesEquals() {
         final Constructor constructor = new Constructor("Foo", list(
-                new Arg(_Primitive(_IntType()), "um"),
-                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
-                new Arg(_Ref(_ArrayType(_Primitive(_IntType()))), "oh")
+                new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "um"),
+                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
+                new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
         final StringTarget target = new StringTarget("test");
@@ -378,9 +379,9 @@ public class ClassBodyEmitterTest {
     @Test
     public void testArgsTypesEquals() {
         final Constructor constructor = new Constructor("Foo", list(
-                new Arg(_Primitive(_IntType()), "um"),
-                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
-                new Arg(_Ref(_ArrayType(_Primitive(_IntType()))), "oh")
+                new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "um"),
+                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
+                new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
         final StringTarget target = new StringTarget("test");
@@ -417,11 +418,11 @@ public class ClassBodyEmitterTest {
     @Test
     public void testArgHashCode() {
         final Constructor constructor = new Constructor("Foo", list(
-                new Arg(_Primitive(_IntType()), "um"),
-                new Arg(_Primitive(_BooleanType()), "bool"),
-                new Arg(_Primitive(_LongType()), "shorty"),
-                new Arg(_Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
-                new Arg(_Ref(_ArrayType(_Primitive(_IntType()))), "oh")
+                new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "um"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_BooleanType()), "bool"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_LongType()), "shorty"),
+                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
+                new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
         final StringTarget target = new StringTarget("test");

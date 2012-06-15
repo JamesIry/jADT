@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
@@ -95,7 +96,8 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     public void emitConstructorMethod(Target target, Constructor constructor) {
     	logger.finest("Generating constructor method for " + constructor.name);
         for (Arg arg : constructor.args) {
-            target.write("      public final " + Printer.print(arg.type) + " " + arg.name + ";\n");
+            final String finalName = arg.modifiers.contains(ArgModifier._Final()) ? "final " : "";
+            target.write("      public " + finalName + Printer.print(arg.type) + " " + arg.name + ";\n");
         }
         target.write("\n      public " + constructor.name + "("); 
         constructorArgs(target, constructor, true);        

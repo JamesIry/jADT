@@ -23,7 +23,9 @@ DataType = DataType(String name, List<String> typeArguments, List<Constructor> c
 
 Constructor = Constructor(String name, List<Arg> args)
 
-Arg = Arg(Type type, String name)
+Arg = Arg(List<ArgModifier> modifiers, Type type, String name)
+
+ArgModifier = Final
 
 Type = Ref(RefType type) | Primitive(PrimitiveType type)
 

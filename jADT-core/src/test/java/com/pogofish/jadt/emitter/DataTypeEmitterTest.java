@@ -108,8 +108,8 @@ public class DataTypeEmitterTest {
     @Test
     public void testMultipleConstructors() {
         final DataType fooBar = new DataType("FooBar", Util.<String>list(), list(
-                new Constructor("Foo", list(new Arg(_Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
-                        new Arg(_Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor("Bar",
+                new Constructor("Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
+                        new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor("Bar",
                         Util.<Arg> list())));
 
         final StringTarget target = new StringTarget("test");
@@ -130,8 +130,8 @@ public class DataTypeEmitterTest {
     @Test
     public void testSingleConstructor() {
         final DataType fooBar = new DataType("FooBar", Util.<String>list(), list(new Constructor("Foo", list(
-                new Arg(_Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
-                new Arg(_Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
+                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
+                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 
         final StringTarget target = new StringTarget("test");
         try {

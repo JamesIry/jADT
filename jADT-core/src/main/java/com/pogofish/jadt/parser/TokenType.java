@@ -40,6 +40,9 @@ public enum TokenType {
     LONG,
     /** "short" */
     SHORT,
+    /** "final" */
+    FINAL,
+    
     /** reserved java keyword unused by jadt */
     JAVA_KEYWORD,
     

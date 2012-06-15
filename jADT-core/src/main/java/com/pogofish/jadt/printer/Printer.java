@@ -15,6 +15,8 @@ limitations under the License.
 */
 package com.pogofish.jadt.printer;
 
+import java.util.List;
+
 import com.pogofish.jadt.ast.*;
 import com.pogofish.jadt.ast.PrimitiveType.BooleanType;
 import com.pogofish.jadt.ast.PrimitiveType.CharType;
@@ -116,7 +118,21 @@ public class Printer  {
      * @return pretty string
      */
     public static String print(Arg arg) {
-        return print(arg.type) + " " + arg.name;
+        return print(arg.modifiers) + print(arg.type) + " " + arg.name;
+    }
+    
+    /**
+     * Prints a list of arg modifiers
+     * @param modifiers list of arg modifiers
+     * @return string consisting of those modifiers, with a trailing space
+     */
+    public static String print(List<ArgModifier> modifiers) {
+        final StringBuilder builder = new StringBuilder();
+        if (modifiers.contains(ArgModifier._Final())) {
+            builder.append(print(ArgModifier._Final()));
+            builder.append(" ");
+        }
+        return builder.toString();
     }
     
     /**
@@ -222,6 +238,14 @@ public class Printer  {
             public String visit(ShortType x) {
                 return "short";
             }});
+    }
+
+    /**
+     * Print arg modifier
+     */
+    public static String print(ArgModifier modifier) {
+        // so far there's only one modifer, but that will change;
+        return "final";
     }
 
 }

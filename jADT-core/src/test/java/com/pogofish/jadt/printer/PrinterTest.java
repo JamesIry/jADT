@@ -95,7 +95,9 @@ public class PrinterTest {
      */
     @Test
     public void testArg() {      
-        assertEquals("boolean[] Foo", print(new Arg(_Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
+        assertEquals("boolean[] Foo", print(new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
+        assertEquals("final boolean[] Foo", print(new Arg(list(ArgModifier._Final()), _Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
+        assertEquals("final boolean[] Foo", print(new Arg(list(ArgModifier._Final(), ArgModifier._Final()), _Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
     }
 
     /**
@@ -107,7 +109,7 @@ public class PrinterTest {
         assertEquals("Foo", print(new Constructor("Foo", Util.<Arg> list())));
         // constructor with args
         assertEquals("Foo(boolean hello, int World)", print(new Constructor("Foo", list(new Arg(
-                _Primitive(_BooleanType()), "hello"), new Arg(_Primitive(_IntType()), "World")))));
+                Util.<ArgModifier>list(), _Primitive(_BooleanType()), "hello"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "World")))));
     }
 
     /**

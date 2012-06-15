@@ -16,6 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.parser;
 
 import static com.pogofish.jadt.ast.Arg._Arg;
+import static com.pogofish.jadt.ast.ArgModifier._Final;
 import static com.pogofish.jadt.ast.Constructor._Constructor;
 import static com.pogofish.jadt.ast.DataType._DataType;
 import static com.pogofish.jadt.ast.PrimitiveType.*;
@@ -149,11 +150,33 @@ public class ParserTest {
     }
     
     /**
+     * Make sure arg modifiers parse properly
+     */
+    @Test
+    public void testArgModifier() {
+        assertEquals(_Final(), parserImpl("final").argModifier());
+        assertEquals(null, parserImpl("").argModifier());
+        assertEquals(null, parserImpl("int").argModifier());
+    }
+    
+    /**
+     * Make sure list of arg modifiers parse properly
+     */
+    @Test
+    public void testArgModifiers() {
+        assertEquals(list(_Final()), parserImpl("final int").argModifiers());
+        assertEquals(list(_Final(), _Final()), parserImpl("final final int").argModifiers());
+        assertEquals(Util.<ArgModifier>list(), parserImpl("").argModifiers());
+        assertEquals(Util.<ArgModifier>list(), parserImpl("int").argModifiers());
+    }
+    
+    /**
      * Make sure args parse properly
      */
     @Test
     public void testArg() {
-        assertEquals(_Arg(_Primitive(_IntType()), "Foo"), parserImpl("int Foo").arg());        
+        assertEquals(_Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "Foo"), parserImpl("int Foo").arg());        
+        assertEquals(_Arg(list(_Final()), _Primitive(_IntType()), "Foo"), parserImpl("final int Foo").arg());        
         try {
             final Arg result = parserImpl("foo").arg();
             fail("No syntax exception from missing type, got " + result);
@@ -171,8 +194,8 @@ public class ParserTest {
      */
     @Test
     public void testArgs() {
-        assertEquals(list(_Arg(_Primitive(_IntType()), "Foo")), parserImpl("int Foo").args());        
-        assertEquals(list(_Arg(_Primitive(_IntType()), "Foo"), _Arg(_Primitive(_BooleanType()), "Bar")), parserImpl("int Foo, boolean Bar").args());        
+        assertEquals(list(_Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "Foo")), parserImpl("int Foo").args());        
+        assertEquals(list(_Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "Foo"), _Arg(Util.<ArgModifier>list(), _Primitive(_BooleanType()), "Bar")), parserImpl("int Foo, boolean Bar").args());        
         try {
             final List<Arg> result = parserImpl("").args();
             fail("No syntax exception from empty arg list, got " + result);
@@ -194,7 +217,7 @@ public class ParserTest {
         // no arg
         assertEquals(_Constructor("Foo", Util.<Arg>list()), parserImpl("Foo").constructor());
         // args
-        assertEquals(_Constructor("Foo", list(_Arg(_Primitive(_IntType()), "Bar"))), parserImpl("Foo(int Bar)").constructor());
+        assertEquals(_Constructor("Foo", list(_Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "Bar"))), parserImpl("Foo(int Bar)").constructor());
         try {
             final Constructor result = parserImpl("").constructor();
             fail("No syntax exception from empty constructor, got " + result);
@@ -361,15 +384,15 @@ public class ParserTest {
     public void testFull() {
         final Parser parser = new StandardParser();
         final String source = "//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
-        + "FooBar = foo | bar(int hey, String[] yeah) whatever = whatever";
+        + "FooBar = foo | bar(int hey, final String[] yeah) whatever = whatever";
 		final Doc doc = parser.parse(new StringSource("ParserTest", source));
 
         assertEquals(
                 new Doc("ParserTest", "hello.world", list("wow.man", "flim.flam"), list(
                         new DataType("FooBar", Util.<String>list(), Util.list(new Constructor("foo", Util.<Arg> list()), new Constructor(
                                 "bar", list(
-                                        new Arg(_Primitive(_IntType()), "hey"), 
-                                        new Arg(_Ref(_ArrayType(_Ref(_ClassType("String", Util.<RefType>list())))), "yeah"))))), 
+                                        new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "hey"), 
+                                        new Arg(list(_Final()), _Ref(_ArrayType(_Ref(_ClassType("String", Util.<RefType>list())))), "yeah"))))), 
                                  new DataType("whatever", Util.<String>list(), list(new Constructor("whatever", Util.<Arg> list()))))), doc);
     }    
 }

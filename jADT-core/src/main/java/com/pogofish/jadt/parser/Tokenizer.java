@@ -66,6 +66,7 @@ class Tokenizer {
         keywords.put("int", TokenType.INT);
         keywords.put("long", TokenType.LONG);
         keywords.put("short", TokenType.SHORT);
+        keywords.put("final", TokenType.FINAL);
         
         // most Java keywords are unused but reserved so they can't be used in an ADT definition and thus screw up the generated Java        
         keywords.put("abstract", TokenType.JAVA_KEYWORD);
@@ -82,7 +83,6 @@ class Tokenizer {
         keywords.put("else", TokenType.JAVA_KEYWORD);
         keywords.put("enum", TokenType.JAVA_KEYWORD);
         keywords.put("extends", TokenType.JAVA_KEYWORD);
-        keywords.put("final", TokenType.JAVA_KEYWORD);
         keywords.put("finally", TokenType.JAVA_KEYWORD);
         keywords.put("for", TokenType.JAVA_KEYWORD);
         keywords.put("goto", TokenType.JAVA_KEYWORD);

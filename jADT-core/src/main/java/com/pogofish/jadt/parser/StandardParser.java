@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
@@ -270,22 +271,51 @@ public class StandardParser implements Parser {
         }
 
         /**
-         * parses a single required constructor argument which is a type followed by a name
+         * parses a single required constructor argument which is a list of modifiers followed by a type followed by a name
          * 
          * @return Arg
          */
         public Arg arg() {
-            final Type type = type();
+            final List<ArgModifier> modifiers = argModifiers();
+            
+            final Type type = type();            
             
             if (!tokenizer.accept(TokenType.IDENTIFIER)) {
                 throw syntaxException("an argument name");
             } else {
                 final String name = tokenizer.lastSymbol();
                 logger.finest("arg " + name);
-                return new Arg(type, name);
+                return new Arg(modifiers, type, name);
             }
         }
+
+        /**
+         * Parses a possibily empty list of arg modifiers
+         */
+        public List<ArgModifier> argModifiers() {
+            final List<ArgModifier> modifiers = Util.<ArgModifier>list();
+
+            ArgModifier modifier;
+            do {
+                modifier = argModifier();
+                if (modifier != null) {
+                    modifiers.add(modifier);
+                }
+            } while (modifier != null);
+
+            return modifiers;
+        }
         
+        /**
+         * Parses one optional arg modifier or null if there isn't one
+         */
+        public ArgModifier argModifier() {
+            if (tokenizer.accept(TokenType.FINAL)) {
+                return ArgModifier._Final();
+            }
+            return null;
+        }
+
         /** 
          * Returns a required class or array type, giving a syntax error on a primitive
          * 

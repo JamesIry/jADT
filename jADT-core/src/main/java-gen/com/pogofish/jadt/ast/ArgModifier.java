@@ -1,6 +1,5 @@
 package com.pogofish.jadt.ast;
 
-import java.util.List;
 
 /*
 This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
@@ -37,25 +36,18 @@ PrimitiveType =
   | ShortType
 
 */
-public final class Constructor {
+public final class ArgModifier {
 
-   public static final  Constructor _Constructor(String name, List<Arg> args) { return new Constructor(name, args); }
+   private static final ArgModifier _Final = new ArgModifier();
+   public static final  ArgModifier _Final() { return _Final; }
 
-      public final String name;
-      public final List<Arg> args;
 
-      public Constructor(String name, List<Arg> args) {
-         this.name = name;
-         this.args = args;
+      public ArgModifier() {
       }
 
       @Override
       public int hashCode() {
-          final int prime = 31;
-          int result = 1;
-          result = prime * result + ((name == null) ? 0 : name.hashCode());
-          result = prime * result + ((args == null) ? 0 : args.hashCode());
-          return result;
+          return 0;
       }
 
       @Override
@@ -63,19 +55,12 @@ public final class Constructor {
          if (this == obj) return true;
          if (obj == null) return false;
          if (getClass() != obj.getClass()) return false;
-         Constructor other = (Constructor)obj;
-         if (name == null) {
-            if (other.name != null) return false;
-         } else if (!name.equals(other.name)) return false;
-         if (args == null) {
-            if (other.args != null) return false;
-         } else if (!args.equals(other.args)) return false;
          return true;
       }
 
       @Override
       public String toString() {
-         return "Constructor(name = " + name + ", args = " + args + ")";
+         return "ArgModifier";
       }
 
 }

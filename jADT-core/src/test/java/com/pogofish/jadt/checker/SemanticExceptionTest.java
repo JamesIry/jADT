@@ -80,6 +80,45 @@ public class SemanticExceptionTest {
     }
     
     /**
+     * Test DuplicateArgNameException
+     */
+    @Test
+    public void testDuplicateArgNameException() {
+        final DuplicateArgNameException ex1 = new DuplicateArgNameException("Foo", "Bar", "Baz");
+        final DuplicateArgNameException ex2 = new DuplicateArgNameException("Foo", "Bar", "Baz");
+        final DuplicateArgNameException ex3 = new DuplicateArgNameException("Foo2", "Bar", "Baz");
+        final DuplicateArgNameException ex4 = new DuplicateArgNameException("Foo", "Bar2", "Baz");
+        final DuplicateArgNameException ex5 = new DuplicateArgNameException("Foo", "Bar", "Baz3");        
+        checkEquals(ex1, ex1);
+        checkEquals(ex1, ex2);
+        checkNotEquals(ex1, ex3);
+        checkNotEquals(ex1, ex4);
+        checkNotEquals(ex1, ex5);
+        checkNotEquals(ex1, null);
+        checkNotEquals(ex1, "hello");
+    }
+    
+    /**
+     * Test DuplicateModifierException
+     */
+    public void testDuplicateModiferException() {
+        final DuplicateModifierException ex1 = new DuplicateModifierException("Foo", "Bar", "Baz", "Quux");
+        final DuplicateModifierException ex2 = new DuplicateModifierException("Foo", "Bar", "Baz", "Quux");
+        final DuplicateModifierException ex3 = new DuplicateModifierException("Foo2", "Bar", "Baz", "Quux");
+        final DuplicateModifierException ex4 = new DuplicateModifierException("Foo", "Bar2", "Baz", "Quux");
+        final DuplicateModifierException ex5 = new DuplicateModifierException("Foo", "Bar", "Baz2", "Quux");
+        final DuplicateModifierException ex6 = new DuplicateModifierException("Foo", "Bar", "Baz", "Quux2");
+        checkEquals(ex1, ex1);
+        checkEquals(ex1, ex2);
+        checkNotEquals(ex1, ex3);
+        checkNotEquals(ex1, ex4);
+        checkNotEquals(ex1, ex5);
+        checkNotEquals(ex1, ex6);
+        checkNotEquals(ex1, null);
+        checkNotEquals(ex1, "hello");
+    }
+    
+    /**
      * Ensure the two objects are equals and have the same hashCode
      */
     private void checkEquals(Object obj1, Object obj2) {

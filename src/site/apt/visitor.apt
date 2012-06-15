@@ -52,7 +52,7 @@ and concrete implementations in each subclass.  The second half is the visitor i
 
 %{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/MyBooleanVisitor.java|id=class}    
 
-   So anything that implements MyBooleanInterface can be passed to the accept method on a MyBoolean.  That
+   So anything that implements the MyBooleanVisitor interface can be passed to the accept method on a MyBoolean.  That
 accept method will call either visitMyTrue or visitMyFalse on the visitor object.  Hence dispatch based
 on the subclass.  That's also why the Visitor pattern effectively prevents adding new subclasses.  While
 it's possible to create <<<class MyOtherBoolean implemenets MyBoolean>>>, the only way to make it useful

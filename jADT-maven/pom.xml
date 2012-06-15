@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+                      
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>  
+    <groupId>com.pogofish.jadt</groupId>
+    <artifactId>jADT</artifactId>
+    <version>0.2.0-SNAPSHOT</version>
+  </parent>  
+
+  <artifactId>jADT-maven-pluginm</artifactId>
+  <name>jADT Maven Plugin</name>
+  <description>Maven Plugin for doing jADT processing</description>
+  <url>http://jamesiry.github.com/jADT/maven/</url>
+  <packaging>maven-plugin</packaging>
+  
+  <distributionManagement>
+    <site>
+      <id>maven</id>
+      <url>file:///tmp/jADT-${project.version}/maven/</url>
+    </site>
+  </distributionManagement>
+  
+  <dependencies>
+    <dependency>
+      <groupId>com.pogofish.jadt</groupId>
+      <artifactId>jADT-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>3.0.4</version>
+    </dependency>
+  </dependencies>  
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>  
+  </build>
+  
+  <profiles>
+      <profile>
+        <id>deploy-maven-site</id>
+        <activation>
+          <property>
+            <name>deploySite</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <build>
+          <plugins>
+<!-- put module site on github pages -->
+	        <plugin>
+	          <groupId>com.github.github</groupId>
+	          <artifactId>site-maven-plugin</artifactId>
+	          <version>${site.maven.plugin.version}</version>
+	          <configuration>
+	            <message>Creating site for ${project.artifactId} ${project.version}</message>
+	            <path>maven</path>
+	            <merge>true</merge>
+	          </configuration>
+	          <executions>
+	            <execution>
+	              <goals>
+	                <goal>site</goal>
+	              </goals>
+	              <phase>deploy</phase>
+	            </execution>
+	          </executions>
+	        </plugin>
+	      </plugins>
+	    </build>
+	  </profile>
+	</profiles>           
+</project>

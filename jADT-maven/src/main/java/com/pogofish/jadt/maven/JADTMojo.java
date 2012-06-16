@@ -21,12 +21,11 @@ public class JADTMojo  extends AbstractMojo {
     JADT jadt = JADT.standardConfigDriver();
     
     /**
-     * The jadt file that will be parsed
+     * The jadt file or directory that will be parsed
      * 
-     * @required
-     * @parameter
+     * @parameter default-value="src/main/jadt"
      */
-    File srcFile = null;
+    File srcPath = new File("src/main/jadt");
     
     /**
      * The base directory where files will be output
@@ -52,15 +51,15 @@ public class JADTMojo  extends AbstractMojo {
             // tell Maven that the destination dir is a location from which it needs to compile
             project.addCompileSourceRoot( destDir.getCanonicalPath() );            
             
-            jadt.parseAndEmit(srcFile.getCanonicalPath(), destDir.getCanonicalPath());
+            jadt.parseAndEmit(srcPath.getCanonicalPath(), destDir.getCanonicalPath());
         } catch (Exception e) {
             throw new MojoExecutionException("Error in processing jADT", e);
         }
     }
 
 
-    public void setSrcFile(File srcFile) {
-        this.srcFile = srcFile;
+    public void setSrcPath(File srcPath) {
+        this.srcPath = srcPath;
     }
 
 

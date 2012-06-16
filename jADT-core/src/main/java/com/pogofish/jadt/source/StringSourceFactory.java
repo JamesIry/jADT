@@ -15,6 +15,10 @@ limitations under the License.
 */
 package com.pogofish.jadt.source;
 
+import java.util.List;
+
+import com.pogofish.jadt.util.Util;
+
 /**
  * Factory that creates StringSources, mostly useful for testing
  *
@@ -36,11 +40,11 @@ public class StringSourceFactory implements SourceFactory {
     }
 
     /**
-     * Create a StringSource - the sourceFileName will be used as the srcInfo in the resulting Source
+     * Create a list with a single StringSource - the sourceFileName will be used as the srcInfo in the resulting Source
      */
     @Override
-    public Source createSource(String sourceFileName) {
-        return new StringSource(sourceFileName, source);
+    public List<StringSource> createSources(String sourceFileName) {
+        return Util.list(new StringSource(sourceFileName, source));
     }
 
 }

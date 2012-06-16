@@ -31,14 +31,14 @@ public class JADTAntTask extends Task {
      * This is the driver that will be executed.  It's made accessible for unit testing
      */
     JADT jadt = JADT.standardConfigDriver();
-    private String srcFile;
+    private String srcPath;
     private String destDir;
     
     /**
      * Set by ant as a property, this is the name of the source file that will be parsed
      */
-    public void setSrcFile(String srcFile) {
-        this.srcFile = srcFile;
+    public void setSrcPath(String srcPath) {
+        this.srcPath = srcPath;
     }
     
     /**
@@ -51,7 +51,7 @@ public class JADTAntTask extends Task {
     @Override
     public void execute() throws BuildException {
         try {
-            jadt.parseAndEmit(srcFile, destDir);
+            jadt.parseAndEmit(srcPath, destDir);
         } catch (RuntimeException e) {
             throw new BuildException(e);
         }

@@ -15,16 +15,46 @@ limitations under the License.
 */
 package com.pogofish.jadt.source;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pogofish.jadt.util.Util;
+
 /**
  * Factory to create a FileSource given a file name
  *
  * @author jiry
  */
 public class FileSourceFactory implements SourceFactory {
-
+    private static final FilenameFilter FILTER = new FilenameFilter() {            
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.endsWith(".jadt");
+        }
+    };
+    
+    /**
+     * Return sa list of FileSources based on the name.  If the name
+     * is a directory then it returns all the files in that directory
+     * ending with .jadt.  Otherwise it is assumed that the name
+     * is a file.
+     */
     @Override
-    public Source createSource(String srcFileName) {        
-        return new FileSource(srcFileName);
+    public List<FileSource> createSources(String srcName) {
+        final File dirOrFile = new File(srcName);
+
+        final File[] files = dirOrFile.listFiles(FILTER);
+        if (files != null) {
+            final List<FileSource> sources = new ArrayList<FileSource>(files.length);
+            for (File file : files) {
+                sources.add(new FileSource(file));
+            }
+            return sources;
+        } else {
+            return Util.list(new FileSource(dirOrFile));
+        }
     }
 
 }

@@ -17,6 +17,7 @@ package com.pogofish.jadt.parser;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -41,7 +42,7 @@ public class TokenizerTest {
     @Test
     public void testIOException() {
         // a dummy reader that throws an exception on any action
-        final Reader reader = new Reader() {
+        final BufferedReader reader = new BufferedReader(new Reader() {
             @Override
             public int read(char[] cbuf, int off, int len) throws IOException {
                 throw new IOException("TestException");
@@ -51,7 +52,7 @@ public class TokenizerTest {
             public void close() throws IOException {
                 throw new IOException("TestException");
             }
-        };
+        });
         
         // a dummy source that uses that reader
         final Source source = new Source() {            
@@ -61,21 +62,12 @@ public class TokenizerTest {
             }
             
             @Override
-            public Reader getReader() {
+            public BufferedReader createReader() {
                 return reader;
-            }
-            
-            @Override
-            public void close() {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
             }
         };
         
-        final Tokenizer tokenizer = new Tokenizer(source);
+        final Tokenizer tokenizer = new Tokenizer(source.getSrcInfo(), source.createReader());
 
         try {
             // should throw
@@ -90,7 +82,8 @@ public class TokenizerTest {
      * Create a tokenizer that will read from the given string
      */
     private Tokenizer tokenizer(String testString) {
-        return new Tokenizer(new StringSource("TokenizerTest", testString));
+        final Source source = new StringSource("TokenizerTest", testString);
+        return new Tokenizer(source.getSrcInfo(), source.createReader());
     }
     
     /**

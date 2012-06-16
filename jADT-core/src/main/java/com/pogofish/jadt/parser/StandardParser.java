@@ -27,6 +27,8 @@ import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
 import static com.pogofish.jadt.ast.Type._Ref;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +45,7 @@ import com.pogofish.jadt.ast.Type;
 import com.pogofish.jadt.ast.Type.Primitive;
 import com.pogofish.jadt.ast.Type.Ref;
 import com.pogofish.jadt.source.Source;
+import com.pogofish.jadt.util.IOExceptionAction;
 import com.pogofish.jadt.util.Util;
 
 
@@ -61,9 +64,20 @@ public class StandardParser implements Parser {
     @Override
     public Doc parse(Source source)  {
     	logger.fine("Parsing " + source.getSrcInfo());
-        final Tokenizer tokenizer = new Tokenizer(source);
-        final Impl impl = new Impl(tokenizer);
-        return impl.doc();
+    	final BufferedReader reader = source.createReader();
+    	try {
+            final Tokenizer tokenizer = new Tokenizer(source.getSrcInfo(), reader);
+            final Impl impl = new Impl(tokenizer);
+            return impl.doc();
+    	} finally {
+    	    new IOExceptionAction<Void>() {
+                @Override
+                public Void doAction() throws IOException {
+                    reader.close();
+                    return null;
+                }
+            }.execute();
+    	}
     }
     
     /**

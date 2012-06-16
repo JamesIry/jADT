@@ -35,7 +35,7 @@ public class JADTMojoTest {
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
         mojo.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticException>emptySet()), srcFile.getCanonicalPath(), factory);
         
-        mojo.setSrcFile(srcFile);
+        mojo.setSrcPath(srcFile);
         mojo.setDestDir(destDir);
         mojo.setProject(new MavenProject());
         mojo.execute();
@@ -58,7 +58,7 @@ public class JADTMojoTest {
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
         mojo.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticException>singleton(new DuplicateConstructorException("whatever", "something"))), srcFile.getCanonicalPath(), factory);
         
-        mojo.setSrcFile(srcFile);
+        mojo.setSrcPath(srcFile);
         mojo.setDestDir(destDir);
         mojo.setProject(new MavenProject());
         

@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.source;
 
-import java.io.Reader;
+import java.io.BufferedReader;
 
 /**
  * A source for the parser
@@ -23,9 +23,10 @@ import java.io.Reader;
  * @author jiry
  */
 public interface Source {
-    public Reader getReader();
+    /**
+     * Creates a reader for the source. Caller is responsible for closing it
+     */
+    public BufferedReader createReader();
     
     public String getSrcInfo();
-
-    public void close();
 }

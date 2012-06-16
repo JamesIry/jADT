@@ -16,14 +16,13 @@ limitations under the License.
 package com.pogofish.jadt.parser;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.pogofish.jadt.source.Source;
 
 
 /**
@@ -126,13 +125,13 @@ class Tokenizer {
     private String symbol = null;
 
     /**
-     * Constructs a Tokenizer that will tokenize the specified Reade
+     * Constructs a Tokenizer that will tokenize the specified Reader
      * 
      * @param reader the reader with the jADT source to be tokenized
      */
-    public Tokenizer(Source source) {
-        srcInfo = source.getSrcInfo();
-        tokenizer = new StreamTokenizer(source.getReader());
+    public Tokenizer(String srcInfo, Reader reader) {
+        this.srcInfo = srcInfo;
+        tokenizer = new StreamTokenizer(reader);
         tokenizer.resetSyntax();
         tokenizer.wordChars(0, Integer.MAX_VALUE);
         tokenizer.ordinaryChar('<');

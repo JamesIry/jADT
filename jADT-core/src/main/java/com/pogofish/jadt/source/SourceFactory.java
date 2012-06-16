@@ -15,6 +15,8 @@ limitations under the License.
 */
 package com.pogofish.jadt.source;
 
+import java.util.List;
+
 /**
  * Factory for creating sources
  *
@@ -22,10 +24,10 @@ package com.pogofish.jadt.source;
  */
 public interface SourceFactory {
     /**
-     * Returns a source for the given name
+     * Returns all the sources for the given name
      *
      * @param sourceFileName
      * @return a Source
      */
-    public Source createSource(String sourceFileName);
+    public List<? extends Source> createSources(String sourceFileName);
 }

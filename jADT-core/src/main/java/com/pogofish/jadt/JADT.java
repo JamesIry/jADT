@@ -15,6 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt;
 
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -103,30 +104,30 @@ public class JADT {
         	final String version = new Version().getVersion();
         	logger.info("jADT version " + version + ".");
         	logger.info("Not enough arguments provided to jADT");
-        	logger.info("usage: java sfdc.adt.JADT [source file] [output directory]");
-            throw new IllegalArgumentException("\njADT version " + version + "\nusage: java sfdc.adt.JADT [source file] [output directory]");
+        	logger.info("usage: java sfdc.adt.JADT [source file or directory with .jadt files] [output directory]");
+            throw new IllegalArgumentException("\njADT version " + version + "\nusage: java sfdc.adt.JADT [source file or directory with .jadt files] [output directory]");
         }
         
-        final String srcFileName = args[0];
+        final String srcPath = args[0];
         final String destDirName = args[1];
 
-        parseAndEmit(srcFileName, destDirName);        
+        parseAndEmit(srcPath, destDirName);        
     }
 
     /**
      * Do the jADT thing given the srceFileName and destination directory
      * 
-     * @param srcFileName full name of the source directory
-     * @param destDir full name of the desintation directory (trailing slash is optional)
+     * @param srcPath full name of the source directory or file
+     * @param destDir full name of the destination directory (trailing slash is optional)
      */
-    public void parseAndEmit(String srcFileName, String destDir) {    	
+    public void parseAndEmit(String srcPath, String destDir) {    	
     	final String version = new Version().getVersion();
     	logger.info("jADT version " + version + ".");
-    	logger.info("Will read from srcFile " + srcFileName);
+    	logger.info("Will read from source " + srcPath);
     	logger.info("Will write to destDir " + destDir);
    	
-        final Source source = sourceFactory.createSource(srcFileName);
-        try {
+        final List<? extends Source> sources = sourceFactory.createSources(srcPath);
+        for (Source source : sources) {
             final Doc doc = parser.parse(source);
             final Set<SemanticException> errors = checker.check(doc);
             if (!errors.isEmpty()) {
@@ -134,8 +135,6 @@ public class JADT {
             }
             final TargetFactory targetFactory = factoryFactory.createTargetFactory(destDir);
             emitter.emit(targetFactory, doc);
-        } finally {
-            source.close();
         }
     }
 

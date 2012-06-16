@@ -15,9 +15,8 @@ limitations under the License.
 */
 package com.pogofish.jadt.source;
 
-import java.io.*;
-
-import com.pogofish.jadt.util.IOExceptionAction;
+import java.io.BufferedReader;
+import java.io.StringReader;
 
 
 /**
@@ -27,9 +26,9 @@ import com.pogofish.jadt.util.IOExceptionAction;
  */
 public class StringSource implements Source {
     /**
-     * Internal reader used to read from the string
+     * text to be read from this string source
      */
-    private final Reader reader;
+    private final String source;
     /**
      * Information about the source
      */
@@ -38,26 +37,16 @@ public class StringSource implements Source {
     
     public StringSource(String srcInfo, String source) {
         this.srcInfo = srcInfo;
-        this.reader = new StringReader(source);
+        this.source = source;
     }
 
     @Override
-    public Reader getReader() {
-        return reader;
+    public BufferedReader createReader() {
+        return new BufferedReader(new StringReader(source));
     }
 
     @Override
     public String getSrcInfo() {
         return srcInfo;
-    }
-    
-    @Override
-    public void close() {
-        new IOExceptionAction<Void>() {
-            @Override
-            public Void doAction() throws IOException {
-                reader.close();
-                return null;
-            }}.execute();        
     }
 }

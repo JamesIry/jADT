@@ -54,7 +54,7 @@ public class DummyParser implements Parser {
             throw new RuntimeException("testSrcInfo and source.getSrcInfo were not equal. testSrcInfo = " + testSrcInfo + ", source.getSrcInfo = " + source.getSrcInfo());
         }
         try {
-            BufferedReader reader = new BufferedReader(source.getReader());
+            BufferedReader reader = source.createReader();
             try {
                 if (!testString.equals(reader.readLine())) {
                     throw new RuntimeException("testString and reader.readLine() were not equal");

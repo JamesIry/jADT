@@ -19,12 +19,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
 import com.pogofish.jadt.source.FileSourceFactory;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.source.SourceFactory;
+import com.pogofish.jadt.util.Util;
 
 
 /**
@@ -49,13 +52,15 @@ public class FileSourceFactoryTest {
             }
             
             final SourceFactory factory = new FileSourceFactory();
-            final Source source = factory.createSource(temp.getAbsolutePath());
+            final List<? extends Source> sources = factory.createSources(temp.getAbsolutePath());
+            assertEquals(1, sources.size());
+            final Source source = sources.get(0);
+            final BufferedReader reader = source.createReader();
             try {
-                final BufferedReader reader = new BufferedReader(source.getReader());
                 assertEquals("hello", reader.readLine());
                 assertEquals(temp.getAbsolutePath(), source.getSrcInfo());
             } finally {
-                source.close();
+                reader.close();
             }
         } finally {
             temp.delete();
@@ -63,7 +68,7 @@ public class FileSourceFactoryTest {
     }
 
     /**
-     * This tst attempts to open a file that does not exist which should result in an exception.  It should not create any files
+     * This test attempts to open a file that does not exist which should result in an exception.  It should not create any files
      */
     @Test
     public void testInValidFile() throws IOException {
@@ -71,13 +76,77 @@ public class FileSourceFactoryTest {
         temp.delete();
         
         final SourceFactory factory = new FileSourceFactory();
+        final List<? extends Source> sources = factory.createSources(temp.getAbsolutePath());
+        final Source source = sources.get(0);
         try {
-            final Source source = factory.createSource(temp.getAbsolutePath());
-            source.close();
+            final BufferedReader reader = source.createReader();
+            try {
+                assertEquals("hello", reader.readLine());
+                assertEquals(temp.getAbsolutePath(), source.getSrcInfo());
+            } finally {
+                reader.close();
+            }
             fail("Did not get an exception");
         } catch (RuntimeException e) {
             // yay
         }
     }
     
+    /**
+     * Test to see if FileSourceFactoryTest works with a directory
+     */
+    @Test
+    public void testDir() throws IOException {
+        final File tempDir = Util.createTmpDir();
+        try {
+            final List<File> tempFiles = new ArrayList<File>();
+            try {
+                for (int i=0; i<5; i++) {
+                    tempFiles.add(createTempFile(tempDir, i));
+                }
+                
+                final SourceFactory factory = new FileSourceFactory();
+                final List<? extends Source> sources = factory.createSources(tempDir.getAbsolutePath());
+                assertEquals(5, sources.size());
+                
+                for (int i=0; i<5; i++) {
+                    checkSource(i, tempDir, sources.get(i));
+                }
+               
+            } finally {
+                for (File tempFile : tempFiles) {
+                    tempFile.delete();
+                }
+            }
+        } finally {
+            tempDir.delete();
+        }      
+    }
+
+    private void checkSource(int i, File parent, Source source) throws IOException {
+        final BufferedReader reader = source.createReader();
+        try {
+            assertEquals(parent.getAbsolutePath() + "/" + i + ".jadt", source.getSrcInfo());
+            final String line = reader.readLine();
+            assertEquals("hello" + i, line);
+        } finally {
+            reader.close();
+        }        
+    }
+
+    private File createTempFile(File parentDir, int i) {
+        final File tempFile = new File(parentDir, i + ".jadt");
+        try {
+            final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8"));
+            try {
+                writer.write("hello" + i);
+            } finally {
+                writer.close();
+            }
+            return tempFile;
+        } catch (Throwable t) {
+            tempFile.delete();
+            throw new RuntimeException(t);
+        }
+    }
 }

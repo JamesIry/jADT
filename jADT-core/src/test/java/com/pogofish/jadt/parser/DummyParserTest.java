@@ -18,6 +18,7 @@ package com.pogofish.jadt.parser;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Collections;
@@ -111,8 +112,8 @@ public class DummyParserTest {
             final Doc resultDoc = parser.parse(new Source() {
 
                 @Override
-                public Reader getReader() {
-                    return new Reader() {
+                public BufferedReader createReader() {
+                    return new BufferedReader(new Reader() {
 
                         @Override
                         public int read(char[] cbuf, int off, int len) throws IOException {
@@ -123,16 +124,12 @@ public class DummyParserTest {
                         public void close() throws IOException {
                         }
                         
-                    };
+                    });
                 }
 
                 @Override
                 public String getSrcInfo() {
                     return "some source";
-                }
-
-                @Override
-                public void close() {
                 }
                 
             });

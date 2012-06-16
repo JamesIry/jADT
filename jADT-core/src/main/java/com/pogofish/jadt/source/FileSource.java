@@ -15,9 +15,11 @@ limitations under the License.
 */
 package com.pogofish.jadt.source;
 
-import java.io.*;
-
-import com.pogofish.jadt.util.IOExceptionAction;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 
 /**
@@ -26,37 +28,23 @@ import com.pogofish.jadt.util.IOExceptionAction;
  * @author jiry
  */
 public class FileSource implements Source {
-    private final String srcInfo;
-    private final Reader reader;        
+    private final File srcFile;
 
-    public FileSource(String srcFileName) {
+    public FileSource(File srcFile) {
+        this.srcFile = srcFile;
+    }
+    
+    @Override
+    public BufferedReader createReader() {
         try {
-            final File srcFile = new File(srcFileName);
-            srcInfo = srcFile.getAbsolutePath();
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), "UTF-8"));
+            return new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), "UTF-8"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    
-    @Override
-    public Reader getReader() {
-        return reader;
-    }
 
     @Override
     public String getSrcInfo() {
-        return srcInfo;
+        return srcFile.getAbsolutePath();
     }
-
-    @Override
-    public void close() {
-        new IOExceptionAction<Void>() {
-            @Override
-            public Void doAction() throws IOException {
-                reader.close();
-                return null;
-            }}.execute();        
-    }
-
 }

@@ -15,6 +15,8 @@ limitations under the License.
 */
 package com.pogofish.jadt.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -62,4 +64,24 @@ public class Util {
         return builder.toString();
     }
     
+    /**
+     * Create a temporary directory and return it - Java 6 JDK doesn't have this functionality
+     * 
+     * @return
+     * @throws IOException
+     */
+    public static File createTmpDir() throws IOException {
+        final File tmp = File.createTempFile("tmp", "" + System.nanoTime());
+
+        if (!tmp.delete()) {
+            throw new IOException("Couldn't delete tmp file " + tmp.getAbsolutePath()); 
+         }
+
+        if (!tmp.mkdir()) { 
+            throw new IOException("Couldn't create tmp directory " + tmp.getAbsolutePath()); 
+         }
+
+        return tmp;
+    }
+
 }

@@ -56,7 +56,8 @@ public class ParserTest {
      * @return
      */
     private Impl parserImpl(final String text) {
-        return new StandardParser.Impl(new Tokenizer(new StringSource("ParserTest", text)));
+        final StringSource source = new StringSource("ParserTest", text);
+        return new StandardParser.Impl(new Tokenizer(source.getSrcInfo(), source.createReader()));
     }
     
     /**

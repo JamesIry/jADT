@@ -118,7 +118,7 @@ public class JADTTest {
             try {
                 writer.write("Foo = Foo");
                 writer.close();
-                final File tmpDir = createTmpDir();
+                final File tmpDir = Util.createTmpDir();
                 try {
                    JADT.main(new String[]{srcFile.getAbsolutePath(), tmpDir.getAbsolutePath()});
                    final File outputFile = new File(tmpDir, "Foo.java");
@@ -152,26 +152,6 @@ public class JADTTest {
      */
     private void assertStartsWith(String expected, String actual) {
         assertTrue("Line was expected to start with '" + expected + "' but was '" + actual + "'", actual.startsWith(expected));
-    }
-
-    /**
-     * Create a temporary directory and return it - Java 6 JDK doesn't have this functionality
-     * 
-     * @return
-     * @throws IOException
-     */
-    private File createTmpDir() throws IOException {
-        final File tmp = File.createTempFile("tmp", "" + System.nanoTime());
-
-        if (!tmp.delete()) {
-            throw new IOException("Couldn't delete tmp file " + tmp.getAbsolutePath()); 
-         }
-
-        if (!tmp.mkdir()) { 
-            throw new IOException("Couldn't create tmp directory " + tmp.getAbsolutePath()); 
-         }
-
-        return tmp;
     }
     
 }

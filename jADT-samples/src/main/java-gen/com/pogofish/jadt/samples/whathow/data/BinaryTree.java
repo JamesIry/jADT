@@ -1,7 +1,7 @@
 package com.pogofish.jadt.samples.whathow.data;
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
@@ -35,34 +35,34 @@ public abstract class BinaryTree<T> {
    @SuppressWarnings("unchecked")
    public static final <T> BinaryTree<T> _EmptyTree() { return _EmptyTree; }
 
-   public static interface Visitor<T, ResultType> {
-      ResultType visit(Node<T> x);
-      ResultType visit(EmptyTree<T> x);
+   public static interface MatchBlock<T, ResultType> {
+      ResultType _case(Node<T> x);
+      ResultType _case(EmptyTree<T> x);
    }
 
-   public static abstract class VisitorWithDefault<T, ResultType> implements Visitor<T, ResultType> {
+   public static abstract class MatchBlockWithDefault<T, ResultType> implements MatchBlock<T, ResultType> {
       @Override
-      public ResultType visit(Node<T> x) { return getDefault(x); }
+      public ResultType _case(Node<T> x) { return _default(x); }
 
       @Override
-      public ResultType visit(EmptyTree<T> x) { return getDefault(x); }
+      public ResultType _case(EmptyTree<T> x) { return _default(x); }
 
-      protected abstract ResultType getDefault(BinaryTree<T> x);
+      protected abstract ResultType _default(BinaryTree<T> x);
    }
 
-   public static interface VoidVisitor<T> {
-      void visit(Node<T> x);
-      void visit(EmptyTree<T> x);
+   public static interface SwitchBlock<T> {
+      void _case(Node<T> x);
+      void _case(EmptyTree<T> x);
    }
 
-   public static abstract class VoidVisitorWithDefault<T> implements VoidVisitor<T> {
+   public static abstract class SwitchBlockWithDefault<T> implements SwitchBlock<T> {
       @Override
-      public void visit(Node<T> x) { doDefault(x); }
+      public void _case(Node<T> x) { _default(x); }
 
       @Override
-      public void visit(EmptyTree<T> x) { doDefault(x); }
+      public void _case(EmptyTree<T> x) { _default(x); }
 
-      protected abstract void doDefault(BinaryTree<T> x);
+      protected abstract void _default(BinaryTree<T> x);
    }
 
    public static final class Node<T> extends BinaryTree<T> {
@@ -77,10 +77,10 @@ public abstract class BinaryTree<T> {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<T, ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<T, ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor<T> visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock<T> switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -123,10 +123,10 @@ public abstract class BinaryTree<T> {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<T, ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<T, ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor<T> visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock<T> switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -148,8 +148,8 @@ public abstract class BinaryTree<T> {
 
    }
 
-   public abstract <ResultType> ResultType accept(Visitor<T, ResultType> visitor);
+   public abstract <ResultType> ResultType match(MatchBlock<T, ResultType> matchBlock);
 
-   public abstract void accept(VoidVisitor<T> visitor);
+   public abstract void _switch(SwitchBlock<T> switchBlock);
 
 }

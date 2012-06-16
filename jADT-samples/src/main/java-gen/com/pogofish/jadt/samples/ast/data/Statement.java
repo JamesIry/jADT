@@ -37,42 +37,42 @@ public abstract class Statement {
    public static final  Statement _Assignment(String name, Expression expression) { return new Assignment(name, expression); }
    public static final  Statement _Return(Expression expression) { return new Return(expression); }
 
-   public static interface Visitor<ResultType> {
-      ResultType visit(Declaration x);
-      ResultType visit(Assignment x);
-      ResultType visit(Return x);
+   public static interface MatchBlock<ResultType> {
+      ResultType _case(Declaration x);
+      ResultType _case(Assignment x);
+      ResultType _case(Return x);
    }
 
-   public static abstract class VisitorWithDefault<ResultType> implements Visitor<ResultType> {
+   public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType visit(Declaration x) { return getDefault(x); }
+      public ResultType _case(Declaration x) { return _default(x); }
 
       @Override
-      public ResultType visit(Assignment x) { return getDefault(x); }
+      public ResultType _case(Assignment x) { return _default(x); }
 
       @Override
-      public ResultType visit(Return x) { return getDefault(x); }
+      public ResultType _case(Return x) { return _default(x); }
 
-      protected abstract ResultType getDefault(Statement x);
+      protected abstract ResultType _default(Statement x);
    }
 
-   public static interface VoidVisitor {
-      void visit(Declaration x);
-      void visit(Assignment x);
-      void visit(Return x);
+   public static interface SwitchBlock {
+      void _case(Declaration x);
+      void _case(Assignment x);
+      void _case(Return x);
    }
 
-   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+   public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void visit(Declaration x) { doDefault(x); }
+      public void _case(Declaration x) { _default(x); }
 
       @Override
-      public void visit(Assignment x) { doDefault(x); }
+      public void _case(Assignment x) { _default(x); }
 
       @Override
-      public void visit(Return x) { doDefault(x); }
+      public void _case(Return x) { _default(x); }
 
-      protected abstract void doDefault(Statement x);
+      protected abstract void _default(Statement x);
    }
 
    public static final class Declaration extends Statement {
@@ -87,10 +87,10 @@ public abstract class Statement {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -137,10 +137,10 @@ public abstract class Statement {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -181,10 +181,10 @@ public abstract class Statement {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -213,8 +213,8 @@ public abstract class Statement {
 
    }
 
-   public abstract <ResultType> ResultType accept(Visitor<ResultType> visitor);
+   public abstract <ResultType> ResultType match(MatchBlock<ResultType> matchBlock);
 
-   public abstract void accept(VoidVisitor visitor);
+   public abstract void _switch(SwitchBlock switchBlock);
 
 }

@@ -336,15 +336,15 @@ public class StandardParser implements Parser {
          * @return a RefType
          */
         public RefType refType() {
-            return type().accept(new Type.Visitor<RefType>() {
+            return type().match(new Type.MatchBlock<RefType>() {
 
                 @Override
-                public RefType visit(Ref x) {
+                public RefType _case(Ref x) {
                     return x.type;
                 }
 
                 @Override
-                public RefType visit(Primitive x) {
+                public RefType _case(Primitive x) {
                     throw new SyntaxException("an array or class type (type parameters may not be primitive).  Found " + x.toString() + " and then looked for [] ");
                 }});
         }

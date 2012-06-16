@@ -142,14 +142,14 @@ public class Printer  {
      * @return pretty string
      */
     public static String print(Type type) {
-        return type.accept(new Type.Visitor<String>(){
+        return type.match(new Type.MatchBlock<String>(){
             @Override
-            public String visit(Ref x) {
+            public String _case(Ref x) {
                 return print(x.type);
             }
 
             @Override
-            public String visit(Primitive x) {
+            public String _case(Primitive x) {
                 return print(x.type);
             }
             
@@ -169,10 +169,10 @@ public class Printer  {
      * @return pretty string
      */
     public static String print(RefType type) {
-        return type.accept(new RefType.Visitor<String>() {
+        return type.match(new RefType.MatchBlock<String>() {
 
             @Override
-            public String visit(ClassType x) {
+            public String _case(ClassType x) {
                 final StringBuilder builder = new StringBuilder(x.baseName);
                 if (!x.typeArguments.isEmpty()) {
                     builder.append("<");
@@ -191,7 +191,7 @@ public class Printer  {
             }
 
             @Override
-            public String visit(ArrayType x) {
+            public String _case(ArrayType x) {
                 return print(x.heldType) + "[]";
             }});
     }
@@ -202,40 +202,40 @@ public class Printer  {
      * @return pretty string
      */
     public static String print(PrimitiveType type) {
-        return type.accept(new PrimitiveType.Visitor<String>() {
+        return type.match(new PrimitiveType.MatchBlock<String>() {
 
             @Override
-            public String visit(BooleanType x) {
+            public String _case(BooleanType x) {
                 return "boolean";
             }
 
             @Override
-            public String visit(CharType x) {
+            public String _case(CharType x) {
                 return "char";
             }
 
             @Override
-            public String visit(DoubleType x) {
+            public String _case(DoubleType x) {
                 return "double";
             }
 
             @Override
-            public String visit(FloatType x) {
+            public String _case(FloatType x) {
                 return "float";
             }
 
             @Override
-            public String visit(IntType x) {
+            public String _case(IntType x) {
                 return "int";
             }
 
             @Override
-            public String visit(LongType x) {
+            public String _case(LongType x) {
                 return "long";
             }
 
             @Override
-            public String visit(ShortType x) {
+            public String _case(ShortType x) {
                 return "short";
             }});
     }

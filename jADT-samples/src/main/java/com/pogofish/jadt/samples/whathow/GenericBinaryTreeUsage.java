@@ -45,9 +45,9 @@ public class GenericBinaryTreeUsage {
      */
     // START SNIPPET: max
     public String max(BinaryTree<String> tree)  {
-        return tree.accept(new BinaryTree.Visitor<String, String>() {
+        return tree.match(new BinaryTree.MatchBlock<String, String>() {
            @Override
-           public String visit(Node<String> x) {
+           public String _case(Node<String> x) {
                final String maxLeft = max(x.left);
                final String maxRight = max(x.right);
 
@@ -55,7 +55,7 @@ public class GenericBinaryTreeUsage {
            }
 
            @Override
-           public String visit(EmptyTree<String> x) {
+           public String _case(EmptyTree<String> x) {
               return null;
            }
         });

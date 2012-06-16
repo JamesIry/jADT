@@ -3,7 +3,7 @@ package com.pogofish.jadt.ast;
 import java.util.List;
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
@@ -45,34 +45,34 @@ public abstract class RefType {
    public static final  RefType _ClassType(String baseName, List<RefType> typeArguments) { return new ClassType(baseName, typeArguments); }
    public static final  RefType _ArrayType(Type heldType) { return new ArrayType(heldType); }
 
-   public static interface Visitor<ResultType> {
-      ResultType visit(ClassType x);
-      ResultType visit(ArrayType x);
+   public static interface MatchBlock<ResultType> {
+      ResultType _case(ClassType x);
+      ResultType _case(ArrayType x);
    }
 
-   public static abstract class VisitorWithDefault<ResultType> implements Visitor<ResultType> {
+   public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType visit(ClassType x) { return getDefault(x); }
+      public ResultType _case(ClassType x) { return _default(x); }
 
       @Override
-      public ResultType visit(ArrayType x) { return getDefault(x); }
+      public ResultType _case(ArrayType x) { return _default(x); }
 
-      protected abstract ResultType getDefault(RefType x);
+      protected abstract ResultType _default(RefType x);
    }
 
-   public static interface VoidVisitor {
-      void visit(ClassType x);
-      void visit(ArrayType x);
+   public static interface SwitchBlock {
+      void _case(ClassType x);
+      void _case(ArrayType x);
    }
 
-   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+   public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void visit(ClassType x) { doDefault(x); }
+      public void _case(ClassType x) { _default(x); }
 
       @Override
-      public void visit(ArrayType x) { doDefault(x); }
+      public void _case(ArrayType x) { _default(x); }
 
-      protected abstract void doDefault(RefType x);
+      protected abstract void _default(RefType x);
    }
 
    public static final class ClassType extends RefType {
@@ -85,10 +85,10 @@ public abstract class RefType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -129,10 +129,10 @@ public abstract class RefType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -161,8 +161,8 @@ public abstract class RefType {
 
    }
 
-   public abstract <ResultType> ResultType accept(Visitor<ResultType> visitor);
+   public abstract <ResultType> ResultType match(MatchBlock<ResultType> matchBlock);
 
-   public abstract void accept(VoidVisitor visitor);
+   public abstract void _switch(SwitchBlock switchBlock);
 
 }

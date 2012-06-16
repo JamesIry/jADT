@@ -46,10 +46,10 @@ public class ConstructorEmitterTest {
     "/* constructor method Foo*/\n" +
     "\n" +
     "      @Override\n" +
-    "      public <ResultType> ResultType accept(Visitor/* type arguments */ visitor) { return visitor.visit(this); }\n" +
+    "      public <ResultType> ResultType match(MatchBlock/* type arguments */ matchBlock) { return matchBlock._case(this); }\n" +
     "\n" +
     "      @Override\n" +
-    "      public void accept(VoidVisitor/* type arguments */ visitor) { visitor.visit(this); }\n" +
+    "      public void _switch(SwitchBlock/* type arguments */ switchBlock) { switchBlock._case(this); }\n" +
     "\n" +
     "/* hashCode method Foo*/\n" +
     "\n" +

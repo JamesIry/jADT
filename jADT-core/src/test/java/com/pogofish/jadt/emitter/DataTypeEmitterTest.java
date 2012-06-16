@@ -47,43 +47,43 @@ public class DataTypeEmitterTest {
     "/* factory FooBar Foo */\n" +
     "/* factory FooBar Bar */\n" +
     "\n" +
-    "   public static interface Visitor/* type arguments */ {\n" +
-    "      ResultType visit(Foo/* type arguments */ x);\n" +
-    "      ResultType visit(Bar/* type arguments */ x);\n" +
+    "   public static interface MatchBlock/* type arguments */ {\n" +
+    "      ResultType _case(Foo/* type arguments */ x);\n" +
+    "      ResultType _case(Bar/* type arguments */ x);\n" +
     "   }\n" +
     "\n" +
-    "   public static abstract class VisitorWithDefault/* type arguments */ implements Visitor/* type arguments */ {\n" +
+    "   public static abstract class MatchBlockWithDefault/* type arguments */ implements MatchBlock/* type arguments */ {\n" +
     "      @Override\n" +
-    "      public ResultType visit(Foo/* type arguments */ x) { return getDefault(x); }\n" +
+    "      public ResultType _case(Foo/* type arguments */ x) { return _default(x); }\n" +
     "\n" +
     "      @Override\n" +
-    "      public ResultType visit(Bar/* type arguments */ x) { return getDefault(x); }\n" +    
+    "      public ResultType _case(Bar/* type arguments */ x) { return _default(x); }\n" +    
     "\n" +
-    "      protected abstract ResultType getDefault(FooBar/* type arguments */ x);\n" +
+    "      protected abstract ResultType _default(FooBar/* type arguments */ x);\n" +
     "   }\n" +
     "\n" +
-    "   public static interface VoidVisitor/* type arguments */ {\n" +
-    "      void visit(Foo/* type arguments */ x);\n" +
-    "      void visit(Bar/* type arguments */ x);\n" +
+    "   public static interface SwitchBlock/* type arguments */ {\n" +
+    "      void _case(Foo/* type arguments */ x);\n" +
+    "      void _case(Bar/* type arguments */ x);\n" +
     "   }\n" +
     "\n" +
-    "   public static abstract class VoidVisitorWithDefault/* type arguments */ implements VoidVisitor/* type arguments */ {\n" +
+    "   public static abstract class SwitchBlockWithDefault/* type arguments */ implements SwitchBlock/* type arguments */ {\n" +
     "      @Override\n" +
-    "      public void visit(Foo/* type arguments */ x) { doDefault(x); }\n" +
+    "      public void _case(Foo/* type arguments */ x) { _default(x); }\n" +
     "\n" +
     "      @Override\n" +
-    "      public void visit(Bar/* type arguments */ x) { doDefault(x); }\n" +    
+    "      public void _case(Bar/* type arguments */ x) { _default(x); }\n" +    
     "\n" +
-    "      protected abstract void doDefault(FooBar/* type arguments */ x);\n" +
+    "      protected abstract void _default(FooBar/* type arguments */ x);\n" +
     "   }\n" +
     "\n" +    
     "/* declaration FooBar Foo */\n" +
     "\n" +
     "/* declaration FooBar Bar */\n" +
     "\n" +
-    "   public abstract <ResultType> ResultType accept(Visitor/* type arguments */ visitor);\n" +
+    "   public abstract <ResultType> ResultType match(MatchBlock/* type arguments */ matchBlock);\n" +
     "\n" +
-    "   public abstract void accept(VoidVisitor/* type arguments */ visitor);\n" +
+    "   public abstract void _switch(SwitchBlock/* type arguments */ switchBlock);\n" +
     "\n" +
     "}";
     

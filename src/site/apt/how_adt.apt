@@ -40,7 +40,7 @@ Matching on an ADT
 
     Most statically typed functional programming languages have a pattern matching for making decisions based on ADTs.  Java doesn't.  So with jADT you have a couple of choices, you can use instanceof and casting or preferably you can use the {{{./visitor_variations.html}visitor interfaces}} that jADT generates.  
 
-    Here's using a Visitor to find the max of an IntBinaryTree where null indicates an empty tree.
+    Here's using a MatchBlock style to find the max of an IntBinaryTree where null indicates an empty tree.
 
 %{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=max}    
     
@@ -58,15 +58,15 @@ Matching on an ADT
 
     So for Approved the result is true, but for all other statuses (Pending and Denied) the result is false.
 
-    In this particular case the same thing could be achieved with instance of pretty nicely
+    In this particular case the same thing could be achieved with instanceof pretty nicely
 
 %{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/TPSReportStatusUsage.java|id=isApprovedV2}    
 
     A few rules of thumb for when to use instanceof vs a Visitor.
 
-      [[1]] If you find yourself casting, stop, use the Visitor
+      [[1]] If you find yourself casting, stop, use a Visitor
 
-      [[2]] If you have a bunch of instanceofs in a row then odds are pretty good you'll make a mistake.  Seriously consider using Visitor.
+      [[2]] If you have a bunch of instanceofs in a row then odds are pretty good you'll make a mistake.  Seriously consider using a Visitor.
       
     Besides the Visitor and VisitorWithDefault variations seen on this page, jADT also supports {{{./visitor_variations.html}variations that return void}}.
 

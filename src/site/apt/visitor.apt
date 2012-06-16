@@ -2,7 +2,8 @@ Visitor Pattern
 
     {{{./what_adt.html}\<\< What is an Algebraic DataType? }} | {{{./how_adt.html} How Can Algebraic DataTypes be Used? \>\>}}
 
-    This page gives background information on the Visitor Pattern.  If you feel
+    This page gives background information on the Visitor Pattern. Most of the code on
+ this page mimics code that jADT generates for you. If you feel
  comfortable with Visitors skip ahead to {{{./how_adt.html}How to Use ADTs}}.
 
     First, a quote from the Wikipedia {{{http://en.wikipedia.org/wiki/Visitor_pattern}article on Visitor}}.
@@ -14,64 +15,67 @@ to add new operations to existing object structures without modifying those
 structures. It is one way to easily follow the open/closed principle.>
 
     Ignoring how it's implemented, Visitor's goal is very similar to Java's 
- <<<switch>>> statement.  Given a primitive (int, long, boolean, etc.) 
- <<<switch>>> allows you to take different action based on which value of 
- type int/long/boolean/whatever you happen to have.  The decision can be 
- made without adding code to a base int/long/boolean class (indeed, 
+ switch statement.  Given a primitive (int, long, char, etc.) 
+ switch allows you to take different action based on which value of 
+ type int/long/char/whatever you happen to have.  The decision can be 
+ made without adding code to a base int/long/char class (indeed, 
  there are no such classes).  Visitor allows the same kind of dispatching
  to be added to a class hierarchy where the dispatch decision is typically
  based on the specific subclass found at runtime.
-    
-    While <<<switch>>> covers a lot of territory. two more dispatch
- mechanisms in Java are <<<if>>> and the ternary operator <<<x?y:z>>>,
- both of which dispatch on booleans.
- The ternary operator, unlike <<<switch>>> and <<<if>>>, is an
- expression instead of a statement meaning it returns a useful
- value that can be used in larger expressions.  Similar to the <<<if>>> vs ternary
- operator distinction, it's
- possible to create Visitors that that can be used in expressions
- or others that are only called for their effects such as
- modifying a shared data structure, writing to the network, or printing 
- to the screen.
  
-     An example Visitor should help - we'll reimplement a method that uses <<<x?y:z>>>
- to use a Visitor pattern to tie all the concepts together.    
+     An example Visitor should help - we'll re-implement a method that uses switch
+ to use a Visitor pattern to tie all the concepts together.    We'll re-implement
+ this enum and later create a switch replacement.
  
-    First, we need a boolean surrogate.  Ignore the <<<accept>>> methods for now.
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/ColorEnum.java|id=class}    
 
-%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/MyBoolean.java|id=class}    
-%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/MyTrue.java|id=class}    
-%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/MyFalse.java|id=class}    
+    First, we need an replacement for the enum.  Ignore the _switch methods for now.
 
-   So a MyBoolean is either a MyTrue or a MyFalse. Technically MyBoolean includes 
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/Color.java|id=class}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/Red.java|id=class}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/Blue.java|id=class}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/Green.java|id=class}    
+
+   So a Color is either a Red, a Green, or a Blue. Technically a Color could be  
 any other subclass that anybody wants to write, but the Visitor pattern 
 effectively prevents such subclassing as you'll see shortly. 
 
-   The first half of the visitor pattern is the abstract accept method in the base interface or class
+   The first half of the visitor pattern is the abstract _switch method in the base interface or class
 and concrete implementations in each subclass.  The second half is the visitor interface
 
-%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/MyBooleanVisitor.java|id=class}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/ColorSwitchBlock.java|id=class}    
 
-   So anything that implements the MyBooleanVisitor interface can be passed to the accept method on a MyBoolean.  That
-accept method will call either visitMyTrue or visitMyFalse on the visitor object.  Hence dispatch based
+   So anything that implements the ColorSwitchBlock interface can be passed to the _switch method on a Color.  That
+_switch method will call _case(Red), _case(Green), or _case(Blue) on the SwitchBlock.  Hence dispatch based
 on the subclass.  That's also why the Visitor pattern effectively prevents adding new subclasses.  While
-it's possible to create <<<class MyOtherBoolean implemenets MyBoolean>>>, the only way to make it useful
-is to go back and add a <<<visitMyOtherBoolean>>> to <<<MyBooleanVisitor>>> and all its implementations.
+it's possible to create class MyOtherColor implemenets Color, the only way to make it useful
+is to go back and add a _case(MyOtherColor) to ColorSwitchBlock and all its implementations.
 
-    All the Java code you've seen up to now is very similar to the Java that jADT generates, although jADT
-generates much more, including a Visitor interface variation when you just want effects, and Visitor variations
+    All the Java code you've seen up to now is very similar to the Java that jADT generates.  Although jADT seals
+ADTs against further subclassing and generates {{{./visitor_variations.html}visitor variations}} that allow a useful return a useful result and Visitor variations
 that do default computations so you don't need to implement visit methods for every possible case.
    
-    As promised, we can finally implement an equivalent of the ternary operator.  We'll create something 
- similar to this simple method that uses the ternary operator.
+    As promised, we can finally implement an equivalent of a switch statement.  We'll create something 
+ similar to this simple method.
  
-%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/BooleanExamples.java|id=getAString}    
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/ColorEnumExamples.java|id=printString}    
  
-    Using MyBoolean and implementing a MyBooleanVisitor results in this equivalent method
+    Using the Color interface instead of ColorEnum and implementing a ColorSwitchBlock results in this equivalent method
      
-%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/MyBooleanExamples.java|id=getAString}     
+%{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/visitor/ColorExamples.java|id=printString}     
 
-    There's more boilerplate - it's hard to compete with a built in operator - but the idea is captured.
+    There's a bit more boilerplate - it's hard to compete with a built in sugar like switch and enum - but the idea is captured. 
+ 
+     While switch covers a lot of territory, two more dispatch
+ mechanisms in Java are if and the ternary operator x?y:z,
+ both of which dispatch on booleans.
+ The ternary operator, unlike switch and if, is an
+ expression instead of a statement meaning it returns a useful
+ value that can be used in larger expressions.  Similar to the if vs ternary
+ operator distinction, jADT has {{{./visitor_variations.html}visitor variations}} that that can be used in expressions
+ or others that are only called for their effects such as
+ modifying a shared data structure, writing to the network, or printing 
+ to the screen.  Like Java's switch, it's possible to have a default case in a jADT Visitor.
  
     {{{./what_adt.html}\<\< What is an Algebraic DataType? }} | {{{./how_adt.html} How Can Algebraic DataTypes be Used? \>\>}}
  

@@ -98,56 +98,56 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         final List<String> visitorTypeArguments = new ArrayList<String>(dataType.typeArguments);
         visitorTypeArguments.add("ResultType");
         
-        target.write("   public static interface Visitor"); 
+        target.write("   public static interface MatchBlock"); 
         classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
         target.write(" {\n");
         for(Constructor constructor : dataType.constructors) {
-            target.write("      ResultType visit(" + constructor.name);
+            target.write("      ResultType _case(" + constructor.name);
             classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
             target.write(" x);\n");
         }
         target.write("   }\n\n");
         
-        target.write("   public static abstract class VisitorWithDefault"); 
+        target.write("   public static abstract class MatchBlockWithDefault"); 
         classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
-        target.write(" implements Visitor"); 
+        target.write(" implements MatchBlock"); 
         classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
         target.write(" {\n");
         for(Constructor constructor : dataType.constructors) {
             target.write("      @Override\n");
-            target.write("      public ResultType visit(" + constructor.name);
+            target.write("      public ResultType _case(" + constructor.name);
             classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
-            target.write(" x) { return getDefault(x); }\n\n");
+            target.write(" x) { return _default(x); }\n\n");
         }
-        target.write("      protected abstract ResultType getDefault(" + dataType.name);
+        target.write("      protected abstract ResultType _default(" + dataType.name);
         classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
         target.write(" x);\n");
         target.write("   }");
         
         target.write("\n\n");
         
-        target.write("   public static interface VoidVisitor");
+        target.write("   public static interface SwitchBlock");
         classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
         target.write(" {\n");
         for(Constructor constructor : dataType.constructors) {
-            target.write("      void visit(" + constructor.name);
+            target.write("      void _case(" + constructor.name);
             classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
             target.write(" x);\n");
         }
         target.write("   }\n\n");
         
-        target.write("   public static abstract class VoidVisitorWithDefault");
+        target.write("   public static abstract class SwitchBlockWithDefault");
         classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
-        target.write(" implements VoidVisitor");
+        target.write(" implements SwitchBlock");
         classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
         target.write(" {\n");
         for(Constructor constructor : dataType.constructors) {
             target.write("      @Override\n");
-            target.write("      public void visit(" + constructor.name);
+            target.write("      public void _case(" + constructor.name);
             classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);            
-            target.write(" x) { doDefault(x); }\n\n");
+            target.write(" x) { _default(x); }\n\n");
         }
-        target.write("      protected abstract void doDefault(" + dataType.name);
+        target.write("      protected abstract void _default(" + dataType.name);
         classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);        
         target.write(" x);\n");
         target.write("   }");
@@ -156,13 +156,13 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
             target.write("\n\n");
             constructorEmitter.constructorDeclaration(target, constructor, dataType.name, dataType.typeArguments);
         }
-        target.write("\n\n   public abstract <ResultType> ResultType accept(Visitor");
+        target.write("\n\n   public abstract <ResultType> ResultType match(MatchBlock");
         classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
-        target.write(" visitor);\n\n");
+        target.write(" matchBlock);\n\n");
         
-        target.write("   public abstract void accept(VoidVisitor");
+        target.write("   public abstract void _switch(SwitchBlock");
         classBodyEmitter.emitParameterizedTypeName(target, dataType.typeArguments);
-        target.write(" visitor);\n\n");
+        target.write(" switchBlock);\n\n");
         
         target.write("}");
     }

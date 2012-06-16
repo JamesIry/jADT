@@ -1,7 +1,7 @@
 package com.pogofish.jadt.samples.whathow.data;
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
@@ -34,42 +34,42 @@ public abstract class TPSReportStatus {
    public static final  TPSReportStatus _Approved(Manager approver) { return new Approved(approver); }
    public static final  TPSReportStatus _Denied(Manager rejector) { return new Denied(rejector); }
 
-   public static interface Visitor<ResultType> {
-      ResultType visit(Pending x);
-      ResultType visit(Approved x);
-      ResultType visit(Denied x);
+   public static interface MatchBlock<ResultType> {
+      ResultType _case(Pending x);
+      ResultType _case(Approved x);
+      ResultType _case(Denied x);
    }
 
-   public static abstract class VisitorWithDefault<ResultType> implements Visitor<ResultType> {
+   public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType visit(Pending x) { return getDefault(x); }
+      public ResultType _case(Pending x) { return _default(x); }
 
       @Override
-      public ResultType visit(Approved x) { return getDefault(x); }
+      public ResultType _case(Approved x) { return _default(x); }
 
       @Override
-      public ResultType visit(Denied x) { return getDefault(x); }
+      public ResultType _case(Denied x) { return _default(x); }
 
-      protected abstract ResultType getDefault(TPSReportStatus x);
+      protected abstract ResultType _default(TPSReportStatus x);
    }
 
-   public static interface VoidVisitor {
-      void visit(Pending x);
-      void visit(Approved x);
-      void visit(Denied x);
+   public static interface SwitchBlock {
+      void _case(Pending x);
+      void _case(Approved x);
+      void _case(Denied x);
    }
 
-   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+   public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void visit(Pending x) { doDefault(x); }
+      public void _case(Pending x) { _default(x); }
 
       @Override
-      public void visit(Approved x) { doDefault(x); }
+      public void _case(Approved x) { _default(x); }
 
       @Override
-      public void visit(Denied x) { doDefault(x); }
+      public void _case(Denied x) { _default(x); }
 
-      protected abstract void doDefault(TPSReportStatus x);
+      protected abstract void _default(TPSReportStatus x);
    }
 
    public static final class Pending extends TPSReportStatus {
@@ -78,10 +78,10 @@ public abstract class TPSReportStatus {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -111,10 +111,10 @@ public abstract class TPSReportStatus {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -151,10 +151,10 @@ public abstract class TPSReportStatus {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -183,8 +183,8 @@ public abstract class TPSReportStatus {
 
    }
 
-   public abstract <ResultType> ResultType accept(Visitor<ResultType> visitor);
+   public abstract <ResultType> ResultType match(MatchBlock<ResultType> matchBlock);
 
-   public abstract void accept(VoidVisitor visitor);
+   public abstract void _switch(SwitchBlock switchBlock);
 
 }

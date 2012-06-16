@@ -2,7 +2,7 @@ package com.pogofish.jadt.ast;
 
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
@@ -44,34 +44,34 @@ public abstract class Type {
    public static final  Type _Ref(RefType type) { return new Ref(type); }
    public static final  Type _Primitive(PrimitiveType type) { return new Primitive(type); }
 
-   public static interface Visitor<ResultType> {
-      ResultType visit(Ref x);
-      ResultType visit(Primitive x);
+   public static interface MatchBlock<ResultType> {
+      ResultType _case(Ref x);
+      ResultType _case(Primitive x);
    }
 
-   public static abstract class VisitorWithDefault<ResultType> implements Visitor<ResultType> {
+   public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType visit(Ref x) { return getDefault(x); }
+      public ResultType _case(Ref x) { return _default(x); }
 
       @Override
-      public ResultType visit(Primitive x) { return getDefault(x); }
+      public ResultType _case(Primitive x) { return _default(x); }
 
-      protected abstract ResultType getDefault(Type x);
+      protected abstract ResultType _default(Type x);
    }
 
-   public static interface VoidVisitor {
-      void visit(Ref x);
-      void visit(Primitive x);
+   public static interface SwitchBlock {
+      void _case(Ref x);
+      void _case(Primitive x);
    }
 
-   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+   public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void visit(Ref x) { doDefault(x); }
+      public void _case(Ref x) { _default(x); }
 
       @Override
-      public void visit(Primitive x) { doDefault(x); }
+      public void _case(Primitive x) { _default(x); }
 
-      protected abstract void doDefault(Type x);
+      protected abstract void _default(Type x);
    }
 
    public static final class Ref extends Type {
@@ -82,10 +82,10 @@ public abstract class Type {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -122,10 +122,10 @@ public abstract class Type {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -154,8 +154,8 @@ public abstract class Type {
 
    }
 
-   public abstract <ResultType> ResultType accept(Visitor<ResultType> visitor);
+   public abstract <ResultType> ResultType match(MatchBlock<ResultType> matchBlock);
 
-   public abstract void accept(VoidVisitor visitor);
+   public abstract void _switch(SwitchBlock switchBlock);
 
 }

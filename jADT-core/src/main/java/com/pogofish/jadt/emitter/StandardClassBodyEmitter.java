@@ -152,25 +152,25 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
             target.write("         " + constructor.name + " other = (" + constructor.name + ")obj;\n");
             
             for (final Arg arg : constructor.args) {
-                arg.type.accept(new Type.VoidVisitor(){
+                arg.type._switch(new Type.SwitchBlock(){
                     @Override
-                    public void visit(Ref x) {
-                        x.type.accept(new RefType.VoidVisitor() {
+                    public void _case(Ref x) {
+                        x.type._switch(new RefType.SwitchBlock() {
                             @Override
-                            public void visit(ClassType x) {
+                            public void _case(ClassType x) {
                                 target.write("         if (" + arg.name + " == null) {\n");
                                 target.write("            if (other." + arg.name + " != null) return false;\n");
                                 target.write("         } else if (!" + arg.name + ".equals(other." + arg.name + ")) return false;\n");
                             }
 
                             @Override
-                            public void visit(ArrayType x) {
+                            public void _case(ArrayType x) {
                                 target.write("         if (!java.util.Arrays.equals(" + arg.name + ", other." + arg.name + ")) return false;\n");
                             }});
                     }
 
                     @Override
-                    public void visit(Primitive x) {
+                    public void _case(Primitive x) {
                         target.write("         if (" + arg.name + " != other." + arg.name + ") return false;\n");
                     }});
             }
@@ -193,37 +193,37 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
             target.write("          final int prime = 31;\n");
             target.write("          int result = 1;\n");
             for (final Arg arg : constructor.args) {
-                arg.type.accept(new Type.VoidVisitor(){
+                arg.type._switch(new Type.SwitchBlock(){
                     @Override
-                    public void visit(Ref x) {
-                        x.type.accept(new RefType.VoidVisitor() {
+                    public void _case(Ref x) {
+                        x.type._switch(new RefType.SwitchBlock() {
                             @Override
-                            public void visit(ClassType x) {
+                            public void _case(ClassType x) {
                                 target.write("          result = prime * result + ((" + arg.name + " == null) ? 0 : " + arg.name + ".hashCode());\n");                
                             }
 
                             @Override
-                            public void visit(ArrayType x) {
+                            public void _case(ArrayType x) {
                                 target.write("          result = prime * result + java.util.Arrays.hashCode(" + arg.name + ");\n");                
                             }});
                     }
 
                     @Override
-                    public void visit(Primitive x) {
-                        x.type.accept(new PrimitiveType.VoidVisitorWithDefault() {
+                    public void _case(Primitive x) {
+                        x.type._switch(new PrimitiveType.SwitchBlockWithDefault() {
 
                             @Override
-                            public void visit(BooleanType x) {
+                            public void _case(BooleanType x) {
                                 target.write("          result = prime * result + (" + arg.name + " ? 1 : 0);\n");
                             }
 
                             @Override
-                            public void visit(IntType x) {
+                            public void _case(IntType x) {
                                 target.write("          result = prime * result + " + arg.name + ";\n");
                             }
 
                             @Override
-                            public void doDefault(PrimitiveType x) {
+                            public void _default(PrimitiveType x) {
                                 target.write("          result = prime * result + (int)" + arg.name + ";\n");
                             }});
                     }});

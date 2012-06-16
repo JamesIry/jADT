@@ -69,14 +69,14 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
         visitorTypeArguments.add("ResultType");
         
         target.write("      @Override\n");
-        target.write("      public <ResultType> ResultType accept(Visitor");
+        target.write("      public <ResultType> ResultType match(MatchBlock");
         classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
-        target.write(" visitor) { return visitor.visit(this); }\n");
+        target.write(" matchBlock) { return matchBlock._case(this); }\n");
         target.write("\n");
         target.write("      @Override\n");
-        target.write("      public void accept(VoidVisitor");
+        target.write("      public void _switch(SwitchBlock");
         classBodyEmitter.emitParameterizedTypeName(target, typeArguments);
-        target.write(" visitor) { visitor.visit(this); }");
+        target.write(" switchBlock) { switchBlock._case(this); }");
     }
 
     

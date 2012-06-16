@@ -2,7 +2,7 @@ package com.pogofish.jadt.ast;
 
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version ${pom.version} http://jamesiry.github.com/jADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
@@ -56,74 +56,74 @@ public abstract class PrimitiveType {
    private static final PrimitiveType _ShortType = new ShortType();
    public static final  PrimitiveType _ShortType() { return _ShortType; }
 
-   public static interface Visitor<ResultType> {
-      ResultType visit(BooleanType x);
-      ResultType visit(CharType x);
-      ResultType visit(DoubleType x);
-      ResultType visit(FloatType x);
-      ResultType visit(IntType x);
-      ResultType visit(LongType x);
-      ResultType visit(ShortType x);
+   public static interface MatchBlock<ResultType> {
+      ResultType _case(BooleanType x);
+      ResultType _case(CharType x);
+      ResultType _case(DoubleType x);
+      ResultType _case(FloatType x);
+      ResultType _case(IntType x);
+      ResultType _case(LongType x);
+      ResultType _case(ShortType x);
    }
 
-   public static abstract class VisitorWithDefault<ResultType> implements Visitor<ResultType> {
+   public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType visit(BooleanType x) { return getDefault(x); }
+      public ResultType _case(BooleanType x) { return _default(x); }
 
       @Override
-      public ResultType visit(CharType x) { return getDefault(x); }
+      public ResultType _case(CharType x) { return _default(x); }
 
       @Override
-      public ResultType visit(DoubleType x) { return getDefault(x); }
+      public ResultType _case(DoubleType x) { return _default(x); }
 
       @Override
-      public ResultType visit(FloatType x) { return getDefault(x); }
+      public ResultType _case(FloatType x) { return _default(x); }
 
       @Override
-      public ResultType visit(IntType x) { return getDefault(x); }
+      public ResultType _case(IntType x) { return _default(x); }
 
       @Override
-      public ResultType visit(LongType x) { return getDefault(x); }
+      public ResultType _case(LongType x) { return _default(x); }
 
       @Override
-      public ResultType visit(ShortType x) { return getDefault(x); }
+      public ResultType _case(ShortType x) { return _default(x); }
 
-      protected abstract ResultType getDefault(PrimitiveType x);
+      protected abstract ResultType _default(PrimitiveType x);
    }
 
-   public static interface VoidVisitor {
-      void visit(BooleanType x);
-      void visit(CharType x);
-      void visit(DoubleType x);
-      void visit(FloatType x);
-      void visit(IntType x);
-      void visit(LongType x);
-      void visit(ShortType x);
+   public static interface SwitchBlock {
+      void _case(BooleanType x);
+      void _case(CharType x);
+      void _case(DoubleType x);
+      void _case(FloatType x);
+      void _case(IntType x);
+      void _case(LongType x);
+      void _case(ShortType x);
    }
 
-   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+   public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void visit(BooleanType x) { doDefault(x); }
+      public void _case(BooleanType x) { _default(x); }
 
       @Override
-      public void visit(CharType x) { doDefault(x); }
+      public void _case(CharType x) { _default(x); }
 
       @Override
-      public void visit(DoubleType x) { doDefault(x); }
+      public void _case(DoubleType x) { _default(x); }
 
       @Override
-      public void visit(FloatType x) { doDefault(x); }
+      public void _case(FloatType x) { _default(x); }
 
       @Override
-      public void visit(IntType x) { doDefault(x); }
+      public void _case(IntType x) { _default(x); }
 
       @Override
-      public void visit(LongType x) { doDefault(x); }
+      public void _case(LongType x) { _default(x); }
 
       @Override
-      public void visit(ShortType x) { doDefault(x); }
+      public void _case(ShortType x) { _default(x); }
 
-      protected abstract void doDefault(PrimitiveType x);
+      protected abstract void _default(PrimitiveType x);
    }
 
    public static final class BooleanType extends PrimitiveType {
@@ -132,10 +132,10 @@ public abstract class PrimitiveType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -163,10 +163,10 @@ public abstract class PrimitiveType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -194,10 +194,10 @@ public abstract class PrimitiveType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -225,10 +225,10 @@ public abstract class PrimitiveType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -256,10 +256,10 @@ public abstract class PrimitiveType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -287,10 +287,10 @@ public abstract class PrimitiveType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -318,10 +318,10 @@ public abstract class PrimitiveType {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -343,8 +343,8 @@ public abstract class PrimitiveType {
 
    }
 
-   public abstract <ResultType> ResultType accept(Visitor<ResultType> visitor);
+   public abstract <ResultType> ResultType match(MatchBlock<ResultType> matchBlock);
 
-   public abstract void accept(VoidVisitor visitor);
+   public abstract void _switch(SwitchBlock switchBlock);
 
 }

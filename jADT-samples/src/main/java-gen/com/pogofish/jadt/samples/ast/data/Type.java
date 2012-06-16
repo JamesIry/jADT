@@ -38,34 +38,34 @@ public abstract class Type {
    private static final Type _Long = new Long();
    public static final  Type _Long() { return _Long; }
 
-   public static interface Visitor<ResultType> {
-      ResultType visit(Int x);
-      ResultType visit(Long x);
+   public static interface MatchBlock<ResultType> {
+      ResultType _case(Int x);
+      ResultType _case(Long x);
    }
 
-   public static abstract class VisitorWithDefault<ResultType> implements Visitor<ResultType> {
+   public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType visit(Int x) { return getDefault(x); }
+      public ResultType _case(Int x) { return _default(x); }
 
       @Override
-      public ResultType visit(Long x) { return getDefault(x); }
+      public ResultType _case(Long x) { return _default(x); }
 
-      protected abstract ResultType getDefault(Type x);
+      protected abstract ResultType _default(Type x);
    }
 
-   public static interface VoidVisitor {
-      void visit(Int x);
-      void visit(Long x);
+   public static interface SwitchBlock {
+      void _case(Int x);
+      void _case(Long x);
    }
 
-   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+   public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void visit(Int x) { doDefault(x); }
+      public void _case(Int x) { _default(x); }
 
       @Override
-      public void visit(Long x) { doDefault(x); }
+      public void _case(Long x) { _default(x); }
 
-      protected abstract void doDefault(Type x);
+      protected abstract void _default(Type x);
    }
 
    public static final class Int extends Type {
@@ -74,10 +74,10 @@ public abstract class Type {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -105,10 +105,10 @@ public abstract class Type {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -130,8 +130,8 @@ public abstract class Type {
 
    }
 
-   public abstract <ResultType> ResultType accept(Visitor<ResultType> visitor);
+   public abstract <ResultType> ResultType match(MatchBlock<ResultType> matchBlock);
 
-   public abstract void accept(VoidVisitor visitor);
+   public abstract void _switch(SwitchBlock switchBlock);
 
 }

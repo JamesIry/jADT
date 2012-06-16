@@ -29,14 +29,14 @@ public class TPSReportStatusUsage {
      */
     // START SNIPPET: isApproved
     public boolean isApproved(TPSReportStatus status) {
-        return status.accept(new TPSReportStatus.VisitorWithDefault<Boolean>() {
+        return status.match(new TPSReportStatus.MatchBlockWithDefault<Boolean>() {
             @Override
-            public Boolean visit(Approved x) {
+            public Boolean _case(Approved x) {
                 return true;
             }
 
             @Override
-            protected Boolean getDefault(TPSReportStatus x) {
+            protected Boolean _default(TPSReportStatus x) {
                 return false;
             }
         });
@@ -45,19 +45,19 @@ public class TPSReportStatusUsage {
     
     // START SNIPPET: message
     public String message(TPSReportStatus status) {
-        return status.accept(new TPSReportStatus.Visitor<String>() {
+        return status.match(new TPSReportStatus.MatchBlock<String>() {
             @Override
-            public String visit(Pending x) {
+            public String _case(Pending x) {
                 return "Pending";
             }
 
             @Override
-            public String visit(Approved x) {
+            public String _case(Approved x) {
                 return "Approved by " + x.approver;
             }
 
             @Override
-            public String visit(Denied x) {
+            public String _case(Denied x) {
                 return "Denied by " + x.rejector;
             }
         });
@@ -66,20 +66,20 @@ public class TPSReportStatusUsage {
     
     // START SNIPPET: notify
     public void notify(TPSReportStatus status, final StatusNotifier notifier) {
-        status.accept(new VoidVisitor() {
+        status._switch(new TPSReportStatus.SwitchBlock() {
             
             @Override
-            public void visit(Denied x) {
+            public void _case(Denied x) {
                 notifier.notifyDenied();
             }
             
             @Override
-            public void visit(Approved x) {
+            public void _case(Approved x) {
                 notifier.notifyApproved();                
             }
             
             @Override
-            public void visit(Pending x) {
+            public void _case(Pending x) {
                 notifier.notifyPending();
             }
         });
@@ -88,15 +88,15 @@ public class TPSReportStatusUsage {
     
     // START SNIPPET: notifyDenied
     public void notifyDenied(TPSReportStatus status, final StatusNotifier notifier) {
-        status.accept(new VoidVisitorWithDefault() {
+        status._switch(new SwitchBlockWithDefault() {
             
             @Override
-            public void visit(Denied x) {
+            public void _case(Denied x) {
                 notifier.notifyDenied();
             }
 
             @Override
-            protected void doDefault(TPSReportStatus x) {
+            protected void _default(TPSReportStatus x) {
                 // nothing to do if it wasn't denied                
             }
         });

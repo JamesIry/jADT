@@ -46,9 +46,9 @@ public class IntBinaryTreeUsage {
      */
     // START SNIPPET: max  
     public Integer max(IntBinaryTree tree)  {
-        return tree.accept(new IntBinaryTree.Visitor<Integer>() {
+        return tree.match(new IntBinaryTree.MatchBlock<Integer>() {
            @Override
-           public Integer visit(Node x) {
+           public Integer _case(Node x) {
               final Integer maxLeft = max(x.left);
               final int l = maxLeft == null ? Integer.MIN_VALUE : maxLeft;
 
@@ -59,7 +59,7 @@ public class IntBinaryTreeUsage {
            }
 
            @Override
-           public Integer visit(EmptyTree x) {
+           public Integer _case(EmptyTree x) {
               return null;
            }
         });

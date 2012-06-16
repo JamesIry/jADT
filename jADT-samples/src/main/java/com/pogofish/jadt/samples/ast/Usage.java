@@ -48,26 +48,26 @@ public class Usage {
 
     // START SNIPPET: expressionLiterals
     public Set<Integer> expressionLiterals(Expression expression) {
-        return expression.accept(new Expression.Visitor<Set<Integer>>() {
+        return expression.match(new Expression.MatchBlock<Set<Integer>>() {
             @Override
-            public Set<Integer> visit(Add x) {
+            public Set<Integer> _case(Add x) {
                 final Set<Integer> results = expressionLiterals(x.left);
                 results.addAll(expressionLiterals(x.right));
                 return results;
             }
 
             @Override
-            public Set<Integer> visit(Variable x) {
+            public Set<Integer> _case(Variable x) {
                 return new HashSet<Integer>();
             }
 
             @Override
-            public Set<Integer> visit(IntLiteral x) {
+            public Set<Integer> _case(IntLiteral x) {
                 return new HashSet<Integer>(asList(x.value));
             }
 
             @Override
-            public Set<Integer> visit(LongLiteral x) {
+            public Set<Integer> _case(LongLiteral x) {
                 return new HashSet<Integer>();
             }
         });
@@ -78,14 +78,14 @@ public class Usage {
     public boolean hasReturn(List<Statement> statements) {
         boolean hasReturn = false;
         for (Statement statement : statements) {
-            hasReturn = hasReturn || statement.accept(new Statement.VisitorWithDefault<Boolean>() {
+            hasReturn = hasReturn || statement.match(new Statement.MatchBlockWithDefault<Boolean>() {
                 @Override
-                public Boolean visit(Return x) {
+                public Boolean _case(Return x) {
                     return true;
                 }
 
                 @Override
-                public Boolean getDefault(Statement x) {
+                public Boolean _default(Statement x) {
                     return false;
                 }
             });

@@ -2,6 +2,16 @@ FAQ: Frequently Anticipated Questions
 
     {{{./limitations.html}\<\< Known Limitations }} | {{{./syntax.html} jADT Syntax \>\>}}
 
+    Q: Why all the underscores.
+
+    A: jADT generates some code with underscores to prevent two kinds of collision. The first kind is an attempt to be reminiscent of java keywords switch, case, and default.  
+Using _switch, _case, and _default as method names makes their roles clear to a Java programmer without falling afould of Java's restriction on using keywords as names.
+
+    The second use of underscores is in the factory methods.  Foo = Bar | Baz will create a Foo class with Bar/Baz inner classes and _Bar()/_Baz factory methods. It would be nice if the factory
+methods could be named without the underscores, but if jADT did that and you do import Foo.* and import static Foo.* then Java complains about name ambiguity.
+
+======
+
     Q: Why not use Scala or another language with ADTs and pattern matching instead of jADT?
 
     A: If you are in a position where you can then by all means do!  jADT can't hope to compete.  But jADT is meant to be used where other languages can't be used.  Also, unlike Scala's ADTs, jADT's ADTs are meant to be easily used from within Java via the Visitor pattern.

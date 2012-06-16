@@ -38,50 +38,50 @@ public abstract class Expression {
    public static final  Expression _IntLiteral(int value) { return new IntLiteral(value); }
    public static final  Expression _LongLiteral(long value) { return new LongLiteral(value); }
 
-   public static interface Visitor<ResultType> {
-      ResultType visit(Add x);
-      ResultType visit(Variable x);
-      ResultType visit(IntLiteral x);
-      ResultType visit(LongLiteral x);
+   public static interface MatchBlock<ResultType> {
+      ResultType _case(Add x);
+      ResultType _case(Variable x);
+      ResultType _case(IntLiteral x);
+      ResultType _case(LongLiteral x);
    }
 
-   public static abstract class VisitorWithDefault<ResultType> implements Visitor<ResultType> {
+   public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType visit(Add x) { return getDefault(x); }
+      public ResultType _case(Add x) { return _default(x); }
 
       @Override
-      public ResultType visit(Variable x) { return getDefault(x); }
+      public ResultType _case(Variable x) { return _default(x); }
 
       @Override
-      public ResultType visit(IntLiteral x) { return getDefault(x); }
+      public ResultType _case(IntLiteral x) { return _default(x); }
 
       @Override
-      public ResultType visit(LongLiteral x) { return getDefault(x); }
+      public ResultType _case(LongLiteral x) { return _default(x); }
 
-      protected abstract ResultType getDefault(Expression x);
+      protected abstract ResultType _default(Expression x);
    }
 
-   public static interface VoidVisitor {
-      void visit(Add x);
-      void visit(Variable x);
-      void visit(IntLiteral x);
-      void visit(LongLiteral x);
+   public static interface SwitchBlock {
+      void _case(Add x);
+      void _case(Variable x);
+      void _case(IntLiteral x);
+      void _case(LongLiteral x);
    }
 
-   public static abstract class VoidVisitorWithDefault implements VoidVisitor {
+   public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void visit(Add x) { doDefault(x); }
+      public void _case(Add x) { _default(x); }
 
       @Override
-      public void visit(Variable x) { doDefault(x); }
+      public void _case(Variable x) { _default(x); }
 
       @Override
-      public void visit(IntLiteral x) { doDefault(x); }
+      public void _case(IntLiteral x) { _default(x); }
 
       @Override
-      public void visit(LongLiteral x) { doDefault(x); }
+      public void _case(LongLiteral x) { _default(x); }
 
-      protected abstract void doDefault(Expression x);
+      protected abstract void _default(Expression x);
    }
 
    public static final class Add extends Expression {
@@ -94,10 +94,10 @@ public abstract class Expression {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -138,10 +138,10 @@ public abstract class Expression {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -178,10 +178,10 @@ public abstract class Expression {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -216,10 +216,10 @@ public abstract class Expression {
       }
 
       @Override
-      public <ResultType> ResultType accept(Visitor<ResultType> visitor) { return visitor.visit(this); }
+      public <ResultType> ResultType match(MatchBlock<ResultType> matchBlock) { return matchBlock._case(this); }
 
       @Override
-      public void accept(VoidVisitor visitor) { visitor.visit(this); }
+      public void _switch(SwitchBlock switchBlock) { switchBlock._case(this); }
 
       @Override
       public int hashCode() {
@@ -246,8 +246,8 @@ public abstract class Expression {
 
    }
 
-   public abstract <ResultType> ResultType accept(Visitor<ResultType> visitor);
+   public abstract <ResultType> ResultType match(MatchBlock<ResultType> matchBlock);
 
-   public abstract void accept(VoidVisitor visitor);
+   public abstract void _switch(SwitchBlock switchBlock);
 
 }

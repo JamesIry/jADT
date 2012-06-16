@@ -33,7 +33,7 @@ Usage
 %{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=expressionLiterals}    
     
     And here's a sample function that returns true only if a list of statements has a return statement. 
-Unlike the previous example, this one uses a VisitorWithDefault so that only relevant cases need to be considered.
+Unlike the previous example, this one uses a default case so that only relevant cases need to be considered.
 
 %{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/ast/Usage.java|id=hasReturn}    
 

@@ -35,7 +35,7 @@ import com.pogofish.jadt.ast.Type.Ref;
  *
  * @author jiry
  */
-public class Printer  {
+public class ASTPrinter  {
     /**
      * ( "package" packageName )?
      * (

@@ -34,6 +34,12 @@ PrimitiveType =
   | IntType
   | LongType
   | ShortType
+SemanticError =
+    DuplicateDataType(String dataTypeName)
+  | ConstructorDataTypeConflict(String dataTypeName)
+  | DuplicateConstructor(String dataTypeName, String constructorName)
+  | DuplicateArgName(String dataTypeName, String constructorName, String argName)
+  | DuplicateModifier(String dataTypeName, String constructorName, String argName, String modifier)
 
 */
 public abstract class PrimitiveType {

@@ -18,31 +18,32 @@ package com.pogofish.jadt.checker;
 import java.util.Set;
 
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.SemanticError;
 
 
 /**
- * Dummy checked usesd for testing. It returns a specified set of exceptions when
+ * Dummy checked usesd for testing. It returns a specified set of errors when
  * asked to check a Doc
  *
  * @author jiry
  */
 public class DummyChecker implements Checker {
-    private final Set<SemanticException> exceptions;
+    private final Set<SemanticError> errors;
 
     /**
      * 
-     * @param exceptions the SemanticExceptions to be returned by the check method
+     * @param errors the SemanticExceptions to be returned by the check method
      */
-    public DummyChecker(Set<SemanticException> exceptions) {
+    public DummyChecker(Set<SemanticError> errors) {
         super();
-        this.exceptions = exceptions;
+        this.errors = errors;
     }
 
     /**
      * returns the set of exceptions specified in the constructor
      */
     @Override
-    public Set<SemanticException> check(Doc doc) {
-        return exceptions;
+    public Set<SemanticError> check(Doc doc) {
+        return errors;
     }
 }

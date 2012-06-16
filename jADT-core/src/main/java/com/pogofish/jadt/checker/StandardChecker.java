@@ -20,7 +20,8 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.*;
-import com.pogofish.jadt.printer.Printer;
+import static com.pogofish.jadt.ast.SemanticError.*;
+import com.pogofish.jadt.printer.ASTPrinter;
 
 
 /**
@@ -35,17 +36,17 @@ public class StandardChecker implements Checker {
      * Checks a documents for duplicate dataType names and calls check(DataType) on each one
      * 
      * @param doc Doc to check
-     * @return Set<SemanticException> with the problems or empty set if there are none
+     * @return Set<SemanticError> with the problems or empty set if there are none
      */
     @Override 
-    public Set<SemanticException> check(Doc doc) {
+    public Set<SemanticError> check(Doc doc) {
     	logger.fine("Checking semantic constraints in document from " + doc.srcInfo);
-        final Set<SemanticException> errors = new HashSet<SemanticException>();
+        final Set<SemanticError> errors = new HashSet<SemanticError>();
         final Set<String> dataTypeNames = new HashSet<String>();
         for (DataType dataType : doc.dataTypes) {
             if (dataTypeNames.contains(dataType.name)) {
             	logger.info("Duplicate data type name " + dataType.name + ".");
-                errors.add(new DuplicateDataTypeException(dataType.name));
+                errors.add(_DuplicateDataType(dataType.name));
             } else {
                 dataTypeNames.add(dataType.name);
             }
@@ -59,21 +60,21 @@ public class StandardChecker implements Checker {
      * as the data type
      * 
      * @param dataType DataType to check
-     * @return Set<SemanticException> with the problems or empty set if there are none
+     * @return Set<SemanticError> with the problems or empty set if there are none
      */
-    private Set<SemanticException> check(DataType dataType) {
+    private Set<SemanticError> check(DataType dataType) {
     	logger.finer("Checking semantic constraints on datatype " + dataType.name);
-        final Set<SemanticException> errors = new HashSet<SemanticException>();
+        final Set<SemanticError> errors = new HashSet<SemanticError>();
         final Set<String> constructorNames = new HashSet<String>();
         for(Constructor constructor : dataType.constructors) {
         	logger.finest("Checking semantic constraints on constructor " + constructor.name + " in datatype " + dataType.name);
             if (dataType.constructors.size() > 1 && dataType.name.equals(constructor.name)) {
             	logger.info("Constructor with same name as its data type " + dataType.name + ".");
-                errors.add(new ConstructorDataTypeConflictException(dataType.name));
+                errors.add(_ConstructorDataTypeConflict(dataType.name));
             }
             if (constructorNames.contains(constructor.name)) {
             	logger.info("Two constructors with same name " + constructor.name + " in data type " + dataType.name + ".");
-                errors.add(new DuplicateConstructorException(dataType.name, constructor.name));
+                errors.add(_DuplicateConstructor(dataType.name, constructor.name));
             } else {
                 constructorNames.add(constructor.name);
             }
@@ -86,13 +87,13 @@ public class StandardChecker implements Checker {
      * Check a constructor to make sure it does not duplicate any args and that no arg duplicates any modifiers
      * 
      */
-    private Set<SemanticException> check(DataType dataType, Constructor constructor) {
+    private Set<SemanticError> check(DataType dataType, Constructor constructor) {
         logger.finer("Checking semantic constraints on data type " + dataType.name + ", constructor " + constructor.name);
-        final Set<SemanticException> errors = new HashSet<SemanticException>();
+        final Set<SemanticError> errors = new HashSet<SemanticError>();
         final Set<String> argNames = new HashSet<String>();
         for (Arg arg : constructor.args) {
             if (argNames.contains(arg.name)) {
-                errors.add(new DuplicateArgNameException(dataType.name, constructor.name, arg.name));
+                errors.add(_DuplicateArgName(dataType.name, constructor.name, arg.name));
             } else {
                 argNames.add(arg.name);
             }
@@ -105,14 +106,14 @@ public class StandardChecker implements Checker {
     /**
      * Checkt to make sure an arg doesn't have duplicate modifiers
      */
-    private Set<SemanticException> check(DataType dataType, Constructor constructor, Arg arg) {
+    private Set<SemanticError> check(DataType dataType, Constructor constructor, Arg arg) {
         logger.finest("Checking semantic constraints on data type " + dataType.name + ", constructor " + constructor.name);
-        final Set<SemanticException> errors = new HashSet<SemanticException>();
+        final Set<SemanticError> errors = new HashSet<SemanticError>();
         final Set<ArgModifier> modifiers = new HashSet<ArgModifier>();
         for (ArgModifier modifier : arg.modifiers) {
             if (modifiers.contains(modifier)) {
-                final String modName = Printer.print(modifier);
-                errors.add(new DuplicateModifierException(dataType.name, constructor.name, arg.name, modName));
+                final String modName = ASTPrinter.print(modifier);
+                errors.add(_DuplicateModifier(dataType.name, constructor.name, arg.name, modName));
             } else {
                 modifiers.add(modifier);
             }

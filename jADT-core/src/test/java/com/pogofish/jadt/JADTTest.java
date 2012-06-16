@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.pogofish.jadt.JADT;
 import com.pogofish.jadt.SemanticExceptions;
+import com.pogofish.jadt.ast.SemanticError;
 import com.pogofish.jadt.checker.*;
 import com.pogofish.jadt.emitter.StandardDocEmitter;
 import com.pogofish.jadt.parser.StandardParser;
@@ -32,6 +33,7 @@ import com.pogofish.jadt.target.FileTargetFactoryFactory;
 import com.pogofish.jadt.target.StringTargetFactoryFactory;
 import com.pogofish.jadt.util.Util;
 
+import static com.pogofish.jadt.ast.SemanticError.*;
 
 /**
  * Test for the main jADT driver
@@ -72,7 +74,7 @@ public class JADTTest {
     public void testDriverBadArgs() {
         
         try {
-            final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO}, new DummyChecker(Collections.<SemanticException>emptySet()));
+            final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO}, new DummyChecker(Collections.<SemanticError>emptySet()));
             fail("Did not get an exception from bad arguments, got " + result);
         } catch(IllegalArgumentException e) {
             // yay
@@ -84,7 +86,7 @@ public class JADTTest {
      */
     @Test
     public void testDriverGood() {
-        final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR}, new DummyChecker(Collections.<SemanticException>emptySet()));
+        final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR}, new DummyChecker(Collections.<SemanticError>emptySet()));
         
         assertEquals(JADT.TEST_SRC_INFO, result);
     }
@@ -95,9 +97,9 @@ public class JADTTest {
     @Test
     public void testDriverSemanticIssue() {
         try {
-            final Checker checker = new DummyChecker(Util.<SemanticException>set(new DuplicateConstructorException("Foo", "Bar"), new ConstructorDataTypeConflictException("Foo")));
+            final Checker checker = new DummyChecker(Util.<SemanticError>set(_DuplicateConstructor("Foo", "Bar"), _ConstructorDataTypeConflict("Foo")));
             final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR}, checker);
-            fail("Did not get a SemanticExceptions, got " + result);
+            fail("Did not get a SemanticErrors, got " + result);
         } catch (SemanticExceptions e) {
             // yay
         }

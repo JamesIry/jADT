@@ -23,12 +23,10 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import static com.pogofish.jadt.ast.SemanticError.*;
+
 import com.pogofish.jadt.ast.*;
 import com.pogofish.jadt.checker.Checker;
-import com.pogofish.jadt.checker.ConstructorDataTypeConflictException;
-import com.pogofish.jadt.checker.DuplicateConstructorException;
-import com.pogofish.jadt.checker.DuplicateDataTypeException;
-import com.pogofish.jadt.checker.SemanticException;
 import com.pogofish.jadt.checker.StandardChecker;
 import com.pogofish.jadt.util.Util;
 
@@ -47,9 +45,9 @@ public class CheckerTest {
         final Checker checker = new StandardChecker();
         final DataType dataType = new DataType("Foo", Util.<String>list(), list(new Constructor("Foo", Util.<Arg>list())));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType, dataType));
-        final Set<SemanticException> errors = checker.check(doc);
+        final Set<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
-        assertTrue(errors.contains(new DuplicateDataTypeException(dataType.name)));
+        assertTrue(errors.contains(_DuplicateDataType(dataType.name)));
     }
     
     /**
@@ -61,9 +59,9 @@ public class CheckerTest {
         final Constructor constructor = new Constructor("Bar", Util.<Arg>list());
         final DataType dataType = new DataType("Foo", Util.<String>list(), list(constructor, constructor));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
-        final Set<SemanticException> errors = checker.check(doc);
+        final Set<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
-        assertTrue(errors.contains(new DuplicateConstructorException(dataType.name, constructor.name)));
+        assertTrue(errors.contains(_DuplicateConstructor(dataType.name, constructor.name)));
     }
     
     /**
@@ -76,9 +74,9 @@ public class CheckerTest {
         final Constructor constructor2 = new Constructor("Foo", Util.<Arg>list());
         final DataType dataType = new DataType("Foo", Util.<String>list(), list(constructor1, constructor2));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
-        final Set<SemanticException> errors = checker.check(doc);
+        final Set<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
-        assertTrue(errors.contains(new ConstructorDataTypeConflictException(dataType.name)));
+        assertTrue(errors.contains(_ConstructorDataTypeConflict(dataType.name)));
     }
     
     @Test
@@ -87,9 +85,9 @@ public class CheckerTest {
         final Constructor constructor = new Constructor("Bar", list(Arg._Arg(Util.<ArgModifier>list(), Type._Primitive(PrimitiveType._IntType()), "foo"), Arg._Arg(Util.<ArgModifier>list(), Type._Primitive(PrimitiveType._BooleanType()), "foo")));
         final DataType dataType = new DataType("Foo", Util.<String>list(), list(constructor));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
-        final Set<SemanticException> errors = checker.check(doc);
+        final Set<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
-        assertTrue(errors.contains(new DuplicateArgNameException(dataType.name, constructor.name, "foo")));       
+        assertTrue(errors.contains(_DuplicateArgName(dataType.name, constructor.name, "foo")));       
     }
     
     @Test
@@ -98,8 +96,8 @@ public class CheckerTest {
         final Constructor constructor = new Constructor("Bar", list(Arg._Arg(list(ArgModifier._Final(), ArgModifier._Final()), Type._Primitive(PrimitiveType._IntType()), "foo")));
         final DataType dataType = new DataType("Foo", Util.<String>list(), list(constructor));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
-        final Set<SemanticException> errors = checker.check(doc);
+        final Set<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
-        assertTrue(errors.contains(new DuplicateModifierException(dataType.name, constructor.name, "foo", "final")));       
+        assertTrue(errors.contains(_DuplicateModifier(dataType.name, constructor.name, "foo", "final")));       
     }    
 }

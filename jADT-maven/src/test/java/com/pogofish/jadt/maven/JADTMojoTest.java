@@ -11,9 +11,8 @@ import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 
 import com.pogofish.jadt.JADT;
+import com.pogofish.jadt.ast.SemanticError;
 import com.pogofish.jadt.checker.DummyChecker;
-import com.pogofish.jadt.checker.DuplicateConstructorException;
-import com.pogofish.jadt.checker.SemanticException;
 import com.pogofish.jadt.target.StringTargetFactoryFactory;
 
 /**
@@ -33,7 +32,7 @@ public class JADTMojoTest {
   
         final JADTMojo mojo = new JADTMojo();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        mojo.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticException>emptySet()), srcFile.getCanonicalPath(), factory);
+        mojo.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticError>emptySet()), srcFile.getCanonicalPath(), factory);
         
         mojo.setSrcPath(srcFile);
         mojo.setDestDir(destDir);
@@ -56,7 +55,7 @@ public class JADTMojoTest {
         
         final JADTMojo mojo = new JADTMojo();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        mojo.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticException>singleton(new DuplicateConstructorException("whatever", "something"))), srcFile.getCanonicalPath(), factory);
+        mojo.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticError>singleton(SemanticError._DuplicateConstructor("whatever", "something"))), srcFile.getCanonicalPath(), factory);
         
         mojo.setSrcPath(srcFile);
         mojo.setDestDir(destDir);

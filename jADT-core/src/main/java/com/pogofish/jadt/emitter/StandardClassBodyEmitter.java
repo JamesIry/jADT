@@ -30,7 +30,7 @@ import com.pogofish.jadt.ast.RefType.ArrayType;
 import com.pogofish.jadt.ast.RefType.ClassType;
 import com.pogofish.jadt.ast.Type.Primitive;
 import com.pogofish.jadt.ast.Type.Ref;
-import com.pogofish.jadt.printer.Printer;
+import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.target.Target;
 
 
@@ -97,7 +97,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     	logger.finest("Generating constructor method for " + constructor.name);
         for (Arg arg : constructor.args) {
             final String finalName = arg.modifiers.contains(ArgModifier._Final()) ? "final " : "";
-            target.write("      public " + finalName + Printer.print(arg.type) + " " + arg.name + ";\n");
+            target.write("      public " + finalName + ASTPrinter.print(arg.type) + " " + arg.name + ";\n");
         }
         target.write("\n      public " + constructor.name + "("); 
         constructorArgs(target, constructor, true);        
@@ -253,6 +253,6 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
 		
 	}    
 	private String constructorArg(Arg arg, boolean withType) {
-        return withType ? (Printer.print(arg.type) + " " + arg.name) : arg.name;
+        return withType ? (ASTPrinter.print(arg.type) + " " + arg.name) : arg.name;
     }    
 }

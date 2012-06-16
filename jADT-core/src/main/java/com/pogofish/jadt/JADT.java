@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.SemanticError;
 import com.pogofish.jadt.checker.*;
 import com.pogofish.jadt.emitter.*;
 import com.pogofish.jadt.parser.*;
@@ -129,7 +130,7 @@ public class JADT {
         final List<? extends Source> sources = sourceFactory.createSources(srcPath);
         for (Source source : sources) {
             final Doc doc = parser.parse(source);
-            final Set<SemanticException> errors = checker.check(doc);
+            final Set<SemanticError> errors = checker.check(doc);
             if (!errors.isEmpty()) {
                 throw new SemanticExceptions(errors);
             }

@@ -20,7 +20,7 @@ import static com.pogofish.jadt.ast.RefType._ArrayType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
 import static com.pogofish.jadt.ast.Type._Ref;
-import static com.pogofish.jadt.printer.Printer.print;
+import static com.pogofish.jadt.printer.ASTPrinter.print;
 import static com.pogofish.jadt.util.Util.list;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,7 +28,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 
 import com.pogofish.jadt.ast.*;
-import com.pogofish.jadt.printer.Printer;
+import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.util.Util;
 
 
@@ -44,7 +44,7 @@ public class PrinterTest {
      */
     @Test
     public void constructorTest() {
-        final Printer printer = new Printer();
+        final ASTPrinter printer = new ASTPrinter();
         assertFalse(printer.toString().isEmpty());
     }
 

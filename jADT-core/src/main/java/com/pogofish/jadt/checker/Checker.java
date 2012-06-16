@@ -18,6 +18,7 @@ package com.pogofish.jadt.checker;
 import java.util.Set;
 
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.SemanticError;
 
 
 /**
@@ -31,8 +32,8 @@ public interface Checker {
      * Checks for semantic errors in a document
      * 
      * @param doc
-     * @return A set of SemanticExceptions - empty set if none
+     * @return A set of SemanticErrors - empty set if none
      */
-    public Set<SemanticException> check(Doc doc);
+    public Set<SemanticError> check(Doc doc);
 
 }

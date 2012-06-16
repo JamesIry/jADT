@@ -17,8 +17,8 @@ package com.pogofish.jadt;
 
 import java.util.Set;
 
-import com.pogofish.jadt.checker.SemanticException;
-import com.pogofish.jadt.util.Util;
+import com.pogofish.jadt.ast.SemanticError;
+import com.pogofish.jadt.printer.SemanticErrorPrinter;
 
 
 /**
@@ -30,8 +30,17 @@ public class SemanticExceptions extends RuntimeException {
 
 	private static final long serialVersionUID = 799507299528324679L;
 
-	public SemanticExceptions(Set<SemanticException> errors) {
-        super(Util.makeString(errors, "\n\n "));
+	public SemanticExceptions(Set<SemanticError> errors) {
+        super(makeString(errors));
     }
+	
+	private static final String makeString(Set<SemanticError> errors) {
+	    final StringBuilder builder = new StringBuilder();
+	    for (SemanticError error : errors) {
+	        builder.append(SemanticErrorPrinter.print(error));
+	        builder.append("\n\n");
+	    }
+	    return builder.toString();
+	}
 
 }

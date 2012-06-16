@@ -46,23 +46,6 @@ public class Util {
         }
         return set;
     }
-
-    /**
-     * Makes a string by concetenating the toString of objects together separated by the separator
-     */
-    public static String makeString(Iterable<?> objects, String separator) {
-        final StringBuilder builder = new StringBuilder();
-        boolean first = true;
-        for (Object object : objects) {
-            if (first) {
-                first = false;
-            } else {
-                builder.append(separator);
-            }
-            builder.append(object);
-        }
-        return builder.toString();
-    }
     
     /**
      * Create a temporary directory and return it - Java 6 JDK doesn't have this functionality

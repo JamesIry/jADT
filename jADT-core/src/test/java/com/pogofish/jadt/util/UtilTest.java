@@ -62,20 +62,4 @@ public class UtilTest {
         set.add("world");
         assertEquals(set, Util.set("hello", "world"));
     }
-    
-    /**
-     * Does makeString make a String?
-     */
-    @Test
-    public void testMakeString() {
-        final List<String> list = new ArrayList<String>();
-        assertEquals("", Util.makeString(list, ", "));
-        list.add("hello");
-        assertEquals("hello", Util.makeString(list, ", "));
-        list.add("world");
-        assertEquals("hello, world", Util.makeString(list, ", "));
-        list.add("goodbye");
-        assertEquals("hello, world, goodbye", Util.makeString(list, ", "));
-    }
-    
 }

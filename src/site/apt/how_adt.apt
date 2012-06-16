@@ -40,7 +40,7 @@ Matching on an ADT
 
     Most statically typed functional programming languages have a pattern matching for making decisions based on ADTs.  Java doesn't.  So with jADT you have a couple of choices, you can use instanceof and casting or preferably you can use the {{{./visitor_variations.html}visitor interfaces}} that jADT generates.  
 
-    Here's using a MatchBlock style to find the max of an IntBinaryTree where null indicates an empty tree.
+    Here's using a MatchBlock style Visitor to find the max of an IntBinaryTree where null indicates an empty tree.
 
 %{snippet|verbatim=true|file=jADT-samples/src/main/java/com/pogofish/jadt/samples/whathow/IntBinaryTreeUsage.java|id=max}    
     

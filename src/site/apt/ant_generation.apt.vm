@@ -14,11 +14,10 @@ Then create a taskdef and task like in the following sample build.xml.
            jADT-core-${projectVersion}.jar and jADT-ant-${projectVersion}.jar -->
       <property name="jadt.classpath">${basedir}/lib</property>
 
-      <!-- jadt.srcPath is the full path of a directory with .jadt files, or
+      <!-- jadt.srcPath is the full path of a directory with .jadt files or
            the path to a single file -->
       <property name="jadt.srcPath">${basedir}/src/main/jadt/</property>
       <!-- or <property name="jadt.srcPath">${basedir}/src/main/jadt/MyStuff.jadt</property> -->
-
 
       <!-- jadt.destDir is the full path of a directory where jADT will produce its java output -->
       <property name="jadt.destDir">${basedir}/target/generated-sources/jadt</property>

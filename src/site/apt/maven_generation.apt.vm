@@ -16,12 +16,11 @@ Generating Java from Apache Maven
                 <version>${projectVersion}</version>
                 <configuration>
                 
-                  <!-- optional, defaults to src/main/jadt.
-                       Either a directory with .jadt files or
-                       the path to a single file -->
+                  <!-- Either a directory with .jadt files or the path
+                       to a single file. Optional, defaults to src/main/jadt. -->
                   <!-- <srcFile>src/main/jadt/MyStuff.jadt</srcFile> -->
                   
-                  <!-- optional, defaults to target/generated-sources/jadt -->
+                  <!-- Optional, defaults to target/generated-sources/jadt -->
                   <!-- <destDir>target/generated-sources/myjadtstuff</destDir> -->
                   
                 </configuration>

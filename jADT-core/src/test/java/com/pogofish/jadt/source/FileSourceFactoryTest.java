@@ -20,6 +20,8 @@ import static org.junit.Assert.fail;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.Test;
@@ -36,6 +38,18 @@ import com.pogofish.jadt.util.Util;
  * @author jiry
  */
 public class FileSourceFactoryTest {
+    /**
+     * A comparator that gives a predictable sort on sources based on their name
+     * 
+     * @author jiry
+     */
+    private static final class SourceComparator implements Comparator<Source> {
+        @Override
+        public int compare(Source source1, Source source2) {
+            return source1.getSrcInfo().compareTo(source2.getSrcInfo());
+        }
+    }
+
     /**
      * On a valid file should get the data from the file.  This test must write to the file system
      * @throws IOException
@@ -108,6 +122,9 @@ public class FileSourceFactoryTest {
                 final SourceFactory factory = new FileSourceFactory();
                 final List<? extends Source> sources = factory.createSources(tempDir.getAbsolutePath());
                 assertEquals(5, sources.size());
+                
+                // sort them so that we look at them in 0...4 order
+                Collections.sort(sources, new SourceComparator());
                 
                 for (int i=0; i<5; i++) {
                     checkSource(i, tempDir, sources.get(i));

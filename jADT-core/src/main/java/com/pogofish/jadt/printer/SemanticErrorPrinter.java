@@ -32,27 +32,27 @@ public class SemanticErrorPrinter {
         return error.match(new SemanticError.MatchBlock<String>() {
             @Override
             public String _case(DuplicateDataType x) {
-                return "Cannot have two datatypes named " + x.dataTypeName;
+                return "Cannot have two datatypes named " + x.dataTypeName + " in one jADT document.";
             }
 
             @Override
             public String _case(ConstructorDataTypeConflict x) {
-                return "Data type " + x.dataTypeName + " cannot have a constructor with the name " + x.dataTypeName +".  Only single constructor data types may have constructors with the same name";
+                return "Data type " + x.dataTypeName + " cannot have a constructor with the name " + x.dataTypeName +".  Only single constructor data types may have constructors with the same name.";
            }
 
             @Override
             public String _case(DuplicateConstructor x) {
-                return "Data type " + x.dataTypeName + " cannot have two constructors named " + x.constructorName + ".";
+                return "Data type " + x.dataTypeName + " cannot have multiple constructors named " + x.constructorName + ".";
            }
 
             @Override
             public String _case(DuplicateArgName x) {
-                return "Data type " + x.dataTypeName + " constructor " + x.constructorName + " has duplicated arg name " + x.argName;
+                return "Duplicated arg name " + x.argName + " in constructor " + x.constructorName + " of data type " + x.dataTypeName + ".";
             }
 
             @Override
             public String _case(DuplicateModifier x) {
-                return "Data type " + x.dataTypeName + " constructor " + x.constructorName + " has duplicated arg name " + x.argName + " has modifier '" + x.modifier + "' more than once.";
+                return "Duplicated modifier " + x.modifier +" on arg name " + x.argName + " in constructor " + x.constructorName + " of data type " + x.dataTypeName + ".";
             }
         });
     }

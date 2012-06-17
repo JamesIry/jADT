@@ -33,11 +33,11 @@ import com.pogofish.jadt.util.Util;
 
 
 /**
- * Test the pretty Printer.  Does not prove that the output is in fact pretty.
+ * Test the pretty ASTPrinter.  Does not prove that the output is in fact pretty.
  *
  * @author jiry
  */
-public class PrinterTest {
+public class ASTPrinterTest {
     /**
      * Cobertura isn't happy unless the (implicit) constructor is called. This
      * stupid test does exactly that

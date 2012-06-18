@@ -15,16 +15,13 @@ limitations under the License.
 */
 package com.pogofish.jadt;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.ParseResult;
-import com.pogofish.jadt.ast.ParseResult.Errors;
-import com.pogofish.jadt.ast.ParseResult.Success;
 import com.pogofish.jadt.ast.SemanticError;
 import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.ast.UserError;
@@ -48,7 +45,6 @@ import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.source.SourceFactory;
 import com.pogofish.jadt.source.StringSourceFactory;
 import com.pogofish.jadt.target.FileTargetFactoryFactory;
-import com.pogofish.jadt.target.TargetFactory;
 import com.pogofish.jadt.target.TargetFactoryFactory;
 import com.pogofish.jadt.util.Util;
 
@@ -152,33 +148,20 @@ public class JADT {
    	
         final List<? extends Source> sources = sourceFactory.createSources(srcPath);
         for (Source source : sources) {
-            final Set<UserError> errors = new LinkedHashSet<UserError>();
+            final List<UserError> errors = new ArrayList<UserError>();
+                 
             final ParseResult result = parser.parse(source);
-            result._switch(new ParseResult.SwitchBlock() {
-                @Override
-                public void _case(Success x) {
-                    final Doc doc = x.doc;
-                    final Set<SemanticError> semanticErrors = checker.check(doc);
-                    for (SemanticError error : semanticErrors) {
-                        errors.add(UserError._Semantic(error));
-                    }
-                    if (errors.isEmpty()) {
-                        final TargetFactory targetFactory = factoryFactory.createTargetFactory(destDir);
-                        emitter.emit(targetFactory, doc);
-                    }                   
-                }
-
-                @Override
-                public void _case(Errors x) {
-                    for (SyntaxError error : x.errors) {
-                        errors.add(UserError._Syntactic(error));
-                    }                    
-                }                
-            });
+            for (SyntaxError error : result.errors) {
+                errors.add(UserError._Syntactic(error));
+            }               
+            final List<SemanticError> semanticErrors = checker.check(result.doc);
+            for (SemanticError error : semanticErrors) {
+                errors.add(UserError._Semantic(error));
+            }            
             if (!errors.isEmpty()) {
                 throw new JADTUserErrorsException(errors);
             }
-
+            emitter.emit(factoryFactory.createTargetFactory(destDir), result.doc);
         }
     }
 
@@ -186,10 +169,10 @@ public class JADT {
      * Create a dummy configged jADT based on the provided syntaxErrors, semanticErrors, testSrcInfo, and target factory
      * Useful for testing
      */
-    public static JADT createDummyJADT(Set<SyntaxError> syntaxErrors, Set<SemanticError> semanticErrors, String testSrcInfo, TargetFactoryFactory factory) {
+    public static JADT createDummyJADT(List<SyntaxError> syntaxErrors, List<SemanticError> semanticErrors, String testSrcInfo, TargetFactoryFactory factory) {
         final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);
         final Doc doc = new Doc(TEST_SRC_INFO, "pkg", Util.<String> list(), Util.<DataType> list());
-        final ParseResult parseResult = syntaxErrors.isEmpty() ? ParseResult._Success(doc) : ParseResult._Errors(syntaxErrors);
+        final ParseResult parseResult = new ParseResult(doc, syntaxErrors);
         final DocEmitter docEmitter = new DummyDocEmitter(doc,  TEST_CLASS_NAME);
         final Parser parser = new DummyParser(parseResult, testSrcInfo, TEST_STRING);
         final Checker checker = new DummyChecker(semanticErrors);

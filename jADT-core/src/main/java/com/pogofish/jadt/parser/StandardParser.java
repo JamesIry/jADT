@@ -26,12 +26,14 @@ import static com.pogofish.jadt.ast.RefType._ArrayType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
 import static com.pogofish.jadt.ast.Type._Ref;
+import static com.pogofish.jadt.util.Util.set;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Arg;
@@ -46,10 +48,10 @@ import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.ast.Type;
 import com.pogofish.jadt.ast.Type.Primitive;
 import com.pogofish.jadt.ast.Type.Ref;
+import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.util.IOExceptionAction;
 import com.pogofish.jadt.util.Util;
-
 
 /**
  * The standard parse for jADT description files
@@ -70,9 +72,8 @@ public class StandardParser implements Parser {
     	try {
             final Tokenizer tokenizer = new Tokenizer(source.getSrcInfo(), reader);
             final Impl impl = new Impl(tokenizer);
-            return ParseResult._Success(impl.doc());
-    	} catch (SyntaxException e) {
-    	    return ParseResult._Errors(Collections.singleton(e.error));
+            final Doc doc = impl.doc();
+            return new ParseResult(doc, impl.errors);
     	} finally {
     	    new IOExceptionAction<Void>() {
                 @Override
@@ -95,7 +96,30 @@ public class StandardParser implements Parser {
          */
         private final Tokenizer tokenizer;
         
+        /**
+         * Whether the parser is currently recovering from an error. If true, new errors
+         * will not be added to the errors list 
+         */
+        private boolean recovering = false;
+        
+        /**
+         * Errors found during parse
+         */
+        List<SyntaxError> errors = new ArrayList<SyntaxError>();
+        
+        /**
+         * Unique id generator to try to prevent creating duplicate names when tokens are injected
+         */
+        private int _nextId = 0;
+        
 
+        /**
+         * Unique id generator to try to prevent creating duplicate names when tokens are injected
+         */
+        private String nextId() {
+            return "@" + (++_nextId);
+        }
+        
         /**
          * Creates a Parser.Impl that will parse the given tokenizer using the srcInfo for error reporting
          * 
@@ -104,6 +128,49 @@ public class StandardParser implements Parser {
          */
         public Impl(Tokenizer tokenizer) {
             this.tokenizer = tokenizer;
+        }
+        
+        /**
+         * Peeks at the next available token without removing it, returning true if it's in the given set
+         * 
+         * @return
+         */
+        private boolean peek(Set<TokenType> expected) {
+            final TokenType token = tokenizer.getTokenType();
+            tokenizer.pushBack();
+            return expected.contains(token);
+        }
+        
+        /**
+         * Peeks at the next available token without removing, returning true if it's in the set of punctuation tokens
+         * @return
+         */
+        private boolean peekPunctuation() {
+            return peek(tokenizer.punctuation);
+        }
+
+        /**
+         * If the next token type is the expected token type then it is consumed and true is returned
+         * otherwise false is returned and the token is not consumed
+         * @param expected
+         */
+        private boolean accept(TokenType expected) {
+            final TokenType token = tokenizer.getTokenType();
+            if (token.equals(expected)) {
+                recovering = false;
+                return true;
+            } else {
+                tokenizer.pushBack();
+                return false;
+            }
+        }
+        
+        /**
+         * Consume any token type and return the symbol.  Used during error recovery
+         */
+        private String consumeAnything() {
+            tokenizer.getTokenType();
+            return tokenizer.lastSymbol();
         }
 
         /**
@@ -124,7 +191,7 @@ public class StandardParser implements Parser {
          */
         public String pkg() {
         	logger.finer("Parsing package");
-            if (tokenizer.accept(TokenType.PACKAGE)) {
+            if (accept(TokenType.PACKAGE)) {
                 final String name = packageName();
                 logger.finer("package " + name);
                 return name;
@@ -140,12 +207,20 @@ public class StandardParser implements Parser {
          * @return String the package name
          */
         private String packageName() {
-            if (tokenizer.accept(TokenType.IDENTIFIER)) {
+            if (accept(TokenType.IDENTIFIER)) {
                 return tokenizer.lastSymbol();
-            } else if (tokenizer.accept(TokenType.DOTTED_IDENTIFIER)) {
+            } else if (accept(TokenType.DOTTED_IDENTIFIER)) {
                 return tokenizer.lastSymbol();
             } else {
-                throw syntaxException("a package name");
+                error("a package name");
+                if (peek(set(TokenType.IMPORT, TokenType.PACKAGE, TokenType.EOF))) {
+                    // if the token was import or package then assume they just forgot the package name
+                    // and move on
+                    return "NO_PACKAGE_NAME" + nextId();                    
+                } else {
+                    // otherwise assume that they used a keyword as a package name.  Consume it and move on
+                    return "BAD_PACKAGE_NAME_" + consumeAnything() + nextId();
+                }
             }
         }
         
@@ -158,7 +233,7 @@ public class StandardParser implements Parser {
         	logger.finer("Parsing imports");
             final List<String> imports = new ArrayList<String>();
             
-            while (tokenizer.accept(TokenType.IMPORT)) {
+            while (accept(TokenType.IMPORT)) {
             	final String name = packageName();
             	logger.finer("import " + name);
                 imports.add(name);
@@ -178,7 +253,7 @@ public class StandardParser implements Parser {
 
             dataTypes.add(dataType());
             
-            while (!tokenizer.accept(TokenType.EOF)) {
+            while (!accept(TokenType.EOF)) {
                 dataTypes.add(dataType());
             }
             return Collections.unmodifiableList(dataTypes);
@@ -191,12 +266,27 @@ public class StandardParser implements Parser {
          */
         public DataType dataType() {
         	logger.finer("Parsing datatype");
-            if (!tokenizer.accept(TokenType.IDENTIFIER)) { throw syntaxException("a data type name"); }
-            final String name = tokenizer.lastSymbol();
+        	final String name;
+        	if (accept(TokenType.IDENTIFIER)) {
+        	    name = tokenizer.lastSymbol();
+        	} else {
+                error("a data type name");               
+        	    if (peekPunctuation()) {
+        	        // if the token was punctuation then they just forgot a name, make one up and move on
+                    name = "NO_DATA_TYPE_NAME" + nextId();        	        
+        	    } else {
+        	        // otherwise let's consume the token as if it was the name and try to move on
+        	        name = "BAD_DATA_TYPE_NAME_" + consumeAnything() + nextId();
+        	    }
+        	}
+
             logger.finer("datatype " + name );
             final List<String> typeArguments = typeArguments();
 
-            if (!tokenizer.accept(TokenType.EQUALS)) { throw syntaxException("'='"); }
+            if (!accept(TokenType.EQUALS)) {
+                // with no equals we'll pretend it was there and try to move on
+                error("'='");
+            }
 
             return new DataType(name, typeArguments, constructors());
         }
@@ -210,13 +300,27 @@ public class StandardParser implements Parser {
             logger.finest("parsing type arguments");
             final List<String> typeArguments = new ArrayList<String>();
         	
-            if(tokenizer.accept(TokenType.LANGLE)) {
+            if(accept(TokenType.LANGLE)) {
             	typeArguments.add(typeArgument());
-	            while (tokenizer.accept(TokenType.COMMA)) {
+	            while (accept(TokenType.COMMA)) {
 	            	typeArguments.add(typeArgument());
 	            }
-	            if (!tokenizer.accept(TokenType.RANGLE)) {
-	            	throw syntaxException("'>'");
+	            boolean done = false;
+	            while (!done) {	                
+    	            if (accept(TokenType.RANGLE)) {
+    	            	done = true;
+    	            } else {
+                        error("'>'");
+                        if (peekPunctuation()) {
+                            // just forget the >, move on, leaving the equals to be found later
+                            done = true;
+    
+                        } else {
+                            // probably just missing a comma, consume whatever you have, add it to the list,
+                            // and keep looking for the >
+                            typeArguments.add(typeArgument());
+                        }
+    	            }
 	            }
             } else {
             	logger.finest("no type arguments");
@@ -228,12 +332,20 @@ public class StandardParser implements Parser {
          * A required type argument which is just any identifier
          */
         public String typeArgument() {
-            if (!tokenizer.accept(TokenType.IDENTIFIER)) {
-            	throw syntaxException("a type parameter");
+            if (accept(TokenType.IDENTIFIER)) {
+                final String name = tokenizer.lastSymbol();
+                logger.finest("type argument " + name);
+                return tokenizer.lastSymbol();  
+            } else {
+                error("a type parameter");
+                if (peekPunctuation()) {
+                    // missing a name, leave the punctuation for later
+                    return "NO_TYPE_ARGUMENT" + nextId();
+                } else {
+                    // consume whatever you have and pretend it's a type argument
+                    return "BAD_TYPE_ARGUMENT_" + consumeAnything() + nextId();
+                }                
             }
-            final String name = tokenizer.lastSymbol();
-            logger.finest("type argument " + name);
-            return tokenizer.lastSymbol();        	
         }
 
         /**
@@ -245,46 +357,69 @@ public class StandardParser implements Parser {
         	logger.finer("parsing constructors");
             final List<Constructor> constructors = new ArrayList<Constructor>();
             constructors.add(constructor());
-            while (tokenizer.accept(TokenType.BAR)) {
+            while (accept(TokenType.BAR)) {
                 constructors.add(constructor());
             }
             return Collections.unmodifiableList(constructors);
         }
 
         /**
-         * Parses a required constructor which is constructorName ( "(" args ")" )?
+         * Parses a required constructor which is constructorName args
          * 
          * @return Constructor
          */
         public Constructor constructor() {
         	logger.finer("parsing constructor");
-            if (!tokenizer.accept(TokenType.IDENTIFIER)) { throw syntaxException("a constructor name"); }
-            final String name = tokenizer.lastSymbol();
-            logger.finer("constructor " + name);
-            if (tokenizer.accept(TokenType.LPAREN)) {
-                final List<Arg> args = args();
-                if (!tokenizer.accept(TokenType.RPAREN)) {
-                    throw syntaxException("')'");
-                } else {
-                    return new Constructor(name, args);
-                }
+        	final String name;
+        	
+            if (accept(TokenType.IDENTIFIER)) {
+                name = tokenizer.lastSymbol();
             } else {
-                return new Constructor(name, Collections.<Arg> emptyList());
+                error("a constructor name");
+                if (peekPunctuation()) {
+                    // we're proably missing a constructor name.  Leave the punctuatino somebody else
+                    name = "NO_CONSTRUCTOR_NAME" + nextId();
+                } else {
+                    // otherwise consume whatever we have as the name
+                    name = "BAD_CONSTRUCTOR_NAME_" + consumeAnything() + nextId(); 
+                }
             }
+            
+            logger.finer("constructor " + name);
+            return new Constructor(name, args());
         }
 
         /** 
-         * Parses a required list of constructor args which is arg ("," arg)*
+         * Parses an optional list of constructor args which is ("(" arg ("," arg)* ")")?
          * 
          * @return List<Arg> non-empty list of args
          */
         public List<Arg> args() {
-        	logger.finest("parsing args");
             final List<Arg> args = new ArrayList<Arg>();
-            args.add(arg());
-            while (tokenizer.accept(TokenType.COMMA)) {
+            if (accept(TokenType.LPAREN)) {
+                logger.finest("parsing args");
                 args.add(arg());
-            }
+                while (accept(TokenType.COMMA)) {
+                    args.add(arg());
+                }
+                boolean done = false;
+                while (!done) {
+                    if (accept(TokenType.RPAREN)) {
+                        done = true;
+                    } else {
+                        error("')'");
+                        if (peekPunctuation()) {
+                            // probably just forgot a closing paren, we're done, leave the punctuation for somebody else
+                            done = true;
+                        } else {
+                            // probably just missing a comma, consume whatever you have, add it to the list,
+                            // and keep looking for the >
+                            args.add(arg());
+                        }
+
+                    }
+                }
+            }           
             return Collections.unmodifiableList(args);
         }
 
@@ -297,18 +432,26 @@ public class StandardParser implements Parser {
             final List<ArgModifier> modifiers = argModifiers();
             
             final Type type = type();            
-            
-            if (!tokenizer.accept(TokenType.IDENTIFIER)) {
-                throw syntaxException("an argument name");
-            } else {
-                final String name = tokenizer.lastSymbol();
+
+            final String name;
+            if (accept(TokenType.IDENTIFIER)) {
+                name = tokenizer.lastSymbol();
                 logger.finest("arg " + name);
-                return new Arg(modifiers, type, name);
+            } else {             
+                error("an argument name");
+                if (peekPunctuation()) {
+                    // Probably just missing a name.  Leave the token for somebody else
+                    name = "NO_ARG_NAME" + nextId();
+                } else {
+                    // it's not a good name but is used as one, consume it
+                    name = "BAD_ARG_NAME_" + consumeAnything() + nextId();
+                }
             }
+            return new Arg(modifiers, type, name);
         }
 
         /**
-         * Parses a possibily empty list of arg modifiers
+         * Parses a possibly empty list of arg modifiers
          */
         public List<ArgModifier> argModifiers() {
             final List<ArgModifier> modifiers = Util.<ArgModifier>list();
@@ -328,7 +471,7 @@ public class StandardParser implements Parser {
          * Parses one optional arg modifier or null if there isn't one
          */
         public ArgModifier argModifier() {
-            if (tokenizer.accept(TokenType.FINAL)) {
+            if (accept(TokenType.FINAL)) {
                 return ArgModifier._Final();
             }
             return null;
@@ -349,7 +492,11 @@ public class StandardParser implements Parser {
 
                 @Override
                 public RefType _case(Primitive x) {
-                    throw syntaxException("an array or class type");
+                    final String primitiveName = ASTPrinter.print(x);
+                    error ("an array or class type", primitiveName);
+                    // we got a primitive when we expected an array or class, so make up a class
+                    return _ClassType("BAD_CLASS_" + primitiveName + nextId(), Util.<RefType>list());
+
                 }});
         }
         
@@ -371,12 +518,12 @@ public class StandardParser implements Parser {
          * @return either the original held type or that type wrapped in ArrayType
          */
         public Type array(Type heldType) {
-            if (tokenizer.accept(TokenType.LBRACKET)) {
-                if (tokenizer.accept(TokenType.RBRACKET)) {
-                    return array(_Ref(_ArrayType(heldType)));
-                } else {
-                    throw syntaxException("]");
+            if (accept(TokenType.LBRACKET)) {
+                if (!accept(TokenType.RBRACKET)) {
+                    error("']'");
+                    // leave whatever is lying around for somebody else to figure out                    
                 }
+                return array(_Ref(_ArrayType(heldType)));
             }
             return heldType;            
         }
@@ -387,58 +534,96 @@ public class StandardParser implements Parser {
          * @return RefType
          */
         public RefType classType() {
-            if (!tokenizer.accept(TokenType.IDENTIFIER) && (!tokenizer.accept(TokenType.DOTTED_IDENTIFIER))) {
-                throw syntaxException("a type");
-            } else {
-                final String baseName = tokenizer.lastSymbol();
-                final List<RefType> typeArguments = Util.<RefType>list();
-                if (tokenizer.accept(TokenType.LANGLE)) {
+            final String className = className();
+            
+            final List<RefType> typeArguments = Util.<RefType>list();
+            if (accept(TokenType.LANGLE)) {
+                typeArguments.add(refType());
+                while(accept(TokenType.COMMA)) {
                     typeArguments.add(refType());
-                    while(tokenizer.accept(TokenType.COMMA)) {
-                        typeArguments.add(refType());
-                    }
-                    if (!tokenizer.accept(TokenType.RANGLE)) {
-                        throw syntaxException(">");
+                }
+                boolean done = false;
+                while (!done) {
+                    if (accept(TokenType.RANGLE)) {
+                        done = true;
+                    } else {
+                        error("'>'");
+                        if (peekPunctuation()) {
+                            // got punctuation...um...pretend we're done and leave the punctuation for later
+                            done = true;
+                        } else {
+                            // got something else, try to treat it as a refType
+                            typeArguments.add(refType());
+                        }
                     }
                 }
-                return _ClassType(baseName, typeArguments);
             }
+            return _ClassType(className, typeArguments);
+        }
+        
+        /**
+         * Returns a class name which is either an identifier or a dotted identifier
+         */
+        public String className() {
+            if (accept(TokenType.IDENTIFIER) || (accept(TokenType.DOTTED_IDENTIFIER))) {
+                return tokenizer.lastSymbol();
+            } else {
+                error("a class name");
+                if (peekPunctuation()) {
+                    // most punctaion probably just means a missing name.  Leave the punctuation for somebody else
+                    return "NO_CLASS_NAME" + nextId();
+                } else {
+                    // otherwise consume whatever is there as if it were the name
+                    return "BAD_CLASS_NAME_" + consumeAnything() + nextId();
+                }
+            }           
         }
         
         /** 
          * Optionally recognizes and returns any of the primitive types
          * 
-         * @return PrimitiveType or null if the next token isn't a primitve type
+         * @return PrimitiveType or null if the next token isn't a primitive type
          */
         public PrimitiveType primitiveType() {
-            if (tokenizer.accept(TokenType.BOOLEAN)) {
+            if (accept(TokenType.BOOLEAN)) {
                 return(_BooleanType()); 
-            } else if (tokenizer.accept(TokenType.CHAR)) {
+            } else if (accept(TokenType.CHAR)) {
                 return(_CharType()); 
-            } else if (tokenizer.accept(TokenType.SHORT)) {
+            } else if (accept(TokenType.SHORT)) {
                 return(_ShortType()); 
-            } else if (tokenizer.accept(TokenType.INT)) {
+            } else if (accept(TokenType.INT)) {
                 return(_IntType()); 
-            } else if (tokenizer.accept(TokenType.LONG)) {
+            } else if (accept(TokenType.LONG)) {
                 return(_LongType()); 
-            } else if (tokenizer.accept(TokenType.FLOAT)) {
+            } else if (accept(TokenType.FLOAT)) {
                 return(_FloatType()); 
-            } else if (tokenizer.accept(TokenType.DOUBLE)) {
+            } else if (accept(TokenType.DOUBLE)) {
                 return(_DoubleType());
             } else {
                 return null;
             }            
         }
-        
+
         /**
-         * Generates (but does not throw) a new syntax exception with source and line number information
+         * If not currently recovering, adds an error to the errors list and sets recovering to true.
+         * Actual is assumed to be the last symbol from the tokenizer.
 
          * @param expected the kind of thing expected
-         * @return A SyntaxException with information about where the problem occurred, what was expected, and what was found
          */
-        private SyntaxException syntaxException(String expected) {
-            return new SyntaxException(SyntaxError._UnexpectedToken(expected, tokenizer.lastSymbol(), tokenizer.lineno()));
+        private void error(String expected) {
+            error(expected, tokenizer.lastSymbol());
         }
         
+        /**
+         * If not currently recovering, adds an error to the errors list and sets recovering to true
+         * @param expected the kind of thing expected
+         */
+        private void error(String expected, String actual) {
+            if (!recovering) {
+                final String outputString = "<EOF>".equals(actual) ? actual : "'" + actual + "'";
+                errors.add(SyntaxError._UnexpectedToken(expected, outputString, tokenizer.lineno()));
+                recovering = true;
+            }
+        }
     }
 }

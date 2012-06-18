@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.checker;
 
-import java.util.Set;
+import java.util.List;
 
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.SemanticError;
@@ -34,6 +34,6 @@ public interface Checker {
      * @param doc
      * @return A set of SemanticErrors - empty set if none
      */
-    public Set<SemanticError> check(Doc doc);
+    public List<SemanticError> check(Doc doc);
 
 }

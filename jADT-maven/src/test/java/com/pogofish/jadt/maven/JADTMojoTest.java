@@ -32,7 +32,7 @@ public class JADTMojoTest {
   
         final JADTMojo mojo = new JADTMojo();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        mojo.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptySet(), Collections.<SemanticError>emptySet(), srcFile.getCanonicalPath(), factory);
+        mojo.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptyList(), Collections.<SemanticError>emptyList(), srcFile.getCanonicalPath(), factory);
         
         mojo.setSrcPath(srcFile);
         mojo.setDestDir(destDir);
@@ -55,7 +55,7 @@ public class JADTMojoTest {
         
         final JADTMojo mojo = new JADTMojo();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        mojo.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptySet(), Collections.<SemanticError>singleton(SemanticError._DuplicateConstructor("whatever", "something")), srcFile.getCanonicalPath(), factory);
+        mojo.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptyList(), Collections.<SemanticError>singletonList(SemanticError._DuplicateConstructor("whatever", "something")), srcFile.getCanonicalPath(), factory);
         
         mojo.setSrcPath(srcFile);
         mojo.setDestDir(destDir);

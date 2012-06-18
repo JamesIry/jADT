@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt;
 
-import java.util.Set;
+import java.util.List;
 
 import com.pogofish.jadt.ast.UserError;
 import com.pogofish.jadt.printer.UserErrorPrinter;
@@ -31,14 +31,14 @@ public class JADTUserErrorsException extends RuntimeException {
 
 	private static final long serialVersionUID = 799507299528324679L;
 	
-	private final Set<UserError> errors;
+	private final List<UserError> errors;
 
-	public JADTUserErrorsException(Set<UserError> errors) {
+	public JADTUserErrorsException(List<UserError> errors) {
         super(makeString(errors));
         this.errors = errors;
     }
 	
-	private static final String makeString(Set<UserError> errors) {
+	private static final String makeString(List<UserError> errors) {
 	    final StringBuilder builder = new StringBuilder();
 	    for (UserError error : errors) {
 	        builder.append(UserErrorPrinter.print(error));
@@ -50,7 +50,7 @@ public class JADTUserErrorsException extends RuntimeException {
 	/**
 	 * Return the list of errors in this exception
 	 */
-	public Set<UserError> getErrors() {
+	public List<UserError> getErrors() {
 	    return errors;
 	}
 

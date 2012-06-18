@@ -10,11 +10,9 @@ The source was parsed as:
 package com.pogofish.jadt.ast
 
 import java.util.List
-import java.util.Set
 
 ParseResult =
-    Success(Doc doc)
-  | Errors(Set<SyntaxError> errors)
+    ParseResult(Doc doc, List<SyntaxError> errors)
 Doc =
     Doc(final String srcInfo, final String pkg, final List<String> imports, final List<DataType> dataTypes)
 DataType =

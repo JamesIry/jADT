@@ -20,7 +20,9 @@ import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -123,6 +125,11 @@ class Tokenizer {
      * The last symbol recognized
      */
     private String symbol = null;
+    
+    /**
+     * Set of all punctuation symbols, useful for syntax error recovery
+     */
+    final Set<TokenType> punctuation;
 
     /**
      * Constructs a Tokenizer that will tokenize the specified Reader
@@ -130,19 +137,30 @@ class Tokenizer {
      * @param reader the reader with the jADT source to be tokenized
      */
     public Tokenizer(String srcInfo, Reader reader) {
+        Set<TokenType> punctuation = new HashSet<TokenType>();
+        
         this.srcInfo = srcInfo;
         tokenizer = new StreamTokenizer(reader);
         tokenizer.resetSyntax();
         tokenizer.wordChars(0, Integer.MAX_VALUE);
         tokenizer.ordinaryChar('<');
+        punctuation.add(TokenType.LANGLE);
         tokenizer.ordinaryChar('>');
+        punctuation.add(TokenType.RANGLE);
         tokenizer.ordinaryChar('=');
+        punctuation.add(TokenType.EQUALS);
         tokenizer.ordinaryChar('(');
+        punctuation.add(TokenType.LPAREN);
         tokenizer.ordinaryChar(')');
+        punctuation.add(TokenType.RPAREN);
         tokenizer.ordinaryChar(',');
+        punctuation.add(TokenType.COMMA);
         tokenizer.ordinaryChar('|');
+        punctuation.add(TokenType.BAR);
         tokenizer.ordinaryChar('[');
+        punctuation.add(TokenType.LBRACKET);
         tokenizer.ordinaryChar(']');
+        punctuation.add(TokenType.RBRACKET);
         tokenizer.whitespaceChars(' ', ' ');
         tokenizer.whitespaceChars('\t', '\t');
         tokenizer.whitespaceChars('\n', '\n');
@@ -152,6 +170,9 @@ class Tokenizer {
         tokenizer.ordinaryChar('*');
         tokenizer.slashSlashComments(true);
         tokenizer.slashStarComments(true);
+        
+        punctuation.add(TokenType.EOF);
+        this.punctuation = Collections.unmodifiableSet(punctuation);
     }
 
     /**
@@ -159,7 +180,7 @@ class Tokenizer {
      * 
      * @return a Token
      */
-    private TokenType getTokenType() {
+    TokenType getTokenType() {
         final int tokenType;
         try {
             tokenType = tokenizer.nextToken();
@@ -219,31 +240,7 @@ class Tokenizer {
         }
     }
     
-    /**
-     * Peeks at the next available token without removing it
-     * 
-     * @return
-     */
-    public TokenType peek() {
-        final TokenType tokenType = getTokenType();
-        tokenizer.pushBack();
-        return tokenType;
-    }
 
-    /**
-     * If the next token type i
-     * @param expected
-     * @return
-     */
-    public boolean accept(TokenType expected) {
-        final TokenType token = getTokenType();
-        if (token.equals(expected)) {
-            return true;
-        } else {
-            tokenizer.pushBack();
-            return false;
-        }
-    }
     
     /**
      * Returns the last symbol recognized by this Tokenizer
@@ -269,6 +266,13 @@ class Tokenizer {
      */
     public String srcInfo() {
         return srcInfo;
+    }
+
+    /**
+     * Make it so that the last token returned will be the next token returned
+     */
+    public void pushBack() {
+        tokenizer.pushBack();        
     }
 
 }

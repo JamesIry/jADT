@@ -71,7 +71,7 @@ public class TokenizerTest {
 
         try {
             // should throw
-            tokenizer.peek();
+            tokenizer.getTokenType();
             fail("Did not get an exception from tokenizer");
         } catch (RuntimeException e) {
             assertTrue("Got wrong exception " + e, e.getCause() instanceof IOException);
@@ -240,10 +240,11 @@ public class TokenizerTest {
     /**
      * Check that the next tokenType, symbol, and lineNo from the tokenizer are as expected
      */
-    private void check(Tokenizer tokenizer, String symbol, TokenType tokenType, int lineNo) {
-        assertTrue("Expected token type " + tokenType + " with symbol " + symbol + " but got " + tokenizer.peek()
-                + " with symbol " + tokenizer.lastSymbol(), tokenizer.accept(tokenType));
-        assertEquals("Got correct token type " + tokenType + " but got wrong symbol", symbol, tokenizer.lastSymbol());
+    private void check(Tokenizer tokenizer, String symbol, TokenType expectedTokenType, int lineNo) {
+        final TokenType actualTokenType = tokenizer.getTokenType();
+        assertEquals("Expected token type " + expectedTokenType + " with symbol " + symbol + " but got " + actualTokenType
+                + " with symbol " + tokenizer.lastSymbol(), expectedTokenType, actualTokenType);
+        assertEquals("Got correct token type " + expectedTokenType + " but got wrong symbol", symbol, tokenizer.lastSymbol());
         assertEquals("Got correct token type and symbol but wrong line number", lineNo, tokenizer.lineno());
     }
 }

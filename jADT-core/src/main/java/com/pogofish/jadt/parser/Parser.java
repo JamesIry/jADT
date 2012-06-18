@@ -31,7 +31,7 @@ public interface Parser {
      * The project README.md has a BNF style grammar for the parser.
      * 
      * @param source Source to be parsed
-     * @return ParseResult with either a document or a list of syntax errors
+     * @return ParseResult with a document and a list of syntax errors
      * @throws RuntimeException with an IOExceptino if there are any problems reading
      */
     public abstract ParseResult parse(Source source);

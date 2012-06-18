@@ -15,7 +15,9 @@ limitations under the License.
 */
 package com.pogofish.jadt.checker;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -39,9 +41,9 @@ public class StandardChecker implements Checker {
      * @return Set<SemanticError> with the problems or empty set if there are none
      */
     @Override 
-    public Set<SemanticError> check(Doc doc) {
+    public List<SemanticError> check(Doc doc) {
     	logger.fine("Checking semantic constraints in document from " + doc.srcInfo);
-        final Set<SemanticError> errors = new HashSet<SemanticError>();
+        final List<SemanticError> errors = new ArrayList<SemanticError>();
         final Set<String> dataTypeNames = new HashSet<String>();
         for (DataType dataType : doc.dataTypes) {
             if (dataTypeNames.contains(dataType.name)) {
@@ -62,9 +64,9 @@ public class StandardChecker implements Checker {
      * @param dataType DataType to check
      * @return Set<SemanticError> with the problems or empty set if there are none
      */
-    private Set<SemanticError> check(DataType dataType) {
+    private List<SemanticError> check(DataType dataType) {
     	logger.finer("Checking semantic constraints on datatype " + dataType.name);
-        final Set<SemanticError> errors = new HashSet<SemanticError>();
+        final List<SemanticError> errors = new ArrayList<SemanticError>();
         final Set<String> constructorNames = new HashSet<String>();
         for(Constructor constructor : dataType.constructors) {
         	logger.finest("Checking semantic constraints on constructor " + constructor.name + " in datatype " + dataType.name);
@@ -87,9 +89,9 @@ public class StandardChecker implements Checker {
      * Check a constructor to make sure it does not duplicate any args and that no arg duplicates any modifiers
      * 
      */
-    private Set<SemanticError> check(DataType dataType, Constructor constructor) {
+    private List<SemanticError> check(DataType dataType, Constructor constructor) {
         logger.finer("Checking semantic constraints on data type " + dataType.name + ", constructor " + constructor.name);
-        final Set<SemanticError> errors = new HashSet<SemanticError>();
+        final List<SemanticError> errors = new ArrayList<SemanticError>();
         final Set<String> argNames = new HashSet<String>();
         for (Arg arg : constructor.args) {
             if (argNames.contains(arg.name)) {
@@ -106,9 +108,9 @@ public class StandardChecker implements Checker {
     /**
      * Checkt to make sure an arg doesn't have duplicate modifiers
      */
-    private Set<SemanticError> check(DataType dataType, Constructor constructor, Arg arg) {
+    private List<SemanticError> check(DataType dataType, Constructor constructor, Arg arg) {
         logger.finest("Checking semantic constraints on data type " + dataType.name + ", constructor " + constructor.name);
-        final Set<SemanticError> errors = new HashSet<SemanticError>();
+        final List<SemanticError> errors = new ArrayList<SemanticError>();
         final Set<ArgModifier> modifiers = new HashSet<ArgModifier>();
         for (ArgModifier modifier : arg.modifiers) {
             if (modifiers.contains(modifier)) {

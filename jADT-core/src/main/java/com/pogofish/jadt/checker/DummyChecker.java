@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.checker;
 
-import java.util.Set;
+import java.util.List;
 
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.SemanticError;
@@ -28,13 +28,13 @@ import com.pogofish.jadt.ast.SemanticError;
  * @author jiry
  */
 public class DummyChecker implements Checker {
-    private final Set<SemanticError> errors;
+    private final List<SemanticError> errors;
 
     /**
      * 
      * @param errors the SemanticExceptions to be returned by the check method
      */
-    public DummyChecker(Set<SemanticError> errors) {
+    public DummyChecker(List<SemanticError> errors) {
         super();
         this.errors = errors;
     }
@@ -43,7 +43,7 @@ public class DummyChecker implements Checker {
      * returns the set of exceptions specified in the constructor
      */
     @Override
-    public Set<SemanticError> check(Doc doc) {
+    public List<SemanticError> check(Doc doc) {
         return errors;
     }
 }

@@ -4,7 +4,6 @@ Known Limitations
 
     * You can add comments to a jADT file but there's no way to create comments that flow through to the generated Java. {{{https://github.com/JamesIry/jADT/issues/4}[track]}}
     * jADT generates equals, hashCode and toString methods for you. But if you don't like them, or you want an ADT to be Comparable then you're stuck. {{{https://github.com/JamesIry/jADT/issues/29}track}}
-    * If an ADT has multiple constructors, none may the same name as the data type.  It's not clear how to lift that restriction and still make Java happy other than by mangling names and that wouldn't be invisible to the user.  For now, use different names.  E.g. Foo = Foo | Bar should be Foo = FooDef | Bar.
  
     []
     

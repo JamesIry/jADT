@@ -1,0 +1,20 @@
+Constraints
+
+    {{{./syntax.html}\<\< Syntax }} |
+
+    Besides the {{{./syntax.html}context free grammar}}, jADT also enforces the following constraints in order help ensure that ADTs will be usable from Java.
+
+    * If an ADT has multiple constructors, none may the same name as the data type.  That's not a logical constraint, it's just not clear how to lift that restriction and still make Java happy other than by mangling names and that wouldn't be invisible to the user.  For now, use different names.  E.g. Foo = Foo | Bar should be Foo = FooDef | Bar.
+
+    * A jADT document cannot have multiple data types with the same name.
+
+    * A single data type cannot have multiple constructor cases with the same name.
+
+    * A single constructor may not have multiple arguments with the same name.
+
+    * A single argument cannot have multiple copies of the same modifier.
+    
+    []
+
+    {{{./syntax.html}\<\< Syntax }} |
+    

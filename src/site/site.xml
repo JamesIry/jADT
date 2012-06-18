@@ -58,7 +58,8 @@
         </menu>
     
        <menu name="jADT Specification" inherit="top">
-            <item name="jADT syntax" href="syntax.html" collapse="true"/>
+            <item name="Syntax" href="syntax.html" collapse="true"/>
+            <item name="Constraints" href="constraints.html" collapse="true"/>
         </menu>
     
         <menu ref="reports"/>       

@@ -1,6 +1,6 @@
 FAQ: Frequently Anticipated Questions
 
-    {{{./limitations.html}\<\< Known Limitations }} | {{{./syntax.html} jADT Syntax \>\>}}
+    {{{./limitations.html}\<\< Known Limitations }} | {{{./syntax.html} Syntax \>\>}}
 
     Q: Why all the underscores.
 
@@ -22,5 +22,5 @@ methods could be named without the underscores, but if jADT did that and you do 
 
     A: That was a tough call.  I would have preferred to write jADT in Scala since it excels at language processing.  However, I finally landed on using Java because the target audience would be Java users and in open source your contributor pool comes from your user pool. Plus, not using Scala means one less runtime dependency.
 
-    {{{./limitations.html}\<\< Known Limitations }} | {{{./syntax.html} jADT Syntax \>\>}}
+    {{{./limitations.html}\<\< Known Limitations }} | {{{./syntax.html} Syntax \>\>}}
     

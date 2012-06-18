@@ -1,6 +1,6 @@
 package com.pogofish.jadt.ast;
 
-import java.util.List;
+import java.util.Set;
 
 /*
 This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
@@ -52,51 +52,49 @@ SemanticError =
   | DuplicateModifier(String dataTypeName, String constructorName, String argName, String modifier)
 
 */
-public abstract class RefType {
+public abstract class ParseResult {
 
-   private RefType() {
+   private ParseResult() {
    }
 
-   public static final  RefType _ClassType(String baseName, List<RefType> typeArguments) { return new ClassType(baseName, typeArguments); }
-   public static final  RefType _ArrayType(Type heldType) { return new ArrayType(heldType); }
+   public static final  ParseResult _Success(Doc doc) { return new Success(doc); }
+   public static final  ParseResult _Errors(Set<SyntaxError> errors) { return new Errors(errors); }
 
    public static interface MatchBlock<ResultType> {
-      ResultType _case(ClassType x);
-      ResultType _case(ArrayType x);
+      ResultType _case(Success x);
+      ResultType _case(Errors x);
    }
 
    public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType _case(ClassType x) { return _default(x); }
+      public ResultType _case(Success x) { return _default(x); }
 
       @Override
-      public ResultType _case(ArrayType x) { return _default(x); }
+      public ResultType _case(Errors x) { return _default(x); }
 
-      protected abstract ResultType _default(RefType x);
+      protected abstract ResultType _default(ParseResult x);
    }
 
    public static interface SwitchBlock {
-      void _case(ClassType x);
-      void _case(ArrayType x);
+      void _case(Success x);
+      void _case(Errors x);
    }
 
    public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void _case(ClassType x) { _default(x); }
+      public void _case(Success x) { _default(x); }
 
       @Override
-      public void _case(ArrayType x) { _default(x); }
+      public void _case(Errors x) { _default(x); }
 
-      protected abstract void _default(RefType x);
+      protected abstract void _default(ParseResult x);
    }
 
-   public static final class ClassType extends RefType {
-      public final String baseName;
-      public final List<RefType> typeArguments;
+   public static final class Success extends ParseResult {
+      public Doc doc;
 
-      public ClassType(String baseName, List<RefType> typeArguments) {
-         this.baseName = baseName;
-         this.typeArguments = typeArguments;
+      public Success(Doc doc) {
+         this.doc = doc;
       }
 
       @Override
@@ -109,8 +107,7 @@ public abstract class RefType {
       public int hashCode() {
           final int prime = 31;
           int result = 1;
-          result = prime * result + ((baseName == null) ? 0 : baseName.hashCode());
-          result = prime * result + ((typeArguments == null) ? 0 : typeArguments.hashCode());
+          result = prime * result + ((doc == null) ? 0 : doc.hashCode());
           return result;
       }
 
@@ -119,28 +116,25 @@ public abstract class RefType {
          if (this == obj) return true;
          if (obj == null) return false;
          if (getClass() != obj.getClass()) return false;
-         ClassType other = (ClassType)obj;
-         if (baseName == null) {
-            if (other.baseName != null) return false;
-         } else if (!baseName.equals(other.baseName)) return false;
-         if (typeArguments == null) {
-            if (other.typeArguments != null) return false;
-         } else if (!typeArguments.equals(other.typeArguments)) return false;
+         Success other = (Success)obj;
+         if (doc == null) {
+            if (other.doc != null) return false;
+         } else if (!doc.equals(other.doc)) return false;
          return true;
       }
 
       @Override
       public String toString() {
-         return "ClassType(baseName = " + baseName + ", typeArguments = " + typeArguments + ")";
+         return "Success(doc = " + doc + ")";
       }
 
    }
 
-   public static final class ArrayType extends RefType {
-      public final Type heldType;
+   public static final class Errors extends ParseResult {
+      public Set<SyntaxError> errors;
 
-      public ArrayType(Type heldType) {
-         this.heldType = heldType;
+      public Errors(Set<SyntaxError> errors) {
+         this.errors = errors;
       }
 
       @Override
@@ -153,7 +147,7 @@ public abstract class RefType {
       public int hashCode() {
           final int prime = 31;
           int result = 1;
-          result = prime * result + ((heldType == null) ? 0 : heldType.hashCode());
+          result = prime * result + ((errors == null) ? 0 : errors.hashCode());
           return result;
       }
 
@@ -162,16 +156,16 @@ public abstract class RefType {
          if (this == obj) return true;
          if (obj == null) return false;
          if (getClass() != obj.getClass()) return false;
-         ArrayType other = (ArrayType)obj;
-         if (heldType == null) {
-            if (other.heldType != null) return false;
-         } else if (!heldType.equals(other.heldType)) return false;
+         Errors other = (Errors)obj;
+         if (errors == null) {
+            if (other.errors != null) return false;
+         } else if (!errors.equals(other.errors)) return false;
          return true;
       }
 
       @Override
       public String toString() {
-         return "ArrayType(heldType = " + heldType + ")";
+         return "Errors(errors = " + errors + ")";
       }
 
    }

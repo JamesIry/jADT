@@ -1,6 +1,5 @@
 package com.pogofish.jadt.ast;
 
-import java.util.List;
 
 /*
 This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
@@ -52,24 +51,27 @@ SemanticError =
   | DuplicateModifier(String dataTypeName, String constructorName, String argName, String modifier)
 
 */
-public final class Constructor {
+public final class SyntaxError {
 
-   public static final  Constructor _Constructor(String name, List<Arg> args) { return new Constructor(name, args); }
+   public static final  SyntaxError _UnexpectedToken(String expected, String found, int line) { return new SyntaxError(expected, found, line); }
 
-      public final String name;
-      public final List<Arg> args;
+      public String expected;
+      public String found;
+      public int line;
 
-      public Constructor(String name, List<Arg> args) {
-         this.name = name;
-         this.args = args;
+      public SyntaxError(String expected, String found, int line) {
+         this.expected = expected;
+         this.found = found;
+         this.line = line;
       }
 
       @Override
       public int hashCode() {
           final int prime = 31;
           int result = 1;
-          result = prime * result + ((name == null) ? 0 : name.hashCode());
-          result = prime * result + ((args == null) ? 0 : args.hashCode());
+          result = prime * result + ((expected == null) ? 0 : expected.hashCode());
+          result = prime * result + ((found == null) ? 0 : found.hashCode());
+          result = prime * result + line;
           return result;
       }
 
@@ -78,19 +80,20 @@ public final class Constructor {
          if (this == obj) return true;
          if (obj == null) return false;
          if (getClass() != obj.getClass()) return false;
-         Constructor other = (Constructor)obj;
-         if (name == null) {
-            if (other.name != null) return false;
-         } else if (!name.equals(other.name)) return false;
-         if (args == null) {
-            if (other.args != null) return false;
-         } else if (!args.equals(other.args)) return false;
+         SyntaxError other = (SyntaxError)obj;
+         if (expected == null) {
+            if (other.expected != null) return false;
+         } else if (!expected.equals(other.expected)) return false;
+         if (found == null) {
+            if (other.found != null) return false;
+         } else if (!found.equals(other.found)) return false;
+         if (line != other.line) return false;
          return true;
       }
 
       @Override
       public String toString() {
-         return "Constructor(name = " + name + ", args = " + args + ")";
+         return "SyntaxError(expected = " + expected + ", found = " + found + ", line = " + line + ")";
       }
 
 }

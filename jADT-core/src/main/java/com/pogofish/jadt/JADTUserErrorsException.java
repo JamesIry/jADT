@@ -17,30 +17,41 @@ package com.pogofish.jadt;
 
 import java.util.Set;
 
-import com.pogofish.jadt.ast.SemanticError;
-import com.pogofish.jadt.printer.SemanticErrorPrinter;
+import com.pogofish.jadt.ast.UserError;
+import com.pogofish.jadt.printer.UserErrorPrinter;
 
 
 /**
- * Exception thrown when there are one or more semantic exceptions
+ * Exception thrown when there are one or more user errors discovered during processing
+ * of a jADT document
  * 
  * @author jiry
  */
-public class SemanticExceptions extends RuntimeException {
+public class JADTUserErrorsException extends RuntimeException {
 
 	private static final long serialVersionUID = 799507299528324679L;
+	
+	private final Set<UserError> errors;
 
-	public SemanticExceptions(Set<SemanticError> errors) {
+	public JADTUserErrorsException(Set<UserError> errors) {
         super(makeString(errors));
+        this.errors = errors;
     }
 	
-	private static final String makeString(Set<SemanticError> errors) {
+	private static final String makeString(Set<UserError> errors) {
 	    final StringBuilder builder = new StringBuilder();
-	    for (SemanticError error : errors) {
-	        builder.append(SemanticErrorPrinter.print(error));
+	    for (UserError error : errors) {
+	        builder.append(UserErrorPrinter.print(error));
 	        builder.append("\n\n");
 	    }
 	    return builder.toString();
+	}
+	
+	/**
+	 * Return the list of errors in this exception
+	 */
+	public Set<UserError> getErrors() {
+	    return errors;
 	}
 
 }

@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.parser;
 
-import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.source.Source;
 
 
@@ -31,10 +31,9 @@ public interface Parser {
      * The project README.md has a BNF style grammar for the parser.
      * 
      * @param source Source to be parsed
-     * @return a Document
+     * @return ParseResult with either a document or a list of syntax errors
      * @throws RuntimeException with an IOExceptino if there are any problems reading
-     * @throws SyntaxException if there are any problems with the source
      */
-    public abstract Doc parse(Source source);
+    public abstract ParseResult parse(Source source);
 
 }

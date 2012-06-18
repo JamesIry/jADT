@@ -27,8 +27,7 @@ import org.junit.Test;
 
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
-import com.pogofish.jadt.parser.DummyParser;
-import com.pogofish.jadt.parser.Parser;
+import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.source.StringSource;
 
@@ -45,11 +44,11 @@ public class DummyParserTest {
      */
     @Test
     public void testHappy() {
-        final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
+        final ParseResult testResult = ParseResult._Success(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()));
 
-        final Parser parser = new DummyParser(testDoc, "some source", "some string");
-        final Doc resultDoc = parser.parse(new StringSource("some source", "some string"));
-        assertSame(testDoc, resultDoc);
+        final Parser parser = new DummyParser(testResult, "some source", "some string");
+        final ParseResult result = parser.parse(new StringSource("some source", "some string"));
+        assertSame(testResult, result);
     }
     
     /**
@@ -57,12 +56,12 @@ public class DummyParserTest {
      */
     @Test
     public void testWrongSourceString() {
-        final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
+        final ParseResult testResult = ParseResult._Success(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()));
 
-        final Parser parser = new DummyParser(testDoc, "some source", "some string");
+        final Parser parser = new DummyParser(testResult, "some source", "some string");
         try {
-            final Doc resultDoc = parser.parse(new StringSource("some source", "some other string"));
-            fail("did not get exception, got " + resultDoc);
+            final ParseResult result = parser.parse(new StringSource("some source", "some other string"));
+            fail("did not get exception, got " + result);
         } catch (RuntimeException e) {
             // yay
         }
@@ -73,12 +72,12 @@ public class DummyParserTest {
      */
     @Test
     public void testWrongSourceInfo() {
-        final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
+        final ParseResult testResult = ParseResult._Success(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()));
 
-        final Parser parser = new DummyParser(testDoc, "some source", "some string");
+        final Parser parser = new DummyParser(testResult, "some source", "some string");
         try {
-            final Doc resultDoc = parser.parse(new StringSource("some other source", "some string"));
-            fail("did not get exception, got " + resultDoc);
+            final ParseResult result = parser.parse(new StringSource("some other source", "some string"));
+            fail("did not get exception, got " + result);
         } catch (RuntimeException e) {
             // yay
         }
@@ -89,12 +88,12 @@ public class DummyParserTest {
      */
     @Test
     public void testWrongExtraSource() {
-        final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
+        final ParseResult testResult = ParseResult._Success(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()));
 
-        final Parser parser = new DummyParser(testDoc, "some source", "some string");
+        final Parser parser = new DummyParser(testResult, "some source", "some string");
         try {
-            final Doc resultDoc = parser.parse(new StringSource("some source", "some string\nmore string"));
-            fail("did not get exception, got " + resultDoc);
+            final ParseResult result = parser.parse(new StringSource("some source", "some string\nmore string"));
+            fail("did not get exception, got " + result);
         } catch (RuntimeException e) {
             // yay
         }
@@ -105,11 +104,11 @@ public class DummyParserTest {
      */
     @Test
     public void testIOException() {
-        final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
+        final ParseResult testResult = ParseResult._Success(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()));
 
-        final Parser parser = new DummyParser(testDoc, "some source", "some string");
+        final Parser parser = new DummyParser(testResult, "some source", "some string");
         try {
-            final Doc resultDoc = parser.parse(new Source() {
+            final ParseResult resultDoc = parser.parse(new Source() {
 
                 @Override
                 public BufferedReader createReader() {

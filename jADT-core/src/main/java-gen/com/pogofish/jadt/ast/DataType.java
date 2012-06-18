@@ -10,7 +10,11 @@ The source was parsed as:
 package com.pogofish.jadt.ast
 
 import java.util.List
+import java.util.Set
 
+ParseResult =
+    Success(Doc doc)
+  | Errors(Set<SyntaxError> errors)
 Doc =
     Doc(final String srcInfo, final String pkg, final List<String> imports, final List<DataType> dataTypes)
 DataType =
@@ -35,6 +39,11 @@ PrimitiveType =
   | IntType
   | LongType
   | ShortType
+UserError =
+    Semantic(SemanticError error)
+  | Syntactic(SyntaxError error)
+SyntaxError =
+    UnexpectedToken(String expected, String found, int line)
 SemanticError =
     DuplicateDataType(String dataTypeName)
   | ConstructorDataTypeConflict(String dataTypeName)

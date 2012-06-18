@@ -1,6 +1,5 @@
 package com.pogofish.jadt.ast;
 
-import java.util.List;
 
 /*
 This file was generated based on /Users/jiry/workspace/JADT/jADT-core/src/main/jadt/jadt.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
@@ -52,51 +51,49 @@ SemanticError =
   | DuplicateModifier(String dataTypeName, String constructorName, String argName, String modifier)
 
 */
-public abstract class RefType {
+public abstract class UserError {
 
-   private RefType() {
+   private UserError() {
    }
 
-   public static final  RefType _ClassType(String baseName, List<RefType> typeArguments) { return new ClassType(baseName, typeArguments); }
-   public static final  RefType _ArrayType(Type heldType) { return new ArrayType(heldType); }
+   public static final  UserError _Semantic(SemanticError error) { return new Semantic(error); }
+   public static final  UserError _Syntactic(SyntaxError error) { return new Syntactic(error); }
 
    public static interface MatchBlock<ResultType> {
-      ResultType _case(ClassType x);
-      ResultType _case(ArrayType x);
+      ResultType _case(Semantic x);
+      ResultType _case(Syntactic x);
    }
 
    public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType _case(ClassType x) { return _default(x); }
+      public ResultType _case(Semantic x) { return _default(x); }
 
       @Override
-      public ResultType _case(ArrayType x) { return _default(x); }
+      public ResultType _case(Syntactic x) { return _default(x); }
 
-      protected abstract ResultType _default(RefType x);
+      protected abstract ResultType _default(UserError x);
    }
 
    public static interface SwitchBlock {
-      void _case(ClassType x);
-      void _case(ArrayType x);
+      void _case(Semantic x);
+      void _case(Syntactic x);
    }
 
    public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void _case(ClassType x) { _default(x); }
+      public void _case(Semantic x) { _default(x); }
 
       @Override
-      public void _case(ArrayType x) { _default(x); }
+      public void _case(Syntactic x) { _default(x); }
 
-      protected abstract void _default(RefType x);
+      protected abstract void _default(UserError x);
    }
 
-   public static final class ClassType extends RefType {
-      public final String baseName;
-      public final List<RefType> typeArguments;
+   public static final class Semantic extends UserError {
+      public SemanticError error;
 
-      public ClassType(String baseName, List<RefType> typeArguments) {
-         this.baseName = baseName;
-         this.typeArguments = typeArguments;
+      public Semantic(SemanticError error) {
+         this.error = error;
       }
 
       @Override
@@ -109,8 +106,7 @@ public abstract class RefType {
       public int hashCode() {
           final int prime = 31;
           int result = 1;
-          result = prime * result + ((baseName == null) ? 0 : baseName.hashCode());
-          result = prime * result + ((typeArguments == null) ? 0 : typeArguments.hashCode());
+          result = prime * result + ((error == null) ? 0 : error.hashCode());
           return result;
       }
 
@@ -119,28 +115,25 @@ public abstract class RefType {
          if (this == obj) return true;
          if (obj == null) return false;
          if (getClass() != obj.getClass()) return false;
-         ClassType other = (ClassType)obj;
-         if (baseName == null) {
-            if (other.baseName != null) return false;
-         } else if (!baseName.equals(other.baseName)) return false;
-         if (typeArguments == null) {
-            if (other.typeArguments != null) return false;
-         } else if (!typeArguments.equals(other.typeArguments)) return false;
+         Semantic other = (Semantic)obj;
+         if (error == null) {
+            if (other.error != null) return false;
+         } else if (!error.equals(other.error)) return false;
          return true;
       }
 
       @Override
       public String toString() {
-         return "ClassType(baseName = " + baseName + ", typeArguments = " + typeArguments + ")";
+         return "Semantic(error = " + error + ")";
       }
 
    }
 
-   public static final class ArrayType extends RefType {
-      public final Type heldType;
+   public static final class Syntactic extends UserError {
+      public SyntaxError error;
 
-      public ArrayType(Type heldType) {
-         this.heldType = heldType;
+      public Syntactic(SyntaxError error) {
+         this.error = error;
       }
 
       @Override
@@ -153,7 +146,7 @@ public abstract class RefType {
       public int hashCode() {
           final int prime = 31;
           int result = 1;
-          result = prime * result + ((heldType == null) ? 0 : heldType.hashCode());
+          result = prime * result + ((error == null) ? 0 : error.hashCode());
           return result;
       }
 
@@ -162,16 +155,16 @@ public abstract class RefType {
          if (this == obj) return true;
          if (obj == null) return false;
          if (getClass() != obj.getClass()) return false;
-         ArrayType other = (ArrayType)obj;
-         if (heldType == null) {
-            if (other.heldType != null) return false;
-         } else if (!heldType.equals(other.heldType)) return false;
+         Syntactic other = (Syntactic)obj;
+         if (error == null) {
+            if (other.error != null) return false;
+         } else if (!error.equals(other.error)) return false;
          return true;
       }
 
       @Override
       public String toString() {
-         return "ArrayType(heldType = " + heldType + ")";
+         return "Syntactic(error = " + error + ")";
       }
 
    }

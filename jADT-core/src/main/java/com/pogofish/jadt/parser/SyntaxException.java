@@ -15,22 +15,28 @@ limitations under the License.
 */
 package com.pogofish.jadt.parser;
 
+import com.pogofish.jadt.ast.SyntaxError;
+import com.pogofish.jadt.printer.UserErrorPrinter;
+
 /**
  * An exception occuring during the parsing of a jADT description file
  *
  * @author jiry
  */
-public class SyntaxException extends RuntimeException {
+class SyntaxException extends RuntimeException {
 
 	private static final long serialVersionUID = -8863574669612380241L;
+	
+	final SyntaxError error;
 
 	/**
      * Constructor based on a message with the problem
      * 
      * @param msg String explaining what went wrong
      */
-    public SyntaxException(String msg) {
-      super(msg);
+    public SyntaxException(SyntaxError error) {
+      super(UserErrorPrinter.print(error));
+      this.error = error;
     }
 
 }

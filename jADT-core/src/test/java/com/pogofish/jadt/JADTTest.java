@@ -15,25 +15,35 @@ limitations under the License.
 */
 package com.pogofish.jadt;
 
-import static org.junit.Assert.*;
+import static com.pogofish.jadt.ast.SemanticError._ConstructorDataTypeConflict;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateConstructor;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Collections;
+import java.util.Set;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.JADT;
-import com.pogofish.jadt.SemanticExceptions;
 import com.pogofish.jadt.ast.SemanticError;
-import com.pogofish.jadt.checker.*;
+import com.pogofish.jadt.ast.SyntaxError;
+import com.pogofish.jadt.ast.UserError;
+import com.pogofish.jadt.checker.StandardChecker;
 import com.pogofish.jadt.emitter.StandardDocEmitter;
 import com.pogofish.jadt.parser.StandardParser;
 import com.pogofish.jadt.source.FileSourceFactory;
 import com.pogofish.jadt.target.FileTargetFactoryFactory;
 import com.pogofish.jadt.target.StringTargetFactoryFactory;
 import com.pogofish.jadt.util.Util;
-
-import static com.pogofish.jadt.ast.SemanticError.*;
 
 /**
  * Test for the main jADT driver
@@ -42,6 +52,10 @@ import static com.pogofish.jadt.ast.SemanticError.*;
  */
 public class JADTTest {
     
+    private static final Set<SyntaxError> NO_SYNTAX_ERRORS = Collections.<SyntaxError>emptySet();
+    private static final Set<SemanticError> NO_SEMANTIC_ERRORS = Collections.<SemanticError>emptySet();
+    private static final String[] GOOD_ARGS = new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR};
+
     /**
      * Ensure that the standard config jADT has all the right parts.  The various bits are tested separately
      */
@@ -59,12 +73,11 @@ public class JADTTest {
      * Create a dummy configged jADT based on the provided checker, send it the provided args and return the
      * resulting string (or throw the resulting exception 
      */
-    private String testWithDummyJADT(String[] args, Checker checker) {
+    private String testWithDummyJADT(String[] args, Set<SyntaxError> syntaxErrors, Set<SemanticError> semanticErrors) {
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();
-        JADT.createDummyJADT(checker, JADT.TEST_SRC_INFO, factory).parseAndEmit(args);
+        JADT.createDummyJADT(syntaxErrors, semanticErrors, JADT.TEST_SRC_INFO, factory).parseAndEmit(args);
         return factory.results().get(JADT.TEST_DIR).get(0).getResults().get(JADT.TEST_CLASS_NAME);
     }
-
 
     
     /**
@@ -74,7 +87,7 @@ public class JADTTest {
     public void testDriverBadArgs() {
         
         try {
-            final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO}, new DummyChecker(Collections.<SemanticError>emptySet()));
+            final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO}, NO_SYNTAX_ERRORS, NO_SEMANTIC_ERRORS);
             fail("Did not get an exception from bad arguments, got " + result);
         } catch(IllegalArgumentException e) {
             // yay
@@ -86,9 +99,29 @@ public class JADTTest {
      */
     @Test
     public void testDriverGood() {
-        final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR}, new DummyChecker(Collections.<SemanticError>emptySet()));
+        final String result = testWithDummyJADT(GOOD_ARGS, NO_SYNTAX_ERRORS, NO_SEMANTIC_ERRORS);
         
         assertEquals(JADT.TEST_SRC_INFO, result);
+    }
+    
+    /**
+     * Test that syntax errors from the parser get bundled up and thrown properly
+     */
+    @Test
+    public void testDriverSyntacticIssue() {
+        final Set<SyntaxError> errors = Util.set(SyntaxError._UnexpectedToken("flurb", "blurb", 42));
+        
+        try {
+            final String result = testWithDummyJADT(GOOD_ARGS, errors, NO_SEMANTIC_ERRORS);
+            fail("Did not get an exception from syntax errors, got " + result);
+        } catch (JADTUserErrorsException e) {
+            final Set<UserError> userErrors = e.getErrors();
+            assertEquals(errors.size(), userErrors.size());
+            for (SyntaxError error : errors) {
+                final UserError userError = UserError._Syntactic(error);
+                assertTrue("User errrors did not contain " + userError, userErrors.contains(userError));
+            }
+        }
     }
     
     /**
@@ -96,12 +129,17 @@ public class JADTTest {
      */
     @Test
     public void testDriverSemanticIssue() {
+        final Set<SemanticError> errors = Util.<SemanticError>set(_DuplicateConstructor("Foo", "Bar"), _ConstructorDataTypeConflict("Foo"));
         try {
-            final Checker checker = new DummyChecker(Util.<SemanticError>set(_DuplicateConstructor("Foo", "Bar"), _ConstructorDataTypeConflict("Foo")));
-            final String result = testWithDummyJADT(new String[]{JADT.TEST_SRC_INFO, JADT.TEST_DIR}, checker);
-            fail("Did not get a SemanticErrors, got " + result);
-        } catch (SemanticExceptions e) {
-            // yay
+            final String result = testWithDummyJADT(GOOD_ARGS, NO_SYNTAX_ERRORS, errors);
+            fail("Did not get an exception, got " + result);
+        } catch (JADTUserErrorsException e) {
+            final Set<UserError> userErrors = e.getErrors();
+            assertEquals(errors.size(), userErrors.size());
+            for (SemanticError error : errors) {
+                final UserError userError = UserError._Semantic(error);
+                assertTrue("User errrors did not contain " + userError, userErrors.contains(userError));
+            }
         }
     }
     

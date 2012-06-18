@@ -18,17 +18,17 @@ package com.pogofish.jadt.parser;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.source.Source;
 
 
 /**
- * A dummy parser that compares its input with a test string and produces a test Doc as its output
+ * A dummy parser that compares its input with a test string and produces a test parse result as its output
  *
  * @author jiry
  */
 public class DummyParser implements Parser {
-    private final Doc testDoc;
+    private final ParseResult testResult;
     private final String testSrcInfo;
     private final String testString;
 
@@ -38,8 +38,8 @@ public class DummyParser implements Parser {
      * @param testSrcInfo The source info that this parser expects
      * @param testString The string that this parser expects
      */
-    public DummyParser(Doc testDoc, String testSrcInfo, String testString) {
-        this.testDoc = testDoc;
+    public DummyParser(ParseResult testResult, String testSrcInfo, String testString) {
+        this.testResult = testResult;
         this.testSrcInfo = testSrcInfo;
         this.testString = testString;
     }
@@ -49,7 +49,7 @@ public class DummyParser implements Parser {
      * testSrcInfo and testString.  It then produces the testDoc as a result
      */
     @Override
-    public Doc parse(Source source) {
+    public ParseResult parse(Source source) {
         if (!testSrcInfo.equals(source.getSrcInfo())) {
             throw new RuntimeException("testSrcInfo and source.getSrcInfo were not equal. testSrcInfo = " + testSrcInfo + ", source.getSrcInfo = " + source.getSrcInfo());
         }
@@ -69,6 +69,6 @@ public class DummyParser implements Parser {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return testDoc;
+        return testResult;
     }
 }

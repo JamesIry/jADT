@@ -24,9 +24,8 @@ import org.apache.tools.ant.BuildException;
 import org.junit.Test;
 
 import com.pogofish.jadt.JADT;
-import com.pogofish.jadt.ant.JADTAntTask;
 import com.pogofish.jadt.ast.SemanticError;
-import com.pogofish.jadt.checker.*;
+import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.target.StringTargetFactoryFactory;
 
 
@@ -43,7 +42,7 @@ public class JADTAntTaskTest {
     public void testHappy() {
         final JADTAntTask antTask = new JADTAntTask();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        antTask.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticError>emptySet()), JADT.TEST_SRC_INFO, factory);
+        antTask.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptySet(), Collections.<SemanticError>emptySet(), JADT.TEST_SRC_INFO, factory);
         
         antTask.setSrcPath(JADT.TEST_SRC_INFO);
         antTask.setDestDir(JADT.TEST_DIR);
@@ -60,7 +59,7 @@ public class JADTAntTaskTest {
     public void testException() {
         final JADTAntTask antTask = new JADTAntTask();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        antTask.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticError>singleton(SemanticError._DuplicateConstructor("whatever", "something"))), JADT.TEST_SRC_INFO, factory);
+        antTask.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptySet(), Collections.<SemanticError>singleton(SemanticError._DuplicateConstructor("whatever", "something")), JADT.TEST_SRC_INFO, factory);
         
         antTask.setSrcPath(JADT.TEST_SRC_INFO);
         antTask.setDestDir(JADT.TEST_DIR);

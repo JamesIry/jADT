@@ -39,8 +39,10 @@ import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
+import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.ast.Type;
 import com.pogofish.jadt.ast.Type.Primitive;
 import com.pogofish.jadt.ast.Type.Ref;
@@ -62,13 +64,15 @@ public class StandardParser implements Parser {
      * @see sfdc.adt.IParser#parse(java.lang.String, java.io.Reader)
      */
     @Override
-    public Doc parse(Source source)  {
+    public ParseResult parse(Source source)  {
     	logger.fine("Parsing " + source.getSrcInfo());
     	final BufferedReader reader = source.createReader();
     	try {
             final Tokenizer tokenizer = new Tokenizer(source.getSrcInfo(), reader);
             final Impl impl = new Impl(tokenizer);
-            return impl.doc();
+            return ParseResult._Success(impl.doc());
+    	} catch (SyntaxException e) {
+    	    return ParseResult._Errors(Collections.singleton(e.error));
     	} finally {
     	    new IOExceptionAction<Void>() {
                 @Override
@@ -345,7 +349,7 @@ public class StandardParser implements Parser {
 
                 @Override
                 public RefType _case(Primitive x) {
-                    throw new SyntaxException("an array or class type (type parameters may not be primitive).  Found " + x.toString() + " and then looked for [] ");
+                    throw syntaxException("an array or class type");
                 }});
         }
         
@@ -433,9 +437,7 @@ public class StandardParser implements Parser {
          * @return A SyntaxException with information about where the problem occurred, what was expected, and what was found
          */
         private SyntaxException syntaxException(String expected) {
-        	final String msg = "While parsing " + tokenizer.srcInfo() + ". Expected " + expected + " but found " + tokenizer.lastSymbol() + " at line " + tokenizer.lineno();
-        	logger.info(msg);
-            return new SyntaxException(msg);
+            return new SyntaxException(SyntaxError._UnexpectedToken(expected, tokenizer.lastSymbol(), tokenizer.lineno()));
         }
         
     }

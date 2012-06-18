@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import com.pogofish.jadt.JADT;
 import com.pogofish.jadt.ast.SemanticError;
-import com.pogofish.jadt.checker.DummyChecker;
+import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.target.StringTargetFactoryFactory;
 
 /**
@@ -32,7 +32,7 @@ public class JADTMojoTest {
   
         final JADTMojo mojo = new JADTMojo();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        mojo.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticError>emptySet()), srcFile.getCanonicalPath(), factory);
+        mojo.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptySet(), Collections.<SemanticError>emptySet(), srcFile.getCanonicalPath(), factory);
         
         mojo.setSrcPath(srcFile);
         mojo.setDestDir(destDir);
@@ -55,7 +55,7 @@ public class JADTMojoTest {
         
         final JADTMojo mojo = new JADTMojo();
         final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
-        mojo.jadt = JADT.createDummyJADT(new DummyChecker(Collections.<SemanticError>singleton(SemanticError._DuplicateConstructor("whatever", "something"))), srcFile.getCanonicalPath(), factory);
+        mojo.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptySet(), Collections.<SemanticError>singleton(SemanticError._DuplicateConstructor("whatever", "something")), srcFile.getCanonicalPath(), factory);
         
         mojo.setSrcPath(srcFile);
         mojo.setDestDir(destDir);

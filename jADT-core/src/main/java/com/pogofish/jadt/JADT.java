@@ -15,18 +15,41 @@ limitations under the License.
 */
 package com.pogofish.jadt;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.ParseResult;
+import com.pogofish.jadt.ast.ParseResult.Errors;
+import com.pogofish.jadt.ast.ParseResult.Success;
 import com.pogofish.jadt.ast.SemanticError;
-import com.pogofish.jadt.checker.*;
-import com.pogofish.jadt.emitter.*;
-import com.pogofish.jadt.parser.*;
-import com.pogofish.jadt.source.*;
-import com.pogofish.jadt.target.*;
+import com.pogofish.jadt.ast.SyntaxError;
+import com.pogofish.jadt.ast.UserError;
+import com.pogofish.jadt.checker.Checker;
+import com.pogofish.jadt.checker.DummyChecker;
+import com.pogofish.jadt.checker.StandardChecker;
+import com.pogofish.jadt.emitter.ClassBodyEmitter;
+import com.pogofish.jadt.emitter.ConstructorEmitter;
+import com.pogofish.jadt.emitter.DataTypeEmitter;
+import com.pogofish.jadt.emitter.DocEmitter;
+import com.pogofish.jadt.emitter.DummyDocEmitter;
+import com.pogofish.jadt.emitter.StandardClassBodyEmitter;
+import com.pogofish.jadt.emitter.StandardConstructorEmitter;
+import com.pogofish.jadt.emitter.StandardDataTypeEmitter;
+import com.pogofish.jadt.emitter.StandardDocEmitter;
+import com.pogofish.jadt.parser.DummyParser;
+import com.pogofish.jadt.parser.Parser;
+import com.pogofish.jadt.parser.StandardParser;
+import com.pogofish.jadt.source.FileSourceFactory;
+import com.pogofish.jadt.source.Source;
+import com.pogofish.jadt.source.SourceFactory;
+import com.pogofish.jadt.source.StringSourceFactory;
+import com.pogofish.jadt.target.FileTargetFactoryFactory;
+import com.pogofish.jadt.target.TargetFactory;
+import com.pogofish.jadt.target.TargetFactoryFactory;
 import com.pogofish.jadt.util.Util;
 
 
@@ -121,7 +144,7 @@ public class JADT {
      * @param srcPath full name of the source directory or file
      * @param destDir full name of the destination directory (trailing slash is optional)
      */
-    public void parseAndEmit(String srcPath, String destDir) {    	
+    public void parseAndEmit(String srcPath, final String destDir) {    	
     	final String version = new Version().getVersion();
     	logger.info("jADT version " + version + ".");
     	logger.info("Will read from source " + srcPath);
@@ -129,24 +152,47 @@ public class JADT {
    	
         final List<? extends Source> sources = sourceFactory.createSources(srcPath);
         for (Source source : sources) {
-            final Doc doc = parser.parse(source);
-            final Set<SemanticError> errors = checker.check(doc);
+            final Set<UserError> errors = new LinkedHashSet<UserError>();
+            final ParseResult result = parser.parse(source);
+            result._switch(new ParseResult.SwitchBlock() {
+                @Override
+                public void _case(Success x) {
+                    final Doc doc = x.doc;
+                    final Set<SemanticError> semanticErrors = checker.check(doc);
+                    for (SemanticError error : semanticErrors) {
+                        errors.add(UserError._Semantic(error));
+                    }
+                    if (errors.isEmpty()) {
+                        final TargetFactory targetFactory = factoryFactory.createTargetFactory(destDir);
+                        emitter.emit(targetFactory, doc);
+                    }                   
+                }
+
+                @Override
+                public void _case(Errors x) {
+                    for (SyntaxError error : x.errors) {
+                        errors.add(UserError._Syntactic(error));
+                    }                    
+                }                
+            });
             if (!errors.isEmpty()) {
-                throw new SemanticExceptions(errors);
+                throw new JADTUserErrorsException(errors);
             }
-            final TargetFactory targetFactory = factoryFactory.createTargetFactory(destDir);
-            emitter.emit(targetFactory, doc);
+
         }
     }
 
     /**
-     * Create a dummy configged jADT based on the provided checker and target factory
+     * Create a dummy configged jADT based on the provided syntaxErrors, semanticErrors, testSrcInfo, and target factory
+     * Useful for testing
      */
-    public static JADT createDummyJADT(Checker checker, String testSrcInfo, TargetFactoryFactory factory) {
+    public static JADT createDummyJADT(Set<SyntaxError> syntaxErrors, Set<SemanticError> semanticErrors, String testSrcInfo, TargetFactoryFactory factory) {
         final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);
         final Doc doc = new Doc(TEST_SRC_INFO, "pkg", Util.<String> list(), Util.<DataType> list());
+        final ParseResult parseResult = syntaxErrors.isEmpty() ? ParseResult._Success(doc) : ParseResult._Errors(syntaxErrors);
         final DocEmitter docEmitter = new DummyDocEmitter(doc,  TEST_CLASS_NAME);
-        final Parser parser = new DummyParser(doc, testSrcInfo, TEST_STRING);
+        final Parser parser = new DummyParser(parseResult, testSrcInfo, TEST_STRING);
+        final Checker checker = new DummyChecker(semanticErrors);
         final JADT jadt = new JADT(sourceFactory, parser, checker, docEmitter, factory);
         return jadt;
     }    

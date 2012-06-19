@@ -72,6 +72,21 @@
     <system>github</system>
     <url>http://github.com/JamesIry/jADT/issues</url>
   </issueManagement>
+  
+  <ciManagement>
+    <system>jenkins</system>
+    <url>https://pogofish.ci.cloudbees.com/</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>false</sendOnSuccess>
+        <sendOnWarning>false</sendOnWarning>
+        <configuration><address>jamesiry@gmail.com</address></configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>  
 
   
   <properties>

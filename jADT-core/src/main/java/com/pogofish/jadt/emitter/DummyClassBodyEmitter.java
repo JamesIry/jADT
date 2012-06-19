@@ -11,7 +11,7 @@ package com.pogofish.jadt.emitter;
 import java.util.List;
 
 import com.pogofish.jadt.ast.Constructor;
-import com.pogofish.jadt.target.Target;
+import com.pogofish.jadt.sink.Sink;
 
 
 /**
@@ -20,35 +20,35 @@ import com.pogofish.jadt.target.Target;
 public class DummyClassBodyEmitter implements ClassBodyEmitter {
 
     @Override
-    public void constructorFactory(Target target, String dataTypeName, String factoryName, List<String> typeParameters, Constructor constructor) {
-        target.write("/* constructor factory " + dataTypeName + " " + factoryName + " " + constructor.name + "*/");
+    public void constructorFactory(Sink sink, String dataTypeName, String factoryName, List<String> typeParameters, Constructor constructor) {
+        sink.write("/* constructor factory " + dataTypeName + " " + factoryName + " " + constructor.name + "*/");
 
     }
 
     @Override
-    public void emitConstructorMethod(Target target, Constructor constructor) {
-        target.write("/* constructor method " + constructor.name + "*/");
+    public void emitConstructorMethod(Sink sink, Constructor constructor) {
+        sink.write("/* constructor method " + constructor.name + "*/");
     }
 
     @Override
-    public void emitToString(Target target, Constructor constructor) {
-        target.write("/* toString method " + constructor.name + "*/");
+    public void emitToString(Sink sink, Constructor constructor) {
+        sink.write("/* toString method " + constructor.name + "*/");
     }
 
     @Override
-    public void emitEquals(Target target, Constructor constructor, List<String> typeArguments) {
-        target.write("/* equals method " + constructor.name + "*/");
+    public void emitEquals(Sink sink, Constructor constructor, List<String> typeArguments) {
+        sink.write("/* equals method " + constructor.name + "*/");
     }
 
     @Override
-    public void emitHashCode(Target target, Constructor constructor) {
-        target.write("/* hashCode method " + constructor.name + "*/");
+    public void emitHashCode(Sink sink, Constructor constructor) {
+        sink.write("/* hashCode method " + constructor.name + "*/");
     }
     
     @Override
-	public void emitParameterizedTypeName(Target target,
+	public void emitParameterizedTypeName(Sink sink,
 			List<String> typeArguments) {
-		target.write("/* type arguments */");
+		sink.write("/* type arguments */");
 	}   
 
 }

@@ -13,29 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 /**
- * A target represents a location to emit java
+ * Yes, it's a factory factory.  I feel so enterprise.  Blame Java's lack of lambdas.  
  *
  * @author jiry
  */
-public interface Target {
-	/**
-	 * Information about where this target is going
-	 */
-	public String getInfo();
-
+public interface SinkFactoryFactory {
     /**
-     * Close this target.  Any further writes will result in an exception
+     * Create a SinkFactory based on the given base directory
+     *
+     * @param baseDir
+     * @return SinkFactory based on the baseDir
      */
-    public abstract void close();
-
-    /**
-     * Write data to this target
-     * 
-     * @param data String to write
-     */
-    public abstract void write(String data);
-
+    public SinkFactory createSinkFactory(String baseDir);
 }

@@ -6,7 +6,7 @@
  * either express or implied. See the License for the specific language governing permissions and limitations under the
  * License.
  */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import java.io.*;
 
@@ -14,11 +14,11 @@ import com.pogofish.jadt.util.IOExceptionAction;
 
 
 /**
- * Target that writes to a specified file in UTF-8
+ * Sink that writes to a specified file in UTF-8
  *
  * @author jiry
  */
-public class FileTarget implements Target {
+public class FileSink implements Sink {
     private final Writer writer;
     final File outputFile;
 
@@ -28,11 +28,11 @@ public class FileTarget implements Target {
 	}
 
 	/**
-     * Creates a FileTarget based on a complete file name
+     * Creates a FileSink based on a complete file name
      * 
      * @param outputFileName String full name of the file to be output
      */
-    public FileTarget(final String outputFileName) {
+    public FileSink(final String outputFileName) {
         super();
         outputFile = new File(outputFileName);
 

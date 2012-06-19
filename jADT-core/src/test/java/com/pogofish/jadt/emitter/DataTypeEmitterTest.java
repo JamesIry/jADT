@@ -27,7 +27,7 @@ import com.pogofish.jadt.emitter.DataTypeEmitter;
 import com.pogofish.jadt.emitter.DummyClassBodyEmitter;
 import com.pogofish.jadt.emitter.DummyConstructorEmitter;
 import com.pogofish.jadt.emitter.StandardDataTypeEmitter;
-import com.pogofish.jadt.target.StringTarget;
+import com.pogofish.jadt.sink.StringSink;
 import com.pogofish.jadt.util.Util;
 
 
@@ -112,16 +112,16 @@ public class DataTypeEmitterTest {
                         new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor("Bar",
                         Util.<Arg> list())));
 
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             final DataTypeEmitter emitter = new StandardDataTypeEmitter(new DummyClassBodyEmitter(),
                     new DummyConstructorEmitter());
 
-            emitter.emit(target, fooBar, HEADER);
+            emitter.emit(sink, fooBar, HEADER);
         } finally {
-            target.close();
+            sink.close();
         }
-        assertEquals(HEADER + MULTI_CONSTRUCTOR, target.result());
+        assertEquals(HEADER + MULTI_CONSTRUCTOR, sink.result());
     }
    
     /**
@@ -133,16 +133,16 @@ public class DataTypeEmitterTest {
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             final DataTypeEmitter emitter = new StandardDataTypeEmitter(new DummyClassBodyEmitter(),
                     new DummyConstructorEmitter());
 
-            emitter.emit(target, fooBar, HEADER);
+            emitter.emit(sink, fooBar, HEADER);
         } finally {
-            target.close();
+            sink.close();
         }
-        assertEquals(HEADER + SINGLE_CONSTRUCTOR, target.result());
+        assertEquals(HEADER + SINGLE_CONSTRUCTOR, sink.result());
     }
    
 }

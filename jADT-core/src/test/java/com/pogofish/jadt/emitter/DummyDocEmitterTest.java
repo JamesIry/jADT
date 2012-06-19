@@ -26,7 +26,7 @@ import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.emitter.DocEmitter;
 import com.pogofish.jadt.emitter.DummyDocEmitter;
-import com.pogofish.jadt.target.StringTargetFactory;
+import com.pogofish.jadt.sink.StringSinkFactory;
 
 
 /**
@@ -42,7 +42,7 @@ public class DummyDocEmitterTest {
     public void testHappy() {
         final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
         final DocEmitter dummyDocEmitter = new DummyDocEmitter(testDoc, "SomeClass");
-        final StringTargetFactory factory = new StringTargetFactory("baseDir");
+        final StringSinkFactory factory = new StringSinkFactory("baseDir");
         dummyDocEmitter.emit(factory, testDoc);
         assertEquals("some source", factory.getResults().get("SomeClass"));
     }
@@ -55,7 +55,7 @@ public class DummyDocEmitterTest {
         final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
         final Doc doc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
         final DocEmitter dummyDocEmitter = new DummyDocEmitter(testDoc, "SomeClass");
-        final StringTargetFactory factory = new StringTargetFactory("baseDir");
+        final StringSinkFactory factory = new StringSinkFactory("baseDir");
         try {
             dummyDocEmitter.emit(factory, doc);
             fail("Did not get an exception with the wrong doc, got " + factory.getResults().get("SomeClass"));

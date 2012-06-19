@@ -13,30 +13,30 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import java.io.File;
 
 /**
- * Factor that creates FileTargets within a given base directory
+ * Factor that creates FileSinks within a given base directory
  *
  * @author jiry
  */
-public class FileTargetFactory implements TargetFactory {
+public class FileSinkFactory implements SinkFactory {
     final String destDirName;
 
     /**
-     * Creates a FileTargetFactory that will output to the given directory
+     * Creates a FileSinkFactory that will output to the given directory
      * 
      * @param destDirName
      */
-    public FileTargetFactory(String destDirName) {
+    public FileSinkFactory(String destDirName) {
         this.destDirName = destDirName;
     }
 
     @Override
-    public Target createTarget(String className) {
-        return new FileTarget(convertToPath(className));
+    public Sink createSink(String className) {
+        return new FileSink(convertToPath(className));
     }
 
     /**

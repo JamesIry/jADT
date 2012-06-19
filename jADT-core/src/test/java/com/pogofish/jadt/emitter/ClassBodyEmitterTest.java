@@ -33,7 +33,7 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.emitter.ClassBodyEmitter;
 import com.pogofish.jadt.emitter.StandardClassBodyEmitter;
-import com.pogofish.jadt.target.StringTarget;
+import com.pogofish.jadt.sink.StringSink;
 import com.pogofish.jadt.util.Util;
 
 
@@ -154,26 +154,26 @@ public class ClassBodyEmitterTest {
      * Make sure non parameterized type names are handled properly
      */
     public void testNonParameterizedTypeName() {
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
-            emitter.emitParameterizedTypeName(target, Util.<String>list());
+            emitter.emitParameterizedTypeName(sink, Util.<String>list());
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals("", target.result());
+        assertEquals("", sink.result());
     }
     
     /**
      * Make sure parameterized type names with one type parameter are handled properly
      */
     public void testOneParameterizedTypeName() {
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
-            emitter.emitParameterizedTypeName(target, list("A"));
+            emitter.emitParameterizedTypeName(sink, list("A"));
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals("<A>", target.result());
+        assertEquals("<A>", sink.result());
 	
 	}
     
@@ -181,13 +181,13 @@ public class ClassBodyEmitterTest {
      * Make sure parameterized type names with multiple type parameters are handled properly
      */
     public void testMultiParameterizedTypeName() {
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
-            emitter.emitParameterizedTypeName(target, list("A", "B", "C"));
+            emitter.emitParameterizedTypeName(sink, list("A", "B", "C"));
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals("<A, B, C>", target.result());
+        assertEquals("<A, B, C>", sink.result());
 	
 	}
     
@@ -197,13 +197,13 @@ public class ClassBodyEmitterTest {
     @Test
     public void testNoArgNoTypesFactory() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
-            emitter.constructorFactory(target, "SomeDataType", "SomeFactory", Util.<String>list(), constructor);
+            emitter.constructorFactory(sink, "SomeDataType", "SomeFactory", Util.<String>list(), constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(NO_ARG_NO_TYPES_FACTORY, target.result());
+        assertEquals(NO_ARG_NO_TYPES_FACTORY, sink.result());
     }
 
     /**
@@ -212,13 +212,13 @@ public class ClassBodyEmitterTest {
     @Test
     public void testNoArgTypesFactory() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
-            emitter.constructorFactory(target, "SomeDataType", "SomeFactory", list("A", "B"), constructor);
+            emitter.constructorFactory(sink, "SomeDataType", "SomeFactory", list("A", "B"), constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(NO_ARG_TYPES_FACTORY, target.result());
+        assertEquals(NO_ARG_TYPES_FACTORY, sink.result());
     }
 
     /**
@@ -231,14 +231,14 @@ public class ClassBodyEmitterTest {
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.constructorFactory(target, "SomeDataType", "SomeFactory", Util.<String>list(), constructor);
+            emitter.constructorFactory(sink, "SomeDataType", "SomeFactory", Util.<String>list(), constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(ARGS_NO_TYPES_FACTORY, target.result());
+        assertEquals(ARGS_NO_TYPES_FACTORY, sink.result());
     }
 
     /**
@@ -251,14 +251,14 @@ public class ClassBodyEmitterTest {
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.constructorFactory(target, "SomeDataType", "SomeFactory", list("A", "B"), constructor);
+            emitter.constructorFactory(sink, "SomeDataType", "SomeFactory", list("A", "B"), constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(ARGS_TYPES_FACTORY, target.result());
+        assertEquals(ARGS_TYPES_FACTORY, sink.result());
     }    
     /**
      * How does the Java class constructor look?
@@ -269,13 +269,13 @@ public class ClassBodyEmitterTest {
                 list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "um"), new Arg(Util.list(ArgModifier._Final()), _Primitive(_IntType()),
                         "yeah")));
 
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
-            emitter.emitConstructorMethod(target, constructor);
+            emitter.emitConstructorMethod(sink, constructor);
         } finally {
-            target.close();
+            sink.close();
         }
-        assertEquals(CONSTRUCTOR_METHOD, target.result());
+        assertEquals(CONSTRUCTOR_METHOD, sink.result());
     }
         
     /**
@@ -285,14 +285,14 @@ public class ClassBodyEmitterTest {
     public void testNoArgToString() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitToString(target, constructor);
+            emitter.emitToString(sink, constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(NO_ARG_TO_STRING, target.result());         
+        assertEquals(NO_ARG_TO_STRING, sink.result());         
     }
     
     /**
@@ -304,14 +304,14 @@ public class ClassBodyEmitterTest {
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "um")
         ));
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitToString(target, constructor);
+            emitter.emitToString(sink, constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(ONE_ARG_TO_STRING, target.result());         
+        assertEquals(ONE_ARG_TO_STRING, sink.result());         
     }
     
     /**
@@ -324,14 +324,14 @@ public class ClassBodyEmitterTest {
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah")
         ));
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitToString(target, constructor);
+            emitter.emitToString(sink, constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(ARGS_TO_STRING, target.result());         
+        assertEquals(ARGS_TO_STRING, sink.result());         
     }
     
     /**
@@ -341,14 +341,14 @@ public class ClassBodyEmitterTest {
     public void testNoArgsNoTypesEquals() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitEquals(target, constructor, Util.<String>list());
+            emitter.emitEquals(sink, constructor, Util.<String>list());
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(NO_ARG_EQUALS, target.result());                 
+        assertEquals(NO_ARG_EQUALS, sink.result());                 
     }
     
     
@@ -363,14 +363,14 @@ public class ClassBodyEmitterTest {
                 new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitEquals(target, constructor, Util.<String>list());
+            emitter.emitEquals(sink, constructor, Util.<String>list());
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(ARGS_NO_TYPES_EQUALS, target.result());                 
+        assertEquals(ARGS_NO_TYPES_EQUALS, sink.result());                 
     }
     
     /**
@@ -384,14 +384,14 @@ public class ClassBodyEmitterTest {
                 new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitEquals(target, constructor, list("A", "B"));
+            emitter.emitEquals(sink, constructor, list("A", "B"));
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(ARGS_TYPES_EQUALS, target.result());                 
+        assertEquals(ARGS_TYPES_EQUALS, sink.result());                 
     }
     
     /**
@@ -401,14 +401,14 @@ public class ClassBodyEmitterTest {
     public void testNoArgHashCode() {
         final Constructor constructor = new Constructor("Whatever", Util.<Arg>list());
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitHashCode(target, constructor);
+            emitter.emitHashCode(sink, constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(NO_ARG_HASHCODE, target.result());                 
+        assertEquals(NO_ARG_HASHCODE, sink.result());                 
         
     }
     
@@ -425,13 +425,13 @@ public class ClassBodyEmitterTest {
                 new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {            
-            emitter.emitHashCode(target, constructor);
+            emitter.emitHashCode(sink, constructor);
         } finally {
-            target.close();            
+            sink.close();            
         }
-        assertEquals(ARGS_HASHCODE, target.result());                 
+        assertEquals(ARGS_HASHCODE, sink.result());                 
         
     }    
  }

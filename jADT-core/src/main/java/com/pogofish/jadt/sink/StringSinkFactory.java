@@ -13,34 +13,34 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import java.util.*;
 
 /**
- * Factory that creates StringTargets, mostly useful for testing
+ * Factory that creates StringSinks, mostly useful for testing
  *
  * @author jiry
  */
-public class StringTargetFactory implements TargetFactory {
+public class StringSinkFactory implements SinkFactory {
     final String baseDir;
-    private final Map<String, StringTarget> targets = new HashMap<String, StringTarget>();
+    private final Map<String, StringSink> sinks = new HashMap<String, StringSink>();
     
     /**
-     * Creates a StringTarget.  The baseDir is only remembered for the purposes of testing, it isn't used anywhere
+     * Creates a StringSink.  The baseDir is only remembered for the purposes of testing, it isn't used anywhere
      * 
      * @param baseDir
      */
-    public StringTargetFactory(String baseDir) {
+    public StringSinkFactory(String baseDir) {
         super();
         this.baseDir = baseDir;
     }
 
     @Override
-    public Target createTarget(String className) {
-        StringTarget target = new StringTarget(className);
-        targets.put(className, target);
-        return target;
+    public Sink createSink(String className) {
+        StringSink sink = new StringSink(className);
+        sinks.put(className, sink);
+        return sink;
     }
     
     /**
@@ -48,8 +48,8 @@ public class StringTargetFactory implements TargetFactory {
      * @return Map with results
      */
     public Map<String, String> getResults() {
-        final Map<String, String> results = new HashMap<String, String>(targets.size());
-        for (Map.Entry<String, StringTarget> entry : targets.entrySet()) {
+        final Map<String, String> results = new HashMap<String, String>(sinks.size());
+        for (Map.Entry<String, StringSink> entry : sinks.entrySet()) {
             results.put(entry.getKey(), entry.getValue().result());
         }
         return Collections.unmodifiableMap(results);

@@ -30,9 +30,9 @@ public class JADTMojo  extends AbstractMojo {
     /**
      * The base directory where files will be output
      *
-     * @parameter default-value="target/generated-sources/jadt"
+     * @parameter default-value="sink/generated-sources/jadt"
      */
-    File destDir = new File("target/generated-sources/jadt");    
+    File destDir = new File("sink/generated-sources/jadt");    
     
     /**
      * MavenProject supplied by maven at runtime.  It's used to add the destination directory to 

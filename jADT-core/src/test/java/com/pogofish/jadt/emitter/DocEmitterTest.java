@@ -31,7 +31,7 @@ import com.pogofish.jadt.ast.*;
 import com.pogofish.jadt.emitter.DocEmitter;
 import com.pogofish.jadt.emitter.DummyDataTypeEmitter;
 import com.pogofish.jadt.emitter.StandardDocEmitter;
-import com.pogofish.jadt.target.StringTargetFactory;
+import com.pogofish.jadt.sink.StringSinkFactory;
 import com.pogofish.jadt.util.Util;
 
 
@@ -128,7 +128,7 @@ public class DocEmitterTest {
                 ))
                 
         ));
-        final StringTargetFactory factory = new StringTargetFactory("whatever");
+        final StringSinkFactory factory = new StringSinkFactory("whatever");
         final DocEmitter emitter = new StandardDocEmitter(new DummyDataTypeEmitter());
         emitter.emit(factory, doc);
         final Map<String, String> results = factory.getResults();
@@ -156,7 +156,7 @@ public class DocEmitterTest {
                 ))
                 
         ));
-        final StringTargetFactory factory = new StringTargetFactory("whatever");
+        final StringSinkFactory factory = new StringSinkFactory("whatever");
         final DocEmitter emitter = new StandardDocEmitter(new DummyDataTypeEmitter());
         emitter.emit(factory, doc);
         final Map<String, String> results = factory.getResults();
@@ -184,7 +184,7 @@ public class DocEmitterTest {
                 ))
                 
         ));
-        final StringTargetFactory factory = new StringTargetFactory("whatever");
+        final StringSinkFactory factory = new StringSinkFactory("whatever");
         final DocEmitter emitter = new StandardDocEmitter(new DummyDataTypeEmitter());
         emitter.emit(factory, doc);
         final Map<String, String> results = factory.getResults();

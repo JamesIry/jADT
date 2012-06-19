@@ -18,7 +18,7 @@ package com.pogofish.jadt.emitter;
 import java.util.List;
 
 import com.pogofish.jadt.ast.Constructor;
-import com.pogofish.jadt.target.Target;
+import com.pogofish.jadt.sink.Sink;
 
 
 /**
@@ -31,51 +31,51 @@ public interface ClassBodyEmitter {
     /**
      * The constructor factory 
      * 
-     * @param target Target for output
+     * @param sink Sink for output
      * @param dataTypeName name of the DataType to return from the factory
      * @param factoryName name of the factory method/constant to create
      * @param typeParameters List of String names for type parameters
      * @param constructor the Constructor with information about arguments
      */
-    public abstract void constructorFactory(Target target, String dataTypeName, String factoryName, List<String> typeParameters, Constructor constructor);
+    public abstract void constructorFactory(Sink sink, String dataTypeName, String factoryName, List<String> typeParameters, Constructor constructor);
 
     /**
      * Emit the Java constructor for the constructor class
      * 
-     * @param target Target for output
+     * @param sink Sink for output
      * @param constructor Constructor with information about arguments
      */
-    public abstract void emitConstructorMethod(Target target, Constructor constructor);
+    public abstract void emitConstructorMethod(Sink sink, Constructor constructor);
 
     /**
      * Emit a toString method
      * 
-     * @param target Target for output
+     * @param sink Sink for output
      * @param constructor Constructor with information about arguments
      */
-    public abstract void emitToString(Target target, Constructor constructor);
+    public abstract void emitToString(Sink sink, Constructor constructor);
 
     /**
      * Emit an equals method
      * 
-     * @param target Target for output
+     * @param sink Sink for output
      * @param constructor Constructor with information about arguments
      * @param typeArguments List of names of types that parameterize the datatype
      */
-    public abstract void emitEquals(Target target, Constructor constructor, List<String> typeArguments);
+    public abstract void emitEquals(Sink sink, Constructor constructor, List<String> typeArguments);
 
     /**
      * Emit a hashCode method
      * 
-     * @param target Target for output
+     * @param sink Sink for output
      * @param constructor Constructor with information about arguments
      */
-    public abstract void emitHashCode(Target target, Constructor constructor);
+    public abstract void emitHashCode(Sink sink, Constructor constructor);
        
     /**
      * Emit a list of type arg names if any
-     * @param target Target for output
+     * @param sink Sink for output
      * @param typeArguments list of type argument names
      */
-    public void emitParameterizedTypeName(Target target, List<String> typeArguments);
+    public void emitParameterizedTypeName(Sink sink, List<String> typeArguments);
 }

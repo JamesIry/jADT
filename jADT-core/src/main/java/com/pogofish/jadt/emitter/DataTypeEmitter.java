@@ -16,7 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import com.pogofish.jadt.ast.DataType;
-import com.pogofish.jadt.target.Target;
+import com.pogofish.jadt.sink.Sink;
 
 
 /**
@@ -29,10 +29,10 @@ public interface DataTypeEmitter {
     /**
      * Emit a datatype
      * 
-     * @param target Target for output
+     * @param sink Sink for output
      * @param dataType DataType to output
      * @param header String preamble with things like package and imports
      */
-    public abstract void emit(Target target, DataType dataType, String header);
+    public abstract void emit(Sink sink, DataType dataType, String header);
 
 }

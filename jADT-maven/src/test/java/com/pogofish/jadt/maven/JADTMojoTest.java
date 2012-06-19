@@ -13,7 +13,7 @@ import org.junit.Test;
 import com.pogofish.jadt.JADT;
 import com.pogofish.jadt.ast.SemanticError;
 import com.pogofish.jadt.ast.SyntaxError;
-import com.pogofish.jadt.target.StringTargetFactoryFactory;
+import com.pogofish.jadt.sink.StringSinkFactoryFactory;
 
 /**
  * Unit tests for the JADTMojo
@@ -31,7 +31,7 @@ public class JADTMojoTest {
         final File destDir = new File(JADT.TEST_DIR);
   
         final JADTMojo mojo = new JADTMojo();
-        final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
+        final StringSinkFactoryFactory factory = new StringSinkFactoryFactory();        
         mojo.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptyList(), Collections.<SemanticError>emptyList(), srcFile.getCanonicalPath(), factory);
         
         mojo.setSrcPath(srcFile);
@@ -54,7 +54,7 @@ public class JADTMojoTest {
         final File destDir = new File(JADT.TEST_DIR);
         
         final JADTMojo mojo = new JADTMojo();
-        final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();        
+        final StringSinkFactoryFactory factory = new StringSinkFactoryFactory();        
         mojo.jadt = JADT.createDummyJADT(Collections.<SyntaxError>emptyList(), Collections.<SemanticError>singletonList(SemanticError._DuplicateConstructor("whatever", "something")), srcFile.getCanonicalPath(), factory);
         
         mojo.setSrcPath(srcFile);

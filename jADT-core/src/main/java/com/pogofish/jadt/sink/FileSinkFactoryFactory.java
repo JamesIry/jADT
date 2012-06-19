@@ -13,9 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
+/**
+ * I feel ashamed to put my name here
+ *
+ * @author jiry
+ */
+public class FileSinkFactoryFactory implements SinkFactoryFactory {
 
-public interface TargetFactory {
-    public Target createTarget(String className);
+    @Override
+    public SinkFactory createSinkFactory(String baseDir) {
+        return new FileSinkFactory(baseDir);
+    }
+    
 }

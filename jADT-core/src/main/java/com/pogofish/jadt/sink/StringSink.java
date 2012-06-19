@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -22,11 +22,11 @@ import com.pogofish.jadt.util.IOExceptionAction;
 
 
 /**
- * Target that creates a String, mostly useful for testing
+ * Sink that creates a String, mostly useful for testing
  *
  * @author jiry
  */
-public class StringTarget implements Target {
+public class StringSink implements Sink {
     private final StringWriter writer;
     private boolean closed = false;
     private final String name;
@@ -36,7 +36,7 @@ public class StringTarget implements Target {
 		return name;
 	}
 
-	public StringTarget(final String name) {
+	public StringSink(final String name) {
         super();
         this.writer = new StringWriter();
         this.name = name;
@@ -60,11 +60,11 @@ public class StringTarget implements Target {
     }
     
     /**
-     * The data written to this target, or an exception if it wasn't closed
+     * The data written to this sink, or an exception if it wasn't closed
      */
     public String result() {
         if (!closed) {
-            throw new RuntimeException("target was not closed");
+            throw new RuntimeException("sink was not closed");
         }
         return writer.toString();
     }

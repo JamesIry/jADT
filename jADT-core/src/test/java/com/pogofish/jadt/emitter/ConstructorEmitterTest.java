@@ -31,7 +31,7 @@ import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.emitter.ConstructorEmitter;
 import com.pogofish.jadt.emitter.DummyClassBodyEmitter;
 import com.pogofish.jadt.emitter.StandardConstructorEmitter;
-import com.pogofish.jadt.target.StringTarget;
+import com.pogofish.jadt.sink.StringSink;
 import com.pogofish.jadt.util.Util;
 
 
@@ -70,15 +70,15 @@ public class ConstructorEmitterTest {
     public void testFactory() {
         final Constructor constructor = new Constructor("Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             final ConstructorEmitter emitter = new StandardConstructorEmitter(new DummyClassBodyEmitter());
 
-            emitter.constructorFactory(target, "SomeDataType", Util.<String>list(), constructor);
+            emitter.constructorFactory(sink, "SomeDataType", Util.<String>list(), constructor);
         } finally {
-            target.close();
+            sink.close();
         }
-        assertEquals(FACTORY, target.result());
+        assertEquals(FACTORY, sink.result());
     }
     
     /**
@@ -88,14 +88,14 @@ public class ConstructorEmitterTest {
     public void testConstrucorDeclaration() {
         final Constructor constructor = new Constructor("Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
             final ConstructorEmitter emitter = new StandardConstructorEmitter(new DummyClassBodyEmitter());
 
-            emitter.constructorDeclaration(target, constructor, "NonPrimitive", Util.<String>list());
+            emitter.constructorDeclaration(sink, constructor, "NonPrimitive", Util.<String>list());
         } finally {
-            target.close();
+            sink.close();
         }
-        assertEquals(CONSTRUCTOR_CLASS, target.result());
+        assertEquals(CONSTRUCTOR_CLASS, sink.result());
     }
 }

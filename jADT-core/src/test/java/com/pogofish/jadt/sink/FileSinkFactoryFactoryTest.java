@@ -13,29 +13,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.target.FileTargetFactory;
-import com.pogofish.jadt.target.FileTargetFactoryFactory;
+import com.pogofish.jadt.sink.FileSinkFactory;
+import com.pogofish.jadt.sink.FileSinkFactoryFactory;
 
 
 /**
- * Teset the FileTargetFactoryFactory
+ * Teset the FileSinkFactoryFactory
  *
  * @author jiry
  */
-public class FileTargetFactoryFactoryTest {
+public class FileSinkFactoryFactoryTest {
     /**
-     * Make sure FileTargetFactories are created and initialized properly
+     * Make sure FileSinkFactories are created and initialized properly
      */
     @Test
     public void test() {
-        final FileTargetFactoryFactory factoryFactory = new FileTargetFactoryFactory();
-        final FileTargetFactory targetFactory = (FileTargetFactory)factoryFactory.createTargetFactory("whatever");
-        assertEquals("whatever", targetFactory.destDirName);
+        final FileSinkFactoryFactory factoryFactory = new FileSinkFactoryFactory();
+        final FileSinkFactory sinkFactory = (FileSinkFactory)factoryFactory.createSinkFactory("whatever");
+        assertEquals("whatever", sinkFactory.destDirName);
     }
 }

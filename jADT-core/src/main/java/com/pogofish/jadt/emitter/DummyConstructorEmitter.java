@@ -18,7 +18,7 @@ package com.pogofish.jadt.emitter;
 import java.util.List;
 
 import com.pogofish.jadt.ast.Constructor;
-import com.pogofish.jadt.target.Target;
+import com.pogofish.jadt.sink.Sink;
 
 
 /**
@@ -29,13 +29,13 @@ import com.pogofish.jadt.target.Target;
 public class DummyConstructorEmitter implements ConstructorEmitter {
 
     @Override
-    public void constructorFactory(Target target, String dataTypeName, List<String> typeParameters, Constructor constructor) {
-        target.write("/* factory " + dataTypeName + " " + constructor.name + " */");
+    public void constructorFactory(Sink sink, String dataTypeName, List<String> typeParameters, Constructor constructor) {
+        sink.write("/* factory " + dataTypeName + " " + constructor.name + " */");
     }
 
     @Override
-    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName, List<String> typeParamters) {
-        target.write("/* declaration " + dataTypeName + " " + constructor.name + " */");
+    public void constructorDeclaration(Sink sink, Constructor constructor, String dataTypeName, List<String> typeParamters) {
+        sink.write("/* declaration " + dataTypeName + " " + constructor.name + " */");
     }
 
 }

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Constructor;
-import com.pogofish.jadt.target.Target;
+import com.pogofish.jadt.sink.Sink;
 
 
 public class StandardConstructorEmitter implements ConstructorEmitter {
@@ -33,50 +33,50 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
     }
 
     @Override
-    public void constructorFactory(Target target, String dataTypeName, List<String> typeParameters, Constructor constructor) {
-        classBodyEmitter.constructorFactory(target, dataTypeName, constructor.name, typeParameters, constructor);
+    public void constructorFactory(Sink sink, String dataTypeName, List<String> typeParameters, Constructor constructor) {
+        classBodyEmitter.constructorFactory(sink, dataTypeName, constructor.name, typeParameters, constructor);
     }
     
     @Override
-    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName, List<String> typeParameters) {
+    public void constructorDeclaration(Sink sink, Constructor constructor, String dataTypeName, List<String> typeParameters) {
     	logger.finer("Generating constructor class for " + constructor.name + " in datatype " + dataTypeName);
-    	target.write("   public static final class " + constructor.name);
-        classBodyEmitter.emitParameterizedTypeName(target, typeParameters);
-        target.write(" extends " + dataTypeName);
-        classBodyEmitter.emitParameterizedTypeName(target, typeParameters);
-        target.write(" {\n");
+    	sink.write("   public static final class " + constructor.name);
+        classBodyEmitter.emitParameterizedTypeName(sink, typeParameters);
+        sink.write(" extends " + dataTypeName);
+        classBodyEmitter.emitParameterizedTypeName(sink, typeParameters);
+        sink.write(" {\n");
         
-        classBodyEmitter.emitConstructorMethod(target, constructor);
-        target.write("\n\n");
+        classBodyEmitter.emitConstructorMethod(sink, constructor);
+        sink.write("\n\n");
         
-        emitAccept(target, typeParameters);
-        target.write("\n\n");
+        emitAccept(sink, typeParameters);
+        sink.write("\n\n");
         
-        classBodyEmitter.emitHashCode(target, constructor);
-        target.write("\n\n");
+        classBodyEmitter.emitHashCode(sink, constructor);
+        sink.write("\n\n");
         
-        classBodyEmitter.emitEquals(target, constructor, typeParameters);
-        target.write("\n\n");
+        classBodyEmitter.emitEquals(sink, constructor, typeParameters);
+        sink.write("\n\n");
         
-        classBodyEmitter.emitToString(target, constructor);
-        target.write("\n\n");
+        classBodyEmitter.emitToString(sink, constructor);
+        sink.write("\n\n");
         
-        target.write("   }");
+        sink.write("   }");
     }
     
-    private void emitAccept(Target target, List<String> typeArguments) {
+    private void emitAccept(Sink sink, List<String> typeArguments) {
         final List<String> visitorTypeArguments = new ArrayList<String>(typeArguments);
         visitorTypeArguments.add("ResultType");
         
-        target.write("      @Override\n");
-        target.write("      public <ResultType> ResultType match(MatchBlock");
-        classBodyEmitter.emitParameterizedTypeName(target, visitorTypeArguments);
-        target.write(" matchBlock) { return matchBlock._case(this); }\n");
-        target.write("\n");
-        target.write("      @Override\n");
-        target.write("      public void _switch(SwitchBlock");
-        classBodyEmitter.emitParameterizedTypeName(target, typeArguments);
-        target.write(" switchBlock) { switchBlock._case(this); }");
+        sink.write("      @Override\n");
+        sink.write("      public <ResultType> ResultType match(MatchBlock");
+        classBodyEmitter.emitParameterizedTypeName(sink, visitorTypeArguments);
+        sink.write(" matchBlock) { return matchBlock._case(this); }\n");
+        sink.write("\n");
+        sink.write("      @Override\n");
+        sink.write("      public void _switch(SwitchBlock");
+        classBodyEmitter.emitParameterizedTypeName(sink, typeArguments);
+        sink.write(" switchBlock) { switchBlock._case(this); }");
     }
 
     

@@ -16,8 +16,8 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import com.pogofish.jadt.ast.Doc;
-import com.pogofish.jadt.target.Target;
-import com.pogofish.jadt.target.TargetFactory;
+import com.pogofish.jadt.sink.Sink;
+import com.pogofish.jadt.sink.SinkFactory;
 
 
 /**
@@ -30,7 +30,7 @@ public class DummyDocEmitter implements DocEmitter {
     private final String className;
     
     /**
-     * Takes a String className that will be used to create a target and a document that it will assert
+     * Takes a String className that will be used to create a sink and a document that it will assert
      * it gets during emit
      */
     public DummyDocEmitter(Doc testDoc, String className) {
@@ -41,15 +41,15 @@ public class DummyDocEmitter implements DocEmitter {
 
 
     @Override
-    public void emit(TargetFactory factory, Doc doc) {
+    public void emit(SinkFactory factory, Doc doc) {
         if (testDoc != doc) {
             throw new RuntimeException("testDoc and doc argument were not the same");
         }
-        final Target target = factory.createTarget(className);
+        final Sink sink = factory.createSink(className);
         try {
-            target.write(doc.srcInfo);
+            sink.write(doc.srcInfo);
         } finally {
-            target.close();
+            sink.close();
         }
     }
 

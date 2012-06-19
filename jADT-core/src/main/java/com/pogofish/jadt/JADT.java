@@ -40,12 +40,12 @@ import com.pogofish.jadt.emitter.StandardDocEmitter;
 import com.pogofish.jadt.parser.DummyParser;
 import com.pogofish.jadt.parser.Parser;
 import com.pogofish.jadt.parser.StandardParser;
+import com.pogofish.jadt.sink.FileSinkFactoryFactory;
+import com.pogofish.jadt.sink.SinkFactoryFactory;
 import com.pogofish.jadt.source.FileSourceFactory;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.source.SourceFactory;
 import com.pogofish.jadt.source.StringSourceFactory;
-import com.pogofish.jadt.target.FileTargetFactoryFactory;
-import com.pogofish.jadt.target.TargetFactoryFactory;
 import com.pogofish.jadt.util.Util;
 
 
@@ -66,7 +66,7 @@ public class JADT {
     final DocEmitter emitter;
     final Checker checker;
     final SourceFactory sourceFactory;
-    final TargetFactoryFactory factoryFactory;
+    final SinkFactoryFactory factoryFactory;
 
     /**
      * Takes the names of a source file and output directory and does the jADT thing to them
@@ -92,7 +92,7 @@ public class JADT {
         final DocEmitter docEmitter = new StandardDocEmitter(dataTypeEmitter);      
         final Parser parser = new StandardParser();
         final Checker checker = new StandardChecker();
-        final TargetFactoryFactory factoryFactory = new FileTargetFactoryFactory();
+        final SinkFactoryFactory factoryFactory = new FileSinkFactoryFactory();
         
         return new JADT(sourceFactory, parser, checker, docEmitter, factoryFactory);
     }
@@ -104,7 +104,7 @@ public class JADT {
      * @param checker Checker to validate jADT structures
      * @param emitter Emitter to spit out java files
      */
-    public JADT(SourceFactory sourceFactory, Parser parser, Checker checker, DocEmitter emitter, TargetFactoryFactory factoryFactory) {
+    public JADT(SourceFactory sourceFactory, Parser parser, Checker checker, DocEmitter emitter, SinkFactoryFactory factoryFactory) {
         super();
         this.sourceFactory = sourceFactory;
         this.parser = parser;
@@ -161,15 +161,15 @@ public class JADT {
             if (!errors.isEmpty()) {
                 throw new JADTUserErrorsException(errors);
             }
-            emitter.emit(factoryFactory.createTargetFactory(destDir), result.doc);
+            emitter.emit(factoryFactory.createSinkFactory(destDir), result.doc);
         }
     }
 
     /**
-     * Create a dummy configged jADT based on the provided syntaxErrors, semanticErrors, testSrcInfo, and target factory
+     * Create a dummy configged jADT based on the provided syntaxErrors, semanticErrors, testSrcInfo, and sink factory
      * Useful for testing
      */
-    public static JADT createDummyJADT(List<SyntaxError> syntaxErrors, List<SemanticError> semanticErrors, String testSrcInfo, TargetFactoryFactory factory) {
+    public static JADT createDummyJADT(List<SyntaxError> syntaxErrors, List<SemanticError> semanticErrors, String testSrcInfo, SinkFactoryFactory factory) {
         final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);
         final Doc doc = new Doc(TEST_SRC_INFO, "pkg", Util.<String> list(), Util.<DataType> list());
         final ParseResult parseResult = new ParseResult(doc, syntaxErrors);

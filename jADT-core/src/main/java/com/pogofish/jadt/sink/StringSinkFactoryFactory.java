@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import static com.pogofish.jadt.util.Util.list;
 
@@ -24,12 +24,12 @@ import java.util.*;
  *
  * @author jiry
  */
-public class StringTargetFactoryFactory implements TargetFactoryFactory {
-    private Map<String, List<StringTargetFactory>> results = new HashMap<String, List<StringTargetFactory>>();
+public class StringSinkFactoryFactory implements SinkFactoryFactory {
+    private Map<String, List<StringSinkFactory>> results = new HashMap<String, List<StringSinkFactory>>();
     
     @Override
-    public StringTargetFactory createTargetFactory(String baseDir) {
-        final StringTargetFactory result = new StringTargetFactory(baseDir);
+    public StringSinkFactory createSinkFactory(String baseDir) {
+        final StringSinkFactory result = new StringSinkFactory(baseDir);
         if (results.containsKey(baseDir)) {
             results.get(baseDir).add(result);
         } else {
@@ -39,9 +39,9 @@ public class StringTargetFactoryFactory implements TargetFactoryFactory {
     }
     
     /**
-     * A map from base dir to all the StringTargetFactories created for that base dir
+     * A map from base dir to all the StringSinkFactories created for that base dir
      */
-    public Map<String, List<StringTargetFactory>> results() {
+    public Map<String, List<StringSinkFactory>> results() {
         return results;
     }
 }

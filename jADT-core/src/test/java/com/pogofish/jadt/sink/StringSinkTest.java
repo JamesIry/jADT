@@ -13,50 +13,50 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.target.StringTarget;
+import com.pogofish.jadt.sink.StringSink;
 
 
 /**
- * Test StringTarget
+ * Test StringSink
  *
  * @author jiry
  */
-public class StringTargetTest {
+public class StringSinkTest {
     /**
-     * Test that a StringTarget produces the expected result
+     * Test that a StringSink produces the expected result
      */
     @Test
     public void testHappy() {
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
-            target.write("world");
+            sink.write("world");
         } finally {
-            target.close();
+            sink.close();
         }
-        assertEquals("world", target.result());
+        assertEquals("world", sink.result());
     }
     
     /**
-     * Test that a StringTarget throws an exception if not closed before fetching its result
+     * Test that a StringSink throws an exception if not closed before fetching its result
      */
     @Test
     public void testExceptionIfNotClosed() {
-        final StringTarget target = new StringTarget("test");
+        final StringSink sink = new StringSink("test");
         try {
-            target.write("world");
-            final String result = target.result();
-            fail("Did not get exception on unclosed target, got " + result);
+            sink.write("world");
+            final String result = sink.result();
+            fail("Did not get exception on unclosed sink, got " + result);
         } catch (RuntimeException e) {
-            assertEquals("target was not closed", e.getMessage());
+            assertEquals("sink was not closed", e.getMessage());
         } finally {
-            target.close();
+            sink.close();
         }
     }
 }

@@ -13,19 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 /**
- * Yes, it's a factory factory.  I feel so enterprise.  Blame Java's lack of lambdas.  
- *
+ * A factory for creating sinks
+ * 
  * @author jiry
  */
-public interface TargetFactoryFactory {
-    /**
-     * Create a TargetFactory based on the given base directory
-     *
-     * @param baseDir
-     * @return TargetFactory based on the baseDir
-     */
-    public TargetFactory createTargetFactory(String baseDir);
+public interface SinkFactory {
+    public Sink createSink(String className);
 }

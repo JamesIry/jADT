@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import static org.junit.Assert.*;
 
@@ -22,8 +22,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.target.StringTargetFactory;
-import com.pogofish.jadt.target.StringTargetFactoryFactory;
+import com.pogofish.jadt.sink.StringSinkFactory;
+import com.pogofish.jadt.sink.StringSinkFactoryFactory;
 
 
 /**
@@ -31,31 +31,31 @@ import com.pogofish.jadt.target.StringTargetFactoryFactory;
  *
  * @author jiry
  */
-public class StringTargetFactoryFactoryTest {
+public class StringSinkFactoryFactoryTest {
     /**
      * Make sure the results map is correct
      */
     @Test
     public void test() {
-        final StringTargetFactoryFactory ugh = new StringTargetFactoryFactory();
+        final StringSinkFactoryFactory ugh = new StringSinkFactoryFactory();
         
-        final StringTargetFactory sf1 = ugh.createTargetFactory("baseDir1");
-        final StringTargetFactory sf2 = ugh.createTargetFactory("baseDir1");
-        final StringTargetFactory sf3 = ugh.createTargetFactory("baseDir2");
+        final StringSinkFactory sf1 = ugh.createSinkFactory("baseDir1");
+        final StringSinkFactory sf2 = ugh.createSinkFactory("baseDir1");
+        final StringSinkFactory sf3 = ugh.createSinkFactory("baseDir2");
         
         assertNotSame(sf1, sf2);
         assertNotSame(sf2, sf3);
         assertNotSame(sf1, sf3);
         
-        final Map<String, List<StringTargetFactory>> results = ugh.results();
+        final Map<String, List<StringSinkFactory>> results = ugh.results();
         assertEquals(2, results.size());
         
-        final List<StringTargetFactory> result1 = results.get("baseDir1");
+        final List<StringSinkFactory> result1 = results.get("baseDir1");
         assertEquals(2, result1.size());
         assertSame(sf1, result1.get(0));
         assertSame(sf2, result1.get(1));
         
-        final List<StringTargetFactory> result2 = results.get("baseDir2");
+        final List<StringSinkFactory> result2 = results.get("baseDir2");
         assertEquals(1, result2.size());
         assertSame(sf3, result2.get(0));
     }

@@ -40,9 +40,9 @@ import com.pogofish.jadt.ast.UserError;
 import com.pogofish.jadt.checker.StandardChecker;
 import com.pogofish.jadt.emitter.StandardDocEmitter;
 import com.pogofish.jadt.parser.StandardParser;
+import com.pogofish.jadt.sink.FileSinkFactoryFactory;
+import com.pogofish.jadt.sink.StringSinkFactoryFactory;
 import com.pogofish.jadt.source.FileSourceFactory;
-import com.pogofish.jadt.target.FileTargetFactoryFactory;
-import com.pogofish.jadt.target.StringTargetFactoryFactory;
 import com.pogofish.jadt.util.Util;
 
 /**
@@ -66,7 +66,7 @@ public class JADTTest {
         assertTrue("Standard driver had wrong parser", driver.parser instanceof StandardParser);
         assertTrue("Standard driver had wrong checker", driver.checker instanceof StandardChecker);
         assertTrue("Standard driver had wrong emitter", driver.emitter instanceof StandardDocEmitter);
-        assertTrue("Standard driver had wrong target factory factory", driver.factoryFactory instanceof FileTargetFactoryFactory);
+        assertTrue("Standard driver had wrong sink factory factory", driver.factoryFactory instanceof FileSinkFactoryFactory);
     }
     
     /**
@@ -74,7 +74,7 @@ public class JADTTest {
      * resulting string (or throw the resulting exception 
      */
     private String testWithDummyJADT(String[] args, List<SyntaxError> syntaxErrors, List<SemanticError> semanticErrors) {
-        final StringTargetFactoryFactory factory = new StringTargetFactoryFactory();
+        final StringSinkFactoryFactory factory = new StringSinkFactoryFactory();
         JADT.createDummyJADT(syntaxErrors, semanticErrors, JADT.TEST_SRC_INFO, factory).parseAndEmit(args);
         return factory.results().get(JADT.TEST_DIR).get(0).getResults().get(JADT.TEST_CLASS_NAME);
     }

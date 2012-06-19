@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,28 +21,28 @@ import java.io.*;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.target.FileTarget;
+import com.pogofish.jadt.sink.FileSink;
 
 
 /**
- * Test the file target.  That means writing real files to the real file system
+ * Test the file sink.  That means writing real files to the real file system
  *
  * @author jiry
  */
-public class FileTargetTest {
+public class FileSinkTest {
     /**
-     * Test that when a target factory mentions a file that does not exist it gets created properly
+     * Test that when a sink factory mentions a file that does not exist it gets created properly
      */
     @Test
     public void testMissingFile() throws IOException {
         final File temp = File.createTempFile("testFactory", "java");
         try {
             temp.delete();
-            final FileTarget target = new FileTarget(temp.getAbsolutePath());
+            final FileSink sink = new FileSink(temp.getAbsolutePath());
             try {
-                target.write("hello");
+                sink.write("hello");
             } finally {
-                target.close();
+                sink.close();
             }
             
             final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(temp), "UTF-8"));
@@ -56,7 +56,7 @@ public class FileTargetTest {
     }
     
     /**
-     * Test that when a target factory mentions a file that does exist it gets clobbered properly
+     * Test that when a sink factory mentions a file that does exist it gets clobbered properly
      * @throws IOException
      */
     @Test
@@ -70,11 +70,11 @@ public class FileTargetTest {
             } finally {
                 writer.close();
             }
-            final FileTarget target = new FileTarget(temp.getAbsolutePath());
+            final FileSink sink = new FileSink(temp.getAbsolutePath());
             try {
-                target.write("hello");
+                sink.write("hello");
             } finally {
-                target.close();
+                sink.close();
             }
             
             final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(temp), "UTF-8"));

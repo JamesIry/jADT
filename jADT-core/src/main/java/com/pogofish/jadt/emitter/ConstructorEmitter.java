@@ -18,7 +18,7 @@ package com.pogofish.jadt.emitter;
 import java.util.List;
 
 import com.pogofish.jadt.ast.Constructor;
-import com.pogofish.jadt.target.Target;
+import com.pogofish.jadt.sink.Sink;
 
 
 /**
@@ -30,19 +30,19 @@ public interface ConstructorEmitter {
     /**
      * The constructor factory 
      * 
-     * @param target Target for output
+     * @param sink Sink for output
      * @param dataTypeName name of the DataType to return from the factory
      * @param constructor the Constructor with information about arguments
      */
-    public void constructorFactory(Target target, String dataTypeName, List<String> typeParameters, Constructor constructor);
+    public void constructorFactory(Sink sink, String dataTypeName, List<String> typeParameters, Constructor constructor);
 
     /**
      * The complete declaration of the constructor class
      * 
-     * @param target Target for output
+     * @param sink Sink for output
      * @param constructor the Constructor with information about arguments
      * @param dataTypeName name of the DataType that the Constructor class will extend
      * @param typeParameters names of type arguments to apply to the constructor's class and the class it extends
      */
-    public void constructorDeclaration(Target target, Constructor constructor, String dataTypeName, List<String> typeParameters);
+    public void constructorDeclaration(Sink sink, Constructor constructor, String dataTypeName, List<String> typeParameters);
 }

@@ -16,7 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import com.pogofish.jadt.ast.DataType;
-import com.pogofish.jadt.target.Target;
+import com.pogofish.jadt.sink.Sink;
 
 
 /**
@@ -25,8 +25,8 @@ import com.pogofish.jadt.target.Target;
 public class DummyDataTypeEmitter implements DataTypeEmitter {
 
     @Override
-    public void emit(Target target, DataType dataType, String header) {
-        target.write(header + dataType.name);
+    public void emit(Sink sink, DataType dataType, String header) {
+        sink.write(header + dataType.name);
     }
 
 }

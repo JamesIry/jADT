@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.target;
+package com.pogofish.jadt.sink;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,8 +23,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.target.FileTarget;
-import com.pogofish.jadt.target.FileTargetFactory;
+import com.pogofish.jadt.sink.FileSink;
+import com.pogofish.jadt.sink.FileSinkFactory;
 
 
 /**
@@ -32,7 +32,7 @@ import com.pogofish.jadt.target.FileTargetFactory;
  *
  * @author jiry
  */
-public class FileTargetFactoryTest {
+public class FileSinkFactoryTest {
     
     /**
      * Test that the factory does what it's supposed to. That means writing real files to the real file system
@@ -40,13 +40,13 @@ public class FileTargetFactoryTest {
     @Test
     public void testCreate() throws IOException {
         final String tempDir = new File(System.getProperty("java.io.tmpdir")).getCanonicalPath();
-        final FileTargetFactory factory = new FileTargetFactory(tempDir);
-        final FileTarget target = (FileTarget)factory.createTarget("bar.baz.Blah");
+        final FileSinkFactory factory = new FileSinkFactory(tempDir);
+        final FileSink sink = (FileSink)factory.createSink("bar.baz.Blah");
         try {
-            assertTrue("Output file did not exist", target.outputFile.exists());
-            assertEquals(new File(tempDir + "/bar/baz/Blah.java").getCanonicalPath(), target.outputFile.getCanonicalPath());
+            assertTrue("Output file did not exist", sink.outputFile.exists());
+            assertEquals(new File(tempDir + "/bar/baz/Blah.java").getCanonicalPath(), sink.outputFile.getCanonicalPath());
         } finally {
-            target.outputFile.delete();
+            sink.outputFile.delete();
         }
     }
 
@@ -55,7 +55,7 @@ public class FileTargetFactoryTest {
      */
     @Test
     public void testFactorySlash() {
-        final FileTargetFactory factory = new FileTargetFactory("/germufabits/");
+        final FileSinkFactory factory = new FileSinkFactory("/germufabits/");
         final String path = factory.convertToPath("hello.world");
         assertEquals("/germufabits/hello/world.java", path);
     }
@@ -65,7 +65,7 @@ public class FileTargetFactoryTest {
      */
     @Test
     public void testFactoryNoSlash() {
-        final FileTargetFactory factory = new FileTargetFactory("/germufabits");
+        final FileSinkFactory factory = new FileSinkFactory("/germufabits");
         final String path = factory.convertToPath("hello.world");
         assertEquals("/germufabits/hello/world.java", path);
     }

@@ -16,7 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import com.pogofish.jadt.ast.Doc;
-import com.pogofish.jadt.target.TargetFactory;
+import com.pogofish.jadt.sink.SinkFactory;
 
 
 /**
@@ -27,11 +27,11 @@ import com.pogofish.jadt.target.TargetFactory;
 public interface DocEmitter {
 
     /**
-     * Emits a document to targets created by the specified factory
+     * Emits a document to sinks created by the specified factory
      * 
-     * @param factory TargetFactory that will produce targets for output
+     * @param factory SinkFactory that will produce sinks for output
      * @param doc Document to output
      */
-    public abstract void emit(TargetFactory factory, Doc doc);
+    public abstract void emit(SinkFactory factory, Doc doc);
 
 }

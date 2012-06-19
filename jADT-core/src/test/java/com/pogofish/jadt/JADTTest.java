@@ -43,6 +43,7 @@ import com.pogofish.jadt.parser.StandardParser;
 import com.pogofish.jadt.sink.FileSinkFactoryFactory;
 import com.pogofish.jadt.sink.StringSinkFactoryFactory;
 import com.pogofish.jadt.source.FileSourceFactory;
+import com.pogofish.jadt.util.TestUtil;
 import com.pogofish.jadt.util.Util;
 
 /**
@@ -158,7 +159,7 @@ public class JADTTest {
             try {
                 writer.write("Foo = Foo");
                 writer.close();
-                final File tmpDir = Util.createTmpDir();
+                final File tmpDir = TestUtil.createTmpDir();
                 try {
                    JADT.main(new String[]{srcFile.getAbsolutePath(), tmpDir.getAbsolutePath()});
                    final File outputFile = new File(tmpDir, "Foo.java");

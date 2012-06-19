@@ -29,7 +29,7 @@ import org.junit.Test;
 import com.pogofish.jadt.source.FileSourceFactory;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.source.SourceFactory;
-import com.pogofish.jadt.util.Util;
+import com.pogofish.jadt.util.TestUtil;
 
 
 /**
@@ -111,7 +111,7 @@ public class FileSourceFactoryTest {
      */
     @Test
     public void testDir() throws IOException {
-        final File tempDir = Util.createTmpDir();
+        final File tempDir = TestUtil.createTmpDir();
         try {
             final List<File> tempFiles = new ArrayList<File>();
             try {

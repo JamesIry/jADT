@@ -1,11 +1,11 @@
 package com.pogofish.jadt;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Properties;
-
-import java.io.Reader;
 
 import com.pogofish.jadt.util.IOExceptionAction;
 
@@ -24,8 +24,10 @@ public class Version {
 
 			@Override
 			public String doAction() throws IOException {
-				final URL resource = Thread.currentThread()
-						.getContextClassLoader().getResource(MODULE_PROPERTIES);
+				final URL resource = Version.class.getClassLoader().getResource(MODULE_PROPERTIES);
+				if (resource == null) {
+				    throw new FileNotFoundException("Could not find internal resource " + MODULE_PROPERTIES);
+				}
 				final Reader reader = new InputStreamReader(
 						resource.openStream(), "UTF-8");
 				try {

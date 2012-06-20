@@ -1,0 +1,3 @@
+package com.pogofish.jadt.ant.samples
+
+Foo = Bar | Baz

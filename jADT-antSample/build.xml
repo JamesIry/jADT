@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<project name="JADTTaskExample" default="compile" basedir=".">
+
+  <!-- jadt.classpath is the path with both 
+       jADT-core-${projectVersion}.jar and jADT-ant-${projectVersion}.jar.
+       Here we assume they are placed in a local maven repository -->
+  <property environment="env"/>
+  <property name="jadt.version">0.2.0-SNAPSHOT</property>
+  <path id="jadt.classpath">
+    <fileset dir="${env.HOME}/.m2/repository/com/pogofish/jadt/jADT-core/${jadt.version}/" includes="jADT-core-${jadt.version}.jar"/>
+    <fileset dir="${env.HOME}/.m2/repository/com/pogofish/jadt/jADT-ant/${jadt.version}/" includes="jADT-ant-${jadt.version}.jar"/>
+  </path>	
+
+  <!-- jadt.srcPath is the full path of a directory with .jadt files or
+       the path to a single file -->
+  <property name="jadt.srcPath">${basedir}/src/main/jadt/</property>
+  <!-- or <property name="jadt.srcPath">${basedir}/src/main/jadt/MyStuff.jadt</property> -->
+
+  <!-- jadt.destDir is the full path of a directory where jADT will produce its java output -->
+  <property name="jadt.destDir">${basedir}/target/generated-sources/jadt</property>
+  
+  <taskdef name="jadt" classname="com.pogofish.jadt.ant.JADTAntTask" classpathref="jadt.classpath" />
+
+  <target name="compile" depends="generateJADT">
+    <!-- normal compile stuff -->
+  </target>
+    
+  <target name="generateJADT">
+    <jadt srcPath="${jadt.srcPath}" destDir = "${jadt.destDir}" />
+  </target>
+  
+  <target name="clean" depends="cleanJADT">
+    <!-- normal clean stuff -->
+  </target>
+
+  <target name="cleanJADT">
+     <delete dir="${jadt.destDir}" />
+  </target>
+  
+</project>

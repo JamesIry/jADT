@@ -15,9 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
-import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
-import static com.pogofish.jadt.ast.PrimitiveType._IntType;
-import static com.pogofish.jadt.ast.PrimitiveType._LongType;
+import static com.pogofish.jadt.ast.PrimitiveType.*;
 import static com.pogofish.jadt.ast.RefType._ArrayType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -139,9 +137,13 @@ public class ClassBodyEmitterTest {
     "      public int hashCode() {\n" +
     "          final int prime = 31;\n" +
     "          int result = 1;\n" +
-    "          result = prime * result + um;\n" +
-    "          result = prime * result + (bool ? 1 : 0);\n" +
-    "          result = prime * result + (int)shorty;\n" +
+    "          result = prime * result + (boolShit ? 1 : 0);\n" +
+    "          result = prime * result + whatACharacter;\n" +
+    "          result = prime * result + shorty;\n" +
+    "          result = prime * result + integrity;\n" +
+    "          result = prime * result + (int)likeYourMomLikesIt;\n" +
+    "          result = prime * result + (int)turd;\n" +
+    "          result = prime * result + (int)yourPleasure;\n" +
     "          result = prime * result + ((yeah == null) ? 0 : yeah.hashCode());\n" +
     "          result = prime * result + java.util.Arrays.hashCode(oh);\n" +
     "          return result;\n" +
@@ -418,10 +420,14 @@ public class ClassBodyEmitterTest {
     @Test
     public void testArgHashCode() {
         final Constructor constructor = new Constructor("Foo", list(
-                new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "um"),
-                new Arg(Util.<ArgModifier>list(), _Primitive(_BooleanType()), "bool"),
-                new Arg(Util.<ArgModifier>list(), _Primitive(_LongType()), "shorty"),
-                new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_BooleanType()), "boolShit"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_CharType()), "whatACharacter"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_ShortType()), "shorty"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "integrity"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_LongType()), "likeYourMomLikesIt"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_FloatType()), "turd"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_DoubleType()), "yourPleasure"),
+                               new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
         ));
         

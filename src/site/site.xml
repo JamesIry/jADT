@@ -55,6 +55,7 @@
             <item name="Generating Java from Apache Ant" href="ant_generation.html" collapse="true"/>
             <item name="Limitations" href="limitations.html" collapse="true"/>
             <item name="FAQ" href="faq.html" collapse="true"/>
+            <item name="Change List" href="change_list.html" collapse="true"/>
         </menu>
     
        <menu name="jADT Specification" inherit="top">

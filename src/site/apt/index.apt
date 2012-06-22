@@ -18,7 +18,7 @@ All the fields are marked final (immutable) but need not be.
 
 Usage
 
-    Java can be generated from jADT files using {{{./ant_generation.html}Apache Ant}} or from {{{./shell_generation.html}the shell}}.
+    Java can be generated from jADT files using {{{./maven_generation.html}Apache Maven}}, {{{./ant_generation.html}Apache Ant}} or from {{{./shell_generation.html}the shell}}.
 
     To use the generated Java, you'll need some imports
 

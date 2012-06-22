@@ -26,7 +26,7 @@
 <a class="jxr_linenumber" name="16" href="#16">16</a>  <strong class="jxr_keyword">package</strong> com.pogofish.jadt.emitter;
 <a class="jxr_linenumber" name="17" href="#17">17</a>  
 <a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.ast.Doc;
-<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.target.TargetFactory;
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.sink.SinkFactory;
 <a class="jxr_linenumber" name="20" href="#20">20</a>  
 <a class="jxr_linenumber" name="21" href="#21">21</a>  
 <a class="jxr_linenumber" name="22" href="#22">22</a>  <em class="jxr_javadoccomment">/**</em>
@@ -37,12 +37,12 @@
 <a class="jxr_linenumber" name="27" href="#27">27</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../com/pogofish/jadt/emitter/DocEmitter.html">DocEmitter</a> {
 <a class="jxr_linenumber" name="28" href="#28">28</a>  
 <a class="jxr_linenumber" name="29" href="#29">29</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="30" href="#30">30</a>  <em class="jxr_javadoccomment">     * Emits a document to targets created by the specified factory</em>
+<a class="jxr_linenumber" name="30" href="#30">30</a>  <em class="jxr_javadoccomment">     * Emits a document to sinks created by the specified factory</em>
 <a class="jxr_linenumber" name="31" href="#31">31</a>  <em class="jxr_javadoccomment">     * </em>
-<a class="jxr_linenumber" name="32" href="#32">32</a>  <em class="jxr_javadoccomment">     * @param factory TargetFactory that will produce targets for output</em>
+<a class="jxr_linenumber" name="32" href="#32">32</a>  <em class="jxr_javadoccomment">     * @param factory SinkFactory that will produce sinks for output</em>
 <a class="jxr_linenumber" name="33" href="#33">33</a>  <em class="jxr_javadoccomment">     * @param doc Document to output</em>
 <a class="jxr_linenumber" name="34" href="#34">34</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="35" href="#35">35</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">void</strong> emit(<a href="../../../../com/pogofish/jadt/target/TargetFactory.html">TargetFactory</a> factory, Doc doc);
+<a class="jxr_linenumber" name="35" href="#35">35</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">void</strong> emit(<a href="../../../../com/pogofish/jadt/sink/SinkFactory.html">SinkFactory</a> factory, Doc doc);
 <a class="jxr_linenumber" name="36" href="#36">36</a>  
 <a class="jxr_linenumber" name="37" href="#37">37</a>  }
 </pre>

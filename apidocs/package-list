@@ -3,6 +3,7 @@ com.pogofish.jadt.ant
 com.pogofish.jadt.ast
 com.pogofish.jadt.checker
 com.pogofish.jadt.emitter
+com.pogofish.jadt.maven
 com.pogofish.jadt.parser
 com.pogofish.jadt.printer
 com.pogofish.jadt.samples.ast
@@ -10,6 +11,6 @@ com.pogofish.jadt.samples.ast.data
 com.pogofish.jadt.samples.visitor
 com.pogofish.jadt.samples.whathow
 com.pogofish.jadt.samples.whathow.data
+com.pogofish.jadt.sink
 com.pogofish.jadt.source
-com.pogofish.jadt.target
 com.pogofish.jadt.util

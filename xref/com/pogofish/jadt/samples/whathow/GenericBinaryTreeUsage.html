@@ -55,9 +55,9 @@
 <a class="jxr_linenumber" name="45" href="#45">45</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="46" href="#46">46</a>      <em class="jxr_comment">// START SNIPPET: max</em>
 <a class="jxr_linenumber" name="47" href="#47">47</a>      <strong class="jxr_keyword">public</strong> String max(BinaryTree&lt;String&gt; tree)  {
-<a class="jxr_linenumber" name="48" href="#48">48</a>          <strong class="jxr_keyword">return</strong> tree.accept(<strong class="jxr_keyword">new</strong> BinaryTree.Visitor&lt;String, String&gt;() {
+<a class="jxr_linenumber" name="48" href="#48">48</a>          <strong class="jxr_keyword">return</strong> tree.match(<strong class="jxr_keyword">new</strong> BinaryTree.MatchBlock&lt;String, String&gt;() {
 <a class="jxr_linenumber" name="49" href="#49">49</a>             @Override
-<a class="jxr_linenumber" name="50" href="#50">50</a>             <strong class="jxr_keyword">public</strong> String visit(Node&lt;String&gt; x) {
+<a class="jxr_linenumber" name="50" href="#50">50</a>             <strong class="jxr_keyword">public</strong> String _<strong class="jxr_keyword">case</strong>(Node&lt;String&gt; x) {
 <a class="jxr_linenumber" name="51" href="#51">51</a>                 <strong class="jxr_keyword">final</strong> String maxLeft = max(x.left);
 <a class="jxr_linenumber" name="52" href="#52">52</a>                 <strong class="jxr_keyword">final</strong> String maxRight = max(x.right);
 <a class="jxr_linenumber" name="53" href="#53">53</a>  
@@ -65,7 +65,7 @@
 <a class="jxr_linenumber" name="55" href="#55">55</a>             }
 <a class="jxr_linenumber" name="56" href="#56">56</a>  
 <a class="jxr_linenumber" name="57" href="#57">57</a>             @Override
-<a class="jxr_linenumber" name="58" href="#58">58</a>             <strong class="jxr_keyword">public</strong> String visit(EmptyTree&lt;String&gt; x) {
+<a class="jxr_linenumber" name="58" href="#58">58</a>             <strong class="jxr_keyword">public</strong> String _<strong class="jxr_keyword">case</strong>(EmptyTree&lt;String&gt; x) {
 <a class="jxr_linenumber" name="59" href="#59">59</a>                <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="60" href="#60">60</a>             }
 <a class="jxr_linenumber" name="61" href="#61">61</a>          });

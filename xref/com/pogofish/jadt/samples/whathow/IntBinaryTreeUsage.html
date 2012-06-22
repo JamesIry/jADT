@@ -56,9 +56,9 @@
 <a class="jxr_linenumber" name="46" href="#46">46</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="47" href="#47">47</a>      <em class="jxr_comment">// START SNIPPET: max  </em>
 <a class="jxr_linenumber" name="48" href="#48">48</a>      <strong class="jxr_keyword">public</strong> Integer max(IntBinaryTree tree)  {
-<a class="jxr_linenumber" name="49" href="#49">49</a>          <strong class="jxr_keyword">return</strong> tree.accept(<strong class="jxr_keyword">new</strong> IntBinaryTree.Visitor&lt;Integer&gt;() {
+<a class="jxr_linenumber" name="49" href="#49">49</a>          <strong class="jxr_keyword">return</strong> tree.match(<strong class="jxr_keyword">new</strong> IntBinaryTree.MatchBlock&lt;Integer&gt;() {
 <a class="jxr_linenumber" name="50" href="#50">50</a>             @Override
-<a class="jxr_linenumber" name="51" href="#51">51</a>             <strong class="jxr_keyword">public</strong> Integer visit(Node x) {
+<a class="jxr_linenumber" name="51" href="#51">51</a>             <strong class="jxr_keyword">public</strong> Integer _<strong class="jxr_keyword">case</strong>(Node x) {
 <a class="jxr_linenumber" name="52" href="#52">52</a>                <strong class="jxr_keyword">final</strong> Integer maxLeft = max(x.left);
 <a class="jxr_linenumber" name="53" href="#53">53</a>                <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> l = maxLeft == <strong class="jxr_keyword">null</strong> ? Integer.MIN_VALUE : maxLeft;
 <a class="jxr_linenumber" name="54" href="#54">54</a>  
@@ -69,7 +69,7 @@
 <a class="jxr_linenumber" name="59" href="#59">59</a>             }
 <a class="jxr_linenumber" name="60" href="#60">60</a>  
 <a class="jxr_linenumber" name="61" href="#61">61</a>             @Override
-<a class="jxr_linenumber" name="62" href="#62">62</a>             <strong class="jxr_keyword">public</strong> Integer visit(EmptyTree x) {
+<a class="jxr_linenumber" name="62" href="#62">62</a>             <strong class="jxr_keyword">public</strong> Integer _<strong class="jxr_keyword">case</strong>(EmptyTree x) {
 <a class="jxr_linenumber" name="63" href="#63">63</a>                <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="64" href="#64">64</a>             }
 <a class="jxr_linenumber" name="65" href="#65">65</a>          });

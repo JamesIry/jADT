@@ -26,8 +26,8 @@
 <a class="jxr_linenumber" name="16" href="#16">16</a>  <strong class="jxr_keyword">package</strong> com.pogofish.jadt.emitter;
 <a class="jxr_linenumber" name="17" href="#17">17</a>  
 <a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.ast.Doc;
-<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.target.Target;
-<a class="jxr_linenumber" name="20" href="#20">20</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.target.TargetFactory;
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.sink.Sink;
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.sink.SinkFactory;
 <a class="jxr_linenumber" name="21" href="#21">21</a>  
 <a class="jxr_linenumber" name="22" href="#22">22</a>  
 <a class="jxr_linenumber" name="23" href="#23">23</a>  <em class="jxr_javadoccomment">/**</em>
@@ -40,7 +40,7 @@
 <a class="jxr_linenumber" name="30" href="#30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String className;
 <a class="jxr_linenumber" name="31" href="#31">31</a>      
 <a class="jxr_linenumber" name="32" href="#32">32</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="33" href="#33">33</a>  <em class="jxr_javadoccomment">     * Takes a String className that will be used to create a target and a document that it will assert</em>
+<a class="jxr_linenumber" name="33" href="#33">33</a>  <em class="jxr_javadoccomment">     * Takes a String className that will be used to create a sink and a document that it will assert</em>
 <a class="jxr_linenumber" name="34" href="#34">34</a>  <em class="jxr_javadoccomment">     * it gets during emit</em>
 <a class="jxr_linenumber" name="35" href="#35">35</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="36" href="#36">36</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/pogofish/jadt/emitter/DummyDocEmitter.html">DummyDocEmitter</a>(Doc testDoc, String className) {
@@ -51,15 +51,15 @@
 <a class="jxr_linenumber" name="41" href="#41">41</a>  
 <a class="jxr_linenumber" name="42" href="#42">42</a>  
 <a class="jxr_linenumber" name="43" href="#43">43</a>      @Override
-<a class="jxr_linenumber" name="44" href="#44">44</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> emit(<a href="../../../../com/pogofish/jadt/target/TargetFactory.html">TargetFactory</a> factory, Doc doc) {
+<a class="jxr_linenumber" name="44" href="#44">44</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> emit(<a href="../../../../com/pogofish/jadt/sink/SinkFactory.html">SinkFactory</a> factory, Doc doc) {
 <a class="jxr_linenumber" name="45" href="#45">45</a>          <strong class="jxr_keyword">if</strong> (testDoc != doc) {
 <a class="jxr_linenumber" name="46" href="#46">46</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> RuntimeException(<span class="jxr_string">"testDoc and doc argument were not the same"</span>);
 <a class="jxr_linenumber" name="47" href="#47">47</a>          }
-<a class="jxr_linenumber" name="48" href="#48">48</a>          <strong class="jxr_keyword">final</strong> <a href="../../../../com/pogofish/jadt/target/Target.html">Target</a> target = factory.createTarget(className);
+<a class="jxr_linenumber" name="48" href="#48">48</a>          <strong class="jxr_keyword">final</strong> <a href="../../../../com/pogofish/jadt/sink/Sink.html">Sink</a> sink = factory.createSink(className);
 <a class="jxr_linenumber" name="49" href="#49">49</a>          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="50" href="#50">50</a>              target.write(doc.srcInfo);
+<a class="jxr_linenumber" name="50" href="#50">50</a>              sink.write(doc.srcInfo);
 <a class="jxr_linenumber" name="51" href="#51">51</a>          } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="52" href="#52">52</a>              target.close();
+<a class="jxr_linenumber" name="52" href="#52">52</a>              sink.close();
 <a class="jxr_linenumber" name="53" href="#53">53</a>          }
 <a class="jxr_linenumber" name="54" href="#54">54</a>      }
 <a class="jxr_linenumber" name="55" href="#55">55</a>  

@@ -12,7 +12,7 @@
 <a class="jxr_linenumber" name="2" href="#2">2</a>   
 <a class="jxr_linenumber" name="3" href="#3">3</a>   
 <a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment">This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/SampleAST.jadt using jADT version ${pom.version} <a href="http://jamesiry.github.com/jADT/" target="alexandria_uri">http://jamesiry.github.com/jADT/</a> . Please do not modify directly.</em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment">This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/SampleAST.jadt using jADT version 0.2.0-SNAPSHOT <a href="http://jamesiry.github.com/jADT/" target="alexandria_uri">http://jamesiry.github.com/jADT/</a> . Please do not modify directly.</em>
 <a class="jxr_linenumber" name="6" href="#6">6</a>   
 <a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_comment">The source was parsed as: </em>
 <a class="jxr_linenumber" name="8" href="#8">8</a>   
@@ -24,18 +24,18 @@
 <a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_comment">    Int</em>
 <a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment">  | Long</em>
 <a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_comment">Function =</em>
-<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_comment">    Function(Type returnType, String name, List&lt;Arg&gt; args, List&lt;Statement&gt; statements)</em>
+<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_comment">    Function(final Type returnType, final String name, List&lt;Arg&gt; args, final List&lt;Statement&gt; statements)</em>
 <a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_comment">Arg =</em>
-<a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_comment">    Arg(Type type, String name)</em>
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_comment">    Arg(final Type type, final String name)</em>
 <a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment">Statement =</em>
-<a class="jxr_linenumber" name="21" href="#21">21</a>  <em class="jxr_comment">    Declaration(Type type, String name, Expression expression)</em>
-<a class="jxr_linenumber" name="22" href="#22">22</a>  <em class="jxr_comment">  | Assignment(String name, Expression expression)</em>
-<a class="jxr_linenumber" name="23" href="#23">23</a>  <em class="jxr_comment">  | Return(Expression expression)</em>
+<a class="jxr_linenumber" name="21" href="#21">21</a>  <em class="jxr_comment">    Declaration(final Type type, final String name, final Expression expression)</em>
+<a class="jxr_linenumber" name="22" href="#22">22</a>  <em class="jxr_comment">  | Assignment(final String name, final Expression expression)</em>
+<a class="jxr_linenumber" name="23" href="#23">23</a>  <em class="jxr_comment">  | Return(final Expression expression)</em>
 <a class="jxr_linenumber" name="24" href="#24">24</a>  <em class="jxr_comment">Expression =</em>
-<a class="jxr_linenumber" name="25" href="#25">25</a>  <em class="jxr_comment">    Add(Expression left, Expression right)</em>
-<a class="jxr_linenumber" name="26" href="#26">26</a>  <em class="jxr_comment">  | Variable(String name)</em>
-<a class="jxr_linenumber" name="27" href="#27">27</a>  <em class="jxr_comment">  | IntLiteral(int value)</em>
-<a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_comment">  | LongLiteral(long value)</em>
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <em class="jxr_comment">    Add(final Expression left, final Expression right)</em>
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <em class="jxr_comment">  | Variable(final String name)</em>
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <em class="jxr_comment">  | IntLiteral(final int value)</em>
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_comment">  | LongLiteral(final long value)</em>
 <a class="jxr_linenumber" name="29" href="#29">29</a>  
 <a class="jxr_linenumber" name="30" href="#30">30</a>  <em class="jxr_comment">*/</em>
 <a class="jxr_linenumber" name="31" href="#31">31</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Statement</a> {
@@ -47,42 +47,42 @@
 <a class="jxr_linenumber" name="37" href="#37">37</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong>  Statement _Assignment(String name, Expression expression) { <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Assignment(name, expression); }
 <a class="jxr_linenumber" name="38" href="#38">38</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong>  Statement _Return(Expression expression) { <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Return(expression); }
 <a class="jxr_linenumber" name="39" href="#39">39</a>  
-<a class="jxr_linenumber" name="40" href="#40">40</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">interface</strong> Visitor&lt;ResultType&gt; {
-<a class="jxr_linenumber" name="41" href="#41">41</a>        ResultType visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> x);
-<a class="jxr_linenumber" name="42" href="#42">42</a>        ResultType visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Assignment</a> x);
-<a class="jxr_linenumber" name="43" href="#43">43</a>        ResultType visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Return</a> x);
+<a class="jxr_linenumber" name="40" href="#40">40</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">interface</strong> MatchBlock&lt;ResultType&gt; {
+<a class="jxr_linenumber" name="41" href="#41">41</a>        ResultType _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> x);
+<a class="jxr_linenumber" name="42" href="#42">42</a>        ResultType _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Assignment</a> x);
+<a class="jxr_linenumber" name="43" href="#43">43</a>        ResultType _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Return</a> x);
 <a class="jxr_linenumber" name="44" href="#44">44</a>     }
 <a class="jxr_linenumber" name="45" href="#45">45</a>  
-<a class="jxr_linenumber" name="46" href="#46">46</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> VisitorWithDefault&lt;ResultType&gt; <strong class="jxr_keyword">implements</strong> Visitor&lt;ResultType&gt; {
+<a class="jxr_linenumber" name="46" href="#46">46</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> MatchBlockWithDefault&lt;ResultType&gt; <strong class="jxr_keyword">implements</strong> MatchBlock&lt;ResultType&gt; {
 <a class="jxr_linenumber" name="47" href="#47">47</a>        @Override
-<a class="jxr_linenumber" name="48" href="#48">48</a>        <strong class="jxr_keyword">public</strong> ResultType visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> x) { <strong class="jxr_keyword">return</strong> getDefault(x); }
+<a class="jxr_linenumber" name="48" href="#48">48</a>        <strong class="jxr_keyword">public</strong> ResultType _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> x) { <strong class="jxr_keyword">return</strong> _<strong class="jxr_keyword">default</strong>(x); }
 <a class="jxr_linenumber" name="49" href="#49">49</a>  
 <a class="jxr_linenumber" name="50" href="#50">50</a>        @Override
-<a class="jxr_linenumber" name="51" href="#51">51</a>        <strong class="jxr_keyword">public</strong> ResultType visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Assignment</a> x) { <strong class="jxr_keyword">return</strong> getDefault(x); }
+<a class="jxr_linenumber" name="51" href="#51">51</a>        <strong class="jxr_keyword">public</strong> ResultType _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Assignment</a> x) { <strong class="jxr_keyword">return</strong> _<strong class="jxr_keyword">default</strong>(x); }
 <a class="jxr_linenumber" name="52" href="#52">52</a>  
 <a class="jxr_linenumber" name="53" href="#53">53</a>        @Override
-<a class="jxr_linenumber" name="54" href="#54">54</a>        <strong class="jxr_keyword">public</strong> ResultType visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Return</a> x) { <strong class="jxr_keyword">return</strong> getDefault(x); }
+<a class="jxr_linenumber" name="54" href="#54">54</a>        <strong class="jxr_keyword">public</strong> ResultType _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Return</a> x) { <strong class="jxr_keyword">return</strong> _<strong class="jxr_keyword">default</strong>(x); }
 <a class="jxr_linenumber" name="55" href="#55">55</a>  
-<a class="jxr_linenumber" name="56" href="#56">56</a>        <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">abstract</strong> ResultType getDefault(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Statement</a> x);
+<a class="jxr_linenumber" name="56" href="#56">56</a>        <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">abstract</strong> ResultType _<strong class="jxr_keyword">default</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Statement</a> x);
 <a class="jxr_linenumber" name="57" href="#57">57</a>     }
 <a class="jxr_linenumber" name="58" href="#58">58</a>  
-<a class="jxr_linenumber" name="59" href="#59">59</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">VoidVisitor</a> {
-<a class="jxr_linenumber" name="60" href="#60">60</a>        <strong class="jxr_keyword">void</strong> visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> x);
-<a class="jxr_linenumber" name="61" href="#61">61</a>        <strong class="jxr_keyword">void</strong> visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Assignment</a> x);
-<a class="jxr_linenumber" name="62" href="#62">62</a>        <strong class="jxr_keyword">void</strong> visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Return</a> x);
+<a class="jxr_linenumber" name="59" href="#59">59</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">SwitchBlock</a> {
+<a class="jxr_linenumber" name="60" href="#60">60</a>        <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> x);
+<a class="jxr_linenumber" name="61" href="#61">61</a>        <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Assignment</a> x);
+<a class="jxr_linenumber" name="62" href="#62">62</a>        <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Return</a> x);
 <a class="jxr_linenumber" name="63" href="#63">63</a>     }
 <a class="jxr_linenumber" name="64" href="#64">64</a>  
-<a class="jxr_linenumber" name="65" href="#65">65</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">VoidVisitorWithDefault</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">VoidVisitor</a> {
+<a class="jxr_linenumber" name="65" href="#65">65</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">SwitchBlockWithDefault</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">SwitchBlock</a> {
 <a class="jxr_linenumber" name="66" href="#66">66</a>        @Override
-<a class="jxr_linenumber" name="67" href="#67">67</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> x) { doDefault(x); }
+<a class="jxr_linenumber" name="67" href="#67">67</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> x) { _<strong class="jxr_keyword">default</strong>(x); }
 <a class="jxr_linenumber" name="68" href="#68">68</a>  
 <a class="jxr_linenumber" name="69" href="#69">69</a>        @Override
-<a class="jxr_linenumber" name="70" href="#70">70</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Assignment</a> x) { doDefault(x); }
+<a class="jxr_linenumber" name="70" href="#70">70</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Assignment</a> x) { _<strong class="jxr_keyword">default</strong>(x); }
 <a class="jxr_linenumber" name="71" href="#71">71</a>  
 <a class="jxr_linenumber" name="72" href="#72">72</a>        @Override
-<a class="jxr_linenumber" name="73" href="#73">73</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> visit(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Return</a> x) { doDefault(x); }
+<a class="jxr_linenumber" name="73" href="#73">73</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">case</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Return</a> x) { _<strong class="jxr_keyword">default</strong>(x); }
 <a class="jxr_linenumber" name="74" href="#74">74</a>  
-<a class="jxr_linenumber" name="75" href="#75">75</a>        <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">void</strong> doDefault(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Statement</a> x);
+<a class="jxr_linenumber" name="75" href="#75">75</a>        <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">default</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Statement</a> x);
 <a class="jxr_linenumber" name="76" href="#76">76</a>     }
 <a class="jxr_linenumber" name="77" href="#77">77</a>  
 <a class="jxr_linenumber" name="78" href="#78">78</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Declaration</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Statement.html">Statement</a> {
@@ -97,10 +97,10 @@
 <a class="jxr_linenumber" name="87" href="#87">87</a>        }
 <a class="jxr_linenumber" name="88" href="#88">88</a>  
 <a class="jxr_linenumber" name="89" href="#89">89</a>        @Override
-<a class="jxr_linenumber" name="90" href="#90">90</a>        <strong class="jxr_keyword">public</strong> &lt;ResultType&gt; ResultType accept(Visitor&lt;ResultType&gt; visitor) { <strong class="jxr_keyword">return</strong> visitor.visit(<strong class="jxr_keyword">this</strong>); }
+<a class="jxr_linenumber" name="90" href="#90">90</a>        <strong class="jxr_keyword">public</strong> &lt;ResultType&gt; ResultType match(MatchBlock&lt;ResultType&gt; matchBlock) { <strong class="jxr_keyword">return</strong> matchBlock._<strong class="jxr_keyword">case</strong>(<strong class="jxr_keyword">this</strong>); }
 <a class="jxr_linenumber" name="91" href="#91">91</a>  
 <a class="jxr_linenumber" name="92" href="#92">92</a>        @Override
-<a class="jxr_linenumber" name="93" href="#93">93</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> accept(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">VoidVisitor</a> visitor) { visitor.visit(<strong class="jxr_keyword">this</strong>); }
+<a class="jxr_linenumber" name="93" href="#93">93</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">switch</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">SwitchBlock</a> switchBlock) { switchBlock._<strong class="jxr_keyword">case</strong>(<strong class="jxr_keyword">this</strong>); }
 <a class="jxr_linenumber" name="94" href="#94">94</a>  
 <a class="jxr_linenumber" name="95" href="#95">95</a>        @Override
 <a class="jxr_linenumber" name="96" href="#96">96</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> hashCode() {
@@ -147,10 +147,10 @@
 <a class="jxr_linenumber" name="137" href="#137">137</a>       }
 <a class="jxr_linenumber" name="138" href="#138">138</a> 
 <a class="jxr_linenumber" name="139" href="#139">139</a>       @Override
-<a class="jxr_linenumber" name="140" href="#140">140</a>       <strong class="jxr_keyword">public</strong> &lt;ResultType&gt; ResultType accept(Visitor&lt;ResultType&gt; visitor) { <strong class="jxr_keyword">return</strong> visitor.visit(<strong class="jxr_keyword">this</strong>); }
+<a class="jxr_linenumber" name="140" href="#140">140</a>       <strong class="jxr_keyword">public</strong> &lt;ResultType&gt; ResultType match(MatchBlock&lt;ResultType&gt; matchBlock) { <strong class="jxr_keyword">return</strong> matchBlock._<strong class="jxr_keyword">case</strong>(<strong class="jxr_keyword">this</strong>); }
 <a class="jxr_linenumber" name="141" href="#141">141</a> 
 <a class="jxr_linenumber" name="142" href="#142">142</a>       @Override
-<a class="jxr_linenumber" name="143" href="#143">143</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> accept(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">VoidVisitor</a> visitor) { visitor.visit(<strong class="jxr_keyword">this</strong>); }
+<a class="jxr_linenumber" name="143" href="#143">143</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">switch</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">SwitchBlock</a> switchBlock) { switchBlock._<strong class="jxr_keyword">case</strong>(<strong class="jxr_keyword">this</strong>); }
 <a class="jxr_linenumber" name="144" href="#144">144</a> 
 <a class="jxr_linenumber" name="145" href="#145">145</a>       @Override
 <a class="jxr_linenumber" name="146" href="#146">146</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> hashCode() {
@@ -191,10 +191,10 @@
 <a class="jxr_linenumber" name="181" href="#181">181</a>       }
 <a class="jxr_linenumber" name="182" href="#182">182</a> 
 <a class="jxr_linenumber" name="183" href="#183">183</a>       @Override
-<a class="jxr_linenumber" name="184" href="#184">184</a>       <strong class="jxr_keyword">public</strong> &lt;ResultType&gt; ResultType accept(Visitor&lt;ResultType&gt; visitor) { <strong class="jxr_keyword">return</strong> visitor.visit(<strong class="jxr_keyword">this</strong>); }
+<a class="jxr_linenumber" name="184" href="#184">184</a>       <strong class="jxr_keyword">public</strong> &lt;ResultType&gt; ResultType match(MatchBlock&lt;ResultType&gt; matchBlock) { <strong class="jxr_keyword">return</strong> matchBlock._<strong class="jxr_keyword">case</strong>(<strong class="jxr_keyword">this</strong>); }
 <a class="jxr_linenumber" name="185" href="#185">185</a> 
 <a class="jxr_linenumber" name="186" href="#186">186</a>       @Override
-<a class="jxr_linenumber" name="187" href="#187">187</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> accept(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">VoidVisitor</a> visitor) { visitor.visit(<strong class="jxr_keyword">this</strong>); }
+<a class="jxr_linenumber" name="187" href="#187">187</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">switch</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">SwitchBlock</a> switchBlock) { switchBlock._<strong class="jxr_keyword">case</strong>(<strong class="jxr_keyword">this</strong>); }
 <a class="jxr_linenumber" name="188" href="#188">188</a> 
 <a class="jxr_linenumber" name="189" href="#189">189</a>       @Override
 <a class="jxr_linenumber" name="190" href="#190">190</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> hashCode() {
@@ -223,9 +223,9 @@
 <a class="jxr_linenumber" name="213" href="#213">213</a> 
 <a class="jxr_linenumber" name="214" href="#214">214</a>    }
 <a class="jxr_linenumber" name="215" href="#215">215</a> 
-<a class="jxr_linenumber" name="216" href="#216">216</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> &lt;ResultType&gt; ResultType accept(Visitor&lt;ResultType&gt; visitor);
+<a class="jxr_linenumber" name="216" href="#216">216</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> &lt;ResultType&gt; ResultType match(MatchBlock&lt;ResultType&gt; matchBlock);
 <a class="jxr_linenumber" name="217" href="#217">217</a> 
-<a class="jxr_linenumber" name="218" href="#218">218</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">void</strong> accept(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">VoidVisitor</a> visitor);
+<a class="jxr_linenumber" name="218" href="#218">218</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">void</strong> _<strong class="jxr_keyword">switch</strong>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">SwitchBlock</a> switchBlock);
 <a class="jxr_linenumber" name="219" href="#219">219</a> 
 <a class="jxr_linenumber" name="220" href="#220">220</a> }
 </pre>

@@ -11,7 +11,7 @@
 <a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> com.pogofish.jadt.samples.whathow.data;
 <a class="jxr_linenumber" name="2" href="#2">2</a>   
 <a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment">This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version ${pom.version} <a href="http://jamesiry.github.com/jADT/" target="alexandria_uri">http://jamesiry.github.com/jADT/</a> . Please do not modify directly.</em>
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment">This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version 0.2.0-SNAPSHOT <a href="http://jamesiry.github.com/jADT/" target="alexandria_uri">http://jamesiry.github.com/jADT/</a> . Please do not modify directly.</em>
 <a class="jxr_linenumber" name="5" href="#5">5</a>   
 <a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment">The source was parsed as: </em>
 <a class="jxr_linenumber" name="7" href="#7">7</a>   
@@ -30,15 +30,15 @@
 <a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment">    Manager(String name)</em>
 <a class="jxr_linenumber" name="21" href="#21">21</a>  <em class="jxr_comment">TPSReportStatus =</em>
 <a class="jxr_linenumber" name="22" href="#22">22</a>  <em class="jxr_comment">    Pending</em>
-<a class="jxr_linenumber" name="23" href="#23">23</a>  <em class="jxr_comment">  | Approved(Manager approver)</em>
-<a class="jxr_linenumber" name="24" href="#24">24</a>  <em class="jxr_comment">  | Denied(Manager rejector)</em>
+<a class="jxr_linenumber" name="23" href="#23">23</a>  <em class="jxr_comment">  | Approved(final Manager approver)</em>
+<a class="jxr_linenumber" name="24" href="#24">24</a>  <em class="jxr_comment">  | Denied(final Manager rejector)</em>
 <a class="jxr_linenumber" name="25" href="#25">25</a>  
 <a class="jxr_linenumber" name="26" href="#26">26</a>  <em class="jxr_comment">*/</em>
 <a class="jxr_linenumber" name="27" href="#27">27</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/pogofish/jadt/samples/whathow/data/Manager.html">Manager</a> {
 <a class="jxr_linenumber" name="28" href="#28">28</a>  
 <a class="jxr_linenumber" name="29" href="#29">29</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong>  Manager _Manager(String name) { <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Manager(name); }
 <a class="jxr_linenumber" name="30" href="#30">30</a>  
-<a class="jxr_linenumber" name="31" href="#31">31</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> String name;
+<a class="jxr_linenumber" name="31" href="#31">31</a>        <strong class="jxr_keyword">public</strong> String name;
 <a class="jxr_linenumber" name="32" href="#32">32</a>  
 <a class="jxr_linenumber" name="33" href="#33">33</a>        <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/pogofish/jadt/samples/whathow/data/Manager.html">Manager</a>(String name) {
 <a class="jxr_linenumber" name="34" href="#34">34</a>           <strong class="jxr_keyword">this</strong>.name = name;

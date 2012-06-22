@@ -26,7 +26,7 @@
 <a class="jxr_linenumber" name="16" href="#16">16</a>  <strong class="jxr_keyword">package</strong> com.pogofish.jadt.emitter;
 <a class="jxr_linenumber" name="17" href="#17">17</a>  
 <a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.ast.DataType;
-<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.target.Target;
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.sink.Sink;
 <a class="jxr_linenumber" name="20" href="#20">20</a>  
 <a class="jxr_linenumber" name="21" href="#21">21</a>  
 <a class="jxr_linenumber" name="22" href="#22">22</a>  <em class="jxr_javadoccomment">/**</em>
@@ -35,8 +35,8 @@
 <a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/pogofish/jadt/emitter/DummyDataTypeEmitter.html">DummyDataTypeEmitter</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../com/pogofish/jadt/emitter/DataTypeEmitter.html">DataTypeEmitter</a> {
 <a class="jxr_linenumber" name="26" href="#26">26</a>  
 <a class="jxr_linenumber" name="27" href="#27">27</a>      @Override
-<a class="jxr_linenumber" name="28" href="#28">28</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> emit(<a href="../../../../com/pogofish/jadt/target/Target.html">Target</a> target, DataType dataType, String header) {
-<a class="jxr_linenumber" name="29" href="#29">29</a>          target.write(header + dataType.name);
+<a class="jxr_linenumber" name="28" href="#28">28</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> emit(<a href="../../../../com/pogofish/jadt/sink/Sink.html">Sink</a> sink, DataType dataType, String header) {
+<a class="jxr_linenumber" name="29" href="#29">29</a>          sink.write(header + dataType.name);
 <a class="jxr_linenumber" name="30" href="#30">30</a>      }
 <a class="jxr_linenumber" name="31" href="#31">31</a>  
 <a class="jxr_linenumber" name="32" href="#32">32</a>  }

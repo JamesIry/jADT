@@ -41,7 +41,7 @@
 <a class="jxr_linenumber" name="31" href="#31">31</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.emitter.DocEmitter;
 <a class="jxr_linenumber" name="32" href="#32">32</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.emitter.DummyDataTypeEmitter;
 <a class="jxr_linenumber" name="33" href="#33">33</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.emitter.StandardDocEmitter;
-<a class="jxr_linenumber" name="34" href="#34">34</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.target.StringTargetFactory;
+<a class="jxr_linenumber" name="34" href="#34">34</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.sink.StringSinkFactory;
 <a class="jxr_linenumber" name="35" href="#35">35</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.util.Util;
 <a class="jxr_linenumber" name="36" href="#36">36</a>  
 <a class="jxr_linenumber" name="37" href="#37">37</a>  
@@ -128,8 +128,8 @@
 <a class="jxr_linenumber" name="118" href="#118">118</a>         <strong class="jxr_keyword">final</strong> Doc doc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"EmitterTest"</span>, <span class="jxr_string">"some.package"</span>, list(<span class="jxr_string">"wow.man"</span>, <span class="jxr_string">"flim.flam"</span>), list(
 <a class="jxr_linenumber" name="119" href="#119">119</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="120" href="#120">120</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(
-<a class="jxr_linenumber" name="121" href="#121">121</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
-<a class="jxr_linenumber" name="122" href="#122">122</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
+<a class="jxr_linenumber" name="121" href="#121">121</a>                                 <strong class="jxr_keyword">new</strong> Arg(Util.&lt;ArgModifier&gt;list(), _Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
+<a class="jxr_linenumber" name="122" href="#122">122</a>                                 <strong class="jxr_keyword">new</strong> Arg(Util.&lt;ArgModifier&gt;list(), _Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
 <a class="jxr_linenumber" name="123" href="#123">123</a>                         )),
 <a class="jxr_linenumber" name="124" href="#124">124</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="125" href="#125">125</a>                 )),
@@ -138,7 +138,7 @@
 <a class="jxr_linenumber" name="128" href="#128">128</a>                 ))
 <a class="jxr_linenumber" name="129" href="#129">129</a>                 
 <a class="jxr_linenumber" name="130" href="#130">130</a>         ));
-<a class="jxr_linenumber" name="131" href="#131">131</a>         <strong class="jxr_keyword">final</strong> StringTargetFactory factory = <strong class="jxr_keyword">new</strong> StringTargetFactory(<span class="jxr_string">"whatever"</span>);
+<a class="jxr_linenumber" name="131" href="#131">131</a>         <strong class="jxr_keyword">final</strong> StringSinkFactory factory = <strong class="jxr_keyword">new</strong> StringSinkFactory(<span class="jxr_string">"whatever"</span>);
 <a class="jxr_linenumber" name="132" href="#132">132</a>         <strong class="jxr_keyword">final</strong> DocEmitter emitter = <strong class="jxr_keyword">new</strong> StandardDocEmitter(<strong class="jxr_keyword">new</strong> DummyDataTypeEmitter());
 <a class="jxr_linenumber" name="133" href="#133">133</a>         emitter.emit(factory, doc);
 <a class="jxr_linenumber" name="134" href="#134">134</a>         <strong class="jxr_keyword">final</strong> Map&lt;String, String&gt; results = factory.getResults();
@@ -156,8 +156,8 @@
 <a class="jxr_linenumber" name="146" href="#146">146</a>         <strong class="jxr_keyword">final</strong> Doc doc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"EmitterTest"</span>, <span class="jxr_string">"some.package"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="147" href="#147">147</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="148" href="#148">148</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(
-<a class="jxr_linenumber" name="149" href="#149">149</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
-<a class="jxr_linenumber" name="150" href="#150">150</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
+<a class="jxr_linenumber" name="149" href="#149">149</a>                                 <strong class="jxr_keyword">new</strong> Arg(Util.&lt;ArgModifier&gt;list(), _Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
+<a class="jxr_linenumber" name="150" href="#150">150</a>                                 <strong class="jxr_keyword">new</strong> Arg(Util.&lt;ArgModifier&gt;list(), _Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
 <a class="jxr_linenumber" name="151" href="#151">151</a>                         )),
 <a class="jxr_linenumber" name="152" href="#152">152</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="153" href="#153">153</a>                 )),
@@ -166,7 +166,7 @@
 <a class="jxr_linenumber" name="156" href="#156">156</a>                 ))
 <a class="jxr_linenumber" name="157" href="#157">157</a>                 
 <a class="jxr_linenumber" name="158" href="#158">158</a>         ));
-<a class="jxr_linenumber" name="159" href="#159">159</a>         <strong class="jxr_keyword">final</strong> StringTargetFactory factory = <strong class="jxr_keyword">new</strong> StringTargetFactory(<span class="jxr_string">"whatever"</span>);
+<a class="jxr_linenumber" name="159" href="#159">159</a>         <strong class="jxr_keyword">final</strong> StringSinkFactory factory = <strong class="jxr_keyword">new</strong> StringSinkFactory(<span class="jxr_string">"whatever"</span>);
 <a class="jxr_linenumber" name="160" href="#160">160</a>         <strong class="jxr_keyword">final</strong> DocEmitter emitter = <strong class="jxr_keyword">new</strong> StandardDocEmitter(<strong class="jxr_keyword">new</strong> DummyDataTypeEmitter());
 <a class="jxr_linenumber" name="161" href="#161">161</a>         emitter.emit(factory, doc);
 <a class="jxr_linenumber" name="162" href="#162">162</a>         <strong class="jxr_keyword">final</strong> Map&lt;String, String&gt; results = factory.getResults();
@@ -184,8 +184,8 @@
 <a class="jxr_linenumber" name="174" href="#174">174</a>         <strong class="jxr_keyword">final</strong> Doc doc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"EmitterTest"</span>, <span class="jxr_string">""</span>, list(<span class="jxr_string">"wow.man"</span>, <span class="jxr_string">"flim.flam"</span>), list(
 <a class="jxr_linenumber" name="175" href="#175">175</a>                 <strong class="jxr_keyword">new</strong> DataType(<span class="jxr_string">"FooBar"</span>, Util.&lt;String&gt;list(), list(
 <a class="jxr_linenumber" name="176" href="#176">176</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Foo"</span>, list(
-<a class="jxr_linenumber" name="177" href="#177">177</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
-<a class="jxr_linenumber" name="178" href="#178">178</a>                                 <strong class="jxr_keyword">new</strong> Arg(_Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
+<a class="jxr_linenumber" name="177" href="#177">177</a>                                 <strong class="jxr_keyword">new</strong> Arg(Util.&lt;ArgModifier&gt;list(), _Primitive(_IntType()), <span class="jxr_string">"yeah"</span>),
+<a class="jxr_linenumber" name="178" href="#178">178</a>                                 <strong class="jxr_keyword">new</strong> Arg(Util.&lt;ArgModifier&gt;list(), _Ref(_ClassType(<span class="jxr_string">"String"</span>, Util.&lt;RefType&gt;list())), <span class="jxr_string">"hmmm"</span>)
 <a class="jxr_linenumber" name="179" href="#179">179</a>                         )),
 <a class="jxr_linenumber" name="180" href="#180">180</a>                         <strong class="jxr_keyword">new</strong> Constructor(<span class="jxr_string">"Bar"</span>, Util.&lt;Arg&gt;list())
 <a class="jxr_linenumber" name="181" href="#181">181</a>                 )),
@@ -194,7 +194,7 @@
 <a class="jxr_linenumber" name="184" href="#184">184</a>                 ))
 <a class="jxr_linenumber" name="185" href="#185">185</a>                 
 <a class="jxr_linenumber" name="186" href="#186">186</a>         ));
-<a class="jxr_linenumber" name="187" href="#187">187</a>         <strong class="jxr_keyword">final</strong> StringTargetFactory factory = <strong class="jxr_keyword">new</strong> StringTargetFactory(<span class="jxr_string">"whatever"</span>);
+<a class="jxr_linenumber" name="187" href="#187">187</a>         <strong class="jxr_keyword">final</strong> StringSinkFactory factory = <strong class="jxr_keyword">new</strong> StringSinkFactory(<span class="jxr_string">"whatever"</span>);
 <a class="jxr_linenumber" name="188" href="#188">188</a>         <strong class="jxr_keyword">final</strong> DocEmitter emitter = <strong class="jxr_keyword">new</strong> StandardDocEmitter(<strong class="jxr_keyword">new</strong> DummyDataTypeEmitter());
 <a class="jxr_linenumber" name="189" href="#189">189</a>         emitter.emit(factory, doc);
 <a class="jxr_linenumber" name="190" href="#190">190</a>         <strong class="jxr_keyword">final</strong> Map&lt;String, String&gt; results = factory.getResults();

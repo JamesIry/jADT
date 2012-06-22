@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="3" href="#3">3</a>   <strong class="jxr_keyword">import</strong> java.util.List;
 <a class="jxr_linenumber" name="4" href="#4">4</a>   
 <a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment">This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/SampleAST.jadt using jADT version ${pom.version} <a href="http://jamesiry.github.com/jADT/" target="alexandria_uri">http://jamesiry.github.com/jADT/</a> . Please do not modify directly.</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment">This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/SampleAST.jadt using jADT version 0.2.0-SNAPSHOT <a href="http://jamesiry.github.com/jADT/" target="alexandria_uri">http://jamesiry.github.com/jADT/</a> . Please do not modify directly.</em>
 <a class="jxr_linenumber" name="7" href="#7">7</a>   
 <a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_comment">The source was parsed as: </em>
 <a class="jxr_linenumber" name="9" href="#9">9</a>   
@@ -25,18 +25,18 @@
 <a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment">    Int</em>
 <a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_comment">  | Long</em>
 <a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_comment">Function =</em>
-<a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_comment">    Function(Type returnType, String name, List&lt;Arg&gt; args, List&lt;Statement&gt; statements)</em>
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_comment">    Function(final Type returnType, final String name, List&lt;Arg&gt; args, final List&lt;Statement&gt; statements)</em>
 <a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_comment">Arg =</em>
-<a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment">    Arg(Type type, String name)</em>
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment">    Arg(final Type type, final String name)</em>
 <a class="jxr_linenumber" name="21" href="#21">21</a>  <em class="jxr_comment">Statement =</em>
-<a class="jxr_linenumber" name="22" href="#22">22</a>  <em class="jxr_comment">    Declaration(Type type, String name, Expression expression)</em>
-<a class="jxr_linenumber" name="23" href="#23">23</a>  <em class="jxr_comment">  | Assignment(String name, Expression expression)</em>
-<a class="jxr_linenumber" name="24" href="#24">24</a>  <em class="jxr_comment">  | Return(Expression expression)</em>
+<a class="jxr_linenumber" name="22" href="#22">22</a>  <em class="jxr_comment">    Declaration(final Type type, final String name, final Expression expression)</em>
+<a class="jxr_linenumber" name="23" href="#23">23</a>  <em class="jxr_comment">  | Assignment(final String name, final Expression expression)</em>
+<a class="jxr_linenumber" name="24" href="#24">24</a>  <em class="jxr_comment">  | Return(final Expression expression)</em>
 <a class="jxr_linenumber" name="25" href="#25">25</a>  <em class="jxr_comment">Expression =</em>
-<a class="jxr_linenumber" name="26" href="#26">26</a>  <em class="jxr_comment">    Add(Expression left, Expression right)</em>
-<a class="jxr_linenumber" name="27" href="#27">27</a>  <em class="jxr_comment">  | Variable(String name)</em>
-<a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_comment">  | IntLiteral(int value)</em>
-<a class="jxr_linenumber" name="29" href="#29">29</a>  <em class="jxr_comment">  | LongLiteral(long value)</em>
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <em class="jxr_comment">    Add(final Expression left, final Expression right)</em>
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <em class="jxr_comment">  | Variable(final String name)</em>
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_comment">  | IntLiteral(final int value)</em>
+<a class="jxr_linenumber" name="29" href="#29">29</a>  <em class="jxr_comment">  | LongLiteral(final long value)</em>
 <a class="jxr_linenumber" name="30" href="#30">30</a>  
 <a class="jxr_linenumber" name="31" href="#31">31</a>  <em class="jxr_comment">*/</em>
 <a class="jxr_linenumber" name="32" href="#32">32</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Function.html">Function</a> {
@@ -45,7 +45,7 @@
 <a class="jxr_linenumber" name="35" href="#35">35</a>  
 <a class="jxr_linenumber" name="36" href="#36">36</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">Type</a> returnType;
 <a class="jxr_linenumber" name="37" href="#37">37</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> String name;
-<a class="jxr_linenumber" name="38" href="#38">38</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> List&lt;Arg&gt; args;
+<a class="jxr_linenumber" name="38" href="#38">38</a>        <strong class="jxr_keyword">public</strong> List&lt;Arg&gt; args;
 <a class="jxr_linenumber" name="39" href="#39">39</a>        <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> List&lt;Statement&gt; statements;
 <a class="jxr_linenumber" name="40" href="#40">40</a>  
 <a class="jxr_linenumber" name="41" href="#41">41</a>        <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/pogofish/jadt/samples/ast/data/Function.html">Function</a>(<a href="../../../../../../com/pogofish/jadt/samples/ast/data/Type.html">Type</a> returnType, String name, List&lt;Arg&gt; args, List&lt;Statement&gt; statements) {

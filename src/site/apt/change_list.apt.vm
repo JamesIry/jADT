@@ -1,0 +1,40 @@
+Change List
+
+    {{{./faq.html}\<\< FAQ }} | {{{./syntax.html} Syntax \>\>}}
+
+    Prior to 1.0 expect frequent <<Breaking Change>>s.  SNAPSHOT versions are development versions.
+
+* ${projectVersion}
+
+    * {{{./maven_generation.html}Maven plugin}}.
+
+    * Parser no longer bails on the first error but tries to muddle through and find more.
+    
+    * The source location can be a directory with *.jadt files or it can be an individual file.
+    
+    * The contraints not enforced by the context free grammar (mostly stuff about name conflicts) are {{{./constraints.html}documented}}.
+    
+    * <<Breaking Change>>: To help people who aren't Visitor experts jADT has an internal embedded DSL mimicking Java switches and Scala matches.
+    Visitor interface becomes MatchBlock, VoidVisitor interface becomes SwitchBlock.  
+    Overloaded accept() methods become match() and _switch. visit() methods become _case(). See {{{./how_adt.html}How Are ADTs Be Used?}} and {{{./visitor_variations.html}Visitor Variations}}.
+    
+    * <<Breaking Change>>: Previously there was no way to make mutable fields. Now constructor case arguments are mutable by default unless marked "final." 
+    
+* 0.1.0
+    
+    * Docs in user {{{./index.html} manual form}}.
+    
+    * Code samples pulled from code that gets compiled and tested.
+    
+    * Modules in {{{http://search.maven.org/#search|ga|1|g%3A%22com.pogofish.jadt%22}Maven Central}}.
+    
+    * <<Breaking Change>>: packages moved from pogofish.jadt to com.pogofish.jadt to align with Maven group naming policy.    
+    
+* 0.0.1
+
+    * Initial Public Offering.  Hope it does better than FaceBook.
+    
+    []
+    
+    {{{./faq.html}\<\< FAQ }} | {{{./syntax.html} Syntax \>\>}}
+    

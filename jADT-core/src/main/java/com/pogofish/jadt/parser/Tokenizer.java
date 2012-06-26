@@ -33,19 +33,11 @@ import java.util.regex.Pattern;
  *
  * @author jiry
  */
-class Tokenizer {
-    /**
-     * Regex for one piece of an identifier
-     */
-    private static final String IDENTIFIER_CHUNK = "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*";
+class Tokenizer implements ITokenizer {
     /**
      * Regex for a valid java identifier
      */
-    private static final Pattern IDENTIFIER_REGEX = Pattern.compile(IDENTIFIER_CHUNK);
-    /**
-     * Regex for a valid dotted java identifier, e.g. in a package name
-     */
-    private static final Pattern DOTTED_IDENTIFIER_REGEX = Pattern.compile("(" + IDENTIFIER_CHUNK + "\\.)+" + IDENTIFIER_CHUNK);
+    private static final Pattern IDENTIFIER_REGEX = Pattern.compile("\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*");
     
     /** 
      * Map from keywords to their token type.
@@ -161,6 +153,8 @@ class Tokenizer {
         punctuation.add(TokenType.LBRACKET);
         tokenizer.ordinaryChar(']');
         punctuation.add(TokenType.RBRACKET);
+        tokenizer.ordinaryChar('.');
+        punctuation.add(TokenType.DOT);
         tokenizer.whitespaceChars(' ', ' ');
         tokenizer.whitespaceChars('\t', '\t');
         tokenizer.whitespaceChars('\n', '\n');
@@ -180,7 +174,8 @@ class Tokenizer {
      * 
      * @return a Token
      */
-    TokenType getTokenType() {
+    @Override
+    public TokenType getTokenType() {
         final int tokenType;
         try {
             tokenType = tokenizer.nextToken();
@@ -200,10 +195,6 @@ class Tokenizer {
                 final Matcher identifierMatcher = IDENTIFIER_REGEX.matcher(symbol);
                 if (identifierMatcher.matches()) {
                     return TokenType.IDENTIFIER;
-                }
-                final Matcher dottedIdentifierMatcher = DOTTED_IDENTIFIER_REGEX.matcher(symbol);
-                if (dottedIdentifierMatcher.matches()) {
-                    return TokenType.DOTTED_IDENTIFIER;
                 }
                 return TokenType.UNKNOWN;
             }
@@ -234,6 +225,9 @@ class Tokenizer {
         case '|':
             symbol = "|";
             return TokenType.BAR;
+        case '.':
+            symbol = ".";
+            return TokenType.DOT;
         default:
             symbol = "" + (char)tokenType;
             return TokenType.UNKNOWN;
@@ -242,37 +236,42 @@ class Tokenizer {
     
 
     
-    /**
-     * Returns the last symbol recognized by this Tokenizer
-     * 
-     * @return String 
+    /* (non-Javadoc)
+     * @see com.pogofish.jadt.parser.ITokenizer#lastSymbol()
      */
+    @Override
     public String lastSymbol() {
         return symbol;
     }
 
-    /**
-     * Returns the line number of the last token type returned by this Tokenizer
-     * 
-     * @return int 1 based line number
+    /* (non-Javadoc)
+     * @see com.pogofish.jadt.parser.ITokenizer#lineno()
      */
+    @Override
     public int lineno() {
         return tokenizer.lineno();
     }
     
-    /**
-     * Return info about the source from which this tokenizer was created
-     * @return
+    /* (non-Javadoc)
+     * @see com.pogofish.jadt.parser.ITokenizer#srcInfo()
      */
+    @Override
     public String srcInfo() {
         return srcInfo;
     }
 
-    /**
-     * Make it so that the last token returned will be the next token returned
+    /* (non-Javadoc)
+     * @see com.pogofish.jadt.parser.ITokenizer#pushBack()
      */
+    @Override
     public void pushBack() {
         tokenizer.pushBack();        
     }
 
+    @Override
+    public Set<TokenType> punctuation() {
+        return punctuation;
+    }
+
+    
 }

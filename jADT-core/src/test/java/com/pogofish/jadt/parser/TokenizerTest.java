@@ -67,7 +67,7 @@ public class TokenizerTest {
             }
         };
         
-        final Tokenizer tokenizer = new Tokenizer(source.getSrcInfo(), source.createReader());
+        final ITokenizer tokenizer = new Tokenizer(source.getSrcInfo(), source.createReader());
 
         try {
             // should throw
@@ -81,7 +81,7 @@ public class TokenizerTest {
     /**
      * Create a tokenizer that will read from the given string
      */
-    private Tokenizer tokenizer(String testString) {
+    private ITokenizer tokenizer(String testString) {
         final Source source = new StringSource("TokenizerTest", testString);
         return new Tokenizer(source.getSrcInfo(), source.createReader());
     }
@@ -91,7 +91,7 @@ public class TokenizerTest {
      */
     @Test
     public void testComments() {
-        final Tokenizer tokenizer = tokenizer("/*\nCopyright*/hello//comment\nworld/*another comment*/oh");
+        final ITokenizer tokenizer = tokenizer("/*\nCopyright*/hello//comment\nworld/*another comment*/oh");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 2);
         check(tokenizer, "world", TokenType.IDENTIFIER, 3);
         check(tokenizer, "oh", TokenType.IDENTIFIER, 3);
@@ -103,7 +103,7 @@ public class TokenizerTest {
      */
     @Test
     public void testWhitespace() {
-        final Tokenizer tokenizer = tokenizer("hello    world   \toh");
+        final ITokenizer tokenizer = tokenizer("hello    world   \toh");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
         check(tokenizer, "world", TokenType.IDENTIFIER, 1);
         check(tokenizer, "oh", TokenType.IDENTIFIER, 1);
@@ -115,7 +115,7 @@ public class TokenizerTest {
      */
     @Test
     public void testEol() {
-        final Tokenizer tokenizer = tokenizer("hello\nworld\ryeah\r\noh");
+        final ITokenizer tokenizer = tokenizer("hello\nworld\ryeah\r\noh");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
         check(tokenizer, "world", TokenType.IDENTIFIER, 2);
         check(tokenizer, "yeah", TokenType.IDENTIFIER, 3);
@@ -128,9 +128,8 @@ public class TokenizerTest {
      */
     @Test
     public void testIdentifiers() {
-        final Tokenizer tokenizer = tokenizer("hello hello.world \u00a5123\u00a512342");
+        final ITokenizer tokenizer = tokenizer("hello \u00a5123\u00a512342");
         check(tokenizer, "hello", TokenType.IDENTIFIER, 1);
-        check(tokenizer, "hello.world", TokenType.DOTTED_IDENTIFIER, 1);
         check(tokenizer, "\u00a5123\u00a512342", TokenType.IDENTIFIER, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);                
     }
@@ -140,9 +139,7 @@ public class TokenizerTest {
      */
     @Test
     public void testBadIdentifiers() {
-        final Tokenizer tokenizer = tokenizer("hello. 42 ?");
-        // bad because of the trailing dot
-        check(tokenizer, "hello.", TokenType.UNKNOWN, 1);
+        final ITokenizer tokenizer = tokenizer("42 ?");
         // bad because identifiers can't start with numbers (jADT doesn't care about numbers)
         check(tokenizer, "42", TokenType.UNKNOWN, 1);
         // just bad
@@ -154,7 +151,7 @@ public class TokenizerTest {
      */
     @Test
     public void testPunctuation() {
-        final Tokenizer tokenizer = tokenizer("<>=(),[]|*");
+        final ITokenizer tokenizer = tokenizer("<>=(),[]|.*");
         check(tokenizer, "<", TokenType.LANGLE, 1);
         check(tokenizer, ">", TokenType.RANGLE, 1);
         check(tokenizer, "=", TokenType.EQUALS, 1);
@@ -164,6 +161,7 @@ public class TokenizerTest {
         check(tokenizer, "[", TokenType.LBRACKET, 1);
         check(tokenizer, "]", TokenType.RBRACKET, 1);
         check(tokenizer, "|", TokenType.BAR, 1);
+        check(tokenizer, ".", TokenType.DOT, 1);
         // this one is tested to provide coverage of a default case in the Tokenizer
         check(tokenizer, "*", TokenType.UNKNOWN, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);        
@@ -174,7 +172,7 @@ public class TokenizerTest {
      */
     @Test
     public void testKeywords() {
-        final Tokenizer tokenizer = tokenizer(
+        final ITokenizer tokenizer = tokenizer(
                         "import package boolean double char float int long short final abstract assert break byte case catch class const continue "
                                 + "default do else enum extends finally for goto if implements instanceof interface native new private protected public return "
                                 + "static strictfp super switch synchronized this throw throws transient try void volatile while");
@@ -240,7 +238,7 @@ public class TokenizerTest {
     /**
      * Check that the next tokenType, symbol, and lineNo from the tokenizer are as expected
      */
-    private void check(Tokenizer tokenizer, String symbol, TokenType expectedTokenType, int lineNo) {
+    private void check(ITokenizer tokenizer, String symbol, TokenType expectedTokenType, int lineNo) {
         final TokenType actualTokenType = tokenizer.getTokenType();
         assertEquals("Expected token type " + expectedTokenType + " with symbol " + symbol + " but got " + actualTokenType
                 + " with symbol " + tokenizer.lastSymbol(), expectedTokenType, actualTokenType);

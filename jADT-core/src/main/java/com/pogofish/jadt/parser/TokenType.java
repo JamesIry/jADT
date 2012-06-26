@@ -49,8 +49,6 @@ public enum TokenType {
     // word classes    
     /** valid java identifier */
     IDENTIFIER,
-    /** valid java identifier with dots */
-    DOTTED_IDENTIFIER,
     /** some other unknown word */
     UNKNOWN,
     
@@ -73,6 +71,8 @@ public enum TokenType {
     LBRACKET, 
     /** "]" */
     RBRACKET,
+    /** "." */
+    DOT,
     /** end of file */
     EOF;
 }

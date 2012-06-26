@@ -93,8 +93,8 @@ public class ParserTest {
     public void testClassType() {
         assertEquals(_ClassType("Foo", Util.<RefType> list()),
                 parserImpl("Foo").classType());
-        assertEquals(_ClassType("package.Foo", Util.<RefType> list()),
-                parserImpl("package.Foo").classType());
+        assertEquals(_ClassType("pkg.Foo", Util.<RefType> list()),
+                parserImpl("pkg.Foo").classType());
         assertEquals(
                 _ClassType("Foo",
                         list(_ClassType("Bar", Util.<RefType> list()))),
@@ -167,10 +167,10 @@ public class ParserTest {
         checkError(list(_UnexpectedToken("'>'", "'B'", 1)), _Ref(_ClassType("Foo", list(_ClassType("A", Util.<RefType>list()), _ClassType("B", Util.<RefType>list())))), p4.type(), p4);
 
         final Impl p5 = parserImpl("");
-        checkError(list(_UnexpectedToken("a class name", "<EOF>", 1)), _Ref(_ClassType("NO_CLASS_NAME@1", Util.<RefType>list())), p5.type(), p5);
+        checkError(list(_UnexpectedToken("a class name", "<EOF>", 1)), _Ref(_ClassType("NO_IDENTIFIER@1", Util.<RefType>list())), p5.type(), p5);
         
         final Impl p6 = parserImpl("import");
-        checkError(list(_UnexpectedToken("a class name", "'import'", 1)), _Ref(_ClassType("BAD_CLASS_NAME_import@1", Util.<RefType>list())), p6.type(), p6);
+        checkError(list(_UnexpectedToken("a class name", "'import'", 1)), _Ref(_ClassType("BAD_IDENTIFIER_import@1", Util.<RefType>list())), p6.type(), p6);
         
     }
 
@@ -236,11 +236,11 @@ public class ParserTest {
         checkError(list(_UnexpectedToken("')'", "<EOF>", 1)), list(_Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "Foo")), p1.args(), p1);
         
         Impl p2 = parserImpl("()");
-        checkError(list(_UnexpectedToken("a class name", "')'", 1)), list(_Arg(Util.<ArgModifier>list(), _Ref(_ClassType("NO_CLASS_NAME@1", Util.<RefType>list())), "NO_ARG_NAME@2")), p2.args(), p2);
+        checkError(list(_UnexpectedToken("a class name", "')'", 1)), list(_Arg(Util.<ArgModifier>list(), _Ref(_ClassType("NO_IDENTIFIER@1", Util.<RefType>list())), "NO_ARG_NAME@2")), p2.args(), p2);
 
         Impl p3 = parserImpl("(int Foo,)");
         checkError(list(_UnexpectedToken("a class name", "')'", 1)), list(_Arg(Util.<ArgModifier> list(), _Primitive(_IntType()),
-                "Foo"), _Arg(Util.<ArgModifier>list(), _Ref(_ClassType("NO_CLASS_NAME@1", Util.<RefType>list())), "NO_ARG_NAME@2")), p3.args(), p3);
+                "Foo"), _Arg(Util.<ArgModifier>list(), _Ref(_ClassType("NO_IDENTIFIER@1", Util.<RefType>list())), "NO_ARG_NAME@2")), p3.args(), p3);
         
         Impl p4 = parserImpl("(int Foo int Bar)");
         checkError(list(_UnexpectedToken("')'", "'int'", 1)), list(_Arg(Util.<ArgModifier> list(), _Primitive(_IntType()),
@@ -383,16 +383,16 @@ public class ParserTest {
         assertEquals("hello.world", parserImpl("package hello.world").pkg());
         
         final Impl p1 = parserImpl("package");
-        checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), "NO_PACKAGE_NAME@1", p1.pkg(), p1);
+        checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), "NO_IDENTIFIER@1", p1.pkg(), p1);
 
         final Impl p2 = parserImpl("package foo.bar.");
-        checkError(list(_UnexpectedToken("a package name", "'foo.bar.'", 1)), "BAD_PACKAGE_NAME_foo.bar.@1", p2.pkg(), p2);
+        checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), "foo.bar.NO_IDENTIFIER@1", p2.pkg(), p2);
 
         final Impl p3 = parserImpl("package ?g42");
-        checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), "BAD_PACKAGE_NAME_?g42@1", p3.pkg(), p3);
+        checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), "BAD_IDENTIFIER_?g42@1", p3.pkg(), p3);
 
         final Impl p4 = parserImpl("package boolean");
-        checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), "BAD_PACKAGE_NAME_boolean@1", p4.pkg(), p4);
+        checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), "BAD_IDENTIFIER_boolean@1", p4.pkg(), p4);
     }
 
     /**
@@ -408,19 +408,19 @@ public class ParserTest {
                 parserImpl("import hello import oh.yeah").imports());
         
         final Impl p1 = parserImpl("import");
-        checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), list("NO_PACKAGE_NAME@1"), p1.imports(), p1);
+        checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), list("NO_IDENTIFIER@1"), p1.imports(), p1);
         
         final Impl p2 = parserImpl("import ?g42");
-        checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), list("BAD_PACKAGE_NAME_?g42@1"), p2.imports(), p2);
+        checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), list("BAD_IDENTIFIER_?g42@1"), p2.imports(), p2);
         
         final Impl p3 = parserImpl("import boolean");
-        checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), list("BAD_PACKAGE_NAME_boolean@1"), p3.imports(), p3);       
+        checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), list("BAD_IDENTIFIER_boolean@1"), p3.imports(), p3);       
 
         final Impl p4 = parserImpl("import import boolean");
-        checkError(list(_UnexpectedToken("a package name", "'import'", 1), _UnexpectedToken("a package name", "'boolean'", 1)), list("NO_PACKAGE_NAME@1", "BAD_PACKAGE_NAME_boolean@2"), p4.imports(), p4);       
+        checkError(list(_UnexpectedToken("a package name", "'import'", 1)), list("BAD_IDENTIFIER_import@1"), p4.imports(), p4);       
 
         final Impl p5 = parserImpl("import package boolean");
-        checkError(list(_UnexpectedToken("a package name", "'package'", 1)), list("NO_PACKAGE_NAME@1"), p5.imports(), p5);       
+        checkError(list(_UnexpectedToken("a package name", "'package'", 1)), list("BAD_IDENTIFIER_package@1"), p5.imports(), p5);       
     }
 
 

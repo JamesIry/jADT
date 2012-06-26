@@ -70,7 +70,7 @@ public class StandardParser implements Parser {
     	logger.fine("Parsing " + source.getSrcInfo());
     	final BufferedReader reader = source.createReader();
     	try {
-            final Tokenizer tokenizer = new Tokenizer(source.getSrcInfo(), reader);
+            final ITokenizer tokenizer = new Tokenizer(source.getSrcInfo(), reader);
             final Impl impl = new Impl(tokenizer);
             final Doc doc = impl.doc();
             return new ParseResult(doc, impl.errors);
@@ -94,7 +94,7 @@ public class StandardParser implements Parser {
         /**
          * Tokenizer to be parsed
          */
-        private final Tokenizer tokenizer;
+        private final ITokenizer tokenizer;
         
         /**
          * Whether the parser is currently recovering from an error. If true, new errors
@@ -126,7 +126,7 @@ public class StandardParser implements Parser {
          * @param srcInfo String information about the source that is used when throwing a syntax exception
          * @param tokenizer Tokenizer to be parsed
          */
-        public Impl(Tokenizer tokenizer) {
+        public Impl(ITokenizer tokenizer) {
             this.tokenizer = tokenizer;
         }
         
@@ -146,7 +146,7 @@ public class StandardParser implements Parser {
          * @return
          */
         private boolean peekPunctuation() {
-            return peek(tokenizer.punctuation);
+            return peek(tokenizer.punctuation());
         }
 
         /**
@@ -207,21 +207,7 @@ public class StandardParser implements Parser {
          * @return String the package name
          */
         private String packageName() {
-            if (accept(TokenType.IDENTIFIER)) {
-                return tokenizer.lastSymbol();
-            } else if (accept(TokenType.DOTTED_IDENTIFIER)) {
-                return tokenizer.lastSymbol();
-            } else {
-                error("a package name");
-                if (peek(set(TokenType.IMPORT, TokenType.PACKAGE, TokenType.EOF))) {
-                    // if the token was import or package then assume they just forgot the package name
-                    // and move on
-                    return "NO_PACKAGE_NAME" + nextId();                    
-                } else {
-                    // otherwise assume that they used a keyword as a package name.  Consume it and move on
-                    return "BAD_PACKAGE_NAME_" + consumeAnything() + nextId();
-                }
-            }
+            return dottedIdentifier("a package name");
         }
         
         /**
@@ -565,18 +551,31 @@ public class StandardParser implements Parser {
          * Returns a class name which is either an identifier or a dotted identifier
          */
         public String className() {
-            if (accept(TokenType.IDENTIFIER) || (accept(TokenType.DOTTED_IDENTIFIER))) {
-                return tokenizer.lastSymbol();
+            return dottedIdentifier("a class name");       
+        }
+        
+        /**
+         * Returns an identifier that may have dots in it, e.g a fully qualified class name or a package name
+         */
+        public String dottedIdentifier(String expected) {
+            final StringBuilder builder = new StringBuilder();
+            if (accept(TokenType.IDENTIFIER)) {
+                builder.append(tokenizer.lastSymbol());
+                if (accept(TokenType.DOT)) {
+                    builder.append(".");
+                    builder.append(dottedIdentifier(expected));
+                }
             } else {
-                error("a class name");
+                error(expected);
                 if (peekPunctuation()) {
                     // most punctaion probably just means a missing name.  Leave the punctuation for somebody else
-                    return "NO_CLASS_NAME" + nextId();
+                    builder.append("NO_IDENTIFIER" + nextId());
                 } else {
                     // otherwise consume whatever is there as if it were the name
-                    return "BAD_CLASS_NAME_" + consumeAnything() + nextId();
+                    builder.append("BAD_IDENTIFIER_" + consumeAnything() + nextId());
                 }
-            }           
+            }
+            return builder.toString();
         }
         
         /** 

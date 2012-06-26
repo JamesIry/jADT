@@ -50,7 +50,8 @@ class JavaCCReader extends Reader {
         try {
             return reader.read(cbuf, off, len);
         } catch (IOException e) {
-            return handleIOException(e);
+            handleIOException(e);
+            return 0;
         }
     }
 
@@ -73,7 +74,8 @@ class JavaCCReader extends Reader {
         try {
             return reader.read();
         } catch (IOException e) {
-            return handleIOException(e);
+            handleIOException(e);
+            return 0;
         }
     }
 
@@ -82,7 +84,8 @@ class JavaCCReader extends Reader {
         try {
             return reader.read(cbuf);
         } catch (IOException e) {
-            return handleIOException(e);
+            handleIOException(e);
+            return 0;
         }
     }
 
@@ -91,7 +94,8 @@ class JavaCCReader extends Reader {
         try {
             return reader.read(target);
         } catch (IOException e) {
-            return handleIOException(e);
+            handleIOException(e);
+            return 0;
         }
     }
 
@@ -100,7 +104,8 @@ class JavaCCReader extends Reader {
         try {
             return reader.ready();
         } catch (IOException e) {
-            return handleIOException(e);
+            handleIOException(e);
+            return false;
         }
     }
 
@@ -118,7 +123,8 @@ class JavaCCReader extends Reader {
         try {
             return reader.skip(n);
         } catch (IOException e) {
-            return handleIOException(e);
+            handleIOException(e);
+            return 0;
         }
     }
 
@@ -127,7 +133,7 @@ class JavaCCReader extends Reader {
      * wrap as a RuntimException so that JavaCC doesn't squelch it.  If the stream has
      * been closed then pass the IOException on as is
      */
-    private <T> T handleIOException(IOException e) throws IOException {
+    private void handleIOException(IOException e) throws IOException {
         if (closed) {
             throw e;
         } else {

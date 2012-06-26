@@ -69,25 +69,18 @@
         </executions>
       </plugin>
     
-  <!-- add generated jADT to sources -->
+  <!-- generate inernal ADTs using an older version of the plugin -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>src/main/java-gen/</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
+         <groupId>com.pogofish.jadt</groupId>
+         <artifactId>jADT-maven-plugin</artifactId>
+         <version>0.2.0</version>
+         <executions>
+            <execution>
+               <goals>
+                  <goal>jADT</goal>
+               </goals>
+             </execution>
+         </executions>             
       </plugin>
 
     </plugins>

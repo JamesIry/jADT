@@ -30,6 +30,21 @@
     </resources>  
   
     <plugins>
+    <!-- run JavaCC -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javacc-maven-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>javacc</id>
+            <goals>
+              <goal>javacc</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+          
     <!-- make the core jar executable -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

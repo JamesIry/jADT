@@ -26,7 +26,6 @@ import static com.pogofish.jadt.ast.RefType._ArrayType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
 import static com.pogofish.jadt.ast.Type._Ref;
-import static com.pogofish.jadt.util.Util.set;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -71,8 +71,8 @@ public class TokenizerTest {
 
         try {
             // should throw
-            tokenizer.getTokenType();
-            fail("Did not get an exception from tokenizer");
+            final TokenType result = tokenizer.getTokenType();
+            fail("Did not get an exception from tokenizer, got " + result);
         } catch (RuntimeException e) {
             assertTrue("Got wrong exception " + e, e.getCause() instanceof IOException);
         }
@@ -151,7 +151,7 @@ public class TokenizerTest {
      */
     @Test
     public void testPunctuation() {
-        final ITokenizer tokenizer = tokenizer("<>=(),[]|.*");
+        final ITokenizer tokenizer = tokenizer("<>=(),[]|.~*/~");
         check(tokenizer, "<", TokenType.LANGLE, 1);
         check(tokenizer, ">", TokenType.RANGLE, 1);
         check(tokenizer, "=", TokenType.EQUALS, 1);
@@ -163,8 +163,15 @@ public class TokenizerTest {
         check(tokenizer, "|", TokenType.BAR, 1);
         check(tokenizer, ".", TokenType.DOT, 1);
         // this one is tested to provide coverage of a default case in the Tokenizer
-        check(tokenizer, "*", TokenType.UNKNOWN, 1);
+        check(tokenizer, "~*", TokenType.UNKNOWN, 1);
+        check(tokenizer, "/~", TokenType.UNKNOWN, 1);
         check(tokenizer, "<EOF>", TokenType.EOF, 1);        
+    }
+    
+    @Test
+    public void testEOF() {
+        final ITokenizer tokenizer = tokenizer("");
+        check(tokenizer, "<EOF>", TokenType.EOF, 1);  
     }
 
     /**

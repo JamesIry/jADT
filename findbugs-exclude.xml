@@ -6,4 +6,8 @@
       <Method name="doAction"/>
       <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />      
    </Match>
+   <!-- FindBugs HATES the JavaCC generated code -->
+   <Match>
+      <Package name="com.pogofish.jadt.parser.javacc"/>
+   </Match>
 </FindBugsFilter>

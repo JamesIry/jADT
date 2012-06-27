@@ -69,11 +69,14 @@
         </executions>
       </plugin>
     
-  <!-- generate inernal ADTs using an older version of the plugin -->
+  <!-- generate internal ADTs using an older version of the plugin -->
       <plugin>
          <groupId>com.pogofish.jadt</groupId>
          <artifactId>jADT-maven-plugin</artifactId>
          <version>0.2.0</version>
+         <configuration>
+            <destDir>target/generated-sources/jadt</destDir>
+         </configuration>
          <executions>
             <execution>
                <goals>

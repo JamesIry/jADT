@@ -19,6 +19,10 @@ import java.io.Reader;
 import java.util.Collections;
 import java.util.Set;
 
+import com.pogofish.jadt.parser.javacc.JavaCharStream;
+import com.pogofish.jadt.parser.javacc.StandardParser2Constants;
+import com.pogofish.jadt.parser.javacc.StandardParser2TokenManager;
+import com.pogofish.jadt.parser.javacc.Token;
 import com.pogofish.jadt.util.Util;
 
 /**

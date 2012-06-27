@@ -5,6 +5,10 @@ Change List
     Prior to 1.0 expect frequent <<Breaking Change>>s.  SNAPSHOT versions are development versions.
 
 * ${projectVersion}
+   
+    * Fixed screw up with default output directory of Maven plugin.
+
+* 0.2.0
 
     * {{{./maven_generation.html}Maven plugin}}.
 

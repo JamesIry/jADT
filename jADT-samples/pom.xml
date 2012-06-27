@@ -27,11 +27,6 @@
       <artifactId>jADT-core</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.pogofish.jadt</groupId>
-      <artifactId>jADT-maven-plugin</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
   
   <build>
@@ -44,23 +39,26 @@
   
     <plugins>
     
-  <!-- generate sample ADTs using an current version of the plugin -->
+  <!-- add generated jADT to sources -->
       <plugin>
-         <groupId>com.pogofish.jadt</groupId>
-         <artifactId>jADT-maven-plugin</artifactId>
-         <version>${project.version}</version>
-         <configuration>
-            <destDir>target/generated-sources/jadt</destDir>
-         </configuration>         
-         <executions>
-            <execution>
-               <goals>
-                  <goal>jADT</goal>
-               </goals>
-             </execution>
-         </executions>             
-      </plugin>
-      
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/main/java-gen/</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>  
     </plugins>
   </build>
 

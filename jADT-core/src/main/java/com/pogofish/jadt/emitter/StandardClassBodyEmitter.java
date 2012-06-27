@@ -22,6 +22,7 @@ import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.PrimitiveType;
+import com.pogofish.jadt.ast.PrimitiveType.ByteType;
 import com.pogofish.jadt.ast.PrimitiveType.CharType;
 import com.pogofish.jadt.ast.PrimitiveType.ShortType;
 import com.pogofish.jadt.ast.RefType;
@@ -228,6 +229,11 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
                                 sink.write("          result = prime * result + " + arg.name + ";\n");
                             }                            
                             
+                            @Override
+                            public void _case(ByteType x) {
+                                uncastedHashChunk(sink, arg);
+                            }
+
                             @Override
                             public void _case(CharType x) {
                                 uncastedHashChunk(sink, arg);

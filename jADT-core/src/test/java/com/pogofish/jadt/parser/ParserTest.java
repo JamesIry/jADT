@@ -19,15 +19,8 @@ import static com.pogofish.jadt.ast.Arg._Arg;
 import static com.pogofish.jadt.ast.ArgModifier._Final;
 import static com.pogofish.jadt.ast.Constructor._Constructor;
 import static com.pogofish.jadt.ast.DataType._DataType;
-import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
-import static com.pogofish.jadt.ast.PrimitiveType._CharType;
-import static com.pogofish.jadt.ast.PrimitiveType._DoubleType;
-import static com.pogofish.jadt.ast.PrimitiveType._FloatType;
-import static com.pogofish.jadt.ast.PrimitiveType._IntType;
-import static com.pogofish.jadt.ast.PrimitiveType._LongType;
-import static com.pogofish.jadt.ast.PrimitiveType._ShortType;
-import static com.pogofish.jadt.ast.RefType._ArrayType;
-import static com.pogofish.jadt.ast.RefType._ClassType;
+import static com.pogofish.jadt.ast.PrimitiveType.*;
+import static com.pogofish.jadt.ast.RefType.*;
 import static com.pogofish.jadt.ast.SyntaxError._UnexpectedToken;
 import static com.pogofish.jadt.ast.Type._Primitive;
 import static com.pogofish.jadt.ast.Type._Ref;
@@ -76,6 +69,7 @@ public class ParserTest {
     @Test
     public void testPrimitive() {
         assertEquals(_BooleanType(), parserImpl("boolean").primitiveType());
+        assertEquals(_ByteType(), parserImpl("byte").primitiveType());
         assertEquals(_ShortType(), parserImpl("short").primitiveType());
         assertEquals(_CharType(), parserImpl("char").primitiveType());
         assertEquals(_IntType(), parserImpl("int").primitiveType());

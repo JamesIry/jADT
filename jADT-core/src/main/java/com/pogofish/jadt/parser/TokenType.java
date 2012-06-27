@@ -28,6 +28,8 @@ public enum TokenType {
     IMPORT, 
     /** "boolean" */
     BOOLEAN,
+    /** "byte" */
+    BYTE,
     /** "double" */
     DOUBLE,
     /** "char" */

@@ -180,7 +180,7 @@ public class TokenizerTest {
     @Test
     public void testKeywords() {
         final ITokenizer tokenizer = tokenizer(
-                        "import package boolean double char float int long short final abstract assert break byte case catch class const continue "
+                        "import package boolean byte double char float int long short final abstract assert break case catch class const continue "
                                 + "default do else enum extends finally for goto if implements instanceof interface native new private protected public return "
                                 + "static strictfp super switch synchronized this throw throws transient try void volatile while");
 
@@ -190,6 +190,7 @@ public class TokenizerTest {
         
         // primitive Java types
         check(tokenizer, "boolean", TokenType.BOOLEAN, 1);
+        check(tokenizer, "byte", TokenType.BYTE, 1);
         check(tokenizer, "double", TokenType.DOUBLE, 1);
         check(tokenizer, "char", TokenType.CHAR, 1);
         check(tokenizer, "float", TokenType.FLOAT, 1);
@@ -202,7 +203,6 @@ public class TokenizerTest {
         check(tokenizer, "abstract", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "assert", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "break", TokenType.JAVA_KEYWORD, 1);
-        check(tokenizer, "byte", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "case", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "catch", TokenType.JAVA_KEYWORD, 1);
         check(tokenizer, "class", TokenType.JAVA_KEYWORD, 1);

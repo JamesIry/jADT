@@ -54,6 +54,7 @@ public class ASTPrinterTest {
     @Test
     public void testPrimitiveTypes() {
         assertEquals("boolean", print(_Primitive(_BooleanType())));
+        assertEquals("byte", print(_Primitive(_ByteType())));
         assertEquals("char", print(_Primitive(_CharType())));
         assertEquals("short", print(_Primitive(_ShortType())));
         assertEquals("int", print(_Primitive(_IntType())));

@@ -138,6 +138,7 @@ public class ClassBodyEmitterTest {
     "          final int prime = 31;\n" +
     "          int result = 1;\n" +
     "          result = prime * result + (boolShit ? 1 : 0);\n" +
+    "          result = prime * result + dracula;\n" +
     "          result = prime * result + whatACharacter;\n" +
     "          result = prime * result + shorty;\n" +
     "          result = prime * result + integrity;\n" +
@@ -421,6 +422,7 @@ public class ClassBodyEmitterTest {
     public void testArgHashCode() {
         final Constructor constructor = new Constructor("Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Primitive(_BooleanType()), "boolShit"),
+                new Arg(Util.<ArgModifier>list(), _Primitive(_ByteType()), "dracula"),
                 new Arg(Util.<ArgModifier>list(), _Primitive(_CharType()), "whatACharacter"),
                 new Arg(Util.<ArgModifier>list(), _Primitive(_ShortType()), "shorty"),
                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "integrity"),

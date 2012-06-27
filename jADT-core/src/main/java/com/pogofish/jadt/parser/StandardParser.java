@@ -15,17 +15,9 @@ limitations under the License.
 */
 package com.pogofish.jadt.parser;
 
-import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
-import static com.pogofish.jadt.ast.PrimitiveType._CharType;
-import static com.pogofish.jadt.ast.PrimitiveType._DoubleType;
-import static com.pogofish.jadt.ast.PrimitiveType._FloatType;
-import static com.pogofish.jadt.ast.PrimitiveType._IntType;
-import static com.pogofish.jadt.ast.PrimitiveType._LongType;
-import static com.pogofish.jadt.ast.PrimitiveType._ShortType;
-import static com.pogofish.jadt.ast.RefType._ArrayType;
-import static com.pogofish.jadt.ast.RefType._ClassType;
-import static com.pogofish.jadt.ast.Type._Primitive;
-import static com.pogofish.jadt.ast.Type._Ref;
+import static com.pogofish.jadt.ast.PrimitiveType.*;
+import static com.pogofish.jadt.ast.RefType.*;
+import static com.pogofish.jadt.ast.Type.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,18 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.pogofish.jadt.ast.Arg;
-import com.pogofish.jadt.ast.ArgModifier;
-import com.pogofish.jadt.ast.Constructor;
-import com.pogofish.jadt.ast.DataType;
-import com.pogofish.jadt.ast.Doc;
-import com.pogofish.jadt.ast.ParseResult;
-import com.pogofish.jadt.ast.PrimitiveType;
-import com.pogofish.jadt.ast.RefType;
-import com.pogofish.jadt.ast.SyntaxError;
-import com.pogofish.jadt.ast.Type;
-import com.pogofish.jadt.ast.Type.Primitive;
-import com.pogofish.jadt.ast.Type.Ref;
+import com.pogofish.jadt.ast.*;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.util.IOExceptionAction;
@@ -585,6 +566,8 @@ public class StandardParser implements Parser {
         public PrimitiveType primitiveType() {
             if (accept(TokenType.BOOLEAN)) {
                 return(_BooleanType()); 
+            } else if (accept(TokenType.BYTE)) {
+                return(_ByteType()); 
             } else if (accept(TokenType.CHAR)) {
                 return(_CharType()); 
             } else if (accept(TokenType.SHORT)) {

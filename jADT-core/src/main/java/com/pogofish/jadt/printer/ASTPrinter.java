@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.pogofish.jadt.ast.*;
 import com.pogofish.jadt.ast.PrimitiveType.BooleanType;
+import com.pogofish.jadt.ast.PrimitiveType.ByteType;
 import com.pogofish.jadt.ast.PrimitiveType.CharType;
 import com.pogofish.jadt.ast.PrimitiveType.DoubleType;
 import com.pogofish.jadt.ast.PrimitiveType.FloatType;
@@ -207,6 +208,11 @@ public class ASTPrinter  {
             @Override
             public String _case(BooleanType x) {
                 return "boolean";
+            }
+
+            @Override
+            public String _case(ByteType x) {
+                return "byte";
             }
 
             @Override

@@ -33,7 +33,7 @@ Type = Ref(final RefType type) | Primitive(final PrimitiveType type)
 
 RefType = ClassType(final String baseName, final List<RefType> typeArguments) | ArrayType(final Type heldType)
 
-PrimitiveType = BooleanType | CharType | DoubleType | FloatType | IntType | LongType | ShortType 
+PrimitiveType = BooleanType | ByteType | CharType | DoubleType | FloatType | IntType | LongType | ShortType 
 
 UserError = Semantic(SemanticError error) | Syntactic(SyntaxError error)
 

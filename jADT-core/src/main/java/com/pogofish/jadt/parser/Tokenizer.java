@@ -102,6 +102,7 @@ public class Tokenizer implements ITokenizer, StandardParser2Constants {
         case PACKAGE: return TokenType.PACKAGE;
         case FINAL: return TokenType.FINAL;
         case BOOLEAN: return TokenType.BOOLEAN;
+        case BYTE: return TokenType.BYTE;
         case CHAR: return TokenType.CHAR;
         case SHORT: return TokenType.SHORT;
         case INT: return TokenType.INT;

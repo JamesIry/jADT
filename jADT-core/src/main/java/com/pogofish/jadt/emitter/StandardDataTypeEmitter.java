@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.sink.Sink;
 
 
@@ -43,6 +44,9 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
     public void emit(Sink sink, DataType dataType, String header) {
     	logger.fine("Generating data type " + dataType.name + ".");
         sink.write(header);
+        sink.write(ASTPrinter.print(dataType));
+        sink.write("\n*/\n");
+
         if (dataType.constructors.size() == 1) {
             emitSingleConstructor(sink, dataType, header);
             

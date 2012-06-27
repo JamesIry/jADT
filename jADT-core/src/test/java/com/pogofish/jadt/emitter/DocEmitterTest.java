@@ -57,52 +57,21 @@ public class DocEmitterTest {
     "import flim.flam;\n" +
     "\n" +
     "/*\n" +
-    BOILERPLATE +
-    "package some.package\n" +
-    "\n" +
-    "import wow.man\n" +
-    "import flim.flam\n" +
-    "\n" +
-    "FooBar =\n" +
-    "    Foo(int yeah, String hmmm)\n" +
-    "  | Bar\n" +
-    "Whatever =\n" +
-    "    Whatever\n" +
-    "\n" +
-    "*/\n";
+    BOILERPLATE;
 
     private static final String NO_PACKAGE_HEADER =
     "import wow.man;\n" +
     "import flim.flam;\n" +
     "\n" +
     "/*\n" +
-    BOILERPLATE +
-    "import wow.man\n" +
-    "import flim.flam\n" +
-    "\n" +
-    "FooBar =\n" +
-    "    Foo(int yeah, String hmmm)\n" +
-    "  | Bar\n" +
-    "Whatever =\n" +
-    "    Whatever\n" +
-    "\n" +
-    "*/\n";
+    BOILERPLATE;
 
     
     private static final String NO_IMPORTS_HEADER =
     "package some.package;\n" +
     "\n" +
     "/*\n" +
-    BOILERPLATE +
-    "package some.package\n" +
-    "\n" +
-    "FooBar =\n" +
-    "    Foo(int yeah, String hmmm)\n" +
-    "  | Bar\n" +
-    "Whatever =\n" +
-    "    Whatever\n" +
-    "\n" +
-    "*/\n";
+    BOILERPLATE;
     
     private static final String FOOBAR = 
     "FooBar";

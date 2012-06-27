@@ -38,6 +38,10 @@ import com.pogofish.jadt.util.Util;
  */
 public class DataTypeEmitterTest {
     private static final String HEADER = "/*header*/\n";
+    private static final String MULTI_HEADER = "FooBar =\n" +
+    "    Foo(Integer yeah, String hmmm)\n" +
+    "  | Bar\n" +
+    "*/\n";
     private static final String MULTI_CONSTRUCTOR = 
     "public abstract class FooBar/* type arguments */ {\n" +
     "\n" +
@@ -101,6 +105,10 @@ public class DataTypeEmitterTest {
     "/* toString method FooBar*/\n" +
     "\n" +
     "}";
+    private static final String SINGLE_HEADER =
+    "FooBar =\n" +
+    "    Foo(Integer yeah, String hmmm)\n" +
+    "*/\n";
     
     /**
      * Test that multiple constructors does its thing correctly
@@ -121,7 +129,7 @@ public class DataTypeEmitterTest {
         } finally {
             sink.close();
         }
-        assertEquals(HEADER + MULTI_CONSTRUCTOR, sink.result());
+        assertEquals(HEADER + MULTI_HEADER + MULTI_CONSTRUCTOR, sink.result());
     }
    
     /**
@@ -142,7 +150,7 @@ public class DataTypeEmitterTest {
         } finally {
             sink.close();
         }
-        assertEquals(HEADER + SINGLE_CONSTRUCTOR, sink.result());
+        assertEquals(HEADER + SINGLE_HEADER + SINGLE_CONSTRUCTOR, sink.result());
     }
    
 }

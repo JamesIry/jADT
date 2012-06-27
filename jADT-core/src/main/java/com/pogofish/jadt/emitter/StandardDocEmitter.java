@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import com.pogofish.jadt.Version;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
-import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.sink.Sink;
 import com.pogofish.jadt.sink.SinkFactory;
 
@@ -51,8 +50,6 @@ public class StandardDocEmitter implements DocEmitter {
         final String version = new Version().getVersion();
         header.append("/*\nThis file was generated based on " + doc.srcInfo + " using jADT version " + version + " http://jamesiry.github.com/jADT/ . Please do not modify directly.\n\n");
         header.append("The source was parsed as: \n\n");
-        header.append(ASTPrinter.print(doc));
-        header.append("\n*/\n");
         
         for (DataType dataType : doc.dataTypes) {
             final Sink sink = factory.createSink(doc.pkg.isEmpty() ? dataType.name : doc.pkg + "." + dataType.name);

@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.pogofish.jadt.parser.javacc.JavaCharStream;
-import com.pogofish.jadt.parser.javacc.StandardParser2Constants;
-import com.pogofish.jadt.parser.javacc.StandardParser2TokenManager;
+import com.pogofish.jadt.parser.javacc.StandardParserImpl2Constants;
+import com.pogofish.jadt.parser.javacc.StandardParserImpl2TokenManager;
 import com.pogofish.jadt.parser.javacc.Token;
 import com.pogofish.jadt.util.Util;
 
@@ -31,10 +31,10 @@ import com.pogofish.jadt.util.Util;
  *
  * @author jiry
  */
-public class Tokenizer implements ITokenizer, StandardParser2Constants {    
+public class Tokenizer implements ITokenizer, StandardParserImpl2Constants {    
     
     private final String srcInfo;
-    private final StandardParser2TokenManager manager;
+    private final StandardParserImpl2TokenManager manager;
     private Token token = null;
     private boolean pushed = false;
     
@@ -47,7 +47,7 @@ public class Tokenizer implements ITokenizer, StandardParser2Constants {
 
     public Tokenizer(String srcInfo, Reader reader) {
         this.srcInfo = srcInfo;
-        this.manager = new StandardParser2TokenManager(new JavaCharStream(new JavaCCReader(reader)));
+        this.manager = new StandardParserImpl2TokenManager(new JavaCharStream(new JavaCCReader(reader)));
     }
     
     

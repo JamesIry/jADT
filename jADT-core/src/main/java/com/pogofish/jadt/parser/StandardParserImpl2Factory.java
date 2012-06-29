@@ -24,7 +24,7 @@ import com.pogofish.jadt.parser.javacc.StandardParserImpl2;
  * 
  * @author jiry
  */
-public class StandarParserdImpl2Factory implements StandardParserImplFactory {
+public class StandardParserImpl2Factory implements StandardParserImplFactory {
 
     @Override
     public StandardParserImpl create(String srcInfo, Reader reader) {

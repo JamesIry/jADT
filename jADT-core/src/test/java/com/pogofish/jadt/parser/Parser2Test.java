@@ -43,13 +43,14 @@ import com.pogofish.jadt.source.StringSource;
 import com.pogofish.jadt.util.Util;
 
 /**
- * Test the StandardParser, mostly by probing its Impl
+ * Tests for the new JavaCC based parser.  It's a copy/paste job from ParserTest that disables tests for things that aren't working
+ * yet in the new parser, e.g. error handling.
  * 
  * @author jiry
  */
-public class ParserTest {
+public class Parser2Test {
 
-    private static final StandardParserImplFactory PARSER_IMPL_FACTORY = new StandardParserImpl1Factory();
+    private static final StandardParserImplFactory PARSER_IMPL_FACTORY = new StandardParserImpl2Factory();
 
     /**
      * In order to zero in on specific sections of the parser it's easier to
@@ -150,7 +151,6 @@ public class ParserTest {
                 parserImpl("Foo[]").refType());
     }
     
-    @Test
     public void testRefTypeErrors() throws Exception {
         final StandardParserImpl p1 = parserImpl("Foo[");
         checkError(list(_UnexpectedToken("']'", "<EOF>", 1)), _ArrayType(_Ref(_ClassType("Foo", Util.<RefType> list()))), p1.refType(), p1);
@@ -205,7 +205,6 @@ public class ParserTest {
                 parserImpl("final int Foo").arg());
     }
     
-    @Test
     public void testArgErrors() throws Exception {
         StandardParserImpl p1 = parserImpl("int");
         checkError(list(_UnexpectedToken("an argument name", "<EOF>", 1)), _Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "NO_ARG_NAME@1"), p1.arg(), p1);
@@ -231,7 +230,6 @@ public class ParserTest {
                 parserImpl("(int Foo, boolean Bar)").args());
     }
     
-    @Test
     public void testArgsErrors() throws Exception {
         StandardParserImpl p1 = parserImpl("(int Foo");
         checkError(list(_UnexpectedToken("')'", "<EOF>", 1)), list(_Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "Foo")), p1.args(), p1);
@@ -265,7 +263,6 @@ public class ParserTest {
                 parserImpl("Foo(int Bar)").constructor());
     }
     
-    @Test
     public void testConstructorErrors() throws Exception {
         StandardParserImpl p1 = parserImpl("");
         checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), _Constructor("NO_CONSTRUCTOR_NAME@1", Util.<Arg>list()), p1.constructor(), p1);
@@ -284,7 +281,6 @@ public class ParserTest {
                 parserImpl("Foo|Bar").constructors());
     }
     
-    @Test
     public void testConstructorsErrors() throws Exception {
         final StandardParserImpl p1 = parserImpl("Foo|");
         checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), 
@@ -314,7 +310,6 @@ public class ParserTest {
                 parserImpl("Foo<A, B>=Foo").dataType());
     }
     
-    @Test
     public void testDataTypeErrors() throws Exception {
         
         final StandardParserImpl p1 = parserImpl("boolean = Foo");
@@ -362,7 +357,6 @@ public class ParserTest {
                 list("A", "B", "C"), parserImpl("<A,B, C>").typeArguments());
     }
     
-    @Test
     public void testTypeArgumentsErrors() throws Exception {
         
         StandardParserImpl p1 = parserImpl("<>");
@@ -394,7 +388,6 @@ public class ParserTest {
         assertEquals("hello.world", parserImpl("package hello.world").pkg());
     }
     
-    @Test
     public void testPackageErrors() throws Exception {
         
         final StandardParserImpl p1 = parserImpl("package");
@@ -423,7 +416,6 @@ public class ParserTest {
                 parserImpl("import hello import oh.yeah").imports());
     }
     
-    @Test
     public void testImportsErrors() throws Exception {
         final StandardParserImpl p1 = parserImpl("import");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), list("NO_IDENTIFIER@1"), p1.imports(), p1);
@@ -503,7 +495,6 @@ public class ParserTest {
     /**
      * Test the whole shebang with an error
      */
-    @Test
     public void testError() {
         final Parser parser = new StandardParser(PARSER_IMPL_FACTORY);
         final String source = "//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "

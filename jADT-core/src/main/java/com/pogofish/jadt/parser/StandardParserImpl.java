@@ -35,6 +35,11 @@ import com.pogofish.jadt.ast.Type;
 public interface StandardParserImpl {
 
     /**
+     * Get the srcInfo for the source that created this parser
+     */
+    public abstract String getSrcInfo();
+    
+    /**
      * Parses a complete document which is pkg imports dataTypes
      * 
      * @return Doc
@@ -149,6 +154,11 @@ public interface StandardParserImpl {
      * Returns an identifier that may have dots in it, e.g a fully qualified class name or a package name
      */
     public abstract String dottedIdentifier(String expected) throws Exception;
+    
+    /**
+     * Returns an identifier without dots in it 
+     */
+    public abstract String identifier(String expected) throws Exception;
 
     /** 
      * Optionally recognizes and returns any of the primitive types
@@ -161,5 +171,19 @@ public interface StandardParserImpl {
      * Errors that occured during parsing
      */
     public abstract List<SyntaxError> errors();
+
+    /**
+     * If not currently recovering, adds an error to the errors list and sets recovering to true.
+     * Actual is assumed to be the last symbol from the tokenizer.
+
+     * @param expected the kind of thing expected
+     */
+    public void error(String expected);
+    
+    /**
+     * If not currently recovering, adds an error to the errors list and sets recovering to true
+     * @param expected the kind of thing expected
+     */
+    public void error(String expected, String actual);
 
 }

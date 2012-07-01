@@ -28,8 +28,7 @@ public class StandardParserImpl2Factory implements StandardParserImplFactory {
 
     @Override
     public StandardParserImpl create(String srcInfo, Reader reader) {
-        final StandardParserImpl2 impl = new StandardParserImpl2(reader);
-        impl.setSrcInfo(srcInfo);
+        final StandardParserImpl2 impl = new StandardParserImpl2(srcInfo, reader);
         return impl;
     }
 

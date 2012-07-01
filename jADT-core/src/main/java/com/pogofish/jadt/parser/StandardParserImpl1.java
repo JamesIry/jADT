@@ -75,6 +75,11 @@ class StandardParserImpl1 implements StandardParserImpl {
     private int _nextId = 0;
     
 
+    @Override
+    public String getSrcInfo() {
+        return tokenizer.srcInfo();
+    }
+
     /**
      * Unique id generator to try to prevent creating duplicate names when tokens are injected
      */
@@ -511,27 +516,35 @@ class StandardParserImpl1 implements StandardParserImpl {
      * @see com.pogofish.jadt.parser.StandardParserImpl#dottedIdentifier(java.lang.String)
      */
     @Override
-    public String dottedIdentifier(String expected) {
+    public String dottedIdentifier(String expected)  {
         final StringBuilder builder = new StringBuilder();
+        builder.append(identifier(expected));
+        while (accept(TokenType.DOT)) {
+            builder.append(".");
+            builder.append(identifier(expected));
+        }
+
+        return builder.toString();
+    }
+    
+    
+    
+    @Override
+    public String identifier(String expected)  {
         if (accept(TokenType.IDENTIFIER)) {
-            builder.append(tokenizer.lastSymbol());
-            if (accept(TokenType.DOT)) {
-                builder.append(".");
-                builder.append(dottedIdentifier(expected));
-            }
+            return(tokenizer.lastSymbol());
         } else {
             error(expected);
             if (peekPunctuation()) {
                 // most punctaion probably just means a missing name.  Leave the punctuation for somebody else
-                builder.append("NO_IDENTIFIER" + nextId());
+                return("NO_IDENTIFIER" + nextId());
             } else {
                 // otherwise consume whatever is there as if it were the name
-                builder.append("BAD_IDENTIFIER_" + consumeAnything() + nextId());
+                return("BAD_IDENTIFIER_" + consumeAnything() + nextId());
             }
         }
-        return builder.toString();
     }
-    
+
     /* (non-Javadoc)
      * @see com.pogofish.jadt.parser.StandardParserImpl#primitiveType()
      */
@@ -564,7 +577,7 @@ class StandardParserImpl1 implements StandardParserImpl {
 
      * @param expected the kind of thing expected
      */
-    private void error(String expected) {
+    public void error(String expected) {
         error(expected, tokenizer.lastSymbol());
     }
     
@@ -572,7 +585,7 @@ class StandardParserImpl1 implements StandardParserImpl {
      * If not currently recovering, adds an error to the errors list and sets recovering to true
      * @param expected the kind of thing expected
      */
-    private void error(String expected, String actual) {
+    public void error(String expected, String actual) {
         if (!recovering) {
             final String outputString = "<EOF>".equals(actual) ? actual : "'" + actual + "'";
             errors.add(SyntaxError._UnexpectedToken(expected, outputString, tokenizer.lineno()));

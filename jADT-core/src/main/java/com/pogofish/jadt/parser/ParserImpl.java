@@ -29,10 +29,12 @@ import com.pogofish.jadt.ast.Type;
 
 /**
  * Interface for internal parser implementations used by the StandardParser
+ * The idea is that StandardParser provides a stateless facaade to the world
+ * while ParseImpl may be stateful
  * 
  * @author jiry
  */
-public interface StandardParserImpl {
+public interface ParserImpl {
 
     /**
      * Get the srcInfo for the source that created this parser
@@ -171,19 +173,4 @@ public interface StandardParserImpl {
      * Errors that occured during parsing
      */
     public abstract List<SyntaxError> errors();
-
-    /**
-     * If not currently recovering, adds an error to the errors list and sets recovering to true.
-     * Actual is assumed to be the last symbol from the tokenizer.
-
-     * @param expected the kind of thing expected
-     */
-    public void error(String expected);
-    
-    /**
-     * If not currently recovering, adds an error to the errors list and sets recovering to true
-     * @param expected the kind of thing expected
-     */
-    public void error(String expected, String actual);
-
 }

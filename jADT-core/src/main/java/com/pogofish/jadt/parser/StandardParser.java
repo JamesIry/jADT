@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.source.Source;
-import com.pogofish.jadt.util.IOExceptionAction;
 
 /**
  * The standard parser for jADT description files
@@ -30,11 +29,11 @@ import com.pogofish.jadt.util.IOExceptionAction;
  * @author jiry
  */
 public class StandardParser implements Parser {
-    private final StandardParserImplFactory factory;
+    private final ParserImplFactory factory;
     
 	static final Logger logger = Logger.getLogger(StandardParser.class.toString());
 
-	public StandardParser(StandardParserImplFactory factory) {
+	public StandardParser(ParserImplFactory factory) {
         super();
         this.factory = factory;
     }
@@ -48,7 +47,7 @@ public class StandardParser implements Parser {
     	logger.fine("Parsing " + source.getSrcInfo());
     	final BufferedReader reader = source.createReader();
     	try {
-            final StandardParserImpl impl = factory.create(source.getSrcInfo(), reader);
+            final ParserImpl impl = factory.create(source.getSrcInfo(), reader);
             final Doc doc = impl.doc();
             return new ParseResult(doc, impl.errors());
     	} catch (Error e) {
@@ -58,13 +57,11 @@ public class StandardParser implements Parser {
     	} catch (Exception e) {
     	    throw new RuntimeException(e);
     	} finally {
-    	    new IOExceptionAction<Void>() {
-                @Override
-                public Void doAction() throws IOException {
-                    reader.close();
-                    return null;
-                }
-            }.execute();
+    	    try {
+    	        reader.close();
+    	    } catch (IOException e) {
+    	        throw new RuntimeException(e);
+    	    }
     	}
     }
 }

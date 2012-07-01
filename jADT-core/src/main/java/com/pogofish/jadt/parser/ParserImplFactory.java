@@ -22,6 +22,6 @@ import java.io.Reader;
  * 
  * @author jiry
  */
-public interface StandardParserImplFactory {
-    public StandardParserImpl create(String srcInfo, Reader reader);
+public interface ParserImplFactory {
+    public ParserImpl create(String srcInfo, Reader reader);
 }

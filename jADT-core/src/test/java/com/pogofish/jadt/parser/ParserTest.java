@@ -39,17 +39,19 @@ import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.ast.SyntaxError;
+import com.pogofish.jadt.parser.javacc.JavaCCParserImplFactory;
 import com.pogofish.jadt.source.StringSource;
 import com.pogofish.jadt.util.Util;
 
 /**
- * Test the StandardParser, mostly by probing its Impl
+ * Tests for the new JavaCC based parser.  It's a copy/paste job from ParserTest that disables tests for things that aren't working
+ * yet in the new parser, e.g. error handling.
  * 
  * @author jiry
  */
 public class ParserTest {
 
-    private static final StandardParserImplFactory PARSER_IMPL_FACTORY = new StandardParserImpl1Factory();
+    private static final ParserImplFactory PARSER_IMPL_FACTORY = new JavaCCParserImplFactory();
 
     /**
      * In order to zero in on specific sections of the parser it's easier to
@@ -58,7 +60,7 @@ public class ParserTest {
      * @param text
      * @return
      */
-    private StandardParserImpl parserImpl(final String text) {
+    private ParserImpl parserImpl(final String text) {
         final StringSource source = new StringSource("ParserTest", text);
         return PARSER_IMPL_FACTORY.create(source.getSrcInfo(), source.createReader());
     }
@@ -152,22 +154,22 @@ public class ParserTest {
     
     @Test
     public void testRefTypeErrors() throws Exception {
-        final StandardParserImpl p1 = parserImpl("Foo[");
+        final ParserImpl p1 = parserImpl("Foo[");
         checkError(list(_UnexpectedToken("']'", "<EOF>", 1)), _ArrayType(_Ref(_ClassType("Foo", Util.<RefType> list()))), p1.refType(), p1);
 
-        final StandardParserImpl p2 = parserImpl("Foo<int>");
-        checkError(list(_UnexpectedToken("an array or class type", "'int'", 1)), _Ref(_ClassType("Foo", list(_ClassType("BAD_CLASS_int@1", Util.<RefType>list())))), p2.type(), p2);
+        final ParserImpl p2 = parserImpl("Foo<int>");
+        checkError(list(_UnexpectedToken("'['", "'>'", 1)), _Ref(_ClassType("Foo", list(_ArrayType(_Primitive(_IntType()))))), p2.type(), p2);
 
-        final StandardParserImpl p3 = parserImpl("Foo<A");
+        final ParserImpl p3 = parserImpl("Foo<A");
         checkError(list(_UnexpectedToken("'>'", "<EOF>", 1)), _Ref(_ClassType("Foo", list(_ClassType("A", Util.<RefType>list())))), p3.type(), p3);
 
-        final StandardParserImpl p4 = parserImpl("Foo<A B>");
-        checkError(list(_UnexpectedToken("'>'", "'B'", 1)), _Ref(_ClassType("Foo", list(_ClassType("A", Util.<RefType>list()), _ClassType("B", Util.<RefType>list())))), p4.type(), p4);
+        final ParserImpl p4 = parserImpl("Foo<A B>");
+        checkError(list(_UnexpectedToken("'>'", "'B'", 1)), _Ref(_ClassType("Foo", list(_ClassType("A", Util.<RefType>list())))), p4.type(), p4);
 
-        final StandardParserImpl p5 = parserImpl("");
+        final ParserImpl p5 = parserImpl("");
         checkError(list(_UnexpectedToken("a class name", "<EOF>", 1)), _Ref(_ClassType("NO_IDENTIFIER@1", Util.<RefType>list())), p5.type(), p5);
         
-        final StandardParserImpl p6 = parserImpl("import");
+        final ParserImpl p6 = parserImpl("import");
         checkError(list(_UnexpectedToken("a class name", "'import'", 1)), _Ref(_ClassType("BAD_IDENTIFIER_import@1", Util.<RefType>list())), p6.type(), p6);
         
     }
@@ -206,12 +208,12 @@ public class ParserTest {
     }
     
     @Test
-    public void testArgErrors() throws Exception {
-        StandardParserImpl p1 = parserImpl("int");
-        checkError(list(_UnexpectedToken("an argument name", "<EOF>", 1)), _Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "NO_ARG_NAME@1"), p1.arg(), p1);
+   public void testArgErrors() throws Exception {
+        ParserImpl p1 = parserImpl("int");
+        checkError(list(_UnexpectedToken("an argument name", "<EOF>", 1)), _Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "NO_IDENTIFIER@1"), p1.arg(), p1);
 
-        StandardParserImpl p2 = parserImpl("int boolean");
-        checkError(list(_UnexpectedToken("an argument name", "'boolean'", 1)), _Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "BAD_ARG_NAME_boolean@1"), p2.arg(), p2);
+        ParserImpl p2 = parserImpl("int boolean");
+        checkError(list(_UnexpectedToken("an argument name", "'boolean'", 1)), _Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "BAD_IDENTIFIER_boolean@1"), p2.arg(), p2);
 
     }
 
@@ -232,20 +234,20 @@ public class ParserTest {
     }
     
     @Test
-    public void testArgsErrors() throws Exception {
-        StandardParserImpl p1 = parserImpl("(int Foo");
+   public void testArgsErrors() throws Exception {
+        ParserImpl p1 = parserImpl("(int Foo");
         checkError(list(_UnexpectedToken("')'", "<EOF>", 1)), list(_Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "Foo")), p1.args(), p1);
         
-        StandardParserImpl p2 = parserImpl("()");
-        checkError(list(_UnexpectedToken("a class name", "')'", 1)), list(_Arg(Util.<ArgModifier>list(), _Ref(_ClassType("NO_IDENTIFIER@1", Util.<RefType>list())), "NO_ARG_NAME@2")), p2.args(), p2);
+        ParserImpl p2 = parserImpl("()");
+        checkError(list(_UnexpectedToken("a class name", "')'", 1)), list(_Arg(Util.<ArgModifier>list(), _Ref(_ClassType("NO_IDENTIFIER@1", Util.<RefType>list())), "NO_IDENTIFIER@2")), p2.args(), p2);
 
-        StandardParserImpl p3 = parserImpl("(int Foo,)");
+        ParserImpl p3 = parserImpl("(int Foo,)");
         checkError(list(_UnexpectedToken("a class name", "')'", 1)), list(_Arg(Util.<ArgModifier> list(), _Primitive(_IntType()),
-                "Foo"), _Arg(Util.<ArgModifier>list(), _Ref(_ClassType("NO_IDENTIFIER@1", Util.<RefType>list())), "NO_ARG_NAME@2")), p3.args(), p3);
+                "Foo"), _Arg(Util.<ArgModifier>list(), _Ref(_ClassType("NO_IDENTIFIER@1", Util.<RefType>list())), "NO_IDENTIFIER@2")), p3.args(), p3);
         
-        StandardParserImpl p4 = parserImpl("(int Foo int Bar)");
+        ParserImpl p4 = parserImpl("(int Foo int Bar)");
         checkError(list(_UnexpectedToken("')'", "'int'", 1)), list(_Arg(Util.<ArgModifier> list(), _Primitive(_IntType()),
-                "Foo"), _Arg(Util.<ArgModifier> list(), _Primitive(_IntType()), "Bar")), p4.args(), p4);
+                "Foo")), p4.args(), p4);
     }
 
     /**
@@ -265,10 +267,10 @@ public class ParserTest {
                 parserImpl("Foo(int Bar)").constructor());
     }
     
-    @Test
-    public void testConstructorErrors() throws Exception {
-        StandardParserImpl p1 = parserImpl("");
-        checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), _Constructor("NO_CONSTRUCTOR_NAME@1", Util.<Arg>list()), p1.constructor(), p1);
+  @Test
+  public void testConstructorErrors() throws Exception {
+        ParserImpl p1 = parserImpl("");
+        checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), _Constructor("NO_IDENTIFIER@1", Util.<Arg>list()), p1.constructor(), p1);
     }
 
     /**
@@ -285,14 +287,14 @@ public class ParserTest {
     }
     
     @Test
-    public void testConstructorsErrors() throws Exception {
-        final StandardParserImpl p1 = parserImpl("Foo|");
+   public void testConstructorsErrors() throws Exception {
+        final ParserImpl p1 = parserImpl("Foo|");
         checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), 
-                list(_Constructor("Foo", Util.<Arg>list()), _Constructor("NO_CONSTRUCTOR_NAME@1", Util.<Arg>list())), p1.constructors(), p1);
+                list(_Constructor("Foo", Util.<Arg>list()), _Constructor("NO_IDENTIFIER@1", Util.<Arg>list())), p1.constructors(), p1);
 
-        final StandardParserImpl p2 = parserImpl("Foo||Bar");
+        final ParserImpl p2 = parserImpl("Foo||Bar");
         checkError(list(_UnexpectedToken("a constructor name", "'|'", 1)), 
-                list(_Constructor("Foo", Util.<Arg>list()), _Constructor("NO_CONSTRUCTOR_NAME@1", Util.<Arg>list()), _Constructor("Bar", Util.<Arg>list())), p2.constructors(), p2);
+                list(_Constructor("Foo", Util.<Arg>list()), _Constructor("NO_IDENTIFIER@1", Util.<Arg>list()), _Constructor("Bar", Util.<Arg>list())), p2.constructors(), p2);
     }
 
     /**
@@ -315,22 +317,22 @@ public class ParserTest {
     }
     
     @Test
-    public void testDataTypeErrors() throws Exception {
+   public void testDataTypeErrors() throws Exception {
         
-        final StandardParserImpl p1 = parserImpl("boolean = Foo");
-        checkError(list(_UnexpectedToken("a data type name", "'boolean'", 1)), _DataType("BAD_DATA_TYPE_NAME_boolean@1", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), p1.dataType(), p1);
+        final ParserImpl p1 = parserImpl("boolean = Foo");
+        checkError(list(_UnexpectedToken("a data type name", "'boolean'", 1)), _DataType("BAD_IDENTIFIER_boolean@1", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), p1.dataType(), p1);
  
-        final StandardParserImpl p2 = parserImpl("= Foo");
-        checkError(list(_UnexpectedToken("a data type name", "'='", 1)), _DataType("NO_DATA_TYPE_NAME@1", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), p2.dataType(), p2);
+        final ParserImpl p2 = parserImpl("= Foo");
+        checkError(list(_UnexpectedToken("a data type name", "'='", 1)), _DataType("NO_IDENTIFIER@1", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), p2.dataType(), p2);
  
-        final StandardParserImpl p3 = parserImpl("Bar Foo");
+        final ParserImpl p3 = parserImpl("Bar Foo");
         checkError(list(_UnexpectedToken("'='", "'Foo'", 1)), _DataType("Bar", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), p3.dataType(), p3);
 
-        final StandardParserImpl p4 = parserImpl("");
-        checkError(list(_UnexpectedToken("a data type name", "<EOF>", 1)), _DataType("NO_DATA_TYPE_NAME@1", Util.<String>list(), list(_Constructor("NO_CONSTRUCTOR_NAME@2", Util.<Arg>list()))), p4.dataType(), p4);
+        final ParserImpl p4 = parserImpl("");
+        checkError(list(_UnexpectedToken("a data type name", "<EOF>", 1)), _DataType("NO_IDENTIFIER@1", Util.<String>list(), list(_Constructor("NO_IDENTIFIER@2", Util.<Arg>list()))), p4.dataType(), p4);
 
-        final StandardParserImpl p5 = parserImpl("Bar<A, = Foo");
-        checkError(list(_UnexpectedToken("a type parameter", "'='", 1)), _DataType("Bar", list("A", "NO_TYPE_ARGUMENT@1"), list(_Constructor("Foo", Util.<Arg>list()))), p5.dataType(), p5);
+        final ParserImpl p5 = parserImpl("Bar<A, = Foo");
+        checkError(list(_UnexpectedToken("a type parameter", "'='", 1)), _DataType("Bar", list("A", "NO_IDENTIFIER@1"), list(_Constructor("Foo", Util.<Arg>list()))), p5.dataType(), p5);
  
     }
 
@@ -363,25 +365,25 @@ public class ParserTest {
     }
     
     @Test
-    public void testTypeArgumentsErrors() throws Exception {
+   public void testTypeArgumentsErrors() throws Exception {
         
-        StandardParserImpl p1 = parserImpl("<>");
-        checkError(list(_UnexpectedToken("a type parameter", "'>'", 1)), list("NO_TYPE_ARGUMENT@1"), p1.typeArguments(), p1);
+        ParserImpl p1 = parserImpl("<>");
+        checkError(list(_UnexpectedToken("a type parameter", "'>'", 1)), list("NO_IDENTIFIER@1"), p1.typeArguments(), p1);
 
-        StandardParserImpl p2 = parserImpl("<A");
+        ParserImpl p2 = parserImpl("<A");
         checkError(list(_UnexpectedToken("'>'", "<EOF>", 1)), list("A"), p2.typeArguments(), p2);
 
-        StandardParserImpl p3 = parserImpl("<");
-        checkError(list(_UnexpectedToken("a type parameter", "<EOF>", 1)), list("NO_TYPE_ARGUMENT@1"), p3.typeArguments(), p3);
+        ParserImpl p3 = parserImpl("<");
+        checkError(list(_UnexpectedToken("a type parameter", "<EOF>", 1)), list("NO_IDENTIFIER@1"), p3.typeArguments(), p3);
 
-        StandardParserImpl p4 = parserImpl("<boolean, A>");
-        checkError(list(_UnexpectedToken("a type parameter", "'boolean'", 1)), list("BAD_TYPE_ARGUMENT_boolean@1", "A"), p4.typeArguments(), p4);
+        ParserImpl p4 = parserImpl("<boolean, A>");
+        checkError(list(_UnexpectedToken("a type parameter", "'boolean'", 1)), list("BAD_IDENTIFIER_boolean@1", "A"), p4.typeArguments(), p4);
 
-        StandardParserImpl p5 = parserImpl("<A, ,B>");
-        checkError(list(_UnexpectedToken("a type parameter", "','", 1)), list("A", "NO_TYPE_ARGUMENT@1", "B"), p5.typeArguments(), p5);
+        ParserImpl p5 = parserImpl("<A, ,B>");
+        checkError(list(_UnexpectedToken("a type parameter", "','", 1)), list("A", "NO_IDENTIFIER@1", "B"), p5.typeArguments(), p5);
 
-        StandardParserImpl p6 = parserImpl("<A B>");
-        checkError(list(_UnexpectedToken("'>'", "'B'", 1)), list("A", "B"), p6.typeArguments(), p6);
+        ParserImpl p6 = parserImpl("<A B>");
+        checkError(list(_UnexpectedToken("'>'", "'B'", 1)), list("A"), p6.typeArguments(), p6);
 
     }
 
@@ -397,16 +399,16 @@ public class ParserTest {
     @Test
     public void testPackageErrors() throws Exception {
         
-        final StandardParserImpl p1 = parserImpl("package");
+        final ParserImpl p1 = parserImpl("package");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), "NO_IDENTIFIER@1", p1.pkg(), p1);
 
-        final StandardParserImpl p2 = parserImpl("package foo.bar.");
+        final ParserImpl p2 = parserImpl("package foo.bar.");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), "foo.bar.NO_IDENTIFIER@1", p2.pkg(), p2);
 
-        final StandardParserImpl p3 = parserImpl("package ?g42");
+        final ParserImpl p3 = parserImpl("package ?g42");
         checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), "BAD_IDENTIFIER_?g42@1", p3.pkg(), p3);
 
-        final StandardParserImpl p4 = parserImpl("package boolean");
+        final ParserImpl p4 = parserImpl("package boolean");
         checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), "BAD_IDENTIFIER_boolean@1", p4.pkg(), p4);
     }
 
@@ -425,24 +427,24 @@ public class ParserTest {
     
     @Test
     public void testImportsErrors() throws Exception {
-        final StandardParserImpl p1 = parserImpl("import");
+        final ParserImpl p1 = parserImpl("import");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), list("NO_IDENTIFIER@1"), p1.imports(), p1);
         
-        final StandardParserImpl p2 = parserImpl("import ?g42");
+        final ParserImpl p2 = parserImpl("import ?g42");
         checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), list("BAD_IDENTIFIER_?g42@1"), p2.imports(), p2);
         
-        final StandardParserImpl p3 = parserImpl("import boolean");
+        final ParserImpl p3 = parserImpl("import boolean");
         checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), list("BAD_IDENTIFIER_boolean@1"), p3.imports(), p3);       
 
-        final StandardParserImpl p4 = parserImpl("import import boolean");
+        final ParserImpl p4 = parserImpl("import import boolean");
         checkError(list(_UnexpectedToken("a package name", "'import'", 1)), list("BAD_IDENTIFIER_import@1"), p4.imports(), p4);       
 
-        final StandardParserImpl p5 = parserImpl("import package boolean");
+        final ParserImpl p5 = parserImpl("import package boolean");
         checkError(list(_UnexpectedToken("a package name", "'package'", 1)), list("BAD_IDENTIFIER_package@1"), p5.imports(), p5);       
     }
 
 
-    private static <A> void checkError(List<SyntaxError> expectedErrors, A expectedResult, A actualResult, StandardParserImpl p) {
+    private static <A> void checkError(List<SyntaxError> expectedErrors, A expectedResult, A actualResult, ParserImpl p) {
         assertEquals(expectedErrors, p.errors());
         assertEquals(expectedResult, actualResult);
     }
@@ -504,7 +506,7 @@ public class ParserTest {
      * Test the whole shebang with an error
      */
     @Test
-    public void testError() {
+   public void testError() {
         final Parser parser = new StandardParser(PARSER_IMPL_FACTORY);
         final String source = "//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
                 + "FooBar = foo | bar(int hey, final String[] yeah) whatever = int";
@@ -535,7 +537,7 @@ public class ParserTest {
                                                                         Util.<RefType> list())))),
                                                                 "yeah"))))),
                                 new DataType("whatever", Util.<String> list(),
-                                        list(new Constructor("BAD_CONSTRUCTOR_NAME_int@1", Util
+                                        list(new Constructor("BAD_IDENTIFIER_int@1", Util
                                                 .<Arg> list()))))), list(SyntaxError._UnexpectedToken("a constructor name", "'int'", 2))), result);
                 
     }

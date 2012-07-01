@@ -13,22 +13,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.parser;
+package com.pogofish.jadt.parser.javacc;
 
 import java.io.Reader;
 
-import com.pogofish.jadt.parser.javacc.StandardParserImpl2;
+import com.pogofish.jadt.parser.ParserImpl;
+import com.pogofish.jadt.parser.ParserImplFactory;
 
 /**
- * Create a StandardParserImpl1
+ * Create a ParserImpl that uses JavaCC
  * 
  * @author jiry
  */
-public class StandardParserImpl2Factory implements StandardParserImplFactory {
+public class JavaCCParserImplFactory implements ParserImplFactory {
 
     @Override
-    public StandardParserImpl create(String srcInfo, Reader reader) {
-        final StandardParserImpl2 impl = new StandardParserImpl2(srcInfo, reader);
+    public ParserImpl create(String srcInfo, Reader reader) {
+        final JavaCCParserImpl impl = new JavaCCParserImpl(srcInfo, reader);
         return impl;
     }
 

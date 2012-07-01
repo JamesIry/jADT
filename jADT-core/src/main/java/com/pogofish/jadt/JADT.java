@@ -39,8 +39,8 @@ import com.pogofish.jadt.emitter.StandardDataTypeEmitter;
 import com.pogofish.jadt.emitter.StandardDocEmitter;
 import com.pogofish.jadt.parser.DummyParser;
 import com.pogofish.jadt.parser.Parser;
-import com.pogofish.jadt.parser.StandardParserImpl1Factory;
 import com.pogofish.jadt.parser.StandardParser;
+import com.pogofish.jadt.parser.javacc.JavaCCParserImplFactory;
 import com.pogofish.jadt.sink.FileSinkFactoryFactory;
 import com.pogofish.jadt.sink.SinkFactoryFactory;
 import com.pogofish.jadt.source.FileSourceFactory;
@@ -91,7 +91,7 @@ public class JADT {
         final ConstructorEmitter constructorEmitter = new StandardConstructorEmitter(classBodyEmitter);
         final DataTypeEmitter dataTypeEmitter = new StandardDataTypeEmitter(classBodyEmitter, constructorEmitter);
         final DocEmitter docEmitter = new StandardDocEmitter(dataTypeEmitter);      
-        final Parser parser = new StandardParser(new StandardParserImpl1Factory());
+        final Parser parser = new StandardParser(new JavaCCParserImplFactory());
         final Checker checker = new StandardChecker();
         final SinkFactoryFactory factoryFactory = new FileSinkFactoryFactory();
         

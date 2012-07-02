@@ -125,13 +125,22 @@ public class JavaCCTokenizerTest {
     @Test
     public void testUnknown() {
         final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("~*/~");
-        check(tokenizer1, "~*", UNKNOWN, 1);
-        check(tokenizer1, "/~", UNKNOWN, 1);
+        check(tokenizer1, "~*/~", UNKNOWN, 1);
         check(tokenizer1, "<EOF>", EOF, 1);
         
-//        final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("/");
-//        check(tokenizer2, "/", UNKNOWN, 1);
-//        check(tokenizer2, "<EOF>", EOF, 1);        
+        final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("?");
+        check(tokenizer2, "?", UNKNOWN, 1);
+        check(tokenizer2, "<EOF>", EOF, 1);        
+        
+        final BaseJavaCCParserImplTokenManager tokenizer3 = tokenizer("/");
+        check(tokenizer3, "/", UNKNOWN, 1);
+        check(tokenizer3, "<EOF>", EOF, 1);        
+        
+        final BaseJavaCCParserImplTokenManager tokenizer4 = tokenizer("?/");
+        // ideally these would match as one token but I haven't figure out how to do that
+        check(tokenizer4, "?", UNKNOWN, 1);
+        check(tokenizer4, "/", UNKNOWN, 1);
+        check(tokenizer4, "<EOF>", EOF, 1);        
     }
     
     @Test

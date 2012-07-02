@@ -32,6 +32,10 @@ import com.pogofish.jadt.util.Util;
  * @author jiry
  */
 public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl {
+    private static final String UNTERMINATED_COMMENT_STRING = "unterminated comment";
+
+    private static final String EOF_STRING = "<EOF>";
+
     /**
      * Whether this parser is currently recovering from a problem.  While
      * recovering errors are not recorded
@@ -142,7 +146,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
     private void error(String expected, String actual) {
         if (!recovering) {
             recovering = true;
-            final String outputString = "<EOF>".equals(actual) ? actual : "'"
+            final String outputString = EOF_STRING.equals(actual) | UNTERMINATED_COMMENT_STRING.equals(actual) ? actual : "'"
                     + actual + "'";
             errors.add(SyntaxError._UnexpectedToken(expected, outputString,
                     lookahead(1).beginLine));
@@ -153,7 +157,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
      * Turn a token into a user readable name
      */
     private String friendlyName(Token token) {
-        return token.kind == EOF ? "<EOF>" : token.image;
+        return token.kind == EOF ? EOF_STRING : token.kind == UNTERMINATED_COMMENT ? UNTERMINATED_COMMENT_STRING : token.image;
     }
 
     /**

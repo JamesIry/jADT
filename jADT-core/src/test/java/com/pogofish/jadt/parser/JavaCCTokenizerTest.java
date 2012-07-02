@@ -54,20 +54,20 @@ public class JavaCCTokenizerTest {
         check(tokenizer1, "oh", IDENTIFIER, 3);
         check(tokenizer1, "<EOF>", EOF, 3);
 
-        // final BaseJavaCCParserImplTokenManager tokenizer2 =
-        // tokenizer("/**/hello");
-        // check(tokenizer2, "hello", IDENTIFIER, 1);
-        // check(tokenizer2, "<EOF>", EOF, 1);
-        //
-        // final BaseJavaCCParserImplTokenManager tokenizer3 =
-        // tokenizer("/***/hello");
-        // check(tokenizer3, "hello", IDENTIFIER, 1);
-        // check(tokenizer3, "<EOF>", EOF, 1);
-        //
-        // final BaseJavaCCParserImplTokenManager tokenizer4 =
-        // tokenizer("/****/hello");
-        // check(tokenizer4, "hello", IDENTIFIER, 1);
-        // check(tokenizer4, "<EOF>", EOF, 1);
+//         final BaseJavaCCParserImplTokenManager tokenizer2 =
+//         tokenizer("/**/hello");
+//         check(tokenizer2, "hello", IDENTIFIER, 1);
+//         check(tokenizer2, "<EOF>", EOF, 1);
+        
+         final BaseJavaCCParserImplTokenManager tokenizer3 =
+         tokenizer("/***/hello");
+         check(tokenizer3, "hello", IDENTIFIER, 1);
+         check(tokenizer3, "<EOF>", EOF, 1);
+        
+         final BaseJavaCCParserImplTokenManager tokenizer4 =
+         tokenizer("/****/hello");
+         check(tokenizer4, "hello", IDENTIFIER, 1);
+         check(tokenizer4, "<EOF>", EOF, 1);
         //
         final BaseJavaCCParserImplTokenManager tokenizer5 = tokenizer("/*** */hello");
         check(tokenizer5, "hello", IDENTIFIER, 1);
@@ -77,9 +77,9 @@ public class JavaCCTokenizerTest {
         check(tokenizer6, "hello", IDENTIFIER, 1);
         check(tokenizer6, "<EOF>", EOF, 1);
 
-//        final BaseJavaCCParserImplTokenManager tokenizer7 = tokenizer("/* **/hello");
-//        check(tokenizer7, "hello", IDENTIFIER, 1);
-//        check(tokenizer7, "<EOF>", EOF, 1);
+        final BaseJavaCCParserImplTokenManager tokenizer7 = tokenizer("/* **/hello");
+        check(tokenizer7, "hello", IDENTIFIER, 1);
+        check(tokenizer7, "<EOF>", EOF, 1);
 
     }
 
@@ -89,11 +89,14 @@ public class JavaCCTokenizerTest {
     @Test
     public void testUnterminatedComments() {
         final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("/** haha");
+        check(tokenizer1, "/** haha", UNTERMINATED_COMMENT, 1);
         check(tokenizer1, "<EOF>", EOF, 1);
 
         final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("/* haha");
+        check(tokenizer2, "/* haha", UNTERMINATED_COMMENT, 1);
         check(tokenizer2, "<EOF>", EOF, 1);
 
+        // I guess end of line comment ending with an EOF instead of an EOL isn't allt that unterminated
         final BaseJavaCCParserImplTokenManager tokenizer3 = tokenizer("// haha");
         check(tokenizer3, "<EOF>", EOF, 1);
     }

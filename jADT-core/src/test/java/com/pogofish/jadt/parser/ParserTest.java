@@ -64,7 +64,17 @@ public class ParserTest {
         final StringSource source = new StringSource("ParserTest", text);
         return PARSER_IMPL_FACTORY.create(source.getSrcInfo(), source.createReader());
     }
+  
+    /**
+     * Test unterminated comments
+     */
+    @Test
+    public void testUnterminatedComment() throws Exception {
+        final ParserImpl p1 = parserImpl("/** hello");
+        checkError(list(_UnexpectedToken("whatever", "unterminated comment", 1)), "BAD_IDENTIFIER_unterminated comment@1", p1.identifier("whatever"), p1);
 
+    }
+    
     /**
      * Make sure primitives parse correctly
      */

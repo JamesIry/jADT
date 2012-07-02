@@ -12,7 +12,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 package com.pogofish.jadt.parser;
 
 import static org.junit.Assert.*;
@@ -27,34 +27,62 @@ import com.pogofish.jadt.source.StringSource;
 
 import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.*;
 
-
 /**
  * Test the tokenizer separately from the parser because it's easier that way
- *
+ * 
  * @author jiry
  */
 public class JavaCCTokenizerTest {
-   
+
     /**
      * Create a tokenizer that will read from the given string
      */
     private BaseJavaCCParserImplTokenManager tokenizer(String testString) {
         final Source source = new StringSource("TokenizerTest", testString);
-        return new BaseJavaCCParserImplTokenManager(new JavaCharStream(source.createReader()));
+        return new BaseJavaCCParserImplTokenManager(new JavaCharStream(
+                source.createReader()));
     }
-    
+
     /**
      * Comments should be invisible in the output other than separating tokens
      */
     @Test
     public void testComments() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("/*\nCopyright*/hello//comment\nworld/**another comment*/oh");
-        check(tokenizer, "hello", IDENTIFIER, 2);
-        check(tokenizer, "world", IDENTIFIER, 3);
-        check(tokenizer, "oh", IDENTIFIER, 3);
-        check(tokenizer, "<EOF>", EOF, 3);
+        final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("/*\nCopyright*/hello//comment\nworld/**another comment*/oh");
+        check(tokenizer1, "hello", IDENTIFIER, 2);
+        check(tokenizer1, "world", IDENTIFIER, 3);
+        check(tokenizer1, "oh", IDENTIFIER, 3);
+        check(tokenizer1, "<EOF>", EOF, 3);
+
+        // final BaseJavaCCParserImplTokenManager tokenizer2 =
+        // tokenizer("/**/hello");
+        // check(tokenizer2, "hello", IDENTIFIER, 1);
+        // check(tokenizer2, "<EOF>", EOF, 1);
+        //
+        // final BaseJavaCCParserImplTokenManager tokenizer3 =
+        // tokenizer("/***/hello");
+        // check(tokenizer3, "hello", IDENTIFIER, 1);
+        // check(tokenizer3, "<EOF>", EOF, 1);
+        //
+        // final BaseJavaCCParserImplTokenManager tokenizer4 =
+        // tokenizer("/****/hello");
+        // check(tokenizer4, "hello", IDENTIFIER, 1);
+        // check(tokenizer4, "<EOF>", EOF, 1);
+        //
+        final BaseJavaCCParserImplTokenManager tokenizer5 = tokenizer("/*** */hello");
+        check(tokenizer5, "hello", IDENTIFIER, 1);
+        check(tokenizer5, "<EOF>", EOF, 1);
+
+        final BaseJavaCCParserImplTokenManager tokenizer6 = tokenizer("/* ***/hello");
+        check(tokenizer6, "hello", IDENTIFIER, 1);
+        check(tokenizer6, "<EOF>", EOF, 1);
+
+//        final BaseJavaCCParserImplTokenManager tokenizer7 = tokenizer("/* **/hello");
+//        check(tokenizer7, "hello", IDENTIFIER, 1);
+//        check(tokenizer7, "<EOF>", EOF, 1);
+
     }
-    
+
     /**
      * Even unterminated comments should "work"
      */
@@ -62,14 +90,14 @@ public class JavaCCTokenizerTest {
     public void testUnterminatedComments() {
         final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("/** haha");
         check(tokenizer1, "<EOF>", EOF, 1);
-        
+
         final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("/* haha");
         check(tokenizer2, "<EOF>", EOF, 1);
-        
+
         final BaseJavaCCParserImplTokenManager tokenizer3 = tokenizer("// haha");
-        check(tokenizer3, "<EOF>", EOF, 1);        
+        check(tokenizer3, "<EOF>", EOF, 1);
     }
-       
+
     /**
      * Whitespace should be invisible in the output other than separating tokens
      */
@@ -83,7 +111,8 @@ public class JavaCCTokenizerTest {
     }
 
     /**
-     * End of line should be invisible in the output other than separating tokens and incrementing the line number
+     * End of line should be invisible in the output other than separating
+     * tokens and incrementing the line number
      */
     @Test
     public void testEol() {
@@ -103,21 +132,22 @@ public class JavaCCTokenizerTest {
         final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("hello \u00a5123\u00a512342");
         check(tokenizer, "hello", IDENTIFIER, 1);
         check(tokenizer, "\u00a5123\u00a512342", IDENTIFIER, 1);
-        check(tokenizer, "<EOF>", EOF, 1);                
+        check(tokenizer, "<EOF>", EOF, 1);
     }
-    
+
     /**
      * Various types of invalid identifier
      */
     @Test
     public void testBadIdentifiers() {
         final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("42 ?");
-        // bad because identifiers can't start with numbers (jADT doesn't care about numbers)
+        // bad because identifiers can't start with numbers (jADT doesn't care
+        // about numbers)
         check(tokenizer, "42", UNKNOWN, 1);
         // just bad
-        check(tokenizer, "?", UNKNOWN, 1);        
+        check(tokenizer, "?", UNKNOWN, 1);
     }
-    
+
     /**
      * Test various kinds of punctuation
      */
@@ -134,34 +164,35 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "]", RBRACKET, 1);
         check(tokenizer, "|", BAR, 1);
         check(tokenizer, ".", DOT, 1);
-        check(tokenizer, "<EOF>", EOF, 1);                
+        check(tokenizer, "<EOF>", EOF, 1);
     }
-    
+
     @Test
     public void testUnknown() {
         final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("~*/~");
         check(tokenizer1, "~*/~", UNKNOWN, 1);
         check(tokenizer1, "<EOF>", EOF, 1);
-        
+
         final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("?");
         check(tokenizer2, "?", UNKNOWN, 1);
-        check(tokenizer2, "<EOF>", EOF, 1);        
-        
+        check(tokenizer2, "<EOF>", EOF, 1);
+
         final BaseJavaCCParserImplTokenManager tokenizer3 = tokenizer("/");
         check(tokenizer3, "/", UNKNOWN, 1);
-        check(tokenizer3, "<EOF>", EOF, 1);        
-        
+        check(tokenizer3, "<EOF>", EOF, 1);
+
         final BaseJavaCCParserImplTokenManager tokenizer4 = tokenizer("?/");
-        // ideally these would match as one token but I haven't figure out how to do that
+        // ideally these would match as one token but I haven't figure out how
+        // to do that
         check(tokenizer4, "?", UNKNOWN, 1);
         check(tokenizer4, "/", UNKNOWN, 1);
-        check(tokenizer4, "<EOF>", EOF, 1);        
+        check(tokenizer4, "<EOF>", EOF, 1);
     }
-       
+
     @Test
     public void testEOF() {
         final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("");
-        check(tokenizer, "<EOF>", EOF, 1);  
+        check(tokenizer, "<EOF>", EOF, 1);
     }
 
     /**
@@ -169,15 +200,14 @@ public class JavaCCTokenizerTest {
      */
     @Test
     public void testKeywords() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer(
-                        "import package boolean byte double char float int long short final abstract assert break case catch class const continue "
-                                + "default do else enum extends finally for goto if implements instanceof interface native new private protected public return "
-                                + "static strictfp super switch synchronized this throw throws transient try void volatile while");
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("import package boolean byte double char float int long short final abstract assert break case catch class const continue "
+                + "default do else enum extends finally for goto if implements instanceof interface native new private protected public return "
+                + "static strictfp super switch synchronized this throw throws transient try void volatile while");
 
         // keywords used by jADT
         check(tokenizer, "import", IMPORT, 1);
         check(tokenizer, "package", PACKAGE, 1);
-        
+
         // primitive Java types
         check(tokenizer, "boolean", BOOLEAN, 1);
         check(tokenizer, "byte", BYTE, 1);
@@ -188,8 +218,9 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "long", LONG, 1);
         check(tokenizer, "short", SHORT, 1);
         check(tokenizer, "final", FINAL, 1);
-        
-        // Java keywords not used by jADT but reserved to prevent bad Java generation
+
+        // Java keywords not used by jADT but reserved to prevent bad Java
+        // generation
         check(tokenizer, "abstract", JAVA_KEYWORD, 1);
         check(tokenizer, "assert", JAVA_KEYWORD, 1);
         check(tokenizer, "break", JAVA_KEYWORD, 1);
@@ -233,14 +264,19 @@ public class JavaCCTokenizerTest {
     }
 
     /**
-     * Check that the next tokenType, symbol, and lineNo from the tokenizer are as expected
+     * Check that the next tokenType, symbol, and lineNo from the tokenizer are
+     * as expected
      */
-    private void check(BaseJavaCCParserImplTokenManager tokenizer, String expectedSymbol, int expectedTokenType, int expectedLineNo) {
+    private void check(BaseJavaCCParserImplTokenManager tokenizer,
+            String expectedSymbol, int expectedTokenType, int expectedLineNo) {
         final Token token = tokenizer.getNextToken();
         final String actualSymbol = token.kind == EOF ? "<EOF>" : token.image;
-        assertEquals("Expected token type " + expectedTokenType + " with symbol " + expectedSymbol + " but got " + token.kind
+        assertEquals("Expected token type " + expectedTokenType
+                + " with symbol " + expectedSymbol + " but got " + token.kind
                 + " with symbol " + actualSymbol, expectedTokenType, token.kind);
-        assertEquals("Got correct token type " + expectedTokenType + " but got wrong symbol", expectedSymbol, actualSymbol);
-        assertEquals("Got correct token type and symbol but wrong line number", expectedLineNo, token.beginLine);
+        assertEquals("Got correct token type " + expectedTokenType
+                + " but got wrong symbol", expectedSymbol, actualSymbol);
+        assertEquals("Got correct token type and symbol but wrong line number",
+                expectedLineNo, token.beginLine);
     }
 }

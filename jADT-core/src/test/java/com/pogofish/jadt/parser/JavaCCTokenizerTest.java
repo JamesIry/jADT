@@ -48,13 +48,28 @@ public class JavaCCTokenizerTest {
      */
     @Test
     public void testComments() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("/*\nCopyright*/hello//comment\nworld/*another comment*/oh");
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("/*\nCopyright*/hello//comment\nworld/**another comment*/oh");
         check(tokenizer, "hello", IDENTIFIER, 2);
         check(tokenizer, "world", IDENTIFIER, 3);
         check(tokenizer, "oh", IDENTIFIER, 3);
         check(tokenizer, "<EOF>", EOF, 3);
     }
     
+    /**
+     * Even unterminated comments should "work"
+     */
+    @Test
+    public void testUnterminatedComments() {
+        final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("/** haha");
+        check(tokenizer1, "<EOF>", EOF, 1);
+        
+        final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("/* haha");
+        check(tokenizer2, "<EOF>", EOF, 1);
+        
+        final BaseJavaCCParserImplTokenManager tokenizer3 = tokenizer("// haha");
+        check(tokenizer3, "<EOF>", EOF, 1);        
+    }
+       
     /**
      * Whitespace should be invisible in the output other than separating tokens
      */
@@ -142,7 +157,7 @@ public class JavaCCTokenizerTest {
         check(tokenizer4, "/", UNKNOWN, 1);
         check(tokenizer4, "<EOF>", EOF, 1);        
     }
-    
+       
     @Test
     public void testEOF() {
         final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("");

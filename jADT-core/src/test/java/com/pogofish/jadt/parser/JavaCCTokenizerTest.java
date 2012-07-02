@@ -108,7 +108,7 @@ public class JavaCCTokenizerTest {
      */
     @Test
     public void testPunctuation() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("<>=(),[]|.~*/~");
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("<>=(),[]|.");
         check(tokenizer, "<", LANGLE, 1);
         check(tokenizer, ">", RANGLE, 1);
         check(tokenizer, "=", EQUALS, 1);
@@ -119,10 +119,19 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "]", RBRACKET, 1);
         check(tokenizer, "|", BAR, 1);
         check(tokenizer, ".", DOT, 1);
-        // this one is tested to provide coverage of a default case in the Tokenizer
-        check(tokenizer, "~*", UNKNOWN, 1);
-        check(tokenizer, "/~", UNKNOWN, 1);
-        check(tokenizer, "<EOF>", EOF, 1);        
+        check(tokenizer, "<EOF>", EOF, 1);                
+    }
+    
+    @Test
+    public void testUnknown() {
+        final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("~*/~");
+        check(tokenizer1, "~*", UNKNOWN, 1);
+        check(tokenizer1, "/~", UNKNOWN, 1);
+        check(tokenizer1, "<EOF>", EOF, 1);
+        
+//        final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("/");
+//        check(tokenizer2, "/", UNKNOWN, 1);
+//        check(tokenizer2, "<EOF>", EOF, 1);        
     }
     
     @Test

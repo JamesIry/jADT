@@ -107,9 +107,9 @@ public class ASTPrinterTest {
     @Test
     public void testConstructors() {
         // no arg constructor
-        assertEquals("Foo", print(new Constructor("Foo", Util.<Arg> list())));
+        assertEquals("Foo", print(new Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list())));
         // constructor with args
-        assertEquals("Foo(boolean hello, int World)", print(new Constructor("Foo", list(new Arg(
+        assertEquals("Foo(boolean hello, int World)", print(new Constructor(Util.<JavaComment>list(), "Foo", list(new Arg(
                 Util.<ArgModifier>list(), _Primitive(_BooleanType()), "hello"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "World")))));
     }
 
@@ -118,8 +118,8 @@ public class ASTPrinterTest {
      */
     @Test
     public void testDataTypes() {
-        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType("Foo", Util.<String>list(), list(new Constructor("Bar",
-                Util.<Arg> list()), new Constructor("Baz", Util.<Arg> list())))));
+        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), list(new Constructor(Util.<JavaComment>list(), "Bar",
+                Util.<Arg> list()), new Constructor(Util.<JavaComment>list(), "Baz", Util.<Arg> list())))));
     }
 
     /**
@@ -140,7 +140,7 @@ public class ASTPrinterTest {
                 "PrinterTest", "some.package", list("number.one", "number.two"), Util.<DataType> list())));
         // package, imports and datatypes
         assertEquals("package some.package\n\nimport number.one\nimport number.two\n\nFoo =\n    Bar\n", print(new Doc(
-                "PrinterTest", "some.package", list("number.one", "number.two"), list(new DataType("Foo", Util.<String>list(), 
-                        list(new Constructor("Bar", Util.<Arg> list())))))));
+                "PrinterTest", "some.package", list("number.one", "number.two"), list(new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), 
+                        list(new Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg> list())))))));
     }
 }

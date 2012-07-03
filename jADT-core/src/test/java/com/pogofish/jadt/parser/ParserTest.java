@@ -36,6 +36,7 @@ import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.ast.SyntaxError;
@@ -266,11 +267,11 @@ public class ParserTest {
     @Test
     public void testConstructor() throws Exception {
         // no arg
-        assertEquals(_Constructor("Foo", Util.<Arg> list()), parserImpl("Foo")
+        assertEquals(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list()), parserImpl("Foo")
                 .constructor());
         // args
         assertEquals(
-                _Constructor(
+                _Constructor(Util.<JavaComment>list(), 
                         "Foo",
                         list(_Arg(Util.<ArgModifier> list(),
                                 _Primitive(_IntType()), "Bar"))),
@@ -280,7 +281,7 @@ public class ParserTest {
   @Test
   public void testConstructorErrors() throws Exception {
         ParserImpl p1 = parserImpl("");
-        checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), _Constructor("NO_IDENTIFIER@1", Util.<Arg>list()), p1.constructor(), p1);
+        checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), _Constructor(Util.<JavaComment>list(), "NO_IDENTIFIER@1", Util.<Arg>list()), p1.constructor(), p1);
     }
 
     /**
@@ -288,11 +289,11 @@ public class ParserTest {
      */
     @Test
     public void testConstructors() throws Exception {
-        assertEquals(list(_Constructor("Foo", Util.<Arg> list())),
+        assertEquals(list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list())),
                 parserImpl("Foo").constructors());
         assertEquals(
-                list(_Constructor("Foo", Util.<Arg> list()),
-                        _Constructor("Bar", Util.<Arg> list())),
+                list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list()),
+                        _Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg> list())),
                 parserImpl("Foo|Bar").constructors());
     }
     
@@ -300,11 +301,11 @@ public class ParserTest {
    public void testConstructorsErrors() throws Exception {
         final ParserImpl p1 = parserImpl("Foo|");
         checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), 
-                list(_Constructor("Foo", Util.<Arg>list()), _Constructor("NO_IDENTIFIER@1", Util.<Arg>list())), p1.constructors(), p1);
+                list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg>list()), _Constructor(Util.<JavaComment>list(), "NO_IDENTIFIER@1", Util.<Arg>list())), p1.constructors(), p1);
 
         final ParserImpl p2 = parserImpl("Foo||Bar");
         checkError(list(_UnexpectedToken("a constructor name", "'|'", 1)), 
-                list(_Constructor("Foo", Util.<Arg>list()), _Constructor("NO_IDENTIFIER@1", Util.<Arg>list()), _Constructor("Bar", Util.<Arg>list())), p2.constructors(), p2);
+                list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg>list()), _Constructor(Util.<JavaComment>list(), "NO_IDENTIFIER@1", Util.<Arg>list()), _Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg>list())), p2.constructors(), p2);
     }
 
     /**
@@ -313,16 +314,16 @@ public class ParserTest {
     @Test
     public void testDataType() throws Exception {
         assertEquals(
-                _DataType("Foo", Util.<String> list(),
-                        list(_Constructor("Foo", Util.<Arg> list()))),
+                _DataType(Util.<JavaComment>list(), "Foo", Util.<String> list(),
+                        list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list()))),
                 parserImpl("Foo=Foo").dataType());
         assertEquals(
-                _DataType("Foo", list("A"),
-                        list(_Constructor("Foo", Util.<Arg> list()))),
+                _DataType(Util.<JavaComment>list(), "Foo", list("A"),
+                        list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list()))),
                 parserImpl("Foo<A>=Foo").dataType());
         assertEquals(
-                _DataType("Foo", list("A", "B"),
-                        list(_Constructor("Foo", Util.<Arg> list()))),
+                _DataType(Util.<JavaComment>list(), "Foo", list("A", "B"),
+                        list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list()))),
                 parserImpl("Foo<A, B>=Foo").dataType());
     }
     
@@ -330,19 +331,19 @@ public class ParserTest {
    public void testDataTypeErrors() throws Exception {
         
         final ParserImpl p1 = parserImpl("boolean = Foo");
-        checkError(list(_UnexpectedToken("a data type name", "'boolean'", 1)), _DataType("BAD_IDENTIFIER_boolean@1", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), p1.dataType(), p1);
+        checkError(list(_UnexpectedToken("a data type name", "'boolean'", 1)), _DataType(Util.<JavaComment>list(), "BAD_IDENTIFIER_boolean@1", Util.<String>list(), list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg>list()))), p1.dataType(), p1);
  
         final ParserImpl p2 = parserImpl("= Foo");
-        checkError(list(_UnexpectedToken("a data type name", "'='", 1)), _DataType("NO_IDENTIFIER@1", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), p2.dataType(), p2);
+        checkError(list(_UnexpectedToken("a data type name", "'='", 1)), _DataType(Util.<JavaComment>list(), "NO_IDENTIFIER@1", Util.<String>list(), list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg>list()))), p2.dataType(), p2);
  
         final ParserImpl p3 = parserImpl("Bar Foo");
-        checkError(list(_UnexpectedToken("'='", "'Foo'", 1)), _DataType("Bar", Util.<String>list(), list(_Constructor("Foo", Util.<Arg>list()))), p3.dataType(), p3);
+        checkError(list(_UnexpectedToken("'='", "'Foo'", 1)), _DataType(Util.<JavaComment>list(), "Bar", Util.<String>list(), list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg>list()))), p3.dataType(), p3);
 
         final ParserImpl p4 = parserImpl("");
-        checkError(list(_UnexpectedToken("a data type name", "<EOF>", 1)), _DataType("NO_IDENTIFIER@1", Util.<String>list(), list(_Constructor("NO_IDENTIFIER@2", Util.<Arg>list()))), p4.dataType(), p4);
+        checkError(list(_UnexpectedToken("a data type name", "<EOF>", 1)), _DataType(Util.<JavaComment>list(), "NO_IDENTIFIER@1", Util.<String>list(), list(_Constructor(Util.<JavaComment>list(), "NO_IDENTIFIER@2", Util.<Arg>list()))), p4.dataType(), p4);
 
         final ParserImpl p5 = parserImpl("Bar<A, = Foo");
-        checkError(list(_UnexpectedToken("a type parameter", "'='", 1)), _DataType("Bar", list("A", "NO_IDENTIFIER@1"), list(_Constructor("Foo", Util.<Arg>list()))), p5.dataType(), p5);
+        checkError(list(_UnexpectedToken("a type parameter", "'='", 1)), _DataType(Util.<JavaComment>list(), "Bar", list("A", "NO_IDENTIFIER@1"), list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg>list()))), p5.dataType(), p5);
  
     }
 
@@ -352,14 +353,14 @@ public class ParserTest {
     @Test
     public void testDataTypes() throws Exception {
         assertEquals(
-                list(_DataType("Foo", Util.<String> list(),
-                        list(_Constructor("Foo", Util.<Arg> list())))),
+                list(_DataType(Util.<JavaComment>list(), "Foo", Util.<String> list(),
+                        list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list())))),
                 parserImpl("Foo=Foo").dataTypes());
         assertEquals(
-                list(_DataType("Foo", Util.<String> list(),
-                        list(_Constructor("Foo", Util.<Arg> list()))),
-                        _DataType("Bar", Util.<String> list(),
-                                list(_Constructor("Bar", Util.<Arg> list())))),
+                list(_DataType(Util.<JavaComment>list(), "Foo", Util.<String> list(),
+                        list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list()))),
+                        _DataType(Util.<JavaComment>list(), "Bar", Util.<String> list(),
+                                list(_Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg> list())))),
                 parserImpl("Foo=Foo Bar = Bar").dataTypes());
     }
 
@@ -469,8 +470,8 @@ public class ParserTest {
                 "Foo = Foo"));
 
         assertEquals(new ParseResult(new Doc("ParserTest", "", Util
-                .<String> list(), list(_DataType("Foo", Util.<String> list(),
-                list(_Constructor("Foo", Util.<Arg> list()))))), Util.<SyntaxError>list()), result);
+                .<String> list(), list(_DataType(Util.<JavaComment>list(), "Foo", Util.<String> list(),
+                list(_Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list()))))), Util.<SyntaxError>list()), result);
     }
 
     /**
@@ -489,13 +490,13 @@ public class ParserTest {
                         "ParserTest",
                         "hello.world",
                         list("wow.man", "flim.flam"),
-                        list(new DataType(
+                        list(new DataType(Util.<JavaComment>list(), 
                                 "FooBar",
                                 Util.<String> list(),
                                 Util.list(
-                                        new Constructor("foo", Util
+                                        new Constructor(Util.<JavaComment>list(), "foo", Util
                                                 .<Arg> list()),
-                                        new Constructor(
+                                        new Constructor(Util.<JavaComment>list(), 
                                                 "bar",
                                                 list(new Arg(Util
                                                         .<ArgModifier> list(),
@@ -507,8 +508,8 @@ public class ParserTest {
                                                                         "String",
                                                                         Util.<RefType> list())))),
                                                                 "yeah"))))),
-                                new DataType("whatever", Util.<String> list(),
-                                        list(new Constructor("whatever", Util
+                                new DataType(Util.<JavaComment>list(), "whatever", Util.<String> list(),
+                                        list(new Constructor(Util.<JavaComment>list(), "whatever", Util
                                                 .<Arg> list()))))), Util.<SyntaxError>list()), result);
     }
 
@@ -528,13 +529,13 @@ public class ParserTest {
                         "ParserTest",
                         "hello.world",
                         list("wow.man", "flim.flam"),
-                        list(new DataType(
+                        list(new DataType(Util.<JavaComment>list(), 
                                 "FooBar",
                                 Util.<String> list(),
                                 Util.list(
-                                        new Constructor("foo", Util
+                                        new Constructor(Util.<JavaComment>list(), "foo", Util
                                                 .<Arg> list()),
-                                        new Constructor(
+                                        new Constructor(Util.<JavaComment>list(), 
                                                 "bar",
                                                 list(new Arg(Util
                                                         .<ArgModifier> list(),
@@ -546,8 +547,8 @@ public class ParserTest {
                                                                         "String",
                                                                         Util.<RefType> list())))),
                                                                 "yeah"))))),
-                                new DataType("whatever", Util.<String> list(),
-                                        list(new Constructor("BAD_IDENTIFIER_int@1", Util
+                                new DataType(Util.<JavaComment>list(), "whatever", Util.<String> list(),
+                                        list(new Constructor(Util.<JavaComment>list(), "BAD_IDENTIFIER_int@1", Util
                                                 .<Arg> list()))))), list(SyntaxError._UnexpectedToken("a constructor name", "'int'", 2))), result);
                 
     }

@@ -19,6 +19,7 @@ import static com.pogofish.jadt.util.Util.list;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -26,6 +27,7 @@ import org.junit.Test;
 import static com.pogofish.jadt.ast.SemanticError.*;
 
 import com.pogofish.jadt.ast.*;
+import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
 import com.pogofish.jadt.checker.Checker;
 import com.pogofish.jadt.checker.StandardChecker;
 import com.pogofish.jadt.util.Util;
@@ -43,7 +45,7 @@ public class CheckerTest {
     @Test
     public void testDuplicateDataType() {
         final Checker checker = new StandardChecker();
-        final DataType dataType = new DataType("Foo", Util.<String>list(), list(new Constructor("Foo", Util.<Arg>list())));
+        final DataType dataType = new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), list(new Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg>list())));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType, dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -56,8 +58,8 @@ public class CheckerTest {
     @Test
     public void testDuplicateConstructor() {
         final Checker checker = new StandardChecker();
-        final Constructor constructor = new Constructor("Bar", Util.<Arg>list());
-        final DataType dataType = new DataType("Foo", Util.<String>list(), list(constructor, constructor));
+        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg>list());
+        final DataType dataType = new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), list(constructor, constructor));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -70,9 +72,9 @@ public class CheckerTest {
     @Test
     public void testConstructorDataTypeConflict() {
         final Checker checker = new StandardChecker();
-        final Constructor constructor1 = new Constructor("Bar", Util.<Arg>list());
-        final Constructor constructor2 = new Constructor("Foo", Util.<Arg>list());
-        final DataType dataType = new DataType("Foo", Util.<String>list(), list(constructor1, constructor2));
+        final Constructor constructor1 = new Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg>list());
+        final Constructor constructor2 = new Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg>list());
+        final DataType dataType = new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), list(constructor1, constructor2));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -82,8 +84,8 @@ public class CheckerTest {
     @Test
     public void testDuplicateArgName() {
         final Checker checker = new StandardChecker();
-        final Constructor constructor = new Constructor("Bar", list(Arg._Arg(Util.<ArgModifier>list(), Type._Primitive(PrimitiveType._IntType()), "foo"), Arg._Arg(Util.<ArgModifier>list(), Type._Primitive(PrimitiveType._BooleanType()), "foo")));
-        final DataType dataType = new DataType("Foo", Util.<String>list(), list(constructor));
+        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Bar", list(Arg._Arg(Util.<ArgModifier>list(), Type._Primitive(PrimitiveType._IntType()), "foo"), Arg._Arg(Util.<ArgModifier>list(), Type._Primitive(PrimitiveType._BooleanType()), "foo")));
+        final DataType dataType = new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), list(constructor));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -93,8 +95,8 @@ public class CheckerTest {
     @Test
     public void testDuplicateArgModifier() {
         final Checker checker = new StandardChecker();
-        final Constructor constructor = new Constructor("Bar", list(Arg._Arg(list(ArgModifier._Final(), ArgModifier._Final()), Type._Primitive(PrimitiveType._IntType()), "foo")));
-        final DataType dataType = new DataType("Foo", Util.<String>list(), list(constructor));
+        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Bar", list(Arg._Arg(list(ArgModifier._Final(), ArgModifier._Final()), Type._Primitive(PrimitiveType._IntType()), "foo")));
+        final DataType dataType = new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), list(constructor));
         final Doc doc = new Doc("CheckerTest", "", Util.<String>list(), list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());

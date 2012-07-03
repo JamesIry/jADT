@@ -115,9 +115,9 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testMultipleConstructors() {
-        final DataType fooBar = new DataType("FooBar", Util.<String>list(), list(
-                new Constructor("Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
-                        new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor("Bar",
+        final DataType fooBar = new DataType(Util.<JavaComment>list(), "FooBar", Util.<String>list(), list(
+                new Constructor(Util.<JavaComment>list(), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
+                        new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor(Util.<JavaComment>list(), "Bar",
                         Util.<Arg> list())));
 
         final StringSink sink = new StringSink("test");
@@ -137,7 +137,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testSingleConstructor() {
-        final DataType fooBar = new DataType("FooBar", Util.<String>list(), list(new Constructor("Foo", list(
+        final DataType fooBar = new DataType(Util.<JavaComment>list(), "FooBar", Util.<String>list(), list(new Constructor(Util.<JavaComment>list(), "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 

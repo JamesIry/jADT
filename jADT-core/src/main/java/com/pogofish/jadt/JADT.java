@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt;
 
-import static com.pogofish.jadt.ast.ASTConstants.*;
+import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 
 import java.util.ArrayList;
 import java.util.List;

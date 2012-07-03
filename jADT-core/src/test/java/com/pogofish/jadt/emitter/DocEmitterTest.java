@@ -18,6 +18,9 @@ package com.pogofish.jadt.emitter;
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaMultiLineComment;
 import static com.pogofish.jadt.ast.PrimitiveType._IntType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -57,9 +60,12 @@ public class DocEmitterTest {
 
 	
     private static final String FULL_HEADER =
+    "/** hello */\n" +
     "package some.package;\n" +
     "\n" +
+    "/* hello */\n" +
     "import wow.man;\n" +
+    "// hello\n" +
     "import flim.flam;\n" +
     "\n" +
     "/*\n" +
@@ -90,7 +96,7 @@ public class DocEmitterTest {
      */
     @Test
     public void testFull() {
-        final Doc doc = new Doc("EmitterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")), list(
+        final Doc doc = new Doc("EmitterTest", Pkg._Pkg(Util.list(_JavaDocComment("/** hello */")), "some.package"), list(Imprt._Imprt(Util.list(_JavaMultiLineComment("/* hello */")), "wow.man"), Imprt._Imprt(Util.list(_JavaEOLComment("// hello")), "flim.flam")), list(
                 new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(
                         new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),

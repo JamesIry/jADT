@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
-import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.PrimitiveType._IntType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -40,6 +40,7 @@ import com.pogofish.jadt.util.Util;
  */
 public class ConstructorEmitterTest {
     private static final String CONSTRUCTOR_CLASS = 
+    "/** hello */\n" +
     "   public static final class Foo/* type arguments */ extends NonPrimitive/* type arguments */ {\n" +
     "/* constructor method Foo*/\n" +
     "\n" +
@@ -66,7 +67,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testFactory() {
-        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor(Util.list(_JavaDocComment("/** hello */")), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringSink sink = new StringSink("test");
         try {
@@ -84,7 +85,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testConstrucorDeclaration() {
-        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor(Util.list(_JavaDocComment("/** hello */")), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringSink sink = new StringSink("test");
         try {

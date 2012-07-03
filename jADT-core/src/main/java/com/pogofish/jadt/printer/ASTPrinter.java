@@ -23,6 +23,10 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
+import com.pogofish.jadt.ast.JavaComment.JavaEOLComment;
+import com.pogofish.jadt.ast.JavaComment.JavaMultiLineComment;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.PrimitiveType.BooleanType;
 import com.pogofish.jadt.ast.PrimitiveType.ByteType;
@@ -70,6 +74,41 @@ public class ASTPrinter  {
         }
         return builder.toString();  
         
+    }
+    
+    /**
+     * Prints a list of comments pretty much unmolested except to add \n s
+     */
+    public static String printComments(List<JavaComment> comments) {
+        final StringBuilder builder = new StringBuilder();
+        for (JavaComment comment : comments) {
+            builder.append(print(comment));
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Prints a single comment pretty much unmolested
+     */
+    public static String print(JavaComment comment) {
+        return comment.match(new JavaComment.MatchBlock<String>() {
+
+            @Override
+            public String _case(JavaDocComment x) {
+                return x.comment;
+            }
+
+            @Override
+            public String _case(JavaMultiLineComment x) {
+                return x.comment;
+            }
+
+            @Override
+            public String _case(JavaEOLComment x) {
+                return x.comment;
+            }
+        });
     }
 
     /**
@@ -127,7 +166,7 @@ public class ASTPrinter  {
      * @return pretty string
      */
     public static String print(Arg arg) {
-        return print(arg.modifiers) + print(arg.type) + " " + arg.name;
+        return printArgModifiers(arg.modifiers) + print(arg.type) + " " + arg.name;
     }
     
     /**
@@ -135,7 +174,7 @@ public class ASTPrinter  {
      * @param modifiers list of arg modifiers
      * @return string consisting of those modifiers, with a trailing space
      */
-    public static String print(List<ArgModifier> modifiers) {
+    public static String printArgModifiers(List<ArgModifier> modifiers) {
         final StringBuilder builder = new StringBuilder();
         if (modifiers.contains(ArgModifier._Final())) {
             builder.append(print(ArgModifier._Final()));

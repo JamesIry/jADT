@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
-import static com.pogofish.jadt.ast.ASTConstants.*;
+import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         sink.write(ASTPrinter.print(dataType));
         sink.write("\n*/\n");
 
+        sink.write(ASTPrinter.printComments(dataType.comments));
         if (dataType.constructors.size() == 1) {
             emitSingleConstructor(sink, dataType, header);
             

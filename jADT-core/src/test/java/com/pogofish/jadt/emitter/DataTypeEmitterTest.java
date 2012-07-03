@@ -16,6 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Ref;
 import static com.pogofish.jadt.util.Util.list;
@@ -44,6 +45,7 @@ public class DataTypeEmitterTest {
     "  | Bar\n" +
     "*/\n";
     private static final String MULTI_CONSTRUCTOR = 
+    "/** hello */\n" +
     "public abstract class FooBar/* type arguments */ {\n" +
     "\n" +
     "   private FooBar() {\n" +
@@ -93,6 +95,7 @@ public class DataTypeEmitterTest {
     "}";
     
     private static final String SINGLE_CONSTRUCTOR = 
+    "/** hello */\n" +
     "public final class FooBar/* type arguments */ {\n" +
     "\n" +
     "/* constructor factory FooBar Foo FooBar*/\n" +
@@ -116,7 +119,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testMultipleConstructors() {
-        final DataType fooBar = new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(
+        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/** hello */")), "FooBar", Util.<String>list(), list(
                 new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                         new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor(NO_COMMENTS, "Bar",
                         Util.<Arg> list())));
@@ -138,7 +141,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testSingleConstructor() {
-        final DataType fooBar = new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(new Constructor(NO_COMMENTS, "Foo", list(
+        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/** hello */")), "FooBar", Util.<String>list(), list(new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 

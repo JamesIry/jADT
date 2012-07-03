@@ -1,11 +1,9 @@
 package com.pogofish.jadt;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
-
-import com.pogofish.jadt.Version;
-
-
-import static org.junit.Assert.*;
 
 /**
  * Test the Version thingy does its thingy

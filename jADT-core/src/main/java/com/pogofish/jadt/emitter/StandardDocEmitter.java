@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import com.pogofish.jadt.Version;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.sink.Sink;
 import com.pogofish.jadt.sink.SinkFactory;
 
@@ -40,10 +41,10 @@ public class StandardDocEmitter implements DocEmitter {
     @Override
     public void emit(SinkFactory factory, Doc doc) {
     	logger.fine("Generating Java source based on " + doc.srcInfo);
-        final StringBuilder header = new StringBuilder(doc.pkg.isEmpty() ? "" : ("package " + doc.pkg + ";\n\n"));
+        final StringBuilder header = new StringBuilder(doc.pkg.name.isEmpty() ? "" : ("package " + doc.pkg.name + ";\n\n"));
         if (!doc.imports.isEmpty()) {
-            for (String imp : doc.imports) {
-                header.append("import " + imp + ";\n");
+            for (Imprt imp : doc.imports) {
+                header.append("import " + imp.name + ";\n");
             }
             header.append("\n");
         }
@@ -52,7 +53,7 @@ public class StandardDocEmitter implements DocEmitter {
         header.append("The source was parsed as: \n\n");
         
         for (DataType dataType : doc.dataTypes) {
-            final Sink sink = factory.createSink(doc.pkg.isEmpty() ? dataType.name : doc.pkg + "." + dataType.name);
+            final Sink sink = factory.createSink(doc.pkg.name.isEmpty() ? dataType.name : doc.pkg.name + "." + dataType.name);
             logger.info("Generating " + sink.getInfo());
             try {
                 dataTypeEmitter.emit(sink, dataType, header.toString());

@@ -15,7 +15,15 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
-import static com.pogofish.jadt.ast.PrimitiveType.*;
+import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
+import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
+import static com.pogofish.jadt.ast.PrimitiveType._CharType;
+import static com.pogofish.jadt.ast.PrimitiveType._DoubleType;
+import static com.pogofish.jadt.ast.PrimitiveType._FloatType;
+import static com.pogofish.jadt.ast.PrimitiveType._IntType;
+import static com.pogofish.jadt.ast.PrimitiveType._LongType;
+import static com.pogofish.jadt.ast.PrimitiveType._ShortType;
 import static com.pogofish.jadt.ast.RefType._ArrayType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -28,10 +36,7 @@ import org.junit.Test;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
-import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.RefType;
-import com.pogofish.jadt.emitter.ClassBodyEmitter;
-import com.pogofish.jadt.emitter.StandardClassBodyEmitter;
 import com.pogofish.jadt.sink.StringSink;
 import com.pogofish.jadt.util.Util;
 
@@ -200,7 +205,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testNoArgNoTypesFactory() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Whatever", Util.<Arg>list());
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list());
         final StringSink sink = new StringSink("test");
         try {
             emitter.constructorFactory(sink, "SomeDataType", "SomeFactory", Util.<String>list(), constructor);
@@ -215,7 +220,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testNoArgTypesFactory() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Whatever", Util.<Arg>list());
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list());
         final StringSink sink = new StringSink("test");
         try {
             emitter.constructorFactory(sink, "SomeDataType", "SomeFactory", list("A", "B"), constructor);
@@ -230,7 +235,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testArgsNoTypesFactory() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
@@ -250,7 +255,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testArgsTypesFactory() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "yeah"),
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         ));
@@ -269,7 +274,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testConstructorMethod() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo",
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo",
                 list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "um"), new Arg(Util.list(ArgModifier._Final()), _Primitive(_IntType()),
                         "yeah")));
 
@@ -287,7 +292,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testNoArgToString() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Whatever", Util.<Arg>list());
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list());
         
         final StringSink sink = new StringSink("test");
         try {
@@ -304,7 +309,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testOneArgToString() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "um")
         ));
         
@@ -323,7 +328,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testArgsToString() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType>list())), "um"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah")
         ));
@@ -343,7 +348,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testNoArgsNoTypesEquals() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Whatever", Util.<Arg>list());
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list());
         
         final StringSink sink = new StringSink("test");
         try {
@@ -361,7 +366,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testArgsNoTypesEquals() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "um"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
@@ -382,7 +387,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testArgsTypesEquals() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "um"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_IntType()))), "oh")
@@ -403,7 +408,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testNoArgHashCode() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Whatever", Util.<Arg>list());
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list());
         
         final StringSink sink = new StringSink("test");
         try {
@@ -421,7 +426,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testArgHashCode() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Primitive(_BooleanType()), "boolShit"),
                 new Arg(Util.<ArgModifier>list(), _Primitive(_ByteType()), "dracula"),
                 new Arg(Util.<ArgModifier>list(), _Primitive(_CharType()), "whatACharacter"),

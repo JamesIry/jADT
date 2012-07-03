@@ -13,26 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.sink;
+package com.pogofish.jadt.ast;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Teset the FileSinkFactoryFactory
- *
+ * Helpful constants for working with the AST
+ * 
  * @author jiry
  */
-public class FileSinkFactoryFactoryTest {
-    /**
-     * Make sure FileSinkFactories are created and initialized properly
-     */
-    @Test
-    public void test() {
-        final FileSinkFactoryFactory factoryFactory = new FileSinkFactoryFactory();
-        final FileSinkFactory sinkFactory = (FileSinkFactory)factoryFactory.createSinkFactory("whatever");
-        assertEquals("whatever", sinkFactory.destDirName);
-    }
+public class ASTConstants {
+    public static final List<JavaComment> NO_COMMENTS = Collections.emptyList();
+    
+    public static final Pkg EMPTY_PKG = Pkg._Pkg(NO_COMMENTS, "");
+    
+    public static final List<Imprt> NO_IMPORTS = Collections.emptyList();
 }

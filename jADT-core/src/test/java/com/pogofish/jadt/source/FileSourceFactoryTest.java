@@ -18,7 +18,12 @@ package com.pogofish.jadt.source;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,9 +31,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.source.FileSourceFactory;
-import com.pogofish.jadt.source.Source;
-import com.pogofish.jadt.source.SourceFactory;
 import com.pogofish.jadt.util.TestUtil;
 
 

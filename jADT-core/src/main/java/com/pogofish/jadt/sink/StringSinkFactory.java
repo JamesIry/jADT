@@ -15,7 +15,9 @@ limitations under the License.
 */
 package com.pogofish.jadt.sink;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Factory that creates StringSinks, mostly useful for testing

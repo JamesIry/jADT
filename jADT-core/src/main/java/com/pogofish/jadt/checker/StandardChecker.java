@@ -15,14 +15,24 @@ limitations under the License.
 */
 package com.pogofish.jadt.checker;
 
+import static com.pogofish.jadt.ast.SemanticError._ConstructorDataTypeConflict;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateArgName;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateConstructor;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateDataType;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateModifier;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.pogofish.jadt.ast.*;
-import static com.pogofish.jadt.ast.SemanticError.*;
+import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.Constructor;
+import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.SemanticError;
 import com.pogofish.jadt.printer.ASTPrinter;
 
 

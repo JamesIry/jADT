@@ -17,7 +17,13 @@ package com.pogofish.jadt.printer;
 
 import java.util.List;
 
-import com.pogofish.jadt.ast.*;
+import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.Constructor;
+import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.PrimitiveType.BooleanType;
 import com.pogofish.jadt.ast.PrimitiveType.ByteType;
 import com.pogofish.jadt.ast.PrimitiveType.CharType;
@@ -26,8 +32,10 @@ import com.pogofish.jadt.ast.PrimitiveType.FloatType;
 import com.pogofish.jadt.ast.PrimitiveType.IntType;
 import com.pogofish.jadt.ast.PrimitiveType.LongType;
 import com.pogofish.jadt.ast.PrimitiveType.ShortType;
+import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.ast.RefType.ArrayType;
 import com.pogofish.jadt.ast.RefType.ClassType;
+import com.pogofish.jadt.ast.Type;
 import com.pogofish.jadt.ast.Type.Primitive;
 import com.pogofish.jadt.ast.Type.Ref;
 
@@ -49,10 +57,10 @@ public class ASTPrinter  {
      * @return pretty string
      */
     public static String print(Doc doc) {
-        final StringBuilder builder = new StringBuilder(doc.pkg.isEmpty() ? "" : ("package " + doc.pkg + "\n\n"));
+        final StringBuilder builder = new StringBuilder(doc.pkg.name.isEmpty() ? "" : ("package " + doc.pkg.name + "\n\n"));
         if (!doc.imports.isEmpty()) {
-            for (String imp : doc.imports) {
-                builder.append("import " + imp + "\n");
+            for (Imprt imp : doc.imports) {
+                builder.append("import " + imp.name + "\n");
             }
             builder.append("\n");
         }

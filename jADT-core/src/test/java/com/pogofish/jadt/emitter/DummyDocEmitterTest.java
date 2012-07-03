@@ -15,6 +15,8 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
+import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
+import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -24,8 +26,6 @@ import org.junit.Test;
 
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
-import com.pogofish.jadt.emitter.DocEmitter;
-import com.pogofish.jadt.emitter.DummyDocEmitter;
 import com.pogofish.jadt.sink.StringSinkFactory;
 
 
@@ -40,7 +40,7 @@ public class DummyDocEmitterTest {
      */
     @Test
     public void testHappy() {
-        final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
+        final Doc testDoc = new Doc("some source", EMPTY_PKG, NO_IMPORTS,Collections.<DataType>emptyList());
         final DocEmitter dummyDocEmitter = new DummyDocEmitter(testDoc, "SomeClass");
         final StringSinkFactory factory = new StringSinkFactory("baseDir");
         dummyDocEmitter.emit(factory, testDoc);
@@ -52,8 +52,8 @@ public class DummyDocEmitterTest {
      */
     @Test
     public void testWrongDoc() {
-        final Doc testDoc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
-        final Doc doc = new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList());
+        final Doc testDoc = new Doc("some source", EMPTY_PKG, NO_IMPORTS,Collections.<DataType>emptyList());
+        final Doc doc = new Doc("some source", EMPTY_PKG, NO_IMPORTS,Collections.<DataType>emptyList());
         final DocEmitter dummyDocEmitter = new DummyDocEmitter(testDoc, "SomeClass");
         final StringSinkFactory factory = new StringSinkFactory("baseDir");
         try {

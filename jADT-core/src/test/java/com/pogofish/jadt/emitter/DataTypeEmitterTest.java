@@ -15,6 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
+import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Ref;
 import static com.pogofish.jadt.util.Util.list;
@@ -22,11 +23,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.ast.*;
-import com.pogofish.jadt.emitter.DataTypeEmitter;
-import com.pogofish.jadt.emitter.DummyClassBodyEmitter;
-import com.pogofish.jadt.emitter.DummyConstructorEmitter;
-import com.pogofish.jadt.emitter.StandardDataTypeEmitter;
+import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.Constructor;
+import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.sink.StringSink;
 import com.pogofish.jadt.util.Util;
 
@@ -115,9 +116,9 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testMultipleConstructors() {
-        final DataType fooBar = new DataType(Util.<JavaComment>list(), "FooBar", Util.<String>list(), list(
-                new Constructor(Util.<JavaComment>list(), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
-                        new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor(Util.<JavaComment>list(), "Bar",
+        final DataType fooBar = new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(
+                new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
+                        new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor(NO_COMMENTS, "Bar",
                         Util.<Arg> list())));
 
         final StringSink sink = new StringSink("test");
@@ -137,7 +138,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testSingleConstructor() {
-        final DataType fooBar = new DataType(Util.<JavaComment>list(), "FooBar", Util.<String>list(), list(new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final DataType fooBar = new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 

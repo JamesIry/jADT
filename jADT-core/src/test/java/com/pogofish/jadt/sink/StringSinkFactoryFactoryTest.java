@@ -15,15 +15,14 @@ limitations under the License.
 */
 package com.pogofish.jadt.sink;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-
-import com.pogofish.jadt.sink.StringSinkFactory;
-import com.pogofish.jadt.sink.StringSinkFactoryFactory;
 
 
 /**

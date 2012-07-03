@@ -15,7 +15,17 @@ limitations under the License.
 */
 package com.pogofish.jadt.printer;
 
-import static com.pogofish.jadt.ast.PrimitiveType.*;
+import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
+import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
+import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
+import static com.pogofish.jadt.ast.PrimitiveType._CharType;
+import static com.pogofish.jadt.ast.PrimitiveType._DoubleType;
+import static com.pogofish.jadt.ast.PrimitiveType._FloatType;
+import static com.pogofish.jadt.ast.PrimitiveType._IntType;
+import static com.pogofish.jadt.ast.PrimitiveType._LongType;
+import static com.pogofish.jadt.ast.PrimitiveType._ShortType;
 import static com.pogofish.jadt.ast.RefType._ArrayType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -27,8 +37,14 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.ast.*;
-import com.pogofish.jadt.printer.ASTPrinter;
+import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.Constructor;
+import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.Pkg;
+import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.util.Util;
 
 
@@ -107,9 +123,9 @@ public class ASTPrinterTest {
     @Test
     public void testConstructors() {
         // no arg constructor
-        assertEquals("Foo", print(new Constructor(Util.<JavaComment>list(), "Foo", Util.<Arg> list())));
+        assertEquals("Foo", print(new Constructor(NO_COMMENTS, "Foo", Util.<Arg> list())));
         // constructor with args
-        assertEquals("Foo(boolean hello, int World)", print(new Constructor(Util.<JavaComment>list(), "Foo", list(new Arg(
+        assertEquals("Foo(boolean hello, int World)", print(new Constructor(NO_COMMENTS, "Foo", list(new Arg(
                 Util.<ArgModifier>list(), _Primitive(_BooleanType()), "hello"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "World")))));
     }
 
@@ -118,8 +134,8 @@ public class ASTPrinterTest {
      */
     @Test
     public void testDataTypes() {
-        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), list(new Constructor(Util.<JavaComment>list(), "Bar",
-                Util.<Arg> list()), new Constructor(Util.<JavaComment>list(), "Baz", Util.<Arg> list())))));
+        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), list(new Constructor(NO_COMMENTS, "Bar",
+                Util.<Arg> list()), new Constructor(NO_COMMENTS, "Baz", Util.<Arg> list())))));
     }
 
     /**
@@ -128,19 +144,19 @@ public class ASTPrinterTest {
     @Test
     public void testDoc() {
         // empty doc
-        assertEquals("", print(new Doc("PrinterTest", "", Util.<String> list(), Util.<DataType> list())));
+        assertEquals("", print(new Doc("PrinterTest", EMPTY_PKG, NO_IMPORTS, Util.<DataType> list())));
         // package
         assertEquals("package some.package\n\n",
-                print(new Doc("PrinterTest", "some.package", Util.<String> list(), Util.<DataType> list())));
+                print(new Doc("PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), NO_IMPORTS, Util.<DataType> list())));
         // imports
         assertEquals("import number.one\nimport number.two\n\n",
-                print(new Doc("PrinterTest", "", list("number.one", "number.two"), Util.<DataType> list())));
+                print(new Doc("PrinterTest", EMPTY_PKG, list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), Util.<DataType> list())));
         // package and imports
         assertEquals("package some.package\n\nimport number.one\nimport number.two\n\n", print(new Doc(
-                "PrinterTest", "some.package", list("number.one", "number.two"), Util.<DataType> list())));
+                "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), Util.<DataType> list())));
         // package, imports and datatypes
         assertEquals("package some.package\n\nimport number.one\nimport number.two\n\nFoo =\n    Bar\n", print(new Doc(
-                "PrinterTest", "some.package", list("number.one", "number.two"), list(new DataType(Util.<JavaComment>list(), "Foo", Util.<String>list(), 
-                        list(new Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg> list())))))));
+                "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), list(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), 
+                        list(new Constructor(NO_COMMENTS, "Bar", Util.<Arg> list())))))));
     }
 }

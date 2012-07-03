@@ -20,8 +20,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.sink.StringSink;
-
 
 /**
  * Test StringSink

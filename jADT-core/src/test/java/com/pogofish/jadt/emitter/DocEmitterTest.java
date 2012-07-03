@@ -15,6 +15,9 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
+import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
+import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
 import static com.pogofish.jadt.ast.PrimitiveType._IntType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -27,13 +30,16 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.pogofish.jadt.Version;
-import com.pogofish.jadt.ast.*;
-import com.pogofish.jadt.emitter.DocEmitter;
-import com.pogofish.jadt.emitter.DummyDataTypeEmitter;
-import com.pogofish.jadt.emitter.StandardDocEmitter;
+import com.pogofish.jadt.ast.Arg;
+import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.Constructor;
+import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.Pkg;
+import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.sink.StringSinkFactory;
 import com.pogofish.jadt.util.Util;
-
 
 /**
  * Test the StandardDocEmitter.  Only shallow testing is performed here, the pieces of the doc emitter
@@ -84,16 +90,16 @@ public class DocEmitterTest {
      */
     @Test
     public void testFull() {
-        final Doc doc = new Doc("EmitterTest", "some.package", list("wow.man", "flim.flam"), list(
-                new DataType(Util.<JavaComment>list(), "FooBar", Util.<String>list(), list(
-                        new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Doc doc = new Doc("EmitterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")), list(
+                new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(
+                        new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
-                        new Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg>list())
+                        new Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())
                 )),
-                new DataType(Util.<JavaComment>list(), "Whatever", Util.<String>list(), list(
-                        new Constructor(Util.<JavaComment>list(), "Whatever", Util.<Arg>list())
+                new DataType(NO_COMMENTS, "Whatever", Util.<String>list(), list(
+                        new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list())
                 ))
                 
         ));
@@ -112,16 +118,16 @@ public class DocEmitterTest {
      */
     @Test
     public void testNoImports() {
-        final Doc doc = new Doc("EmitterTest", "some.package", Util.<String>list(), list(
-                new DataType(Util.<JavaComment>list(), "FooBar", Util.<String>list(), list(
-                        new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Doc doc = new Doc("EmitterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), NO_IMPORTS, list(
+                new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(
+                        new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
-                        new Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg>list())
+                        new Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())
                 )),
-                new DataType(Util.<JavaComment>list(), "Whatever", Util.<String>list(), list(
-                        new Constructor(Util.<JavaComment>list(), "Whatever", Util.<Arg>list())
+                new DataType(NO_COMMENTS, "Whatever", Util.<String>list(), list(
+                        new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list())
                 ))
                 
         ));
@@ -140,16 +146,16 @@ public class DocEmitterTest {
      */
     @Test
     public void testNoPackage() {
-        final Doc doc = new Doc("EmitterTest", "", list("wow.man", "flim.flam"), list(
-                new DataType(Util.<JavaComment>list(), "FooBar", Util.<String>list(), list(
-                        new Constructor(Util.<JavaComment>list(), "Foo", list(
+        final Doc doc = new Doc("EmitterTest", EMPTY_PKG, list(Imprt._Imprt(NO_COMMENTS, "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")), list(
+                new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(
+                        new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
-                        new Constructor(Util.<JavaComment>list(), "Bar", Util.<Arg>list())
+                        new Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())
                 )),
-                new DataType(Util.<JavaComment>list(), "Whatever", Util.<String>list(), list(
-                        new Constructor(Util.<JavaComment>list(), "Whatever", Util.<Arg>list())
+                new DataType(NO_COMMENTS, "Whatever", Util.<String>list(), list(
+                        new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list())
                 ))
                 
         ));

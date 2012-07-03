@@ -17,7 +17,9 @@ package com.pogofish.jadt.sink;
 
 import static com.pogofish.jadt.util.Util.list;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Factory that factories a factory, mostly for testing

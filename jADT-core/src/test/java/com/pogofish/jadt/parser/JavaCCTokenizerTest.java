@@ -15,7 +15,33 @@ limitations under the License.
  */
 package com.pogofish.jadt.parser;
 
-import static org.junit.Assert.*;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.BAR;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.BOOLEAN;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.BYTE;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.CHAR;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.COMMA;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.DOT;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.DOUBLE;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.EOF;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.EQUALS;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.FINAL;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.FLOAT;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.IDENTIFIER;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.IMPORT;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.INT;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.JAVA_KEYWORD;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.LANGLE;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.LBRACKET;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.LONG;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.LPAREN;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.PACKAGE;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.RANGLE;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.RBRACKET;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.RPAREN;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.SHORT;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.UNKNOWN;
+import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.UNTERMINATED_COMMENT;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -24,8 +50,6 @@ import com.pogofish.jadt.parser.javacc.JavaCharStream;
 import com.pogofish.jadt.parser.javacc.Token;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.source.StringSource;
-
-import static com.pogofish.jadt.parser.javacc.BaseJavaCCParserImplConstants.*;
 
 /**
  * Test the tokenizer separately from the parser because it's easier that way

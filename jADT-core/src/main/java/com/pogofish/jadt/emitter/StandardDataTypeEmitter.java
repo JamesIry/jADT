@@ -15,17 +15,16 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
+import static com.pogofish.jadt.ast.ASTConstants.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
-import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.sink.Sink;
-import com.pogofish.jadt.util.Util;
-
 
 
 public class StandardDataTypeEmitter implements DataTypeEmitter {
@@ -60,7 +59,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
     private void emitSingleConstructor(Sink sink, DataType dataType, String header) {
     	logger.finer("Generating single constructor for " + dataType.name + ".");
         final Constructor originalConstructor = dataType.constructors.get(0);
-        final Constructor pseudoConstructor = new Constructor(Util.<JavaComment>list(), dataType.name, originalConstructor.args);
+        final Constructor pseudoConstructor = new Constructor(NO_COMMENTS, dataType.name, originalConstructor.args);
         
         sink.write("public final class " + dataType.name);
         classBodyEmitter.emitParameterizedTypeName(sink, dataType.typeArguments);

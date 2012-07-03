@@ -23,9 +23,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.sink.FileSink;
-import com.pogofish.jadt.sink.FileSinkFactory;
-
 
 /**
  * Test that the FileTargeFacotry 

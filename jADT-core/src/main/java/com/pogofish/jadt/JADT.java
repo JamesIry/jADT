@@ -15,13 +15,17 @@ limitations under the License.
 */
 package com.pogofish.jadt;
 
+import static com.pogofish.jadt.ast.ASTConstants.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.ParseResult;
+import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.SemanticError;
 import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.ast.UserError;
@@ -172,7 +176,7 @@ public class JADT {
      */
     public static JADT createDummyJADT(List<SyntaxError> syntaxErrors, List<SemanticError> semanticErrors, String testSrcInfo, SinkFactoryFactory factory) {
         final SourceFactory sourceFactory = new StringSourceFactory(TEST_STRING);
-        final Doc doc = new Doc(TEST_SRC_INFO, "pkg", Util.<String> list(), Util.<DataType> list());
+        final Doc doc = new Doc(TEST_SRC_INFO, Pkg._Pkg(NO_COMMENTS, "pkg"), Util.<Imprt> list(), Util.<DataType> list());
         final ParseResult parseResult = new ParseResult(doc, syntaxErrors);
         final DocEmitter docEmitter = new DummyDocEmitter(doc,  TEST_CLASS_NAME);
         final Parser parser = new DummyParser(parseResult, testSrcInfo, TEST_STRING);

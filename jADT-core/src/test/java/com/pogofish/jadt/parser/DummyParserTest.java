@@ -15,6 +15,8 @@ limitations under the License.
 */
 package com.pogofish.jadt.parser;
 
+import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
+import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
@@ -46,7 +48,7 @@ public class DummyParserTest {
      */
     @Test
     public void testHappy() {
-        final ParseResult testResult = new ParseResult(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()), Util.<SyntaxError>list());
+        final ParseResult testResult = new ParseResult(new Doc("some source", EMPTY_PKG, NO_IMPORTS,Collections.<DataType>emptyList()), Util.<SyntaxError>list());
 
         final Parser parser = new DummyParser(testResult, "some source", "some string");
         final ParseResult result = parser.parse(new StringSource("some source", "some string"));
@@ -58,7 +60,7 @@ public class DummyParserTest {
      */
     @Test
     public void testWrongSourceString() {
-        final ParseResult testResult = new ParseResult(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()), Util.<SyntaxError>list());
+        final ParseResult testResult = new ParseResult(new Doc("some source", EMPTY_PKG, NO_IMPORTS,Collections.<DataType>emptyList()), Util.<SyntaxError>list());
 
         final Parser parser = new DummyParser(testResult, "some source", "some string");
         try {
@@ -74,7 +76,7 @@ public class DummyParserTest {
      */
     @Test
     public void testWrongSourceInfo() {
-        final ParseResult testResult = new ParseResult(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()), Util.<SyntaxError>list());
+        final ParseResult testResult = new ParseResult(new Doc("some source", EMPTY_PKG, NO_IMPORTS,Collections.<DataType>emptyList()), Util.<SyntaxError>list());
 
         final Parser parser = new DummyParser(testResult, "some source", "some string");
         try {
@@ -90,7 +92,7 @@ public class DummyParserTest {
      */
     @Test
     public void testWrongExtraSource() {
-        final ParseResult testResult = new ParseResult(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()), Util.<SyntaxError>list());
+        final ParseResult testResult = new ParseResult(new Doc("some source", EMPTY_PKG, NO_IMPORTS,Collections.<DataType>emptyList()), Util.<SyntaxError>list());
 
         final Parser parser = new DummyParser(testResult, "some source", "some string");
         try {
@@ -106,7 +108,7 @@ public class DummyParserTest {
      */
     @Test
     public void testIOException() {
-        final ParseResult testResult = new ParseResult(new Doc("some source", "", Collections.<String>emptyList(),Collections.<DataType>emptyList()), Util.<SyntaxError>list());
+        final ParseResult testResult = new ParseResult(new Doc("some source", EMPTY_PKG, NO_IMPORTS,Collections.<DataType>emptyList()), Util.<SyntaxError>list());
 
         final Parser parser = new DummyParser(testResult, "some source", "some string");
         try {

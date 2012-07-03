@@ -15,6 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
+import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.PrimitiveType._IntType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -27,11 +28,7 @@ import org.junit.Test;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
-import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.RefType;
-import com.pogofish.jadt.emitter.ConstructorEmitter;
-import com.pogofish.jadt.emitter.DummyClassBodyEmitter;
-import com.pogofish.jadt.emitter.StandardConstructorEmitter;
 import com.pogofish.jadt.sink.StringSink;
 import com.pogofish.jadt.util.Util;
 
@@ -69,7 +66,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testFactory() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringSink sink = new StringSink("test");
         try {
@@ -87,7 +84,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testConstrucorDeclaration() {
-        final Constructor constructor = new Constructor(Util.<JavaComment>list(), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringSink sink = new StringSink("test");
         try {

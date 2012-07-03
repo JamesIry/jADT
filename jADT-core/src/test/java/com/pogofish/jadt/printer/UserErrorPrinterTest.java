@@ -15,11 +15,17 @@ limitations under the License.
 */
 package com.pogofish.jadt.printer;
 
-import static com.pogofish.jadt.ast.UserError.*;
-import static com.pogofish.jadt.ast.SemanticError.*;
-import static com.pogofish.jadt.ast.SyntaxError.*;
-import static com.pogofish.jadt.printer.UserErrorPrinter.*;
-import static org.junit.Assert.*;
+import static com.pogofish.jadt.ast.SemanticError._ConstructorDataTypeConflict;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateArgName;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateConstructor;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateDataType;
+import static com.pogofish.jadt.ast.SemanticError._DuplicateModifier;
+import static com.pogofish.jadt.ast.SyntaxError._UnexpectedToken;
+import static com.pogofish.jadt.ast.UserError._Semantic;
+import static com.pogofish.jadt.ast.UserError._Syntactic;
+import static com.pogofish.jadt.printer.UserErrorPrinter.print;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 

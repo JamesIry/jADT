@@ -22,6 +22,8 @@ import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.ast.SyntaxError;
@@ -53,14 +55,14 @@ public interface ParserImpl {
      * 
      * @return String the package name, or, because package is optional returns an empty string ""
      */
-    public abstract String pkg() throws Exception;
+    public abstract Pkg pkg() throws Exception;
 
     /**
      * Parses an optional list of imports which is ("import" packageName)*
      * 
      * @return List<String> possibly empty list of imports
      */
-    public abstract List<String> imports() throws Exception;
+    public abstract List<Imprt> imports() throws Exception;
 
     /**
      * Parses a required list of datatypes which is dataType (dataType)*

@@ -17,7 +17,6 @@ package com.pogofish.jadt.parser.javacc;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.CharBuffer;
 
 /**
  * JavaCC's generated lexer likes to swallow IOException, so this turns them into RuntimeException.  Except
@@ -50,81 +49,7 @@ class JavaCCReader extends Reader {
         try {
             return reader.read(cbuf, off, len);
         } catch (IOException e) {
-            handleIOException(e);
-            return 0;
-        }
-    }
-
-    @Override
-    public void mark(int readAheadLimit) throws IOException {
-        try {
-            reader.mark(readAheadLimit);
-        } catch (IOException e) {
-            handleIOException(e);
-        }
-    }
-
-    @Override
-   public boolean markSupported() {
-        return reader.markSupported();
-    }
-
-    @Override
-    public int read() throws IOException {
-        try {
-            return reader.read();
-        } catch (IOException e) {
-            handleIOException(e);
-            return 0;
-        }
-    }
-
-    @Override
-    public int read(char[] cbuf) throws IOException {
-        try {
-            return reader.read(cbuf);
-        } catch (IOException e) {
-            handleIOException(e);
-            return 0;
-        }
-    }
-
-    @Override
-    public int read(CharBuffer target) throws IOException {
-        try {
-            return reader.read(target);
-        } catch (IOException e) {
-            handleIOException(e);
-            return 0;
-        }
-    }
-
-    @Override
-    public boolean ready() throws IOException {
-        try {
-            return reader.ready();
-        } catch (IOException e) {
-            handleIOException(e);
-            return false;
-        }
-    }
-
-    @Override
-    public void reset() throws IOException {
-        try {
-            reader.reset();
-        } catch (IOException e) {
-            handleIOException(e);
-        }
-    }
-
-    @Override
-    public long skip(long n) throws IOException {
-        try {
-            return reader.skip(n);
-        } catch (IOException e) {
-            handleIOException(e);
-            return 0;
+            return handleIOException(e);
         }
     }
 
@@ -133,7 +58,7 @@ class JavaCCReader extends Reader {
      * wrap as a RuntimException so that JavaCC doesn't squelch it.  If the stream has
      * been closed then pass the IOException on as is
      */
-    private void handleIOException(IOException e) throws IOException {
+    private int handleIOException(IOException e) throws IOException {
         if (closed) {
             throw e;
         } else {

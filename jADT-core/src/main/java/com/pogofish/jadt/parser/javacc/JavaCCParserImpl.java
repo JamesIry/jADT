@@ -15,6 +15,10 @@ limitations under the License.
  */
 package com.pogofish.jadt.parser.javacc;
 
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaMultiLineComment;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,9 +28,9 @@ import java.util.Set;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.parser.ParserImpl;
+import com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImpl;
+import com.pogofish.jadt.parser.javacc.generated.Token;
 import com.pogofish.jadt.util.Util;
-
-import static com.pogofish.jadt.ast.JavaComment.*;
 
 /**
  * Sub class for the JavaCC generated parser. This class exists just so most
@@ -79,7 +83,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
 
 
     @Override
-    void checkNoComments(String expected) {
+    protected void checkNoComments(String expected) {
         if (token.specialToken != null) {
             error(expected, COMMENT_NOT_ALLOWED);
         }
@@ -104,7 +108,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
      * punctuation for somebody else to process
      */
     @Override
-    String badIdentifier(String expected) {
+    protected String badIdentifier(String expected) {
         error(expected);
 
         final String id = "@" + (nextId++);
@@ -122,7 +126,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
      * Called by the parser when ever a good token is recognized by normal parser
      * activity.
      */
-    void recovered() {
+    protected void recovered() {
         recovering = false;
     }
 
@@ -146,7 +150,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
      *            the kind of thing expected
      */
     @Override
-    void error(String expected) {
+    protected void error(String expected) {
         error(expected, friendlyName(lookahead(1)));
     }
 
@@ -193,8 +197,11 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
     }
 
 
+    /**
+     * Return all the comments attached to the current token (the last token matched)
+     */
     @Override
-    List<JavaComment> tokenComments() {
+    protected List<JavaComment> tokenComments() {
         final List<JavaComment> comments = new ArrayList<JavaComment>();
         Token comment = token.specialToken;
         while(comment != null) {
@@ -208,8 +215,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
             case JAVADOC_COMMENT:
                 comments.add(_JavaDocComment(comment.image));
                 break;
-             default:
-                 throw new RuntimeException("Internal error: unexpected special token type.");
+             // anything else is not a comment and not our problem here
             }
             comment = comment.specialToken;
         }

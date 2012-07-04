@@ -1,9 +1,12 @@
 package com.pogofish.jadt;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import java.io.FileNotFoundException;
+
 
 import org.junit.Test;
+
 
 /**
  * Test the Version thingy does its thingy
@@ -13,12 +16,32 @@ import org.junit.Test;
  */
 public class VersionTest {
 	@Test
-	public void test() {
-		try {
-			final String version = new Version().getVersion();
-			assertTrue("bad version information " + version, version.equals("${pom.version}") || version.matches("[0-9]+\\.[0-9]+\\.[0-9]+.*"));
-		} catch (NullPointerException e) {			
-			assertNotNull("Got a null pointer exception.  If you are running in an IDE the most likely cause is that the main/src/resrouces directory isn't a source path.", e);
-		}
+	public void testHappy() {
+		final String version = new Version().getVersion();
+		assertTrue("bad version information '" + version + "'. Did you set the resource directory as a source directory?", version.equals("${pom.version}") || version.matches("[0-9]+\\.[0-9]+\\.[0-9]+.*"));
 	}
+	
+	@Test
+	public void testMissingFile() throws Throwable {
+	    try {
+    	    final Version version = new Version();
+    	    version.MODULE_PROPERTIES = "foo.bar";
+    	    final String result = version.getVersion();
+    	    fail("did not get exception, got " + result);
+	    } catch (RuntimeException e) {
+	        try {
+	            throw(e.getCause());
+	        } catch (FileNotFoundException e2) {
+	            // what's expected, yay!
+	        }
+	    }
+	}
+	
+    @Test
+    public void testMissingProperty() throws Throwable {
+        final Version version = new Version();
+        version.MODULE_VERSION = "foo.bar";
+        final String result = version.getVersion();
+        assertEquals("unknown version, could not find property foo.bar in module.properties", result);
+    }
 }

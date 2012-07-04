@@ -31,8 +31,11 @@ import com.pogofish.jadt.util.IOExceptionAction;
  * @author jiry
  */
 public class Version {
-	private static final String MODULE_PROPERTIES = "module.properties";
-	private static final String MODULE_VERSION = "module.version";
+    /** not a constant to allow for testing */
+	String MODULE_PROPERTIES = "module.properties";
+	
+	/** not a constant to allow for testing */
+	String MODULE_VERSION = "module.version";
 
 	public String getVersion() {
 		return new IOExceptionAction<String>() {
@@ -48,7 +51,8 @@ public class Version {
 				try {
 					final Properties properties = new Properties();
 					properties.load(reader);
-					return properties.getProperty(MODULE_VERSION);
+					final String property = properties.getProperty(MODULE_VERSION);
+					return property == null ? "unknown version, could not find property " + MODULE_VERSION + " in " + MODULE_PROPERTIES : property;
 				} finally {
 					reader.close();
 				}

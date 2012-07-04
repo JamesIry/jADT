@@ -21,6 +21,8 @@ import com.pogofish.jadt.ast.SemanticError.DuplicateArgName;
 import com.pogofish.jadt.ast.SemanticError.DuplicateConstructor;
 import com.pogofish.jadt.ast.SemanticError.DuplicateDataType;
 import com.pogofish.jadt.ast.SemanticError.DuplicateModifier;
+import com.pogofish.jadt.ast.SemanticError.TooManyConstructorJavaDocComments;
+import com.pogofish.jadt.ast.SemanticError.TooManyDataTypeJavaDocComments;
 import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.ast.UserError;
 import com.pogofish.jadt.ast.UserError.Semantic;
@@ -76,6 +78,16 @@ public class UserErrorPrinter {
             @Override
             public String _case(DuplicateModifier x) {
                 return "Duplicated modifier " + x.modifier +" on arg name " + x.argName + " in constructor " + x.constructorName + " of data type " + x.dataTypeName + ".";
+            }
+
+            @Override
+            public String _case(TooManyDataTypeJavaDocComments x) {
+                return "More than one JavaDoc comment was found on data type " + x.dataTypeName + ". jADT supports at most one JavaDoc comment per data type.";
+            }
+
+            @Override
+            public String _case(TooManyConstructorJavaDocComments x) {
+                return "More than one JavaDoc comment was found on constructor " + x.constructorName + " on data type " + x.dataTypeName + ". jADT supports at most one JavaDoc comment per data type.";
             }
         });
     }

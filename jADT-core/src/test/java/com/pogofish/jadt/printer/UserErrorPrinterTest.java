@@ -20,6 +20,8 @@ import static com.pogofish.jadt.ast.SemanticError._DuplicateArgName;
 import static com.pogofish.jadt.ast.SemanticError._DuplicateConstructor;
 import static com.pogofish.jadt.ast.SemanticError._DuplicateDataType;
 import static com.pogofish.jadt.ast.SemanticError._DuplicateModifier;
+import static com.pogofish.jadt.ast.SemanticError._TooManyConstructorJavaDocComments;
+import static com.pogofish.jadt.ast.SemanticError._TooManyDataTypeJavaDocComments;
 import static com.pogofish.jadt.ast.SyntaxError._UnexpectedToken;
 import static com.pogofish.jadt.ast.UserError._Semantic;
 import static com.pogofish.jadt.ast.UserError._Syntactic;
@@ -54,5 +56,7 @@ public class UserErrorPrinterTest {
         assertEquals("Data type foo cannot have multiple constructors named bar.", print(_Semantic(_DuplicateConstructor("foo", "bar"))));
         assertEquals("Duplicated arg name baz in constructor bar of data type foo.", print(_Semantic(_DuplicateArgName("foo", "bar", "baz"))));
         assertEquals("Duplicated modifier quux on arg name baz in constructor bar of data type foo.", print(_Semantic(_DuplicateModifier("foo", "bar", "baz", "quux"))));
+        assertEquals("More than one JavaDoc comment was found on data type foo. jADT supports at most one JavaDoc comment per data type.", print(_Semantic(_TooManyDataTypeJavaDocComments("foo"))));
+        assertEquals("More than one JavaDoc comment was found on constructor bar on data type foo. jADT supports at most one JavaDoc comment per data type.", print(_Semantic(_TooManyConstructorJavaDocComments("foo", "bar"))));
     }
 }

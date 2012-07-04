@@ -224,7 +224,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
                 comments.add(_JavaDocComment(comment.image));
                 break;
             default:
-                // anything else is not a token and not our problem.
+                // anything else is not a comment and not our problem.
             }
             comment = comment.specialToken;
         }

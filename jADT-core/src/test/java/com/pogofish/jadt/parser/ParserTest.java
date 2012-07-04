@@ -16,10 +16,13 @@ limitations under the License.
 package com.pogofish.jadt.parser;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -29,13 +32,10 @@ import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.ParseResult;
-import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.source.StringSource;
 import com.pogofish.jadt.util.Util;
-
-import static org.junit.Assert.*;
 
 /**
  * Test the functionality in the standard parser that isn't covered in

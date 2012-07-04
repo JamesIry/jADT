@@ -17,7 +17,7 @@ package com.pogofish.jadt.ast
 
 import java.util.List
 
-ParseResult = ParseResult(Doc doc, List<SyntaxError> errors)
+ParseResult = ParseResult(final Doc doc, final List<SyntaxError> errors)
 
 Doc = Doc(final String srcInfo, final Pkg pkg, final List<Imprt> imports, final List<DataType> dataTypes) 
 
@@ -33,24 +33,40 @@ Arg = Arg(final List<ArgModifier> modifiers, final Type type, final String name)
 
 ArgModifier = Final
 
-Type = Ref(final RefType type) | Primitive(final PrimitiveType type)
+Type
+  = Ref(final RefType type)
+  | Primitive(final PrimitiveType type)
 
-RefType = ClassType(final String baseName, final List<RefType> typeArguments) | ArrayType(final Type heldType)
+RefType
+  = ClassType(final String baseName, final List<RefType> typeArguments)
+  | ArrayType(final Type heldType)
 
-PrimitiveType = BooleanType | ByteType | CharType | DoubleType | FloatType | IntType | LongType | ShortType 
+PrimitiveType
+  = BooleanType
+  | ByteType
+  | CharType
+  | DoubleType
+  | FloatType
+  | IntType
+  | LongType
+  | ShortType 
 
-UserError = Semantic(SemanticError error) | Syntactic(SyntaxError error)
+UserError
+  = Semantic(final SemanticError error)
+  | Syntactic(final SyntaxError error)
 
-SyntaxError = UnexpectedToken(String expected, String found, int line)
+SyntaxError = UnexpectedToken(final String expected, final String found, final int line)
 
-SemanticError = 
-    DuplicateDataType(String dataTypeName)
-  | ConstructorDataTypeConflict(String dataTypeName) 
-  | DuplicateConstructor(String dataTypeName, String constructorName)
-  | DuplicateArgName(String dataTypeName, String constructorName, String argName)
-  | DuplicateModifier(String dataTypeName, String constructorName, String argName, String modifier)
+SemanticError 
+  = DuplicateDataType(final String dataTypeName)
+  | ConstructorDataTypeConflict(final String dataTypeName) 
+  | DuplicateConstructor(final String dataTypeName, final String constructorName)
+  | DuplicateArgName(final String dataTypeName, final String constructorName, final String argName)
+  | DuplicateModifier(final String dataTypeName, final String constructorName, final String argName, final String modifier)
   
-JavaComment =
-    JavaDocComment(String comment)
-  | JavaMultiLineComment(String comment)
-  | JavaEOLComment(String comment)
+JavaComment
+  = JavaDocComment(final String comment)
+  | JavaMultiLineComment(final String comment)
+  | JavaEOLComment(final String comment)
+  
+CommentedIdentifier = CommentedIdentifier(final List<JavaComment> comments, final String identifier)

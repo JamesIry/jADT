@@ -20,8 +20,10 @@ import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
 import static com.pogofish.jadt.ast.Arg._Arg;
 import static com.pogofish.jadt.ast.ArgModifier._Final;
+import static com.pogofish.jadt.ast.CommentedIdentifier.*;
 import static com.pogofish.jadt.ast.Constructor._Constructor;
 import static com.pogofish.jadt.ast.DataType._DataType;
+import static com.pogofish.jadt.ast.JavaComment.*;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -48,6 +50,7 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.RefType;
@@ -281,20 +284,20 @@ public class ParserTest {
     public void testConstructor() throws Exception {
         // no arg
         assertEquals(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()), parserImpl("Foo")
-                .constructor());
+                .constructor(NO_COMMENTS));
         // args
         assertEquals(
                 _Constructor(NO_COMMENTS, 
                         "Foo",
                         list(_Arg(Util.<ArgModifier> list(),
                                 _Primitive(_IntType()), "Bar"))),
-                parserImpl("Foo(int Bar)").constructor());
+                parserImpl("Foo(int Bar)").constructor(NO_COMMENTS));
     }
     
   @Test
   public void testConstructorErrors() throws Exception {
         ParserImpl p1 = parserImpl("");
-        checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), _Constructor(NO_COMMENTS, "NO_IDENTIFIER@1", Util.<Arg>list()), p1.constructor(), p1);
+        checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), _Constructor(NO_COMMENTS, "NO_IDENTIFIER@1", Util.<Arg>list()), p1.constructor(NO_COMMENTS), p1);
     }
 
     /**
@@ -303,22 +306,22 @@ public class ParserTest {
     @Test
     public void testConstructors() throws Exception {
         assertEquals(list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list())),
-                parserImpl("Foo").constructors());
+                parserImpl("Foo").constructors(NO_COMMENTS));
         assertEquals(
                 list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()),
                         _Constructor(NO_COMMENTS, "Bar", Util.<Arg> list())),
-                parserImpl("Foo|Bar").constructors());
+                parserImpl("Foo|Bar").constructors(NO_COMMENTS));
     }
     
     @Test
    public void testConstructorsErrors() throws Exception {
         final ParserImpl p1 = parserImpl("Foo|");
         checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), 
-                list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()), _Constructor(NO_COMMENTS, "NO_IDENTIFIER@1", Util.<Arg>list())), p1.constructors(), p1);
+                list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()), _Constructor(NO_COMMENTS, "NO_IDENTIFIER@1", Util.<Arg>list())), p1.constructors(NO_COMMENTS), p1);
 
         final ParserImpl p2 = parserImpl("Foo||Bar");
         checkError(list(_UnexpectedToken("a constructor name", "'|'", 1)), 
-                list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()), _Constructor(NO_COMMENTS, "NO_IDENTIFIER@1", Util.<Arg>list()), _Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())), p2.constructors(), p2);
+                list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()), _Constructor(NO_COMMENTS, "NO_IDENTIFIER@1", Util.<Arg>list()), _Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())), p2.constructors(NO_COMMENTS), p2);
     }
 
     /**
@@ -490,22 +493,22 @@ public class ParserTest {
     @Test
     public void testFull() {
         final Parser parser = new StandardParser(PARSER_IMPL_FACTORY);
-        final String source = "//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
-                + "FooBar = foo | bar(int hey, final String[] yeah) whatever = whatever";
+        final String source = "/*a pre-start comment*///a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
+                + "/*datatype comment*/FooBar /*equal comment*/= /*constructor comment*/foo /*bar comment*/| /*really a bar comment*/bar(int hey, final String[] yeah) whatever = whatever";
         final ParseResult result = parser.parse(new StringSource("ParserTest",
                 source));
 
         assertEquals(
                 new ParseResult(new Doc(
                         "ParserTest",
-                        Pkg._Pkg(NO_COMMENTS, "hello.world"), list(Imprt._Imprt(NO_COMMENTS, "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
-                        list(new DataType(NO_COMMENTS, 
+                        Pkg._Pkg(list(_JavaMultiLineComment("/*a pre-start comment*/"), _JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(_JavaMultiLineComment("/* here are some imports */")), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
+                        list(new DataType(list(_JavaMultiLineComment("/*datatype comment*/")), 
                                 "FooBar",
                                 Util.<String> list(),
-                                Util.list(
-                                        new Constructor(NO_COMMENTS, "foo", Util
+                                list(
+                                        new Constructor(list(_JavaMultiLineComment("/*equal comment*/"), _JavaMultiLineComment("/*constructor comment*/")), "foo", Util
                                                 .<Arg> list()),
-                                        new Constructor(NO_COMMENTS, 
+                                        new Constructor(list(_JavaMultiLineComment("/*bar comment*/"), _JavaMultiLineComment("/*really a bar comment*/")), 
                                                 "bar",
                                                 list(new Arg(Util
                                                         .<ArgModifier> list(),
@@ -536,11 +539,11 @@ public class ParserTest {
         assertEquals(
                 new ParseResult(new Doc(
                         "ParserTest",
-                        Pkg._Pkg(NO_COMMENTS, "hello.world"), list(Imprt._Imprt(NO_COMMENTS, "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
+                        Pkg._Pkg(list(_JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(_JavaMultiLineComment("/* here are some imports */")), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
                         list(new DataType(NO_COMMENTS, 
                                 "FooBar",
                                 Util.<String> list(),
-                                Util.list(
+                                list(
                                         new Constructor(NO_COMMENTS, "foo", Util
                                                 .<Arg> list()),
                                         new Constructor(NO_COMMENTS, 
@@ -631,12 +634,37 @@ public class ParserTest {
     }
 
     private static void checkVoidCommentError(String expected, ParserImpl p) {
-        assertEquals(Util.list(_UnexpectedToken(expected, COMMENT_ERROR_MESSAGE, 1)), p.errors());
+        assertEquals(list(_UnexpectedToken(expected, COMMENT_ERROR_MESSAGE, 1)), p.errors());
         
     }
 
     private static <A> void checkCommentError(A expected, A actual, String message, ParserImpl p) {
-        checkError(Util.list(_UnexpectedToken(message, COMMENT_ERROR_MESSAGE, 1)), expected, actual, p);
+        checkError(list(_UnexpectedToken(message, COMMENT_ERROR_MESSAGE, 1)), expected, actual, p);
+    }
+    
+    @Test
+    public void testCommentAllowedTokens() throws Exception {
+        final String commentString = "/*block*//**javadoc*///eol\n";
+        final List<JavaComment> comments = list(_JavaMultiLineComment("/*block*/"), _JavaDocComment("/**javadoc*/"), _JavaEOLComment("//eol"));
         
+        final ParserImpl p1 = parserImpl(commentString + "|");
+        checkParseResult(comments, p1.bar(), p1);
+
+        final ParserImpl p2 = parserImpl(commentString + "=");
+        checkParseResult(comments, p2.equals(), p2);
+
+        final ParserImpl p3 = parserImpl(commentString + "package");
+        checkParseResult(comments, p3.packageKeyword(), p3);
+
+        final ParserImpl p4 = parserImpl(commentString + "import");
+        checkParseResult(comments, p4.importKeyword(), p4);
+
+        final ParserImpl p5 = parserImpl(commentString + "hello");
+        checkParseResult(_CommentedIdentifier(comments, "hello"), p5.commentedIdentifier("an identifier"), p5);
+    }
+
+    private <A>void checkParseResult(A expected, A actual, ParserImpl p) {
+        assertEquals(expected, actual);
+        assertEquals(Util.<SyntaxError>list(), p.errors());
     }
 }

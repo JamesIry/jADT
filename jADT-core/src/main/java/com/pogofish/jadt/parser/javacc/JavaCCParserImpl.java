@@ -21,9 +21,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.parser.ParserImpl;
 import com.pogofish.jadt.util.Util;
+
+import static com.pogofish.jadt.ast.JavaComment.*;
 
 /**
  * Sub class for the JavaCC generated parser. This class exists just so most
@@ -187,5 +190,30 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
             current = current.next;
         }
         return current;
+    }
+
+
+    @Override
+    List<JavaComment> tokenComments() {
+        final List<JavaComment> comments = new ArrayList<JavaComment>();
+        Token comment = token.specialToken;
+        while(comment != null) {
+            switch(comment.kind) {
+            case JAVA_EOL_COMMENT:
+                comments.add(_JavaEOLComment(comment.image));
+                break;
+            case JAVA_ML_COMMENT:
+                comments.add(_JavaMultiLineComment(comment.image));
+                break;
+            case JAVADOC_COMMENT:
+                comments.add(_JavaDocComment(comment.image));
+                break;
+             default:
+                 throw new RuntimeException("Internal error: unexpected special token type.");
+            }
+            comment = comment.specialToken;
+        }
+        Collections.reverse(comments);
+        return comments;
     }
 }

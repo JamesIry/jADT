@@ -19,10 +19,12 @@ import java.util.List;
 
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.CommentedIdentifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
@@ -81,7 +83,7 @@ public interface ParserImpl {
     /**
      * A data type name is any valid Java identifier not qualified with a package.
      */
-    public abstract String dataTypeName() throws Exception;
+    public abstract CommentedIdentifier dataTypeName() throws Exception;
 
     /**
      * A data type's type arguments, if it has them, start with '<', have 1 or more arguments, and end with '>'.
@@ -96,17 +98,17 @@ public interface ParserImpl {
     /**
      * A data type must have 1 or more case constructors separated by '|'.
      */
-    public abstract List<Constructor> constructors() throws Exception;
+    public abstract List<Constructor> constructors(List<JavaComment> comments) throws Exception;
 
     /**
      * A case constructor is a name optionally followed by arguments.  If it has no arguments then it must not be followed by '()'.
      */
-    public abstract Constructor constructor() throws Exception;
+    public abstract Constructor constructor(List<JavaComment> comments) throws Exception;
 
     /**
      * A case constructor name is any valid Java identifier not qualified by a package.
      */
-    public abstract String constructorName() throws Exception;
+    public abstract CommentedIdentifier constructorName() throws Exception;
 
     /**
      * If a case constructor arguments then they must start with '(', have 1 ore more arguments separated by ',' and end with ')'.
@@ -179,7 +181,7 @@ public interface ParserImpl {
      * A commented identifier may be any valid Java identifier
      * and may be precedeed by java comments
      */
-    public abstract String commentedIdentifier(String expected)
+    public abstract CommentedIdentifier commentedIdentifier(String expected)
             throws Exception;
 
     /**
@@ -191,13 +193,13 @@ public interface ParserImpl {
      * 'import'
      * may be precedeed by java comments
      */
-    public abstract void importKeyword() throws Exception;
+    public abstract List<JavaComment> importKeyword() throws Exception;
 
     /**
      * 'package'
      * may be precedeed by java comments
      */
-    public abstract void packageKeyword() throws Exception;
+    public abstract List<JavaComment> packageKeyword() throws Exception;
 
     /**
      * 'final'
@@ -288,13 +290,13 @@ public interface ParserImpl {
      * '='
      * may be precedeed by Java comments
      */
-    public abstract void equals() throws Exception;
+    public abstract List<JavaComment> equals() throws Exception;
 
     /**
      * '|'
      * may be precedeed by Java comments
      */
-    public abstract void bar() throws Exception;
+    public abstract List<JavaComment> bar() throws Exception;
 
     /**
      * end of file

@@ -84,7 +84,8 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
 
     @Override
     protected void checkNoComments(String expected) {
-        if (token.specialToken != null) {
+        final List<JavaComment> comments = tokenComments();
+        if (!comments.isEmpty()) {
             error(expected, COMMENT_NOT_ALLOWED);
         }
 
@@ -202,6 +203,13 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
      */
     @Override
     protected List<JavaComment> tokenComments() {
+        return tokenComments(token);
+    }
+    
+    /**
+     * Return all the comments attached to the current token (the last token matched)
+     */
+    protected List<JavaComment> tokenComments(Token token) {
         final List<JavaComment> comments = new ArrayList<JavaComment>();
         Token comment = token.specialToken;
         while(comment != null) {
@@ -216,11 +224,11 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
                 comments.add(_JavaDocComment(comment.image));
                 break;
             default:
-             // anything else is not a comment and not our problem here
+                // anything else is not a token and not our problem.
             }
             comment = comment.specialToken;
         }
         Collections.reverse(comments);
         return comments;
-    }
+    }    
 }

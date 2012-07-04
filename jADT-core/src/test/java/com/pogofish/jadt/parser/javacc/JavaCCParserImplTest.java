@@ -20,10 +20,12 @@ import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
 import static com.pogofish.jadt.ast.Arg._Arg;
 import static com.pogofish.jadt.ast.ArgModifier._Final;
-import static com.pogofish.jadt.ast.CommentedIdentifier.*;
+import static com.pogofish.jadt.ast.CommentedIdentifier._CommentedIdentifier;
 import static com.pogofish.jadt.ast.Constructor._Constructor;
 import static com.pogofish.jadt.ast.DataType._DataType;
-import static com.pogofish.jadt.ast.JavaComment.*;
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaMultiLineComment;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -57,9 +59,9 @@ import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.parser.Parser;
 import com.pogofish.jadt.parser.ParserImpl;
-import com.pogofish.jadt.parser.ParserImplFactory;
 import com.pogofish.jadt.parser.StandardParser;
-import com.pogofish.jadt.parser.javacc.JavaCCParserImplFactory;
+import com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants;
+import com.pogofish.jadt.parser.javacc.generated.Token;
 import com.pogofish.jadt.source.StringSource;
 import com.pogofish.jadt.util.Util;
 /**
@@ -69,7 +71,7 @@ import com.pogofish.jadt.util.Util;
  */
 public class JavaCCParserImplTest {
 
-    private static final ParserImplFactory PARSER_IMPL_FACTORY = new JavaCCParserImplFactory();
+    private static final JavaCCParserImplFactory PARSER_IMPL_FACTORY = new JavaCCParserImplFactory();
 
     private static final String COMMENT_ERROR_MESSAGE = "a java comment, which is only allowed before 'package', 'import', data type definitions and constructor defintions";
 
@@ -80,7 +82,7 @@ public class JavaCCParserImplTest {
      * @param text
      * @return
      */
-    private ParserImpl parserImpl(final String text) {
+    private JavaCCParserImpl parserImpl(final String text) {
         final StringSource source = new StringSource("ParserTest", text);
         return PARSER_IMPL_FACTORY.create(source.getSrcInfo(), source.createReader());
     }
@@ -669,5 +671,19 @@ public class JavaCCParserImplTest {
     private <A>void checkParseResult(A expected, A actual, ParserImpl p) {
         assertEquals(expected, actual);
         assertEquals(Util.<SyntaxError>list(), p.errors());
+    }
+    
+    /**
+     * Make sure the tokenComments method can handle non-comment tokens
+     * Mostly testing for coverage
+     */
+    @Test
+    public void testNonJavaCommentSpecialToken() {
+        final JavaCCParserImpl p1 = parserImpl("whatever");
+        final Token token = new Token(BaseJavaCCParserImplConstants.IDENTIFIER, "hello");
+        final Token specialtoken = new Token(BaseJavaCCParserImplConstants.WS, "   ");
+        token.specialToken = specialtoken;
+        final List<JavaComment> comments = p1.tokenComments(token);
+        assertEquals(NO_COMMENTS, comments);
     }
 }

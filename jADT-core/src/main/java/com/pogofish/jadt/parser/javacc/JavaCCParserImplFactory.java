@@ -17,7 +17,6 @@ package com.pogofish.jadt.parser.javacc;
 
 import java.io.Reader;
 
-import com.pogofish.jadt.parser.ParserImpl;
 import com.pogofish.jadt.parser.ParserImplFactory;
 
 /**
@@ -28,7 +27,7 @@ import com.pogofish.jadt.parser.ParserImplFactory;
 public class JavaCCParserImplFactory implements ParserImplFactory {
 
     @Override
-    public ParserImpl create(String srcInfo, Reader reader) {
+    public JavaCCParserImpl create(String srcInfo, Reader reader) {
         final JavaCCParserImpl impl = new JavaCCParserImpl(srcInfo, reader);
         return impl;
     }

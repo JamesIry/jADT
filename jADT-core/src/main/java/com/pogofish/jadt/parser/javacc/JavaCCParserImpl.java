@@ -32,6 +32,8 @@ import com.pogofish.jadt.util.Util;
  * @author jiry
  */
 public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl {
+    private static final String COMMENT_NOT_ALLOWED = "a java comment, which is only allowed before 'package', 'import', data type definitions and constructor defintions";
+
     private static final String UNTERMINATED_COMMENT_STRING = "unterminated comment";
 
     private static final String EOF_STRING = "<EOF>";
@@ -70,6 +72,15 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
     public JavaCCParserImpl(String srcInfo, Reader stream) {
         super(new JavaCCReader(stream));
         this.srcInfo = srcInfo;
+    }
+
+
+    @Override
+    void checkNoComments(String expected) {
+        if (token.specialToken != null) {
+            error(expected, COMMENT_NOT_ALLOWED);
+        }
+
     }
 
 
@@ -146,7 +157,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
     private void error(String expected, String actual) {
         if (!recovering) {
             recovering = true;
-            final String outputString = EOF_STRING.equals(actual) | UNTERMINATED_COMMENT_STRING.equals(actual) ? actual : "'"
+            final String outputString = EOF_STRING.equals(actual) | UNTERMINATED_COMMENT_STRING.equals(actual) | COMMENT_NOT_ALLOWED.equals(actual) ? actual : "'"
                     + actual + "'";
             errors.add(SyntaxError._UnexpectedToken(expected, outputString,
                     lookahead(1).beginLine));

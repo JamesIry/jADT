@@ -44,132 +44,262 @@ public interface ParserImpl {
     public abstract String getSrcInfo();
     
     /**
-     * Parses a complete document which is pkg imports dataTypes
-     * 
-     * @return Doc
+     * A jADT document has an optional package followed by imports and datatypes and ends with an end of file.
      */
     public abstract Doc doc() throws Exception;
 
-    /** 
-     * Gets an optional package declaration "pacakage" packageName
-     * 
-     * @return String the package name, or, because package is optional returns an empty string ""
+    /**
+     * The package declaration (if it exists) is the keyword "package" followed by a package name.  No semicolon required.
      */
     public abstract Pkg pkg() throws Exception;
 
     /**
-     * Parses an optional list of imports which is ("import" packageName)*
-     * 
-     * @return List<String> possibly empty list of imports
+     *     A jADT document may specify any number (including 0) of package names to import.
      */
     public abstract List<Imprt> imports() throws Exception;
 
     /**
-     * Parses a required list of datatypes which is dataType (dataType)*
-     * 
-     * @return List<DataType> non empty list of DataTypes
+     * Each import is the keyword "import" followed by a package name.
+     */
+    public abstract Imprt singleImport() throws Exception;
+
+    /**
+     * A package name used in a package or import declaration must be a valid Java package name.
+     */
+    public abstract String packageName() throws Exception;
+
+    /**
+     *     A jADT document must have at least one datatype, but may have as many as you'd like.
      */
     public abstract List<DataType> dataTypes() throws Exception;
 
     /**
-     * Parses a dataType which is (name typeArguments? "=" constructors)
-     * 
-     * @return DataType
+     * Each datatype consists of a name, optional type arguments, "=" and a list of constructors.
      */
     public abstract DataType dataType() throws Exception;
 
     /**
-     * Parses an optional type arguments which is ('<' typeArgument (',' typeArgument)* '>')?
-     * 
-     * @return list of string names of type arguments. Empty if none
+     * A data type name is any valid Java identifier not qualified with a package.
+     */
+    public abstract String dataTypeName() throws Exception;
+
+    /**
+     * A data type's type arguments, if it has them, start with '<', have 1 or more arguments, and end with '>'.
      */
     public abstract List<String> typeArguments() throws Exception;
 
     /**
-     * A required type argument which is just any identifier
+     * A single type argument is any valid Java identifier, not qualified with a package.
      */
     public abstract String typeArgument() throws Exception;
 
     /**
-     * Parses a required list of constructors which is constructor ("|" constructor)*
-     * 
-     * @return List<Constructor> non empty List of constructors
+     * A data type must have 1 or more case constructors separated by '|'.
      */
     public abstract List<Constructor> constructors() throws Exception;
 
     /**
-     * Parses a required constructor which is constructorName args
-     * 
-     * @return Constructor
+     * A case constructor is a name optionally followed by arguments.  If it has no arguments then it must not be followed by '()'.
      */
     public abstract Constructor constructor() throws Exception;
 
-    /** 
-     * Parses an optional list of constructor args which is ("(" arg ("," arg)* ")")?
-     * 
-     * @return List<Arg> non-empty list of args
+    /**
+     * A case constructor name is any valid Java identifier not qualified by a package.
+     */
+    public abstract String constructorName() throws Exception;
+
+    /**
+     * If a case constructor arguments then they must start with '(', have 1 ore more arguments separated by ',' and end with ')'.
      */
     public abstract List<Arg> args() throws Exception;
 
     /**
-     * parses a single required constructor argument which is a list of modifiers followed by a type followed by a name
-     * 
-     * @return Arg
+     * A case constructor argument is a list of modifiers, a type, and then a name.
      */
     public abstract Arg arg() throws Exception;
 
     /**
-     * Parses a possibly empty list of arg modifiers
+     * A case constructor argument may have 0 or more modifiers separated by spaces.
      */
     public abstract List<ArgModifier> argModifiers() throws Exception;
 
     /**
-     * Parses one optional arg modifier or null if there isn't one
+     * Currently the only argument modifier allowed is 'final' but others will follow.
      */
     public abstract ArgModifier argModifier() throws Exception;
 
-    /** 
-     * Returns a required class or array type, giving a syntax error on a primitive
-     * 
-     * @return a RefType
+    /**
+     * An argument name is any valid Java identifier not qualified by a package
      */
-    public abstract RefType refType() throws Exception;
+    public abstract String argName() throws Exception;
 
     /**
-     * Returns a required type where a type is a primitive or classType wrapped in an array
-     * 
-     * @return Type
+     * A type is either a class type or a primitive type wrapped in 0 or more levels of array
      */
     public abstract Type type() throws Exception;
 
     /**
-     * Returns a required classType, which is className ("<" refType ("," refType)* ">")?
-     * 
-     * @return RefType
+     * A refType is either a primitive type wrapped in one level or array or a class type and in either case
+     * may be wrapped in 0 or more additional levels of array
+     */
+    public abstract RefType refType() throws Exception;
+
+    /**
+     * The pair '[]' modifies a previously mentioned type X to make it type X[]
+     */
+    public abstract void arrayTypeBrackets() throws Exception;
+
+    /**
+     * A class type is a class name followed by actual type arguments
      */
     public abstract RefType classType() throws Exception;
 
     /**
-     * Returns a class name which is either an identifier or a dotted identifier
+     * A class name is a valid Java class name that may be qualified by a package.
      */
     public abstract String className() throws Exception;
 
     /**
-     * Returns an identifier that may have dots in it, e.g a fully qualified class name or a package name
+     * If a type has type arguments then it will be '<' followed by 1 or more refTypes followed by '>'.
      */
-    public abstract String dottedIdentifier(String expected) throws Exception;
-    
+    public abstract List<RefType> actualTypeArguments() throws Exception;
+
     /**
-     * Returns an identifier without dots in it 
+     * A primitive type is any of the standard Java primitive types
+     */
+    public abstract PrimitiveType primitiveType() throws Exception;
+
+    /**
+     * A dotted identifier is a series of 1 or more identifiers separated by '.'.
+     */
+    public abstract String dottedIdentifier(String expected)
+            throws Exception;
+
+    /**
+     * A commented identifier may be any valid Java identifier
+     * and may be precedeed by java comments
+     */
+    public abstract String commentedIdentifier(String expected)
+            throws Exception;
+
+    /**
+     * An identifier may be any valid Java identifier
      */
     public abstract String identifier(String expected) throws Exception;
 
-    /** 
-     * Optionally recognizes and returns any of the primitive types
-     * 
-     * @return PrimitiveType or null if the next token isn't a primitive type
+    /**
+     * 'import'
+     * may be precedeed by java comments
      */
-    public abstract PrimitiveType primitiveType() throws Exception;
+    public abstract void importKeyword() throws Exception;
+
+    /**
+     * 'package'
+     * may be precedeed by java comments
+     */
+    public abstract void packageKeyword() throws Exception;
+
+    /**
+     * 'final'
+     */
+    public abstract ArgModifier finalKeyword() throws Exception;
+
+    /**
+     * 'boolean'
+     */
+    public abstract PrimitiveType booleanType() throws Exception;
+
+    /**
+     * 'byte'
+     */
+    public abstract PrimitiveType byteType() throws Exception;
+
+    /**
+     * 'char'
+     */
+    public abstract PrimitiveType charType() throws Exception;
+
+    /**
+     * 'short'
+     */
+    public abstract PrimitiveType shortType() throws Exception;
+
+    /**
+     * 'int'
+     */
+    public abstract PrimitiveType intType() throws Exception;
+
+    /**
+     * 'long'
+     */
+    public abstract PrimitiveType longType() throws Exception;
+
+    /**
+     * 'float'
+     */
+    public abstract PrimitiveType floatType() throws Exception;
+
+    /**
+     * 'double'
+     */
+    public abstract PrimitiveType doubleType() throws Exception;
+
+    /**
+     * '.'
+     */
+    public abstract void dot() throws Exception;
+
+    /**
+     * ','
+     */
+    public abstract void comma() throws Exception;
+
+    /**
+     * '('
+     */
+    public abstract void lparen() throws Exception;
+
+    /**
+     * ')'
+     */
+    public abstract void rparen() throws Exception;
+
+    /**
+     * '['
+     */
+    public abstract void lbracket() throws Exception;
+
+    /**
+     * ']'
+     */
+    public abstract void rbracket() throws Exception;
+
+    /**
+     * '<'
+     */
+    public abstract void langle() throws Exception;
+
+    /**
+     * '>'
+     */
+    public abstract void rangle() throws Exception;
+
+    /**
+     * '='
+     * may be precedeed by Java comments
+     */
+    public abstract void equals() throws Exception;
+
+    /**
+     * '|'
+     * may be precedeed by Java comments
+     */
+    public abstract void bar() throws Exception;
+
+    /**
+     * end of file
+     */
+    public abstract void eof() throws Exception;
 
     /**
      * Errors that occured during parsing

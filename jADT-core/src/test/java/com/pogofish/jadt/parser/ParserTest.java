@@ -65,6 +65,8 @@ public class ParserTest {
 
     private static final ParserImplFactory PARSER_IMPL_FACTORY = new JavaCCParserImplFactory();
 
+    private static final String COMMENT_ERROR_MESSAGE = "a java comment, which is only allowed before 'package', 'import', data type definitions and constructor defintions";
+
     /**
      * In order to zero in on specific sections of the parser it's easier to
      * poke at the Impl than try to parse whole documents and pull them apart
@@ -557,5 +559,84 @@ public class ParserTest {
                                         list(new Constructor(NO_COMMENTS, "BAD_IDENTIFIER_int@1", Util
                                                 .<Arg> list()))))), list(SyntaxError._UnexpectedToken("a constructor name", "'int'", 2))).toString(), result.toString());
                 
+    }
+    
+    @Test 
+    public void testInvalidCommentLocations() throws Exception {
+        final ParserImpl p1 = parserImpl("/* */");
+        p1.eof();
+        checkVoidCommentError("<EOF>", p1);
+        
+        final ParserImpl p2 = parserImpl("/**/>");
+        p2.rangle();
+        checkVoidCommentError("'>'", p2);
+        
+        final ParserImpl p3 = parserImpl("/**/<");
+        p3.langle();
+        checkVoidCommentError("'<'", p3);
+        
+        final ParserImpl p4 = parserImpl("/**/[");
+        p4.lbracket();
+        checkVoidCommentError("'['", p4);
+        
+        final ParserImpl p5 = parserImpl("/**/]");
+        p5.rbracket();
+        checkVoidCommentError("']'", p5);
+        
+        final ParserImpl p6 = parserImpl("/**/(");
+        p6.lparen();
+        checkVoidCommentError("'('", p6);
+        
+        final ParserImpl p7 = parserImpl("/**/)");
+        p7.rparen();
+        checkVoidCommentError("')'", p7);
+        
+        final ParserImpl p8 = parserImpl("/**/,");
+        p8.comma();
+        checkVoidCommentError("','", p8);
+        
+        final ParserImpl p9 = parserImpl("/**/.");
+        p9.dot();
+        checkVoidCommentError("'.'", p9);        
+        
+        final ParserImpl p10 = parserImpl("/**/double");
+        checkCommentError(_DoubleType(), p10.doubleType(), "'double'", p10);
+        
+        final ParserImpl p11 = parserImpl("/**/float");
+        checkCommentError(_FloatType(), p11.floatType(), "'float'", p11);
+        
+        final ParserImpl p12 = parserImpl("/**/long");
+        checkCommentError(_LongType(), p12.longType(), "'long'", p12);
+        
+        final ParserImpl p13 = parserImpl("/**/int");
+        checkCommentError(_IntType(), p13.intType(), "'int'", p13);
+        
+        final ParserImpl p14 = parserImpl("/**/short");
+        checkCommentError(_ShortType(), p14.shortType(), "'short'", p14);
+        
+        final ParserImpl p15 = parserImpl("/**/char");
+        checkCommentError(_CharType(), p15.charType(), "'char'", p15);
+        
+        final ParserImpl p16 = parserImpl("/**/byte");
+        checkCommentError(_ByteType(), p16.byteType(), "'byte'", p16);
+        
+        final ParserImpl p17 = parserImpl("/**/boolean");
+        checkCommentError(_BooleanType(), p17.booleanType(), "'boolean'", p17);
+        
+        final ParserImpl p18 = parserImpl("/**/final");
+        checkCommentError(_Final(), p18.finalKeyword(), "'final'", p18);
+        
+        final ParserImpl p20 = parserImpl("/**/identifier");
+        checkCommentError("identifier", p20.identifier("an identifier"), "an identifier", p20);
+    }
+
+    private static void checkVoidCommentError(String expected, ParserImpl p) {
+        assertEquals(Util.list(_UnexpectedToken(expected, COMMENT_ERROR_MESSAGE, 1)), p.errors());
+        
+    }
+
+    private static <A> void checkCommentError(A expected, A actual, String message, ParserImpl p) {
+        checkError(Util.list(_UnexpectedToken(message, COMMENT_ERROR_MESSAGE, 1)), expected, actual, p);
+        
     }
 }

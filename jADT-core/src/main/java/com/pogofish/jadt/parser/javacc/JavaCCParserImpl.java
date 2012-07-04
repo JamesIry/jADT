@@ -164,7 +164,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
     private void error(String expected, String actual) {
         if (!recovering) {
             recovering = true;
-            final String outputString = EOF_STRING.equals(actual) | UNTERMINATED_COMMENT_STRING.equals(actual) | COMMENT_NOT_ALLOWED.equals(actual) ? actual : "'"
+            final String outputString = (EOF_STRING.equals(actual) || UNTERMINATED_COMMENT_STRING.equals(actual) || COMMENT_NOT_ALLOWED.equals(actual)) ? actual : "'"
                     + actual + "'";
             errors.add(SyntaxError._UnexpectedToken(expected, outputString,
                     lookahead(1).beginLine));
@@ -215,6 +215,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
             case JAVADOC_COMMENT:
                 comments.add(_JavaDocComment(comment.image));
                 break;
+            default:
              // anything else is not a comment and not our problem here
             }
             comment = comment.specialToken;

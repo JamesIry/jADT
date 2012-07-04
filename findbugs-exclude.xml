@@ -8,6 +8,6 @@
    </Match>
    <!-- FindBugs HATES the JavaCC generated code -->
    <Match>
-      <Package name="com.pogofish.jadt.parser.javacc"/>
+      <Package name="com.pogofish.jadt.parser.javacc.generated"/>
    </Match>
 </FindBugsFilter>

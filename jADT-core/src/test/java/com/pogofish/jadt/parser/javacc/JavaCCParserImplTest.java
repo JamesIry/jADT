@@ -686,4 +686,20 @@ public class JavaCCParserImplTest {
         final List<JavaComment> comments = p1.tokenComments(token);
         assertEquals(NO_COMMENTS, comments);
     }
+    
+    
+    @Test
+    public void testNonsense() throws Exception {
+        // the old parser would get stuck in a loop with this extraneous >
+        final Parser parser = new StandardParser(PARSER_IMPL_FACTORY);
+        
+        final ParseResult result = parser.parse(new StringSource("whatever", "FormalParameter = FormalParameter(final List<Modifier> modifiers>, final TypeRef type, final String name)"));
+        assertEquals(ParseResult._ParseResult(Doc._Doc("whatever", EMPTY_PKG, NO_IMPORTS, 
+                list(_DataType(NO_COMMENTS, "FormalParameter", Util.<String>list(), 
+                        list(_Constructor(NO_COMMENTS, "FormalParameter", 
+                                list(_Arg(list(_Final()), _Ref(_ClassType("List", list(_ClassType("Modifier", Util.<RefType>list())))), "modifiers") /*,
+                                     _Arg(list(_Final()), _Ref(_ClassType("TypeRef", Util.<RefType>list())), "type"),
+                                     _Arg(list(_Final()), _Ref(_ClassType("String", Util.<RefType>list())), "name") */)
+                                                ))))), list(SyntaxError._UnexpectedToken("')'", "'>'", 1))).toString(), result.toString());
+    }
 }

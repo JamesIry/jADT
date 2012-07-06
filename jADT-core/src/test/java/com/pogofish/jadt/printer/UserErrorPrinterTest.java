@@ -15,16 +15,16 @@ limitations under the License.
 */
 package com.pogofish.jadt.printer;
 
-import static com.pogofish.jadt.ast.SemanticError._ConstructorDataTypeConflict;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateArgName;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateConstructor;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateDataType;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateModifier;
-import static com.pogofish.jadt.ast.SemanticError._TooManyConstructorJavaDocComments;
-import static com.pogofish.jadt.ast.SemanticError._TooManyDataTypeJavaDocComments;
-import static com.pogofish.jadt.ast.SyntaxError._UnexpectedToken;
-import static com.pogofish.jadt.ast.UserError._Semantic;
-import static com.pogofish.jadt.ast.UserError._Syntactic;
+import static com.pogofish.jadt.errors.SemanticError._ConstructorDataTypeConflict;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateArgName;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateConstructor;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateDataType;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateModifier;
+import static com.pogofish.jadt.errors.SemanticError._TooManyConstructorJavaDocComments;
+import static com.pogofish.jadt.errors.SemanticError._TooManyDataTypeJavaDocComments;
+import static com.pogofish.jadt.errors.SyntaxError._UnexpectedToken;
+import static com.pogofish.jadt.errors.UserError._Semantic;
+import static com.pogofish.jadt.errors.UserError._Syntactic;
 import static com.pogofish.jadt.printer.UserErrorPrinter.print;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

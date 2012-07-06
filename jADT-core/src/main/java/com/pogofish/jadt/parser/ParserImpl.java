@@ -28,8 +28,8 @@ import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
-import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.ast.Type;
+import com.pogofish.jadt.errors.SyntaxError;
 
 /**
  * Interface for internal parser implementations used by the StandardParser

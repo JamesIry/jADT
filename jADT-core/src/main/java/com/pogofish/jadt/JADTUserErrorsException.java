@@ -17,7 +17,7 @@ package com.pogofish.jadt;
 
 import java.util.List;
 
-import com.pogofish.jadt.ast.UserError;
+import com.pogofish.jadt.errors.UserError;
 import com.pogofish.jadt.printer.UserErrorPrinter;
 
 

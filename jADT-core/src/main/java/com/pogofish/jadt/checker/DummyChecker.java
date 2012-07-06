@@ -18,7 +18,7 @@ package com.pogofish.jadt.checker;
 import java.util.List;
 
 import com.pogofish.jadt.ast.Doc;
-import com.pogofish.jadt.ast.SemanticError;
+import com.pogofish.jadt.errors.SemanticError;
 
 
 /**

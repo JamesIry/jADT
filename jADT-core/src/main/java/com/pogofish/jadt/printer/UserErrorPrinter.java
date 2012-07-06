@@ -15,18 +15,18 @@ limitations under the License.
 */
 package com.pogofish.jadt.printer;
 
-import com.pogofish.jadt.ast.SemanticError;
-import com.pogofish.jadt.ast.SemanticError.ConstructorDataTypeConflict;
-import com.pogofish.jadt.ast.SemanticError.DuplicateArgName;
-import com.pogofish.jadt.ast.SemanticError.DuplicateConstructor;
-import com.pogofish.jadt.ast.SemanticError.DuplicateDataType;
-import com.pogofish.jadt.ast.SemanticError.DuplicateModifier;
-import com.pogofish.jadt.ast.SemanticError.TooManyConstructorJavaDocComments;
-import com.pogofish.jadt.ast.SemanticError.TooManyDataTypeJavaDocComments;
-import com.pogofish.jadt.ast.SyntaxError;
-import com.pogofish.jadt.ast.UserError;
-import com.pogofish.jadt.ast.UserError.Semantic;
-import com.pogofish.jadt.ast.UserError.Syntactic;
+import com.pogofish.jadt.errors.SemanticError;
+import com.pogofish.jadt.errors.SemanticError.ConstructorDataTypeConflict;
+import com.pogofish.jadt.errors.SemanticError.DuplicateArgName;
+import com.pogofish.jadt.errors.SemanticError.DuplicateConstructor;
+import com.pogofish.jadt.errors.SemanticError.DuplicateDataType;
+import com.pogofish.jadt.errors.SemanticError.DuplicateModifier;
+import com.pogofish.jadt.errors.SemanticError.TooManyConstructorJavaDocComments;
+import com.pogofish.jadt.errors.SemanticError.TooManyDataTypeJavaDocComments;
+import com.pogofish.jadt.errors.SyntaxError;
+import com.pogofish.jadt.errors.UserError;
+import com.pogofish.jadt.errors.UserError.Semantic;
+import com.pogofish.jadt.errors.UserError.Syntactic;
 
 /**
  * Pretty printer for the jADT user errors.  Note that in the context of pretty printers "print" just means "make a nice looking string"

@@ -32,7 +32,7 @@ import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.ParseResult;
-import com.pogofish.jadt.ast.SyntaxError;
+import com.pogofish.jadt.errors.SyntaxError;
 import com.pogofish.jadt.source.Source;
 import com.pogofish.jadt.source.StringSource;
 import com.pogofish.jadt.util.Util;

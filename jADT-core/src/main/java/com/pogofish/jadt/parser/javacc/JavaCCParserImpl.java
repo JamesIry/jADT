@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.pogofish.jadt.ast.JavaComment;
-import com.pogofish.jadt.ast.SyntaxError;
+import com.pogofish.jadt.errors.SyntaxError;
 import com.pogofish.jadt.parser.ParserImpl;
 import com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImpl;
 import com.pogofish.jadt.parser.javacc.generated.Token;

@@ -15,11 +15,13 @@ limitations under the License.
 */
 package com.pogofish.jadt.checker;
 
-import static com.pogofish.jadt.ast.SemanticError.*;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateArgName;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateConstructor;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateDataType;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateModifier;
+import static com.pogofish.jadt.errors.SemanticError._ConstructorDataTypeConflict;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateArgName;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateConstructor;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateDataType;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateModifier;
+import static com.pogofish.jadt.errors.SemanticError._TooManyConstructorJavaDocComments;
+import static com.pogofish.jadt.errors.SemanticError._TooManyDataTypeJavaDocComments;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,7 +36,7 @@ import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
-import com.pogofish.jadt.ast.SemanticError;
+import com.pogofish.jadt.errors.SemanticError;
 import com.pogofish.jadt.printer.ASTPrinter;
 
 

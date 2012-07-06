@@ -16,6 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.ast
 
 import java.util.List
+import com.pogofish.jadt.errors.SyntaxError
 
 ParseResult = ParseResult(final Doc doc, final List<SyntaxError> errors)
 
@@ -50,21 +51,6 @@ PrimitiveType
   | IntType
   | LongType
   | ShortType 
-
-UserError
-  = Semantic(final SemanticError error)
-  | Syntactic(final SyntaxError error)
-
-SyntaxError = UnexpectedToken(final String expected, final String found, final int line)
-
-SemanticError 
-  = DuplicateDataType(final String dataTypeName)
-  | ConstructorDataTypeConflict(final String dataTypeName) 
-  | DuplicateConstructor(final String dataTypeName, final String constructorName)
-  | DuplicateArgName(final String dataTypeName, final String constructorName, final String argName)
-  | DuplicateModifier(final String dataTypeName, final String constructorName, final String argName, final String modifier)
-  | TooManyDataTypeJavaDocComments(final String dataTypeName)
-  | TooManyConstructorJavaDocComments(final String dataTypeName, final String constructorName)
   
 JavaComment
   = JavaDocComment(final String comment)

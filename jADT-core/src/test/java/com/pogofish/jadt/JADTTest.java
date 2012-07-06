@@ -15,8 +15,8 @@ limitations under the License.
 */
 package com.pogofish.jadt;
 
-import static com.pogofish.jadt.ast.SemanticError._ConstructorDataTypeConflict;
-import static com.pogofish.jadt.ast.SemanticError._DuplicateConstructor;
+import static com.pogofish.jadt.errors.SemanticError._ConstructorDataTypeConflict;
+import static com.pogofish.jadt.errors.SemanticError._DuplicateConstructor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -34,11 +34,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.ast.SemanticError;
-import com.pogofish.jadt.ast.SyntaxError;
-import com.pogofish.jadt.ast.UserError;
 import com.pogofish.jadt.checker.StandardChecker;
 import com.pogofish.jadt.emitter.StandardDocEmitter;
+import com.pogofish.jadt.errors.SemanticError;
+import com.pogofish.jadt.errors.SyntaxError;
+import com.pogofish.jadt.errors.UserError;
 import com.pogofish.jadt.parser.StandardParser;
 import com.pogofish.jadt.sink.FileSinkFactoryFactory;
 import com.pogofish.jadt.sink.StringSinkFactoryFactory;

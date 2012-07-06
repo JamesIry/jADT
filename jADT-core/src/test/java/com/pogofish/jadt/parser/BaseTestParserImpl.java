@@ -27,8 +27,8 @@ import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
-import com.pogofish.jadt.ast.SyntaxError;
 import com.pogofish.jadt.ast.Type;
+import com.pogofish.jadt.errors.SyntaxError;
 
 /**
  * Base class for producing test parser impls.  Throws exceptions on all methods

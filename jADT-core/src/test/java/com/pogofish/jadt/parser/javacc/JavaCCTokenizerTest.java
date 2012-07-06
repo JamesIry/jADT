@@ -15,7 +15,32 @@ limitations under the License.
  */
 package com.pogofish.jadt.parser.javacc;
 
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.*;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BAR;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BOOLEAN;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BYTE;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.CHAR;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.COMMA;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.DOT;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.DOUBLE;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.EOF;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.EQUALS;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.FINAL;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.FLOAT;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.IDENTIFIER;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.IMPORT;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.INT;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.JAVA_KEYWORD;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.LANGLE;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.LBRACKET;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.LONG;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.LPAREN;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.PACKAGE;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.RANGLE;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.RBRACKET;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.RPAREN;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.SHORT;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.UNKNOWN;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.UNTERMINATED_COMMENT;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

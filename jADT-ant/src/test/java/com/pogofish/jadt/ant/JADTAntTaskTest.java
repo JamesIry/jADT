@@ -24,8 +24,8 @@ import org.apache.tools.ant.BuildException;
 import org.junit.Test;
 
 import com.pogofish.jadt.JADT;
-import com.pogofish.jadt.ast.SemanticError;
-import com.pogofish.jadt.ast.SyntaxError;
+import com.pogofish.jadt.errors.SemanticError;
+import com.pogofish.jadt.errors.SyntaxError;
 import com.pogofish.jadt.sink.StringSinkFactoryFactory;
 
 

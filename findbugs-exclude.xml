@@ -10,4 +10,7 @@
    <Match>
       <Package name="com.pogofish.jadt.parser.javacc.generated"/>
    </Match>
+   <Match>
+      <Package name="com.pogofish.jadt.javadoc.javacc.generated"/>
+   </Match>
 </FindBugsFilter>

@@ -196,8 +196,8 @@ public class JavaCCTokenizerTest {
 
     @Test
     public void testUnknown() {
-        final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("~*/~");
-        check(tokenizer1, "~*/~", UNKNOWN, 1);
+        final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("~?/~");
+        check(tokenizer1, "~?/~", UNKNOWN, 1);
         check(tokenizer1, "<EOF>", EOF, 1);
 
         final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("?");

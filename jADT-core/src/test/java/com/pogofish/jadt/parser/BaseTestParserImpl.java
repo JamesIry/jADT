@@ -126,6 +126,13 @@ public abstract class BaseTestParserImpl implements ParserImpl {
     }
 
     @Override
+    public String packageSpec() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    
+    }
+
+    @Override
     public List<JavaComment> packageKeyword() throws Exception {
         throw new RuntimeException(
                 "This should not have been called");

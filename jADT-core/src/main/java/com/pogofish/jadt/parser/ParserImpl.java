@@ -66,9 +66,14 @@ public interface ParserImpl {
     public abstract Imprt singleImport() throws Exception;
 
     /**
-     * A package name used in a package or import declaration must be a valid Java package name.
+     * A package name used in a package declaration must be a valid Java package name.
      */
     public abstract String packageName() throws Exception;
+
+    /**
+     * A package spec used in an import declaration.
+     */
+    public abstract String packageSpec() throws Exception;
 
     /**
      *     A jADT document must have at least one datatype, but may have as many as you'd like.

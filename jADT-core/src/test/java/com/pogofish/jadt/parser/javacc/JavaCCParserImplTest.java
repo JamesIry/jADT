@@ -437,6 +437,9 @@ public class JavaCCParserImplTest {
         final ParserImpl p2 = parserImpl("package foo.bar.");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), Pkg._Pkg(NO_COMMENTS, "foo.bar.NO_IDENTIFIER@1"), p2.pkg(), p2);
 
+        final ParserImpl p5 = parserImpl("package foo.bar.*");
+        checkError(list(_UnexpectedToken("a package name", "'*'", 1)), Pkg._Pkg(NO_COMMENTS, "foo.bar.BAD_IDENTIFIER_*@1"), p5.pkg(), p5);
+
         final ParserImpl p3 = parserImpl("package ?g42");
         checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), Pkg._Pkg(NO_COMMENTS, "BAD_IDENTIFIER_?g42@1"), p3.pkg(), p3);
 
@@ -450,7 +453,9 @@ public class JavaCCParserImplTest {
     @Test
     public void testImports() throws Exception {
         assertEquals(NO_IMPORTS, parserImpl("").imports());
+        assertEquals(list(Imprt._Imprt(NO_COMMENTS, "*")), parserImpl("import *").imports());
         assertEquals(list(Imprt._Imprt(NO_COMMENTS, "hello")), parserImpl("import hello").imports());
+        assertEquals(list(Imprt._Imprt(NO_COMMENTS, "hello.*")), parserImpl("import hello.*").imports());
         assertEquals(list(Imprt._Imprt(NO_COMMENTS, "hello"), Imprt._Imprt(NO_COMMENTS, "oh.yeah")),
                 parserImpl("import hello import oh.yeah").imports());
     }

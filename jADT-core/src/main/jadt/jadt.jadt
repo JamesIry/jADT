@@ -16,6 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.ast
 
 import java.util.List
+import java.util.Map
 import com.pogofish.jadt.errors.SyntaxError
 
 ParseResult = ParseResult(final Doc doc, final List<SyntaxError> errors)
@@ -58,3 +59,10 @@ JavaComment
   | JavaEOLComment(final String comment)
   
 CommentedIdentifier = CommentedIdentifier(final List<JavaComment> comments, final String identifier)
+
+JavaDoc = JavaDoc(String start, List<JDToken> general, List<JDTagSection> tags, String end)
+
+JDTagSection = JDTagSection(String name, List<JDToken> tokens)
+
+JDToken = JDAsterisk | JDEOL(String content) | JDTag(String name) | JDWord(String word)
+

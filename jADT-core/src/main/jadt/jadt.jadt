@@ -54,7 +54,7 @@ PrimitiveType
   | ShortType 
   
 JavaComment
-  = JavaDocComment(final String comment)
+  = JavaDocComment(final JavaDoc comment)
   | JavaMultiLineComment(final String comment)
   | JavaEOLComment(final String comment)
   

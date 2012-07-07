@@ -20,6 +20,7 @@ import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaMultiLineComment;
 
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.Set;
 
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.errors.SyntaxError;
+import com.pogofish.jadt.javadoc.JavaDocParser;
 import com.pogofish.jadt.parser.ParserImpl;
 import com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImpl;
 import com.pogofish.jadt.parser.javacc.generated.Token;
@@ -44,6 +46,8 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
     private static final String UNTERMINATED_COMMENT_STRING = "unterminated comment";
 
     private static final String EOF_STRING = "<EOF>";
+    
+    private static final JavaDocParser javaDocParser = new JavaDocParser();
 
     /**
      * Whether this parser is currently recovering from a problem.  While
@@ -221,7 +225,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
                 comments.add(_JavaMultiLineComment(comment.image));
                 break;
             case JAVADOC_COMMENT:
-                comments.add(_JavaDocComment(comment.image));
+                comments.add(_JavaDocComment(javaDocParser.parse(new StringReader(comment.image))));
                 break;
             default:
                 // anything else is not a comment and not our problem.

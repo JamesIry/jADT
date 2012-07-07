@@ -15,7 +15,10 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
+import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
+import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
 import static com.pogofish.jadt.ast.PrimitiveType._IntType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -28,6 +31,7 @@ import org.junit.Test;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
+import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.sink.StringSink;
 import com.pogofish.jadt.util.Util;
@@ -67,7 +71,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testFactory() {
-        final Constructor constructor = new Constructor(Util.list(_JavaDocComment("/** hello */")), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor(Util.list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringSink sink = new StringSink("test");
         try {
@@ -85,7 +89,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testConstrucorDeclaration() {
-        final Constructor constructor = new Constructor(Util.list(_JavaDocComment("/** hello */")), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor(Util.list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringSink sink = new StringSink("test");
         try {

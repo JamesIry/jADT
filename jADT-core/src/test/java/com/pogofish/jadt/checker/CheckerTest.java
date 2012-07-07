@@ -17,7 +17,10 @@ package com.pogofish.jadt.checker;
 
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
+import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
+import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
 import static com.pogofish.jadt.errors.SemanticError._ConstructorDataTypeConflict;
 import static com.pogofish.jadt.errors.SemanticError._DuplicateArgName;
 import static com.pogofish.jadt.errors.SemanticError._DuplicateConstructor;
@@ -38,6 +41,7 @@ import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.Type;
@@ -117,7 +121,7 @@ public class CheckerTest {
     public void testTooManyJavaDocCommentsDataType() {
         final Checker checker = new StandardChecker();
         final Constructor constructor = new Constructor(NO_COMMENTS, "Bar", list(Arg._Arg(list(ArgModifier._Final()), Type._Primitive(PrimitiveType._IntType()), "foo")));
-        final DataType dataType = new DataType(list(_JavaDocComment("/** hello */"), _JavaDocComment("/** world */")), "Foo", Util.<String>list(), list(constructor));
+        final DataType dataType = new DataType(list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), _JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "Foo", Util.<String>list(), list(constructor));
         final Doc doc = new Doc("CheckerTest", Pkg._Pkg(NO_COMMENTS, ""), NO_IMPORTS, list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -127,7 +131,7 @@ public class CheckerTest {
     @Test
     public void testTooManyJavaDocCommentsConstructor() {
         final Checker checker = new StandardChecker();
-        final Constructor constructor = new Constructor(list(_JavaDocComment("/** hello */"), _JavaDocComment("/** world */")), "Bar", list(Arg._Arg(list(ArgModifier._Final()), Type._Primitive(PrimitiveType._IntType()), "foo")));
+        final Constructor constructor = new Constructor(list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), _JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "Bar", list(Arg._Arg(list(ArgModifier._Final()), Type._Primitive(PrimitiveType._IntType()), "foo")));
         final DataType dataType = new DataType(NO_COMMENTS, "Foo", Util.<String>list(), list(constructor));
         final Doc doc = new Doc("CheckerTest", Pkg._Pkg(NO_COMMENTS, ""), NO_IMPORTS, list(dataType));
         final List<SemanticError> errors = checker.check(doc);

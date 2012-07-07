@@ -16,7 +16,10 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
+import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
+import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Ref;
 import static com.pogofish.jadt.util.Util.list;
@@ -28,6 +31,7 @@ import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.sink.StringSink;
 import com.pogofish.jadt.util.Util;
@@ -119,7 +123,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testMultipleConstructors() {
-        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/** hello */")), "FooBar", Util.<String>list(), list(
+        final DataType fooBar = new DataType(Util.list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "FooBar", Util.<String>list(), list(
                 new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                         new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor(NO_COMMENTS, "Bar",
                         Util.<Arg> list())));
@@ -141,7 +145,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testSingleConstructor() {
-        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/** hello */")), "FooBar", Util.<String>list(), list(new Constructor(NO_COMMENTS, "Foo", list(
+        final DataType fooBar = new DataType(Util.list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "FooBar", Util.<String>list(), list(new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 

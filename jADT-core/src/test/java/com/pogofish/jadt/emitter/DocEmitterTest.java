@@ -18,9 +18,12 @@ package com.pogofish.jadt.emitter;
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
+import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaMultiLineComment;
+import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
 import static com.pogofish.jadt.ast.PrimitiveType._IntType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -39,6 +42,7 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.sink.StringSinkFactory;
@@ -96,7 +100,7 @@ public class DocEmitterTest {
      */
     @Test
     public void testFull() {
-        final Doc doc = new Doc("EmitterTest", Pkg._Pkg(Util.list(_JavaDocComment("/** hello */")), "some.package"), list(Imprt._Imprt(Util.list(_JavaMultiLineComment("/* hello */")), "wow.man"), Imprt._Imprt(Util.list(_JavaEOLComment("// hello")), "flim.flam")), list(
+        final Doc doc = new Doc("EmitterTest", Pkg._Pkg(Util.list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "some.package"), list(Imprt._Imprt(Util.list(_JavaMultiLineComment("/* hello */")), "wow.man"), Imprt._Imprt(Util.list(_JavaEOLComment("// hello")), "flim.flam")), list(
                 new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), list(
                         new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),

@@ -23,9 +23,11 @@ import static com.pogofish.jadt.ast.ArgModifier._Final;
 import static com.pogofish.jadt.ast.CommentedIdentifier._CommentedIdentifier;
 import static com.pogofish.jadt.ast.Constructor._Constructor;
 import static com.pogofish.jadt.ast.DataType._DataType;
+import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaMultiLineComment;
+import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -52,6 +54,7 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.ast.Pkg;
@@ -655,7 +658,7 @@ public class JavaCCParserImplTest {
     @Test
     public void testCommentAllowedTokens() throws Exception {
         final String commentString = "/*block*//**javadoc*///eol\n";
-        final List<JavaComment> comments = list(_JavaMultiLineComment("/*block*/"), _JavaDocComment("/**javadoc*/"), _JavaEOLComment("//eol"));
+        final List<JavaComment> comments = list(_JavaMultiLineComment("/*block*/"), _JavaDocComment(_JavaDoc("/**", list(_JDWord("javadoc")), Util.<JDTagSection>list(), "*/")), _JavaEOLComment("//eol"));
         
         final ParserImpl p1 = parserImpl(commentString + "|");
         checkParseResult(comments, p1.bar(), p1);

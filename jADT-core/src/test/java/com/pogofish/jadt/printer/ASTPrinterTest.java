@@ -214,7 +214,7 @@ public class ASTPrinterTest {
      */
     @Test
     public void testComments() {
-        final List<JavaComment> comments = Util.<JavaComment>list(_JavaDocComment("/** hello */"), _JavaMultiLineComment("/* hello */"), _JavaEOLComment("// hello"));
+        final List<JavaComment> comments = Util.<JavaComment>list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), _JavaMultiLineComment("/* hello */"), _JavaEOLComment("// hello"));
         assertEquals("/** hello */\n/* hello */\n// hello\n", printComments(comments));
     }
 }

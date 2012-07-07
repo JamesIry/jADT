@@ -104,7 +104,7 @@ public class ASTPrinter  {
 
             @Override
             public String _case(JavaDocComment x) {
-                return x.comment;
+                return print(x.comment);
             }
 
             @Override

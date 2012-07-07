@@ -33,6 +33,7 @@ import org.junit.Test;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JavaDoc;
+import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.util.Util;
 
 /**
@@ -67,6 +68,26 @@ public class JavaDocParserTest {
     @Test
     public void testFull() {
         test("/**\n * hello\n * * @world\n @Foo hello\n * world\n@Bar whatever*/", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));
+    }
+    
+    @Test
+    public void testRoundTrip() {
+        testRoundTrip("/** */");
+        testRoundTrip("/*** **/");
+        testRoundTrip("/** * */");
+        testRoundTrip("/** *\n */");
+        testRoundTrip("/**\n * hello\n * world\n */");
+        testRoundTrip("/**\n * hello @foo */");
+        testRoundTrip("/**\n * hello\n * * @world\n */");
+        testRoundTrip("/**@Foo*/");        
+        testRoundTrip("/**@Foo hello\n * world*/");        
+        testRoundTrip("/**@Foo hello\n * world\n@Bar whatever*/");        
+    }
+
+    private void testRoundTrip(String string) {
+        final JavaDocParser parser = new JavaDocParser();
+        assertEquals(string, ASTPrinter.print(parser.parse(new StringReader(string))));
+        
     }
 
     private void test(String string, JavaDoc expected) {

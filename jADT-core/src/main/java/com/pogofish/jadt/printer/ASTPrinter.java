@@ -23,10 +23,18 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.JDTagSection;
+import com.pogofish.jadt.ast.JDToken;
+import com.pogofish.jadt.ast.JDToken.JDAsterisk;
+import com.pogofish.jadt.ast.JDToken.JDEOL;
+import com.pogofish.jadt.ast.JDToken.JDTag;
+import com.pogofish.jadt.ast.JDToken.JDWhiteSpace;
+import com.pogofish.jadt.ast.JDToken.JDWord;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
 import com.pogofish.jadt.ast.JavaComment.JavaEOLComment;
 import com.pogofish.jadt.ast.JavaComment.JavaMultiLineComment;
+import com.pogofish.jadt.ast.JavaDoc;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.PrimitiveType.BooleanType;
 import com.pogofish.jadt.ast.PrimitiveType.ByteType;
@@ -299,6 +307,58 @@ public class ASTPrinter  {
     public static String print(ArgModifier modifier) {
         // so far there's only one modifer, but that will change;
         return "final";
+    }
+    
+    /**
+     * Print a parsed JavaDoc
+     */
+    public static String print(JavaDoc doc) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(doc.start);
+        for (JDToken token : doc.generalSection) {
+            builder.append(print(token));
+        }
+        for (JDTagSection tagSection : doc.tagSections) {
+            for (JDToken token : tagSection.tokens) {
+                builder.append(print(token));
+            }
+        }
+        
+        builder.append(doc.end);
+        return builder.toString();
+    }
+
+    /**
+     * Print a single JavaDoc token
+     */
+    private static String print(JDToken token) {
+        return token.match(new JDToken.MatchBlock<String>() {
+
+            @Override
+            public String _case(JDAsterisk x) {
+                return "*";
+            }
+
+            @Override
+            public String _case(JDEOL x) {
+                return x.content;
+            }
+
+            @Override
+            public String _case(JDTag x) {
+                return x.name;
+            }
+
+            @Override
+            public String _case(JDWord x) {
+                return x.word;
+            }
+
+            @Override
+            public String _case(JDWhiteSpace x) {
+                return x.ws;
+            }
+        });
     }
 
 }

@@ -18,9 +18,16 @@ package com.pogofish.jadt.printer;
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
+import static com.pogofish.jadt.ast.JDToken._JDAsterisk;
+import static com.pogofish.jadt.ast.JDToken._JDEOL;
+import static com.pogofish.jadt.ast.JDToken._JDTag;
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
+import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaMultiLineComment;
+import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -49,7 +56,10 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.ast.JDTagSection;
+import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.ast.JavaDoc;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.util.Util;
@@ -166,7 +176,39 @@ public class ASTPrinterTest {
                 "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), list(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), 
                         list(new Constructor(NO_COMMENTS, "Bar", Util.<Arg> list())))))));
     }
+
+    private static final JDToken ONEEOL = _JDEOL("\n");
+    private static final JDToken ONEWS = _JDWhiteSpace(" ");
+    private static final List<JDToken> NO_TOKENS = Util.<JDToken>list();
+    private static final List<JDTagSection> NO_TAG_SECTIONS = Util.<JDTagSection>list();
     
+    @Test
+    public void testJDGeneralSection() {
+        testJD("/** */", _JavaDoc("/**", list(ONEWS), NO_TAG_SECTIONS, "*/"));
+        testJD("/*** **/", _JavaDoc("/***", list(ONEWS), NO_TAG_SECTIONS, "**/"));
+        testJD("/** * */", _JavaDoc("/**", list(ONEWS, _JDAsterisk(), ONEWS), NO_TAG_SECTIONS, "*/"));
+        testJD("/** *\n */", _JavaDoc("/**", list(ONEWS, _JDAsterisk(), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+        testJD("/**\n * hello\n * world\n */", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+        testJD("/**\n * hello @foo */", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEWS, _JDTag("@foo"), ONEWS), NO_TAG_SECTIONS, "*/"));
+        testJD("/**\n * hello\n * * @world\n */", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+    }
+    
+    @Test
+    public void testJDTagSections() {
+        testJD("/**@Foo*/", _JavaDoc("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo")))), "*/"));        
+        testJD("/**@Foo hello\n * world*/", _JavaDoc("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world")))), "*/"));        
+        testJD("/**@Foo hello\n * world\n@Bar whatever*/", _JavaDoc("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));        
+    }
+    
+    @Test
+    public void testJDFull() {
+        testJD("/**\n * hello\n * * @world\n @Foo hello\n * world\n@Bar whatever*/", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));
+    }
+    
+    private void testJD(String expected, JavaDoc javaDoc) {
+        assertEquals(expected, ASTPrinter.print(javaDoc));
+    }
+
     /**
      * Test that comments print properly
      */

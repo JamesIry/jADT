@@ -25,7 +25,7 @@ import java.io.Reader;
  * 
  * @author jiry
  */
-class JavaCCReader extends Reader {
+public class JavaCCReader extends Reader {
     private final Reader reader;
     
     /**

@@ -60,9 +60,9 @@ JavaComment
   
 CommentedIdentifier = CommentedIdentifier(final List<JavaComment> comments, final String identifier)
 
-JavaDoc = JavaDoc(String start, List<JDToken> general, List<JDTagSection> tags, String end)
+JavaDoc = JavaDoc(String start, List<JDToken> generalSection, List<JDTagSection> tagSections, String end)
 
 JDTagSection = JDTagSection(String name, List<JDToken> tokens)
 
-JDToken = JDAsterisk | JDEOL(String content) | JDTag(String name) | JDWord(String word)
+JDToken = JDAsterisk | JDEOL(String content) | JDTag(String name) | JDWord(String word) | JDWhiteSpace(String ws)
 

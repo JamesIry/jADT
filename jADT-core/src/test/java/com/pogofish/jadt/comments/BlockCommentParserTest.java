@@ -15,7 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.comments;
 
-import static com.pogofish.jadt.ast.BlockComment._BlockComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.BlockToken.*;
 import static com.pogofish.jadt.util.Util.list;
@@ -25,7 +25,7 @@ import java.io.StringReader;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.ast.BlockComment;
+import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.BlockToken;
 
 public class BlockCommentParserTest {
@@ -37,12 +37,12 @@ public class BlockCommentParserTest {
     @SuppressWarnings("unchecked")
     @Test
     public void test() {
-        test("/* */", _BlockComment(list(list(START, ONEWS, END))));
-        test("/* hello */", _BlockComment(list(list(START, ONEWS, _BlockWord("hello"), ONEWS, END))));
-        test("/* hello\n * goodbye */", _BlockComment(list(list(START, ONEWS, _BlockWord("hello"), EOL), list(ONEWS, _BlockWord("*"), ONEWS, _BlockWord("goodbye"), ONEWS, END))));
+        test("/* */", _JavaBlockComment(list(list(START, ONEWS, END))));
+        test("/* hello */", _JavaBlockComment(list(list(START, ONEWS, _BlockWord("hello"), ONEWS, END))));
+        test("/* hello\n * goodbye */", _JavaBlockComment(list(list(START, ONEWS, _BlockWord("hello"), EOL), list(ONEWS, _BlockWord("*"), ONEWS, _BlockWord("goodbye"), ONEWS, END))));
     }
 
-    private void test(String string, BlockComment expected) {
+    private void test(String string, JavaComment expected) {
         final BlockCommentParser parser = new BlockCommentParser();
         assertEquals(expected.toString(), parser.parse(new StringReader(string)).toString());       
     }

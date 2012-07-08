@@ -17,7 +17,7 @@ package com.pogofish.jadt.comments;
 
 import java.io.Reader;
 
-import com.pogofish.jadt.ast.BlockComment;
+import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.comments.javacc.generated.BlockCommentParserImpl;
 import com.pogofish.jadt.parser.javacc.JavaCCReader;
 
@@ -27,7 +27,7 @@ import com.pogofish.jadt.parser.javacc.JavaCCReader;
  * @author jiry
  */
 public class BlockCommentParser {
-    public BlockComment parse(Reader BlockComment) {
+    public JavaComment parse(Reader BlockComment) {
        try {
            BlockCommentParserImpl impl = new BlockCommentParserImpl(new JavaCCReader(BlockComment));
            return impl.blockComment();

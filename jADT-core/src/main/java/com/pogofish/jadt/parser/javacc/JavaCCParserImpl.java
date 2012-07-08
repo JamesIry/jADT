@@ -15,7 +15,6 @@ limitations under the License.
  */
 package com.pogofish.jadt.parser.javacc;
 
-import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
 
 import java.io.Reader;
@@ -26,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.comments.BlockCommentParser;
 import com.pogofish.jadt.comments.JavaDocParser;
 import com.pogofish.jadt.errors.SyntaxError;
 import com.pogofish.jadt.parser.ParserImpl;
@@ -47,6 +47,8 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
     private static final String EOF_STRING = "<EOF>";
     
     private static final JavaDocParser javaDocParser = new JavaDocParser();
+    
+    private static final BlockCommentParser blockCommentParser = new BlockCommentParser();
 
     /**
      * Whether this parser is currently recovering from a problem.  While
@@ -221,7 +223,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
                 comments.add(_JavaEOLComment(comment.image));
                 break;
             case JAVA_ML_COMMENT:
-                comments.add(_JavaBlockComment(comment.image));
+                comments.add(blockCommentParser.parse(new StringReader(comment.image)));
                 break;
             case JAVADOC_COMMENT:
                 comments.add(javaDocParser.parse(new StringReader(comment.image)));

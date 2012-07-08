@@ -18,7 +18,6 @@ package com.pogofish.jadt.printer;
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
-import static com.pogofish.jadt.ast.BlockComment._BlockComment;
 import static com.pogofish.jadt.ast.BlockToken._BlockEOL;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.BlockToken._BlockWord;
@@ -56,7 +55,6 @@ import org.junit.Test;
 
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
-import com.pogofish.jadt.ast.BlockComment;
 import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
@@ -76,6 +74,16 @@ import com.pogofish.jadt.util.Util;
  * @author jiry
  */
 public class ASTPrinterTest {
+    
+    private static final BlockToken BLOCKEOL = _BlockEOL("\n");
+    private static final BlockToken BLOCKSTART = _BlockWord("/*");
+    private static final BlockToken BLOCKEND = _BlockWord("*/");
+    private static final BlockToken BLOCKONEWS = _BlockWhiteSpace(" ");
+    private static final JDToken ONEEOL = _JDEOL("\n");
+    private static final JDToken ONEWS = _JDWhiteSpace(" ");
+    private static final List<JDToken> NO_TOKENS = Util.<JDToken>list();
+    private static final List<JDTagSection> NO_TAG_SECTIONS = Util.<JDTagSection>list();
+    
     /**
      * Cobertura isn't happy unless the (implicit) constructor is called. This
      * stupid test does exactly that
@@ -182,35 +190,31 @@ public class ASTPrinterTest {
                         list(new Constructor(NO_COMMENTS, "Bar", Util.<Arg> list())))))));
     }
 
-    private static final JDToken ONEEOL = _JDEOL("\n");
-    private static final JDToken ONEWS = _JDWhiteSpace(" ");
-    private static final List<JDToken> NO_TOKENS = Util.<JDToken>list();
-    private static final List<JDTagSection> NO_TAG_SECTIONS = Util.<JDTagSection>list();
     
     @Test
     public void testJDGeneralSection() {
-        testJD("/** */", _JavaDocComment("/**", list(ONEWS), NO_TAG_SECTIONS, "*/"));
-        testJD("/*** **/", _JavaDocComment("/***", list(ONEWS), NO_TAG_SECTIONS, "**/"));
-        testJD("/** * */", _JavaDocComment("/**", list(ONEWS, _JDAsterisk(), ONEWS), NO_TAG_SECTIONS, "*/"));
-        testJD("/** *\n */", _JavaDocComment("/**", list(ONEWS, _JDAsterisk(), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
-        testJD("/**\n * hello\n * world\n */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
-        testJD("/**\n * hello @foo */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEWS, _JDTag("@foo"), ONEWS), NO_TAG_SECTIONS, "*/"));
-        testJD("/**\n * hello\n * * @world\n */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+        testComment("/** */", _JavaDocComment("/**", list(ONEWS), NO_TAG_SECTIONS, "*/"));
+        testComment("/*** **/", _JavaDocComment("/***", list(ONEWS), NO_TAG_SECTIONS, "**/"));
+        testComment("/** * */", _JavaDocComment("/**", list(ONEWS, _JDAsterisk(), ONEWS), NO_TAG_SECTIONS, "*/"));
+        testComment("/** *\n */", _JavaDocComment("/**", list(ONEWS, _JDAsterisk(), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+        testComment("/**\n * hello\n * world\n */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+        testComment("/**\n * hello @foo */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEWS, _JDTag("@foo"), ONEWS), NO_TAG_SECTIONS, "*/"));
+        testComment("/**\n * hello\n * * @world\n */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
     }
     
     @Test
     public void testJDTagSections() {
-        testJD("/**@Foo*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo")))), "*/"));        
-        testJD("/**@Foo hello\n * world*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world")))), "*/"));        
-        testJD("/**@Foo hello\n * world\n@Bar whatever*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));        
+        testComment("/**@Foo*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo")))), "*/"));        
+        testComment("/**@Foo hello\n * world*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world")))), "*/"));        
+        testComment("/**@Foo hello\n * world\n@Bar whatever*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));        
     }
     
     @Test
     public void testJDFull() {
-        testJD("/**\n * hello\n * * @world\n @Foo hello\n * world\n@Bar whatever*/", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));
+        testComment("/**\n * hello\n * * @world\n @Foo hello\n * world\n@Bar whatever*/", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));
     }
     
-    private void testJD(String expected, JavaComment comment) {
+    private void testComment(String expected, JavaComment comment) {
         assertEquals(expected, ASTPrinter.print(comment));
     }
 
@@ -219,24 +223,16 @@ public class ASTPrinterTest {
      */
     @Test
     public void testComments() {
-        final List<JavaComment> comments = Util.<JavaComment>list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"), _JavaBlockComment("/* hello */"), _JavaEOLComment("// hello"));
+        @SuppressWarnings("unchecked")
+        final List<JavaComment> comments = Util.<JavaComment>list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"), _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKONEWS, BLOCKEND))), _JavaEOLComment("// hello"));
         assertEquals("/** hello */\n/* hello */\n// hello\n", printComments(comments));
     }
-    
-    private static final BlockToken BLOCKEOL = _BlockEOL("\n");
-    private static final BlockToken BLOCKSTART = _BlockWord("/*");
-    private static final BlockToken BLOCKEND = _BlockWord("*/");
-    private static final BlockToken BLOCKONEWS = _BlockWhiteSpace(" ");
 
     @SuppressWarnings("unchecked")
     @Test
     public void testBlockComment() {
-        testBlockComment("/* */", _BlockComment(list(list(BLOCKSTART, BLOCKONEWS, BLOCKEND))));
-        testBlockComment("/* hello */", _BlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKONEWS, BLOCKEND))));
-        testBlockComment("/* hello\n * goodbye */", _BlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKEOL), list(BLOCKONEWS, _BlockWord("*"), BLOCKONEWS, _BlockWord("goodbye"), BLOCKONEWS, BLOCKEND))));
-    }
-
-    private void testBlockComment(String expected, BlockComment comment) {
-        assertEquals(expected, ASTPrinter.print(comment));       
+        testComment("/* */", _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, BLOCKEND))));
+        testComment("/* hello */", _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKONEWS, BLOCKEND))));
+        testComment("/* hello\n * goodbye */", _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKEOL), list(BLOCKONEWS, _BlockWord("*"), BLOCKONEWS, _BlockWord("goodbye"), BLOCKONEWS, BLOCKEND))));
     }
 }

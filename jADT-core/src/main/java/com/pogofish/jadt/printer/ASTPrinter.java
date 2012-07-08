@@ -19,7 +19,6 @@ import java.util.List;
 
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
-import com.pogofish.jadt.ast.BlockComment;
 import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.BlockToken.BlockEOL;
 import com.pogofish.jadt.ast.BlockToken.BlockWhiteSpace;
@@ -124,8 +123,30 @@ public class ASTPrinter  {
             }
 
             @Override
-            public String _case(JavaBlockComment x) {
-                return x.comment;
+            public String _case(JavaBlockComment comment) {
+                final StringBuilder builder = new StringBuilder();
+                for (List<BlockToken> line : comment.lines) {
+                    for (BlockToken token : line) {
+                        builder.append(token.match(new BlockToken.MatchBlock<String>() {
+
+                            @Override
+                            public String _case(BlockWord x) {
+                                return x.word;
+                            }
+
+                            @Override
+                            public String _case(BlockWhiteSpace x) {
+                                return x.ws;
+                            }
+
+                            @Override
+                            public String _case(BlockEOL x) {
+                                return x.content;
+                            }
+                        }));
+                    }
+                }
+                return builder.toString();
             }
 
             @Override
@@ -356,32 +377,6 @@ public class ASTPrinter  {
                 return x.ws;
             }
         });
-    }
-    
-    public static String print(BlockComment comment) {
-        final StringBuilder builder = new StringBuilder();
-        for (List<BlockToken> line : comment.lines) {
-            for (BlockToken token : line) {
-                builder.append(token.match(new BlockToken.MatchBlock<String>() {
-
-                    @Override
-                    public String _case(BlockWord x) {
-                        return x.word;
-                    }
-
-                    @Override
-                    public String _case(BlockWhiteSpace x) {
-                        return x.ws;
-                    }
-
-                    @Override
-                    public String _case(BlockEOL x) {
-                        return x.content;
-                    }
-                }));
-            }
-        }
-        return builder.toString();
     }
 
 }

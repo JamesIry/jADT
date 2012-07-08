@@ -16,6 +16,7 @@ limitations under the License.
 package com.pogofish.jadt.parser.javacc;
 
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
+import static com.pogofish.jadt.ast.BlockToken.*;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
 import static com.pogofish.jadt.ast.Arg._Arg;
@@ -49,6 +50,7 @@ import org.junit.Test;
 
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
@@ -72,6 +74,12 @@ import com.pogofish.jadt.util.Util;
  * @author jiry
  */
 public class JavaCCParserImplTest {
+    private static final BlockToken BLOCKSTART = _BlockWord("/*");
+    private static final BlockToken BLOCKEND = _BlockWord("*/");
+    private static final BlockToken BLOCKONEWS = _BlockWhiteSpace(" ");
+    
+    @SuppressWarnings("unchecked")
+    private static final JavaComment IMPORTS_COMMENT = _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("here"), BLOCKONEWS, _BlockWord("are"), BLOCKONEWS, _BlockWord("some"), BLOCKONEWS, _BlockWord("imports"), BLOCKONEWS, BLOCKEND)));
 
     private static final JavaCCParserImplFactory PARSER_IMPL_FACTORY = new JavaCCParserImplFactory();
 
@@ -505,22 +513,22 @@ public class JavaCCParserImplTest {
     @Test
     public void testFull() {
         final Parser parser = new StandardParser(PARSER_IMPL_FACTORY);
-        final String source = "/*a pre-start comment*///a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
-                + "/*datatype comment*/FooBar /*equal comment*/= /*constructor comment*/foo /*bar comment*/| /*really a bar comment*/bar(int hey, final String[] yeah) whatever = whatever";
+        final String source = "//a pre-start comment\n//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
+                + "//datatype comment\nFooBar //equal comment\n= //constructor comment\nfoo //bar comment\n| //really a bar comment\nbar(int hey, final String[] yeah) whatever = whatever";
         final ParseResult result = parser.parse(new StringSource("ParserTest",
                 source));
 
         assertEquals(
                 new ParseResult(new Doc(
                         "ParserTest",
-                        Pkg._Pkg(list(_JavaBlockComment("/*a pre-start comment*/"), _JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(_JavaBlockComment("/* here are some imports */")), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
-                        list(new DataType(list(_JavaBlockComment("/*datatype comment*/")), 
+                        Pkg._Pkg(list(_JavaEOLComment("//a pre-start comment"), _JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(IMPORTS_COMMENT), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
+                        list(new DataType(list(_JavaEOLComment("//datatype comment")), 
                                 "FooBar",
                                 Util.<String> list(),
                                 list(
-                                        new Constructor(list(_JavaBlockComment("/*equal comment*/"), _JavaBlockComment("/*constructor comment*/")), "foo", Util
+                                        new Constructor(list(_JavaEOLComment("//equal comment"), _JavaEOLComment("//constructor comment")), "foo", Util
                                                 .<Arg> list()),
-                                        new Constructor(list(_JavaBlockComment("/*bar comment*/"), _JavaBlockComment("/*really a bar comment*/")), 
+                                        new Constructor(list(_JavaEOLComment("//bar comment"), _JavaEOLComment("//really a bar comment")), 
                                                 "bar",
                                                 list(new Arg(Util
                                                         .<ArgModifier> list(),
@@ -551,7 +559,7 @@ public class JavaCCParserImplTest {
         assertEquals(
                 new ParseResult(new Doc(
                         "ParserTest",
-                        Pkg._Pkg(list(_JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(_JavaBlockComment("/* here are some imports */")), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
+                        Pkg._Pkg(list(_JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(IMPORTS_COMMENT), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
                         list(new DataType(NO_COMMENTS, 
                                 "FooBar",
                                 Util.<String> list(),
@@ -657,7 +665,8 @@ public class JavaCCParserImplTest {
     @Test
     public void testCommentAllowedTokens() throws Exception {
         final String commentString = "/*block*//**javadoc*///eol\n";
-        final List<JavaComment> comments = list(_JavaBlockComment("/*block*/"), _JavaDocComment("/**", list(_JDWord("javadoc")), Util.<JDTagSection>list(), "*/"), _JavaEOLComment("//eol"));
+        @SuppressWarnings("unchecked")
+        final List<JavaComment> comments = list(_JavaBlockComment(list(list(_BlockWord("/*block*/")))), _JavaDocComment("/**", list(_JDWord("javadoc")), Util.<JDTagSection>list(), "*/"), _JavaEOLComment("//eol"));
         
         final ParserImpl p1 = parserImpl(commentString + "|");
         checkParseResult(comments, p1.bar(), p1);

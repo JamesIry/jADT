@@ -13,11 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.javadoc;
+package com.pogofish.jadt.comments;
 
 import java.io.Reader;
 
-import com.pogofish.jadt.ast.JavaDoc;
+import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.javadoc.javacc.JavaDocParserImpl;
 import com.pogofish.jadt.parser.javacc.JavaCCReader;
 
@@ -27,7 +27,7 @@ import com.pogofish.jadt.parser.javacc.JavaCCReader;
  * @author jiry
  */
 public class JavaDocParser {
-    public JavaDoc parse(Reader javaDoc) {
+    public JavaComment parse(Reader javaDoc) {
        try {
            JavaDocParserImpl impl = new JavaDocParserImpl(new JavaCCReader(javaDoc));
            return impl.javaDoc();

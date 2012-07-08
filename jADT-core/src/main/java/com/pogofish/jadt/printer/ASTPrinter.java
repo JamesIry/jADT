@@ -31,10 +31,9 @@ import com.pogofish.jadt.ast.JDToken.JDTag;
 import com.pogofish.jadt.ast.JDToken.JDWhiteSpace;
 import com.pogofish.jadt.ast.JDToken.JDWord;
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.ast.JavaComment.JavaBlockComment;
 import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
 import com.pogofish.jadt.ast.JavaComment.JavaEOLComment;
-import com.pogofish.jadt.ast.JavaComment.JavaMultiLineComment;
-import com.pogofish.jadt.ast.JavaDoc;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.PrimitiveType.BooleanType;
 import com.pogofish.jadt.ast.PrimitiveType.ByteType;
@@ -104,11 +103,23 @@ public class ASTPrinter  {
 
             @Override
             public String _case(JavaDocComment x) {
-                return print(x.comment);
+                final StringBuilder builder = new StringBuilder();
+                builder.append(x.start);
+                for (JDToken token : x.generalSection) {
+                    builder.append(print(token));
+                }
+                for (JDTagSection tagSection : x.tagSections) {
+                    for (JDToken token : tagSection.tokens) {
+                        builder.append(print(token));
+                    }
+                }
+                
+                builder.append(x.end);
+                return builder.toString();
             }
 
             @Override
-            public String _case(JavaMultiLineComment x) {
+            public String _case(JavaBlockComment x) {
                 return x.comment;
             }
 
@@ -307,25 +318,6 @@ public class ASTPrinter  {
     public static String print(ArgModifier modifier) {
         // so far there's only one modifer, but that will change;
         return "final";
-    }
-    
-    /**
-     * Print a parsed JavaDoc
-     */
-    public static String print(JavaDoc doc) {
-        final StringBuilder builder = new StringBuilder();
-        builder.append(doc.start);
-        for (JDToken token : doc.generalSection) {
-            builder.append(print(token));
-        }
-        for (JDTagSection tagSection : doc.tagSections) {
-            for (JDToken token : tagSection.tokens) {
-                builder.append(print(token));
-            }
-        }
-        
-        builder.append(doc.end);
-        return builder.toString();
     }
 
     /**

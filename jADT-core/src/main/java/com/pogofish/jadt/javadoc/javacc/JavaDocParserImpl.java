@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 import com.pogofish.jadt.ast.JDToken;
-import com.pogofish.jadt.javadoc.javacc.generated.BaseJavaDocParserImpl;
-import com.pogofish.jadt.javadoc.javacc.generated.Token;
+import com.pogofish.jadt.comments.javacc.generated.BaseJavaDocParserImpl;
+import com.pogofish.jadt.comments.javacc.generated.Token;
 
 public class JavaDocParserImpl extends BaseJavaDocParserImpl {
 

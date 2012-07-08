@@ -21,7 +21,7 @@ import static com.pogofish.jadt.ast.JDToken._JDEOL;
 import static com.pogofish.jadt.ast.JDToken._JDTag;
 import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
 import static com.pogofish.jadt.ast.JDToken._JDWord;
-import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.util.Util.list;
 import static junit.framework.Assert.assertEquals;
 
@@ -32,7 +32,8 @@ import org.junit.Test;
 
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
-import com.pogofish.jadt.ast.JavaDoc;
+import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.comments.JavaDocParser;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.util.Util;
 
@@ -49,25 +50,25 @@ public class JavaDocParserTest {
     
     @Test
     public void testGeneralSection() {
-        test("/** */", _JavaDoc("/**", list(ONEWS), NO_TAG_SECTIONS, "*/"));
-        test("/*** **/", _JavaDoc("/***", list(ONEWS), NO_TAG_SECTIONS, "**/"));
-        test("/** * */", _JavaDoc("/**", list(ONEWS, _JDAsterisk(), ONEWS), NO_TAG_SECTIONS, "*/"));
-        test("/** *\n */", _JavaDoc("/**", list(ONEWS, _JDAsterisk(), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
-        test("/**\n * hello\n * world\n */", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
-        test("/**\n * hello @foo */", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEWS, _JDTag("@foo"), ONEWS), NO_TAG_SECTIONS, "*/"));
-        test("/**\n * hello\n * * @world\n */", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+        test("/** */", _JavaDocComment("/**", list(ONEWS), NO_TAG_SECTIONS, "*/"));
+        test("/*** **/", _JavaDocComment("/***", list(ONEWS), NO_TAG_SECTIONS, "**/"));
+        test("/** * */", _JavaDocComment("/**", list(ONEWS, _JDAsterisk(), ONEWS), NO_TAG_SECTIONS, "*/"));
+        test("/** *\n */", _JavaDocComment("/**", list(ONEWS, _JDAsterisk(), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+        test("/**\n * hello\n * world\n */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
+        test("/**\n * hello @foo */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEWS, _JDTag("@foo"), ONEWS), NO_TAG_SECTIONS, "*/"));
+        test("/**\n * hello\n * * @world\n */", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), NO_TAG_SECTIONS, "*/"));
     }
     
     @Test
     public void testTagSections() {
-        test("/**@Foo*/", _JavaDoc("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo")))), "*/"));        
-        test("/**@Foo hello\n * world*/", _JavaDoc("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world")))), "*/"));        
-        test("/**@Foo hello\n * world\n@Bar whatever*/", _JavaDoc("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));        
+        test("/**@Foo*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo")))), "*/"));        
+        test("/**@Foo hello\n * world*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world")))), "*/"));        
+        test("/**@Foo hello\n * world\n@Bar whatever*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));        
     }
     
     @Test
     public void testFull() {
-        test("/**\n * hello\n * * @world\n @Foo hello\n * world\n@Bar whatever*/", _JavaDoc("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));
+        test("/**\n * hello\n * * @world\n @Foo hello\n * world\n@Bar whatever*/", _JavaDocComment("/**", list(ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDAsterisk(), ONEWS, _JDTag("@world"), ONEEOL, ONEWS), list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));
     }
     
     @Test
@@ -90,7 +91,7 @@ public class JavaDocParserTest {
         
     }
 
-    private void test(String string, JavaDoc expected) {
+    private void test(String string, JavaComment expected) {
         final JavaDocParser parser = new JavaDocParser();
         assertEquals(expected.toString(), parser.parse(new StringReader(string)).toString());
         

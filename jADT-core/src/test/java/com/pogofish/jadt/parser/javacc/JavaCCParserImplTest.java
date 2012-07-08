@@ -26,8 +26,7 @@ import static com.pogofish.jadt.ast.DataType._DataType;
 import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
-import static com.pogofish.jadt.ast.JavaComment._JavaMultiLineComment;
-import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
+import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -514,14 +513,14 @@ public class JavaCCParserImplTest {
         assertEquals(
                 new ParseResult(new Doc(
                         "ParserTest",
-                        Pkg._Pkg(list(_JavaMultiLineComment("/*a pre-start comment*/"), _JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(_JavaMultiLineComment("/* here are some imports */")), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
-                        list(new DataType(list(_JavaMultiLineComment("/*datatype comment*/")), 
+                        Pkg._Pkg(list(_JavaBlockComment("/*a pre-start comment*/"), _JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(_JavaBlockComment("/* here are some imports */")), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
+                        list(new DataType(list(_JavaBlockComment("/*datatype comment*/")), 
                                 "FooBar",
                                 Util.<String> list(),
                                 list(
-                                        new Constructor(list(_JavaMultiLineComment("/*equal comment*/"), _JavaMultiLineComment("/*constructor comment*/")), "foo", Util
+                                        new Constructor(list(_JavaBlockComment("/*equal comment*/"), _JavaBlockComment("/*constructor comment*/")), "foo", Util
                                                 .<Arg> list()),
-                                        new Constructor(list(_JavaMultiLineComment("/*bar comment*/"), _JavaMultiLineComment("/*really a bar comment*/")), 
+                                        new Constructor(list(_JavaBlockComment("/*bar comment*/"), _JavaBlockComment("/*really a bar comment*/")), 
                                                 "bar",
                                                 list(new Arg(Util
                                                         .<ArgModifier> list(),
@@ -552,7 +551,7 @@ public class JavaCCParserImplTest {
         assertEquals(
                 new ParseResult(new Doc(
                         "ParserTest",
-                        Pkg._Pkg(list(_JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(_JavaMultiLineComment("/* here are some imports */")), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
+                        Pkg._Pkg(list(_JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(_JavaBlockComment("/* here are some imports */")), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
                         list(new DataType(NO_COMMENTS, 
                                 "FooBar",
                                 Util.<String> list(),
@@ -658,7 +657,7 @@ public class JavaCCParserImplTest {
     @Test
     public void testCommentAllowedTokens() throws Exception {
         final String commentString = "/*block*//**javadoc*///eol\n";
-        final List<JavaComment> comments = list(_JavaMultiLineComment("/*block*/"), _JavaDocComment(_JavaDoc("/**", list(_JDWord("javadoc")), Util.<JDTagSection>list(), "*/")), _JavaEOLComment("//eol"));
+        final List<JavaComment> comments = list(_JavaBlockComment("/*block*/"), _JavaDocComment("/**", list(_JDWord("javadoc")), Util.<JDTagSection>list(), "*/"), _JavaEOLComment("//eol"));
         
         final ParserImpl p1 = parserImpl(commentString + "|");
         checkParseResult(comments, p1.bar(), p1);

@@ -11,6 +11,6 @@
       <Package name="com.pogofish.jadt.parser.javacc.generated"/>
    </Match>
    <Match>
-      <Package name="com.pogofish.jadt.javadoc.javacc.generated"/>
+      <Package name="com.pogofish.jadt.comments.javacc.generated"/>
    </Match>
 </FindBugsFilter>

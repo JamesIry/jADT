@@ -18,7 +18,6 @@ package com.pogofish.jadt.emitter;
 import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
 import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
-import static com.pogofish.jadt.ast.JavaDoc._JavaDoc;
 import static com.pogofish.jadt.ast.PrimitiveType._IntType;
 import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
@@ -71,7 +70,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testFactory() {
-        final Constructor constructor = new Constructor(Util.list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringSink sink = new StringSink("test");
         try {
@@ -89,7 +88,7 @@ public class ConstructorEmitterTest {
      */
     @Test
     public void testConstrucorDeclaration() {
-        final Constructor constructor = new Constructor(Util.list(_JavaDocComment(_JavaDoc("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"))), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
+        final Constructor constructor = new Constructor(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "um"), new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah")));
 
         final StringSink sink = new StringSink("test");
         try {

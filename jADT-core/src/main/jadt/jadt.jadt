@@ -52,15 +52,13 @@ PrimitiveType
   | IntType
   | LongType
   | ShortType 
+
+CommentedIdentifier = CommentedIdentifier(final List<JavaComment> comments, final String identifier)
   
 JavaComment
-  = JavaDocComment(final JavaDoc comment)
-  | JavaMultiLineComment(final String comment)
+  = JavaDocComment(final String start, final List<JDToken> generalSection, final List<JDTagSection> tagSections, final String end)
+  | JavaBlockComment(final String comment)
   | JavaEOLComment(final String comment)
-  
-CommentedIdentifier = CommentedIdentifier(final List<JavaComment> comments, final String identifier)
-
-JavaDoc = JavaDoc(String start, List<JDToken> generalSection, List<JDTagSection> tagSections, String end)
 
 JDTagSection = JDTagSection(String name, List<JDToken> tokens)
 

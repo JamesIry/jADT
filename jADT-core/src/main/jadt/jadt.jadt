@@ -64,3 +64,7 @@ JDTagSection = JDTagSection(String name, List<JDToken> tokens)
 
 JDToken = JDAsterisk | JDEOL(String content) | JDTag(String name) | JDWord(String word) | JDWhiteSpace(String ws)
 
+BlockComment = BlockComment(List<List<BlockToken>> lines)
+
+BlockToken = BlockWord(String word) | BlockWhiteSpace(String ws) | BlockEOL(String content)
+

@@ -18,6 +18,10 @@ package com.pogofish.jadt.printer;
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.BlockComment._BlockComment;
+import static com.pogofish.jadt.ast.BlockToken._BlockEOL;
+import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
+import static com.pogofish.jadt.ast.BlockToken._BlockWord;
 import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
 import static com.pogofish.jadt.ast.JDToken._JDAsterisk;
 import static com.pogofish.jadt.ast.JDToken._JDEOL;
@@ -42,6 +46,7 @@ import static com.pogofish.jadt.ast.Type._Ref;
 import static com.pogofish.jadt.printer.ASTPrinter.print;
 import static com.pogofish.jadt.printer.ASTPrinter.printComments;
 import static com.pogofish.jadt.util.Util.list;
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -51,6 +56,8 @@ import org.junit.Test;
 
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.BlockComment;
+import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
@@ -214,5 +221,22 @@ public class ASTPrinterTest {
     public void testComments() {
         final List<JavaComment> comments = Util.<JavaComment>list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"), _JavaBlockComment("/* hello */"), _JavaEOLComment("// hello"));
         assertEquals("/** hello */\n/* hello */\n// hello\n", printComments(comments));
+    }
+    
+    private static final BlockToken BLOCKEOL = _BlockEOL("\n");
+    private static final BlockToken BLOCKSTART = _BlockWord("/*");
+    private static final BlockToken BLOCKEND = _BlockWord("*/");
+    private static final BlockToken BLOCKONEWS = _BlockWhiteSpace(" ");
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testBlockComment() {
+        testBlockComment("/* */", _BlockComment(list(list(BLOCKSTART, BLOCKONEWS, BLOCKEND))));
+        testBlockComment("/* hello */", _BlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKONEWS, BLOCKEND))));
+        testBlockComment("/* hello\n * goodbye */", _BlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKEOL), list(BLOCKONEWS, _BlockWord("*"), BLOCKONEWS, _BlockWord("goodbye"), BLOCKONEWS, BLOCKEND))));
+    }
+
+    private void testBlockComment(String expected, BlockComment comment) {
+        assertEquals(expected, ASTPrinter.print(comment));       
     }
 }

@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.pogofish.jadt.javadoc;
+package com.pogofish.jadt.comments;
 
 import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
 import static com.pogofish.jadt.ast.JDToken._JDAsterisk;

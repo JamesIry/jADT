@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Constructor;
+import com.pogofish.jadt.comments.CommentProcessor;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.sink.Sink;
 
@@ -27,6 +28,7 @@ import com.pogofish.jadt.sink.Sink;
 public class StandardConstructorEmitter implements ConstructorEmitter {
 	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     private final ClassBodyEmitter classBodyEmitter;
+    private final CommentProcessor commentProcessor = new CommentProcessor();
     
     public StandardConstructorEmitter(ClassBodyEmitter classBodyEmitter) {
         super();
@@ -41,7 +43,7 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
     @Override
     public void constructorDeclaration(Sink sink, Constructor constructor, String dataTypeName, List<String> typeParameters) {
     	logger.finer("Generating constructor class for " + constructor.name + " in datatype " + dataTypeName);
-    	sink.write(ASTPrinter.printComments(constructor.comments));
+    	sink.write(ASTPrinter.printComments(commentProcessor.leftAlign(constructor.comments)));
     	sink.write("   public static final class " + constructor.name);
         classBodyEmitter.emitParameterizedTypeName(sink, typeParameters);
         sink.write(" extends " + dataTypeName);

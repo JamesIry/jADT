@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.comments.CommentProcessor;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.sink.Sink;
 
@@ -31,6 +32,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
 	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     private final ConstructorEmitter constructorEmitter;
     private final ClassBodyEmitter classBodyEmitter;
+    private final CommentProcessor commentProcessor = new CommentProcessor();    
     
     public StandardDataTypeEmitter(ClassBodyEmitter classBodyEmitter, ConstructorEmitter constructorEmitter) {
         super();
@@ -48,7 +50,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         sink.write(ASTPrinter.print(dataType));
         sink.write("\n*/\n");
 
-        sink.write(ASTPrinter.printComments(dataType.comments));
+        sink.write(ASTPrinter.printComments(commentProcessor.leftAlign(dataType.comments)));
         if (dataType.constructors.size() == 1) {
             emitSingleConstructor(sink, dataType, header);
             

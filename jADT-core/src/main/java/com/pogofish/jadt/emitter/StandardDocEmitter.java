@@ -21,6 +21,7 @@ import com.pogofish.jadt.Version;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
+import com.pogofish.jadt.comments.CommentProcessor;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.sink.Sink;
 import com.pogofish.jadt.sink.SinkFactory;
@@ -30,6 +31,7 @@ import com.pogofish.jadt.sink.SinkFactory;
 public class StandardDocEmitter implements DocEmitter {    
 	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     private final DataTypeEmitter dataTypeEmitter;
+    private final CommentProcessor commentProcessor = new CommentProcessor();
         
     public StandardDocEmitter(DataTypeEmitter dataTypeEmitter) {
         super();
@@ -43,11 +45,11 @@ public class StandardDocEmitter implements DocEmitter {
     public void emit(SinkFactory factory, Doc doc) {
     	logger.fine("Generating Java source based on " + doc.srcInfo);
         final StringBuilder header = new StringBuilder();
-        header.append(ASTPrinter.printComments(doc.pkg.comments));
+        header.append(ASTPrinter.printComments(commentProcessor.leftAlign(doc.pkg.comments)));
         header.append(doc.pkg.name.isEmpty() ? "" : ("package " + doc.pkg.name + ";\n\n"));
         if (!doc.imports.isEmpty()) {
             for (Imprt imp : doc.imports) {
-                header.append(ASTPrinter.printComments(imp.comments));
+                header.append(ASTPrinter.printComments(commentProcessor.leftAlign(imp.comments)));
                 header.append("import " + imp.name + ";\n");
             }
             header.append("\n");

@@ -27,5 +27,3 @@ SemanticError
   | DuplicateConstructor(final String dataTypeName, final String constructorName)
   | DuplicateArgName(final String dataTypeName, final String constructorName, final String argName)
   | DuplicateModifier(final String dataTypeName, final String constructorName, final String argName, final String modifier)
-  | TooManyDataTypeJavaDocComments(final String dataTypeName)
-  | TooManyConstructorJavaDocComments(final String dataTypeName, final String constructorName)

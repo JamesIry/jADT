@@ -15,9 +15,10 @@ limitations under the License.
 */
 package com.pogofish.jadt.comments;
 
-import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
+import static com.pogofish.jadt.ast.BlockToken._BlockEOL;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
-import static com.pogofish.jadt.ast.BlockToken.*;
+import static com.pogofish.jadt.ast.BlockToken._BlockWord;
+import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.util.Util.list;
 import static junit.framework.Assert.assertEquals;
 
@@ -25,8 +26,8 @@ import java.io.StringReader;
 
 import org.junit.Test;
 
-import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.BlockToken;
+import com.pogofish.jadt.ast.JavaComment;
 
 public class BlockCommentParserTest {
     private static final BlockToken EOL = _BlockEOL("\n");

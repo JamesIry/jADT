@@ -16,18 +16,19 @@ limitations under the License.
 package com.pogofish.jadt.parser.javacc;
 
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
-import static com.pogofish.jadt.ast.BlockToken.*;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
 import static com.pogofish.jadt.ast.Arg._Arg;
 import static com.pogofish.jadt.ast.ArgModifier._Final;
+import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
+import static com.pogofish.jadt.ast.BlockToken._BlockWord;
 import static com.pogofish.jadt.ast.CommentedIdentifier._CommentedIdentifier;
 import static com.pogofish.jadt.ast.Constructor._Constructor;
 import static com.pogofish.jadt.ast.DataType._DataType;
 import static com.pogofish.jadt.ast.JDToken._JDWord;
+import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
-import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;

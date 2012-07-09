@@ -33,7 +33,6 @@ import org.junit.Test;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JavaComment;
-import com.pogofish.jadt.comments.JavaDocParser;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.util.Util;
 

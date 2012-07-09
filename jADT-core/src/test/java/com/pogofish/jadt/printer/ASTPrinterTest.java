@@ -27,9 +27,9 @@ import static com.pogofish.jadt.ast.JDToken._JDEOL;
 import static com.pogofish.jadt.ast.JDToken._JDTag;
 import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
 import static com.pogofish.jadt.ast.JDToken._JDWord;
+import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
-import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -46,7 +46,6 @@ import static com.pogofish.jadt.printer.ASTPrinter.print;
 import static com.pogofish.jadt.printer.ASTPrinter.printComments;
 import static com.pogofish.jadt.util.Util.list;
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.List;

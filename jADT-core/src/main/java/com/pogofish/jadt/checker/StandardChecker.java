@@ -20,9 +20,6 @@ import static com.pogofish.jadt.errors.SemanticError._DuplicateArgName;
 import static com.pogofish.jadt.errors.SemanticError._DuplicateConstructor;
 import static com.pogofish.jadt.errors.SemanticError._DuplicateDataType;
 import static com.pogofish.jadt.errors.SemanticError._DuplicateModifier;
-import static com.pogofish.jadt.errors.SemanticError._TooManyConstructorJavaDocComments;
-import static com.pogofish.jadt.errors.SemanticError._TooManyDataTypeJavaDocComments;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,8 +31,6 @@ import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
-import com.pogofish.jadt.ast.JavaComment;
-import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
 import com.pogofish.jadt.errors.SemanticError;
 import com.pogofish.jadt.printer.ASTPrinter;
 
@@ -82,11 +77,6 @@ public class StandardChecker implements Checker {
     	logger.finer("Checking semantic constraints on datatype " + dataType.name);
         final List<SemanticError> errors = new ArrayList<SemanticError>();
         
-        final int javaDocComments = countJavaDocComments(dataType.comments);
-        if (javaDocComments > 1) {
-            errors.add(_TooManyDataTypeJavaDocComments(dataType.name));
-        }
-        
         final Set<String> constructorNames = new HashSet<String>();
         for(Constructor constructor : dataType.constructors) {
         	logger.finest("Checking semantic constraints on constructor " + constructor.name + " in datatype " + dataType.name);
@@ -104,26 +94,6 @@ public class StandardChecker implements Checker {
         }
         return errors;
     }
-    
-    private int countJavaDocComments(List<JavaComment> comments) {
-        int count = 0;
-        for (JavaComment comment : comments) {
-            count = count + comment.match(new JavaComment.MatchBlockWithDefault<Integer>() {
-
-                @Override
-                public Integer _case(JavaDocComment x) {
-                    return 1;
-                }
-
-                @Override
-                protected Integer _default(JavaComment x) {
-                    return 0;
-                }
-            });
-        }
-        
-        return count;
-    }
 
     /**
      * Check a constructor to make sure it does not duplicate any args and that no arg duplicates any modifiers
@@ -132,11 +102,6 @@ public class StandardChecker implements Checker {
     private List<SemanticError> check(DataType dataType, Constructor constructor) {
         logger.finer("Checking semantic constraints on data type " + dataType.name + ", constructor " + constructor.name);
         final List<SemanticError> errors = new ArrayList<SemanticError>();
-        
-        final int javaDocComments = countJavaDocComments(constructor.comments);
-        if (javaDocComments > 1) {
-            errors.add(_TooManyConstructorJavaDocComments(dataType.name, constructor.name));
-        }
         
         final Set<String> argNames = new HashSet<String>();
         for (Arg arg : constructor.args) {

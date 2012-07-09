@@ -39,7 +39,7 @@ import com.pogofish.jadt.ast.JavaComment.JavaEOLComment;
 import static com.pogofish.jadt.ast.BlockToken.*;
 
 /**
- * Methods for processing a parsed javadoc
+ * Methods for processing parsed comments
  * 
  * @author jiry
  */
@@ -98,7 +98,9 @@ public class CommentProcessor {
 
                         @Override
                         public JavaComment _case(JavaDocComment x) {
-                            return _JavaDocComment(x.start, leftAlignSection(x.generalSection, x.tagSections.isEmpty()), leftAlignSections(x.tagSections), x.end);
+                            final List<JDToken> leadingWhiteSpace = new ArrayList<JDToken>(1);
+                            final LeftAlignState state[] = new LeftAlignState[] { LeftAlignState.IN_LINE };
+                            return _JavaDocComment(x.start, leftAlignSection(x.generalSection, x.tagSections.isEmpty(), leadingWhiteSpace, state), leftAlignSections(x.tagSections, leadingWhiteSpace, state), x.end);
                         }
 
 
@@ -118,22 +120,20 @@ public class CommentProcessor {
     
 
     private List<JDTagSection> leftAlignSections(
-            List<JDTagSection> tagSections) {
+            List<JDTagSection> tagSections, List<JDToken> leadingWhiteSpace, LeftAlignState[] state) {
         final int size = tagSections.size();
         final List<JDTagSection> newSections = new ArrayList<JDTagSection>(size);
         int count = 0;
         for (JDTagSection section : tagSections) {
             count ++;
-            newSections.add(_JDTagSection(section.name, leftAlignSection(section.tokens, count == size)));
+            newSections.add(_JDTagSection(section.name, leftAlignSection(section.tokens, count == size, leadingWhiteSpace, state)));
         }
         return newSections;
     }    
 
-    private List<JDToken> leftAlignSection(List<JDToken> originalSection, boolean lastSection) {
+    private List<JDToken> leftAlignSection(List<JDToken> originalSection, boolean lastSection, final List<JDToken> leadingWhiteSpace, final LeftAlignState[] state) {
         final List<JDToken> result = new ArrayList<JDToken>(
                 originalSection.size() + 1);
-        final List<JDToken> leadingWhiteSpace = new ArrayList<JDToken>(1);
-        final LeftAlignState state[] = new LeftAlignState[] { LeftAlignState.IN_LINE };
 
         for (JDToken token : originalSection) {
             token._switch(new JDToken.SwitchBlockWithDefault() {
@@ -196,14 +196,8 @@ public class CommentProcessor {
             });
         }
         
-        if (lastSection) {
-            switch (state[0]) {
-            case START_LINE:
-                result.add(_JDWhiteSpace(" "));
-                break;
-            case IN_LINE:
-                break;
-            }            
+        if (lastSection && state[0] == LeftAlignState.START_LINE) {
+           result.add(_JDWhiteSpace(" "));         
         }
 
         return result;

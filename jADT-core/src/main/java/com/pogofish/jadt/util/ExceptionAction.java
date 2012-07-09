@@ -15,35 +15,18 @@ limitations under the License.
 */
 package com.pogofish.jadt.util;
 
-import java.io.IOException;
-
 /**
  * The sole reason this exists is because normal try/catch(IOException) blocks can be hard to cover
- * completely using unit testing.  By implementing doAction you can hide the try catch in this 
- * base class where it's easily tested
+ * completely using unit testing.  Implement doAction and pass to Util.execute
  *
  * @author jiry
  */
-public abstract class IOExceptionAction<A> {
-    /**
-     * Call this method, it will delegate to your doAction and wrap up any exceptions
-     * 
-     * @return A
-     * @throws RuntimeException containing an IOException if that occurs duing doAction
-     */
-    public final A execute() {
-        try {
-            return doAction();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+public interface ExceptionAction<A> {
     /**
      * Implement this puppy
      * 
-     * @return result
-     * @throws IOException on failure
+     * @return result of type A
+     * @throws Throwable on failure
      */
-    public abstract A doAction() throws IOException;
+    public abstract A doAction() throws Throwable;
 }

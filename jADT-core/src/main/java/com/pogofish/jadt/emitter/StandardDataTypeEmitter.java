@@ -50,7 +50,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         sink.write(ASTPrinter.print(dataType));
         sink.write("\n*/\n");
 
-        sink.write(ASTPrinter.printComments(commentProcessor.leftAlign(dataType.comments)));
+        sink.write(ASTPrinter.printComments("", commentProcessor.leftAlign(dataType.comments)));
         if (dataType.constructors.size() == 1) {
             emitSingleConstructor(sink, dataType, header);
             

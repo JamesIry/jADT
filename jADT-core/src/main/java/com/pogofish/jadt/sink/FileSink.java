@@ -14,7 +14,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import com.pogofish.jadt.util.IOExceptionAction;
+import com.pogofish.jadt.util.ExceptionAction;
+import com.pogofish.jadt.util.Util;
 
 
 /**
@@ -40,7 +41,7 @@ public class FileSink implements Sink {
         super();
         outputFile = new File(outputFileName);
 
-        writer = new IOExceptionAction<Writer>() {
+        writer = Util.execute(new ExceptionAction<Writer>() {
             @Override
             public Writer doAction() throws IOException {
                 final File parentDir = outputFile.getParentFile();
@@ -50,28 +51,28 @@ public class FileSink implements Sink {
 
                 return new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8");
             }
-        }.execute();
+        });
     }
 
     @Override
     public void write(final String data) {
-        new IOExceptionAction<Writer>() {
+        Util.execute(new ExceptionAction<Writer>() {
 
             @Override
             public Writer doAction() throws IOException {
                 writer.write(data);
                 return null;
-            }}.execute();
+            }});
     }
 
     @Override
     public void close() {
-        new IOExceptionAction<Writer>() {
+        Util.execute(new ExceptionAction<Writer>() {
 
             @Override
             public Writer doAction() throws IOException {
                 writer.close();
                 return null;
-            }}.execute();
+            }});
     }
 }

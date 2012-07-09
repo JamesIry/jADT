@@ -22,7 +22,8 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.Properties;
 
-import com.pogofish.jadt.util.IOExceptionAction;
+import com.pogofish.jadt.util.ExceptionAction;
+import com.pogofish.jadt.util.Util;
 
 
 /**
@@ -38,7 +39,7 @@ public class Version {
 	String MODULE_VERSION = "module.version";
 
 	public String getVersion() {
-		return new IOExceptionAction<String>() {
+		return Util.execute(new ExceptionAction<String>() {
 
 			@Override
 			public String doAction() throws IOException {
@@ -58,6 +59,6 @@ public class Version {
 				}
 
 			}
-		}.execute();
+		});
 	}
 }

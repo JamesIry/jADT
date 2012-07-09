@@ -18,21 +18,14 @@ public class JavaDocParserImpl extends BaseJavaDocParserImpl {
     }
     
     /**
-     * look ahead n tokens. 0 is the current token, 1 is the next token, 2 the
-     * one after that, etc
-     * 
-     * @param n
-     * @return
+     * look ahead 1 token
      */
-    private Token lookahead(int n) {
+    public Token lookahead() {
         Token current = token;
-        for (int i = 0; i < n; i++) {
-            if (current.next == null) {
-                current.next = token_source.getNextToken();
-            }
-            current = current.next;
+        if (current.next == null) {
+            current.next = token_source.getNextToken();
         }
-        return current;
+        return current.next;
     }
     
     /**
@@ -40,7 +33,7 @@ public class JavaDocParserImpl extends BaseJavaDocParserImpl {
      */
     @Override
     protected List<JDToken> nextTokenWhitespace() {
-        final Token next = lookahead(1);
+        final Token next = lookahead();
         return whiteSpace(next);
     }
     

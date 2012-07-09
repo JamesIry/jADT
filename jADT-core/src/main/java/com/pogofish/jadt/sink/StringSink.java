@@ -18,7 +18,8 @@ package com.pogofish.jadt.sink;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import com.pogofish.jadt.util.IOExceptionAction;
+import com.pogofish.jadt.util.ExceptionAction;
+import com.pogofish.jadt.util.Util;
 
 
 /**
@@ -49,13 +50,13 @@ public class StringSink implements Sink {
     
     @Override
     public void close() {
-        new IOExceptionAction<Void>() {
+        Util.execute(new ExceptionAction<Void>() {
 
             @Override
             public Void doAction() throws IOException {
                 writer.close();
                 return null;
-            }}.execute();
+            }});
         closed = true;
     }
     

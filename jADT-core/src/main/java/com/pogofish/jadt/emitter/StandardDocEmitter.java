@@ -45,11 +45,11 @@ public class StandardDocEmitter implements DocEmitter {
     public void emit(SinkFactory factory, Doc doc) {
     	logger.fine("Generating Java source based on " + doc.srcInfo);
         final StringBuilder header = new StringBuilder();
-        header.append(ASTPrinter.printComments(commentProcessor.leftAlign(doc.pkg.comments)));
+        header.append(ASTPrinter.printComments("", commentProcessor.leftAlign(doc.pkg.comments)));
         header.append(doc.pkg.name.isEmpty() ? "" : ("package " + doc.pkg.name + ";\n\n"));
         if (!doc.imports.isEmpty()) {
             for (Imprt imp : doc.imports) {
-                header.append(ASTPrinter.printComments(commentProcessor.leftAlign(imp.comments)));
+                header.append(ASTPrinter.printComments("", commentProcessor.leftAlign(imp.comments)));
                 header.append("import " + imp.name + ";\n");
             }
             header.append("\n");

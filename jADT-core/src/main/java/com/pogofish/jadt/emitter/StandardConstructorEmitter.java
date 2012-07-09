@@ -43,7 +43,7 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
     @Override
     public void constructorDeclaration(Sink sink, Constructor constructor, String dataTypeName, List<String> typeParameters) {
     	logger.finer("Generating constructor class for " + constructor.name + " in datatype " + dataTypeName);
-    	sink.write(ASTPrinter.printComments(commentProcessor.leftAlign(constructor.comments)));
+    	sink.write(ASTPrinter.printComments("   ", commentProcessor.leftAlign(constructor.comments)));
     	sink.write("   public static final class " + constructor.name);
         classBodyEmitter.emitParameterizedTypeName(sink, typeParameters);
         sink.write(" extends " + dataTypeName);

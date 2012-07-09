@@ -47,4 +47,23 @@ public class Util {
         }
         return set;
     }
+    
+    /**
+     * delegate to your to an ExceptionAction and wraps checked exceptions in RuntimExceptions, leaving unchecked exceptions alone.
+     * 
+     * @return A
+     * @throws Either Error or RuntimeException.  Error on Errors in doAction and RuntimeException if doError throws a RuntimeException or an Exception.  In the latter case
+     * the RuntimeException will contain the original Exception as its cause
+     */
+    public static <A> A execute(ExceptionAction<A> action) {
+        try {
+            return action.doAction();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Error e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

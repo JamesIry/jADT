@@ -12,7 +12,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 package com.pogofish.jadt.comments;
 
 import java.io.Reader;
@@ -20,23 +20,24 @@ import java.io.Reader;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.javadoc.javacc.JavaDocParserImpl;
 import com.pogofish.jadt.parser.javacc.JavaCCReader;
+import com.pogofish.jadt.util.ExceptionAction;
+import com.pogofish.jadt.util.Util;
 
 /**
- * Parser for JavaDoc. 
+ * Parser for JavaDoc.
  * 
  * @author jiry
  */
 public class JavaDocParser {
-    public JavaComment parse(Reader javaDoc) {
-       try {
-           JavaDocParserImpl impl = new JavaDocParserImpl(new JavaCCReader(javaDoc));
-           return impl.javaDoc();
-       } catch (RuntimeException e) {
-           throw e;
-       } catch (Error e) {
-           throw e;
-       } catch (Exception e) {
-           throw new RuntimeException(e);
-       }
+    public JavaComment parse(final Reader javaDoc) {
+        return Util.execute(new ExceptionAction<JavaComment>() {
+
+            @Override
+            public JavaComment doAction() throws Throwable {
+                JavaDocParserImpl impl = new JavaDocParserImpl(
+                        new JavaCCReader(javaDoc));
+                return impl.javaDoc();
+            }
+        });
     }
 }

@@ -214,7 +214,7 @@ public class ASTPrinterTest {
     }
     
     private void testComment(String expected, JavaComment comment) {
-        assertEquals(expected, ASTPrinter.print(comment));
+        assertEquals(expected, ASTPrinter.print("", comment));
     }
 
     /**
@@ -224,7 +224,7 @@ public class ASTPrinterTest {
     public void testComments() {
         @SuppressWarnings("unchecked")
         final List<JavaComment> comments = Util.<JavaComment>list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/"), _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKONEWS, BLOCKEND))), _JavaEOLComment("// hello"));
-        assertEquals("/** hello */\n/* hello */\n// hello\n", printComments(comments));
+        assertEquals("/** hello */\n/* hello */\n// hello\n", printComments("", comments));
     }
 
     @SuppressWarnings("unchecked")

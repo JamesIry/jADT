@@ -33,6 +33,8 @@ import org.junit.Test;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.comments.javacc.generated.Token;
+import com.pogofish.jadt.javadoc.javacc.JavaDocParserImpl;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.util.Util;
 
@@ -46,6 +48,21 @@ public class JavaDocParserTest {
     private static final JDToken ONEWS = _JDWhiteSpace(" ");
     private static final List<JDToken> NO_TOKENS = Util.<JDToken>list();
     private static final List<JDTagSection> NO_TAG_SECTIONS = Util.<JDTagSection>list();
+    
+    @Test
+    public void testLookahead() {
+        // to get coverage of the null case in lookahead
+        final JavaDocParserImpl impl = new JavaDocParserImpl(new StringReader("foo1 foo2"));
+        impl.token = new Token(0, "bar1");
+        final Token token1 = impl.lookahead();
+        assertEquals("foo1", token1.image);
+        
+        // to get coverage of the non-null case in lookahead
+        impl.token = new Token(0, "bar");
+        impl.token.next = new Token(0, "bar2");
+        final Token token2 = impl.lookahead();
+        assertEquals("bar2", token2.image);      
+    }
     
     @Test
     public void testGeneralSection() {
@@ -63,6 +80,7 @@ public class JavaDocParserTest {
         test("/**@Foo*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo")))), "*/"));        
         test("/**@Foo hello\n * world*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world")))), "*/"));        
         test("/**@Foo hello\n * world\n@Bar whatever*/", _JavaDocComment("/**", NO_TOKENS, list(_JDTagSection("@Foo", list(_JDTag("@Foo"), ONEWS, _JDWord("hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS, _JDWord("world"), ONEEOL)), _JDTagSection("@Bar", list(_JDTag("@Bar"), ONEWS, _JDWord("whatever")))), "*/"));        
+        test("/** @hello\n * */\n", _JavaDocComment("/**", list(ONEWS), list(_JDTagSection("@hello", list(_JDTag("@hello"), ONEEOL, ONEWS, _JDAsterisk(), ONEWS))), "*/"));
     }
     
     @Test
@@ -86,7 +104,7 @@ public class JavaDocParserTest {
 
     private void testRoundTrip(String string) {
         final JavaDocParser parser = new JavaDocParser();
-        assertEquals(string, ASTPrinter.print(parser.parse(new StringReader(string))));
+        assertEquals(string, ASTPrinter.print("", parser.parse(new StringReader(string))));
         
     }
 

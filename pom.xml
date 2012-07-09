@@ -135,6 +135,7 @@
               <exclude>**/com/pogofish/jadt/ast/*.class</exclude>
               <exclude>**/com/pogofish/jadt/errors/*.class</exclude>
               <exclude>**/com/pogofish/jadt/parser/javacc/generated/*.class</exclude>
+              <exclude>**/com/pogofish/jadt/comments/javacc/generated/*.class</exclude>
               <exclude>**/com/pogofish/jadt/samples/ast/data/*.class</exclude>
               <exclude>**/com/pogofish/jadt/samples/whathow/data/*.class</exclude>
             </excludes>            

@@ -90,10 +90,10 @@ public class ASTPrinter  {
     /**
      * Prints a list of comments pretty much unmolested except to add \n s
      */
-    public static String printComments(List<JavaComment> comments) {
+    public static String printComments(String indent, List<JavaComment> comments) {
         final StringBuilder builder = new StringBuilder();
         for (JavaComment comment : comments) {
-            builder.append(print(comment));
+            builder.append(print(indent, comment));
             builder.append("\n");
         }
         return builder.toString();
@@ -102,19 +102,19 @@ public class ASTPrinter  {
     /**
      * Prints a single comment pretty much unmolested
      */
-    public static String print(JavaComment comment) {
+    public static String print(final String indent, JavaComment comment) {
         return comment.match(new JavaComment.MatchBlock<String>() {
 
             @Override
             public String _case(JavaDocComment x) {
-                final StringBuilder builder = new StringBuilder();
+                final StringBuilder builder = new StringBuilder(indent);
                 builder.append(x.start);
                 for (JDToken token : x.generalSection) {
-                    builder.append(print(token));
+                    builder.append(print(indent, token));
                 }
                 for (JDTagSection tagSection : x.tagSections) {
                     for (JDToken token : tagSection.tokens) {
-                        builder.append(print(token));
+                        builder.append(print(indent, token));
                     }
                 }
                 
@@ -124,7 +124,7 @@ public class ASTPrinter  {
 
             @Override
             public String _case(JavaBlockComment comment) {
-                final StringBuilder builder = new StringBuilder();
+                final StringBuilder builder = new StringBuilder(indent);
                 for (List<BlockToken> line : comment.lines) {
                     for (BlockToken token : line) {
                         builder.append(token.match(new BlockToken.MatchBlock<String>() {
@@ -141,7 +141,7 @@ public class ASTPrinter  {
 
                             @Override
                             public String _case(BlockEOL x) {
-                                return x.content;
+                                return x.content + indent;
                             }
                         }));
                     }
@@ -349,7 +349,7 @@ public class ASTPrinter  {
     /**
      * Print a single JavaDoc token
      */
-    private static String print(JDToken token) {
+    private static String print(final String indent, JDToken token) {
         return token.match(new JDToken.MatchBlock<String>() {
 
             @Override
@@ -359,7 +359,7 @@ public class ASTPrinter  {
 
             @Override
             public String _case(JDEOL x) {
-                return x.content;
+                return x.content + indent;
             }
 
             @Override

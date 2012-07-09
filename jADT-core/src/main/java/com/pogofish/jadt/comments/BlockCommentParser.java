@@ -12,7 +12,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 package com.pogofish.jadt.comments;
 
 import java.io.Reader;
@@ -20,23 +20,25 @@ import java.io.Reader;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.comments.javacc.generated.BlockCommentParserImpl;
 import com.pogofish.jadt.parser.javacc.JavaCCReader;
+import com.pogofish.jadt.util.ExceptionAction;
+import com.pogofish.jadt.util.Util;
 
 /**
- * Parser for BlockComment. 
+ * Parser for BlockComment.
  * 
  * @author jiry
  */
 public class BlockCommentParser {
-    public JavaComment parse(Reader BlockComment) {
-       try {
-           BlockCommentParserImpl impl = new BlockCommentParserImpl(new JavaCCReader(BlockComment));
-           return impl.blockComment();
-       } catch (RuntimeException e) {
-           throw e;
-       } catch (Error e) {
-           throw e;
-       } catch (Exception e) {
-           throw new RuntimeException(e);
-       }
+    public JavaComment parse(final Reader BlockComment) {
+        return Util.execute(new ExceptionAction<JavaComment>() {
+
+            @Override
+            public JavaComment doAction() throws Throwable {
+
+                BlockCommentParserImpl impl = new BlockCommentParserImpl(
+                        new JavaCCReader(BlockComment));
+                return impl.blockComment();
+            }
+        });
     }
 }

@@ -34,7 +34,7 @@ public class DummyParser implements Parser {
 
     /**
      * 
-     * @param testDoc The document that will be returned by this parser
+     * @param testResult The result that will be returned by this parser
      * @param testSrcInfo The source info that this parser expects
      * @param testString The string that this parser expects
      */

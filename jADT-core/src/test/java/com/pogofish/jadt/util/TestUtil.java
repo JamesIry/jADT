@@ -25,7 +25,6 @@ public class TestUtil {
     /**
      * Create a temporary directory and return it - Java 6 JDK doesn't have this functionality
      * 
-     * @return
      * @throws IOException
      */
     public static File createTmpDir() throws IOException {

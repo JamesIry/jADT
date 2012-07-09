@@ -43,7 +43,7 @@ import com.pogofish.jadt.util.Util;
  */
 public class ConstructorEmitterTest {
     private static final String CONSTRUCTOR_CLASS = 
-    "/** hello */\n" +
+    "   /** hello */\n" +
     "   public static final class Foo/* type arguments */ extends NonPrimitive/* type arguments */ {\n" +
     "/* constructor method Foo*/\n" +
     "\n" +

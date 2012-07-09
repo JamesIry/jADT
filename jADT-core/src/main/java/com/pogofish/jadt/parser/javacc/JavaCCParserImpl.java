@@ -230,6 +230,7 @@ public class JavaCCParserImpl extends BaseJavaCCParserImpl implements ParserImpl
                 break;
             default:
                 // anything else is not a comment and not our problem.
+                break;
             }
             comment = comment.specialToken;
         }

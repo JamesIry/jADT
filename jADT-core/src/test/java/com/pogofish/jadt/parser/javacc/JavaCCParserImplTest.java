@@ -698,10 +698,12 @@ public class JavaCCParserImplTest {
     public void testNonJavaCommentSpecialToken() {
         final JavaCCParserImpl p1 = parserImpl("whatever");
         final Token token = new Token(BaseJavaCCParserImplConstants.IDENTIFIER, "hello");
-        final Token specialtoken = new Token(BaseJavaCCParserImplConstants.WS, "   ");
-        token.specialToken = specialtoken;
+        final Token specialtoken1 = new Token(BaseJavaCCParserImplConstants.WS, "   ");
+        token.specialToken = specialtoken1;
+        final Token specialtoken2 = new Token(BaseJavaCCParserImplConstants.JAVA_EOL_COMMENT, "// hello");
+        token.specialToken.specialToken = specialtoken2;
         final List<JavaComment> comments = p1.tokenComments(token);
-        assertEquals(NO_COMMENTS, comments);
+        assertEquals(list(_JavaEOLComment("// hello")), comments);
     }
     
     

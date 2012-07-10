@@ -1,28 +1,34 @@
+/*
+Copyright 2012 James Iry
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ */
+/*
+ * This jADT file is an example AST for a toy language.
+ * It is marked up with START SNIPPET and END SNIPPET boundaries 
+ * to support /jADT/src/site/apt/*.apt
+ */
 package com.pogofish.jadt.samples.whathow.data;
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version 0.2.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
+This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version 0.3.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
-package com.pogofish.jadt.samples.whathow.data
-
-IntBinaryTree =
-    Node(int value, IntBinaryTree left, IntBinaryTree right)
-  | EmptyTree
-OptionalInt =
-    Some(int value)
-  | None
-BinaryTree =
-    Node(T value, BinaryTree<T> left, BinaryTree<T> right)
-  | EmptyTree
-Manager =
-    Manager(String name)
 TPSReportStatus =
     Pending
   | Approved(final Manager approver)
   | Denied(final Manager rejector)
-
 */
 public abstract class TPSReportStatus {
 

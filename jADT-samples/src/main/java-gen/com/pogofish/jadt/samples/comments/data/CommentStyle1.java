@@ -14,65 +14,93 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 /*
- * This jADT file is an example AST for a toy language.
- * It is marked up with START SNIPPET and END SNIPPET boundaries 
- * to support /jADT/src/site/apt/*.apt
+ * Here's one sample comment.  It's a good spot for copyright and license info
  */
-package com.pogofish.jadt.samples.whathow.data;
+package com.pogofish.jadt.samples.comments.data;
 
 /*
-This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/WhatHowSamples.jadt using jADT version 0.3.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
+ * Imports can also have comments.  Mostly useful for the case when there is
+ * no package declaration.
+ */
+import java.util.*;
+
+/*
+This file was generated based on /Users/jiry/workspace/JADT/jADT-samples/src/main/jadt/CommentSamples.jadt using jADT version 0.3.0-SNAPSHOT http://jamesiry.github.com/jADT/ . Please do not modify directly.
 
 The source was parsed as: 
 
-OptionalInt =
-    Some(int value)
-  | None
+CommentStyle1 =
+    Foo(int arg1, int arg2)
+  | Bar
 */
-public abstract class OptionalInt {
+/**
+ * Here's one style of using JavaDoc
+ */
+public abstract class CommentStyle1 {
 
-   private OptionalInt() {
+   private CommentStyle1() {
    }
 
-   public static final  OptionalInt _Some(int value) { return new Some(value); }
-   private static final OptionalInt _None = new None();
-   public static final  OptionalInt _None() { return _None; }
+   /**
+    * A constructor case
+    *
+    * @param arg1 some argument
+    * @param arg2 some other argument
+    */
+   public static final  CommentStyle1 _Foo(int arg1, int arg2) { return new Foo(arg1, arg2); }
+   private static final CommentStyle1 _Bar = new Bar();
+   /**
+    * Another constructor case
+    */
+   public static final  CommentStyle1 _Bar() { return _Bar; }
 
    public static interface MatchBlock<ResultType> {
-      ResultType _case(Some x);
-      ResultType _case(None x);
+      ResultType _case(Foo x);
+      ResultType _case(Bar x);
    }
 
    public static abstract class MatchBlockWithDefault<ResultType> implements MatchBlock<ResultType> {
       @Override
-      public ResultType _case(Some x) { return _default(x); }
+      public ResultType _case(Foo x) { return _default(x); }
 
       @Override
-      public ResultType _case(None x) { return _default(x); }
+      public ResultType _case(Bar x) { return _default(x); }
 
-      protected abstract ResultType _default(OptionalInt x);
+      protected abstract ResultType _default(CommentStyle1 x);
    }
 
    public static interface SwitchBlock {
-      void _case(Some x);
-      void _case(None x);
+      void _case(Foo x);
+      void _case(Bar x);
    }
 
    public static abstract class SwitchBlockWithDefault implements SwitchBlock {
       @Override
-      public void _case(Some x) { _default(x); }
+      public void _case(Foo x) { _default(x); }
 
       @Override
-      public void _case(None x) { _default(x); }
+      public void _case(Bar x) { _default(x); }
 
-      protected abstract void _default(OptionalInt x);
+      protected abstract void _default(CommentStyle1 x);
    }
 
-   public static final class Some extends OptionalInt {
-      public int value;
+   /**
+    * A constructor case
+    *
+    * */
+   public static final class Foo extends CommentStyle1 {
+      public int arg1;
+      public int arg2;
 
-      public Some(int value) {
-         this.value = value;
+      /**
+       * A constructor case
+       *
+       * @param arg1 some argument
+       * @param arg2 some other argument
+       */
+      public Foo(int arg1, int arg2) {
+         this.arg1 = arg1;
+         this.arg2 = arg2;
       }
 
       @Override
@@ -85,7 +113,8 @@ public abstract class OptionalInt {
       public int hashCode() {
           final int prime = 31;
           int result = 1;
-          result = prime * result + value;
+          result = prime * result + arg1;
+          result = prime * result + arg2;
           return result;
       }
 
@@ -94,21 +123,28 @@ public abstract class OptionalInt {
          if (this == obj) return true;
          if (obj == null) return false;
          if (getClass() != obj.getClass()) return false;
-         Some other = (Some)obj;
-         if (value != other.value) return false;
+         Foo other = (Foo)obj;
+         if (arg1 != other.arg1) return false;
+         if (arg2 != other.arg2) return false;
          return true;
       }
 
       @Override
       public String toString() {
-         return "Some(value = " + value + ")";
+         return "Foo(arg1 = " + arg1 + ", arg2 = " + arg2 + ")";
       }
 
    }
 
-   public static final class None extends OptionalInt {
+   /**
+    * Another constructor case
+    */
+   public static final class Bar extends CommentStyle1 {
 
-      public None() {
+      /**
+       * Another constructor case
+       */
+      public Bar() {
       }
 
       @Override
@@ -132,7 +168,7 @@ public abstract class OptionalInt {
 
       @Override
       public String toString() {
-         return "None";
+         return "Bar";
       }
 
    }

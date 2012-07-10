@@ -19,7 +19,7 @@ limitations under the License.
  * It is marked up with START SNIPPET and END SNIPPET boundaries 
  * to support /jADT/src/site/apt/index.apt
  */
-// START SNIPPET: everything
+# START SNIPPET: everything
     package com.pogofish.jadt.samples.ast.data
     
     import java.util.List
@@ -42,4 +42,4 @@ limitations under the License.
       | Variable(final String name)
       | IntLiteral(final int value)
       | LongLiteral(final long value)
-// END SNIPPET: everything
+# END SNIPPET: everything

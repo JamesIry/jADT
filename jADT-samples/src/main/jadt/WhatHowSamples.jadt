@@ -19,31 +19,31 @@ limitations under the License.
  * It is marked up with START SNIPPET and END SNIPPET boundaries 
  * to support /jADT/src/site/apt/*.apt
  */
-// START SNIPPET: IntBinaryTree
+# START SNIPPET: IntBinaryTree
     package com.pogofish.jadt.samples.whathow.data
 
     IntBinaryTree = 
         Node(int value, IntBinaryTree left, IntBinaryTree right)
       | EmptyTree
-// END SNIPPET: IntBinaryTree
+# END SNIPPET: IntBinaryTree
 
 
-// START SNIPPET: OptionInt
+# START SNIPPET: OptionInt
     OptionalInt = Some(int value) | None
-// END SNIPPET: OptionInt
+# END SNIPPET: OptionInt
 
-// START SNIPPET: GenericBinaryTree
+# START SNIPPET: GenericBinaryTree
     BinaryTree<T> = 
         Node(T value, BinaryTree<T> left, BinaryTree<T> right) 
       | EmptyTree
-// END SNIPPET: GenericBinaryTree
+# END SNIPPET: GenericBinaryTree
 
     Manager = Manager(String name)
 
-// START SNIPPET: TPSReportStatus
+# START SNIPPET: TPSReportStatus
     TPSReportStatus=
         Pending 
       | Approved(final Manager approver)
       | Denied(final Manager rejector)
-// END SNIPPET: TPSReportStatus
+# END SNIPPET: TPSReportStatus
   

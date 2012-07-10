@@ -15,7 +15,14 @@ limitations under the License.
 */
 package com.pogofish.jadt.comments;
 
+import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
+import static com.pogofish.jadt.ast.BlockToken._BlockWord;
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
+import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
 import static com.pogofish.jadt.util.Util.list;
+import static com.pogofish.jadt.util.Util.set;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
@@ -31,17 +38,8 @@ import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.util.Util;
 
-import static com.pogofish.jadt.ast.JDToken._JDEOL;
-import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
-import static com.pogofish.jadt.ast.JavaComment.*;
-import static com.pogofish.jadt.ast.BlockToken.*;
-
-import static com.pogofish.jadt.util.Util.*;
-
 public class CommentProcessorTest {
-    private static final JDToken ONEEOL = _JDEOL("\n");
     private static final JDToken ONEWS = _JDWhiteSpace(" ");
-    private static final List<JDToken> NO_TOKENS = Util.<JDToken>list();
     private static final List<JDTagSection> NO_TAG_SECTIONS = Util.<JDTagSection>list();
     
     @Test

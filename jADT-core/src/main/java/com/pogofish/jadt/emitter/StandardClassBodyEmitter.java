@@ -57,8 +57,8 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
             	logger.finest("Generating no args, type arguments factory for " + constructor.name);
         		sink.write("   @SuppressWarnings(\"rawtypes\")\n");
         	}
-            sink.write(ASTPrinter.printComments("   ", commentProcessor.leftAlign(commentProcessor.javaDocOnly(constructor.comments))));
             sink.write("   private static final " + dataTypeName + " _" + factoryName + " = new " + constructor.name + "();\n");
+            sink.write(ASTPrinter.printComments("   ", commentProcessor.leftAlign(commentProcessor.javaDocOnly(constructor.comments))));
         	if (!typeParametrs.isEmpty()) {
         		sink.write("   @SuppressWarnings(\"unchecked\")\n");
         	}
@@ -110,8 +110,9 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
             final String finalName = arg.modifiers.contains(ArgModifier._Final()) ? "final " : "";
             sink.write("      public " + finalName + ASTPrinter.print(arg.type) + " " + arg.name + ";\n");
         }
+    	sink.write("\n");
         sink.write(ASTPrinter.printComments("      ", commentProcessor.leftAlign(commentProcessor.stripTags(CONSTRUCTOR_METHOD_STRIP, commentProcessor.javaDocOnly(constructor.comments)))));    	
-        sink.write("\n      public " + constructor.name + "("); 
+        sink.write("      public " + constructor.name + "("); 
         constructorArgs(sink, constructor, true);        
         sink.write(") {");
         for (Arg arg : constructor.args) {

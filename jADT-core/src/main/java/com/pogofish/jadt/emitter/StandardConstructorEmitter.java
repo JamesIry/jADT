@@ -15,8 +15,11 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
+import static com.pogofish.jadt.util.Util.set;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Constructor;
@@ -29,6 +32,7 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
 	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     private final ClassBodyEmitter classBodyEmitter;
     private final CommentProcessor commentProcessor = new CommentProcessor();
+    private static final Set<String> CONSTRUCTOR_CLASS_STRIP = set("@return", "@param");
     
     public StandardConstructorEmitter(ClassBodyEmitter classBodyEmitter) {
         super();
@@ -43,7 +47,7 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
     @Override
     public void constructorDeclaration(Sink sink, Constructor constructor, String dataTypeName, List<String> typeParameters) {
     	logger.finer("Generating constructor class for " + constructor.name + " in datatype " + dataTypeName);
-    	sink.write(ASTPrinter.printComments("   ", commentProcessor.leftAlign(constructor.comments)));
+    	sink.write(ASTPrinter.printComments("   ", commentProcessor.leftAlign(commentProcessor.stripTags(CONSTRUCTOR_CLASS_STRIP, constructor.comments))));
     	sink.write("   public static final class " + constructor.name);
         classBodyEmitter.emitParameterizedTypeName(sink, typeParameters);
         sink.write(" extends " + dataTypeName);

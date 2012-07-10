@@ -15,20 +15,22 @@ limitations under the License.
  */
 package com.pogofish.jadt.comments;
 
+import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
 import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
-import static com.pogofish.jadt.ast.JavaComment.*;
+import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import com.pogofish.jadt.ast.BlockToken;
-import com.pogofish.jadt.ast.JDTagSection;
-import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.BlockToken.BlockEOL;
 import com.pogofish.jadt.ast.BlockToken.BlockWhiteSpace;
 import com.pogofish.jadt.ast.BlockToken.BlockWord;
+import com.pogofish.jadt.ast.JDTagSection;
+import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JDToken.JDAsterisk;
 import com.pogofish.jadt.ast.JDToken.JDEOL;
 import com.pogofish.jadt.ast.JDToken.JDWhiteSpace;
@@ -36,7 +38,6 @@ import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.JavaComment.JavaBlockComment;
 import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
 import com.pogofish.jadt.ast.JavaComment.JavaEOLComment;
-import static com.pogofish.jadt.ast.BlockToken.*;
 
 /**
  * Methods for processing parsed comments
@@ -44,6 +45,29 @@ import static com.pogofish.jadt.ast.BlockToken.*;
  * @author jiry
  */
 public class CommentProcessor {
+    /**
+     * Turns a list of JavaComment into list of comments that only has javadoc comments
+     */
+    public List<JavaComment> javaDocOnly(final List<JavaComment> originals) {
+        final List<JavaComment> results = new ArrayList<JavaComment>(
+                originals.size());
+        for (JavaComment comment : originals) {
+            comment._switch(new JavaComment.SwitchBlockWithDefault() {
+                
+                @Override
+                public void _case(JavaDocComment x) {
+                    results.add(x);
+                }
+
+                @Override
+                protected void _default(JavaComment x) {
+                    // do nothing, we only want to add javadocs
+                }
+            });
+        }
+        return results;
+    }
+    
     /**
      * Produce a copy of a list of comments where all javadoc comments have had
      * the specified tags removed. Non javadoc comments are left alone.

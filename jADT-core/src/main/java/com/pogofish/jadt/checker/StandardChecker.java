@@ -20,6 +20,7 @@ import static com.pogofish.jadt.errors.SemanticError._DuplicateArgName;
 import static com.pogofish.jadt.errors.SemanticError._DuplicateConstructor;
 import static com.pogofish.jadt.errors.SemanticError._DuplicateDataType;
 import static com.pogofish.jadt.errors.SemanticError._DuplicateModifier;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

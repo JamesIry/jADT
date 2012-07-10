@@ -25,15 +25,25 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.pogofish.jadt.ast.JDTagSection;
+import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.printer.ASTPrinter;
+import com.pogofish.jadt.util.Util;
 
+import static com.pogofish.jadt.ast.JDToken._JDEOL;
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
 import static com.pogofish.jadt.ast.JavaComment.*;
 import static com.pogofish.jadt.ast.BlockToken.*;
 
 import static com.pogofish.jadt.util.Util.*;
 
 public class CommentProcessorTest {
+    private static final JDToken ONEEOL = _JDEOL("\n");
+    private static final JDToken ONEWS = _JDWhiteSpace(" ");
+    private static final List<JDToken> NO_TOKENS = Util.<JDToken>list();
+    private static final List<JDTagSection> NO_TAG_SECTIONS = Util.<JDTagSection>list();
+    
     @Test
     public void testStripTags() {
         testStripTags("/** */\n", list("/** */"), set("@foo"));
@@ -46,6 +56,15 @@ public class CommentProcessorTest {
         @SuppressWarnings("unchecked")
         List<JavaComment> comments = list(_JavaEOLComment("//whatever"), _JavaBlockComment(list(list(_BlockWord("/*"), _BlockWhiteSpace(" "), _BlockWord("*/")))));
         assertEquals(comments, commentProcessor.stripTags(set("@foo"), comments));
+    }
+    
+    @Test
+    public void testJavaDocOnly() {
+        final CommentProcessor commentProcessor = new CommentProcessor();
+        JavaComment javaDocComment = _JavaDocComment("/**", list(ONEWS), NO_TAG_SECTIONS, "*/");
+        @SuppressWarnings("unchecked")
+        List<JavaComment> comments = list(javaDocComment, _JavaEOLComment("//whatever"), _JavaBlockComment(list(list(_BlockWord("/*"), _BlockWhiteSpace(" "), _BlockWord("*/")))));
+        assertEquals(list(javaDocComment), commentProcessor.javaDocOnly(comments));
     }
     
     private void testStripTags(String expected, List<String> inputs, Set<String> tags) {

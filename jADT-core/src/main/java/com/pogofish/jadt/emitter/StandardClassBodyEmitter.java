@@ -15,7 +15,10 @@ limitations under the License.
 */
 package com.pogofish.jadt.emitter;
 
+import static com.pogofish.jadt.util.Util.set;
+
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Arg;
@@ -33,11 +36,13 @@ import com.pogofish.jadt.ast.RefType.ClassType;
 import com.pogofish.jadt.ast.Type;
 import com.pogofish.jadt.ast.Type.Primitive;
 import com.pogofish.jadt.ast.Type.Ref;
+import com.pogofish.jadt.comments.CommentProcessor;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.sink.Sink;
 
-
 public class StandardClassBodyEmitter implements ClassBodyEmitter {
+    private static final Set<String> CONSTRUCTOR_METHOD_STRIP = set("@return");
+    private static final CommentProcessor commentProcessor = new CommentProcessor();
 	private static final Logger logger = Logger.getLogger(StandardClassBodyEmitter.class.toString());
     
     /* (non-Javadoc)
@@ -52,6 +57,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
             	logger.finest("Generating no args, type arguments factory for " + constructor.name);
         		sink.write("   @SuppressWarnings(\"rawtypes\")\n");
         	}
+            sink.write(ASTPrinter.printComments("   ", commentProcessor.leftAlign(commentProcessor.javaDocOnly(constructor.comments))));
             sink.write("   private static final " + dataTypeName + " _" + factoryName + " = new " + constructor.name + "();\n");
         	if (!typeParametrs.isEmpty()) {
         		sink.write("   @SuppressWarnings(\"unchecked\")\n");
@@ -64,6 +70,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
         	sink.write(" _" + factoryName + "() { return _" + factoryName + "; }");
         } else {
         	logger.finest("Generating args factory for " + constructor.name);
+            sink.write(ASTPrinter.printComments("   ", commentProcessor.leftAlign(constructor.comments)));
             sink.write("   public static final ");
             emitParameterizedTypeName(sink, typeParametrs);
         	sink.write(" ");
@@ -98,10 +105,12 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     @Override
     public void emitConstructorMethod(Sink sink, Constructor constructor) {
     	logger.finest("Generating constructor method for " + constructor.name);
-        for (Arg arg : constructor.args) {
+    	// TODO javadoc for fields
+    	for (Arg arg : constructor.args) {
             final String finalName = arg.modifiers.contains(ArgModifier._Final()) ? "final " : "";
             sink.write("      public " + finalName + ASTPrinter.print(arg.type) + " " + arg.name + ";\n");
         }
+        sink.write(ASTPrinter.printComments("      ", commentProcessor.leftAlign(commentProcessor.stripTags(CONSTRUCTOR_METHOD_STRIP, commentProcessor.javaDocOnly(constructor.comments)))));    	
         sink.write("\n      public " + constructor.name + "("); 
         constructorArgs(sink, constructor, true);        
         sink.write(") {");

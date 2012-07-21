@@ -47,7 +47,7 @@ public class CommentProcessorTest {
         testStripTags("/** */\n", list("/** */"), set("@foo"));
         testStripTags("/** @bar whatever */\n", list("/** @bar whatever */"), set("@foo"));
         testStripTags("/** */\n", list("/** @foo whatever */"), set("@foo"));
-        testStripTags("/** blah blah @hello there\n * */\n", list("/** blah blah @hello there\n * @foo first \n @foo second *\n*/"), set("@foo"));
+        testStripTags("/** blah blah @hello there\n */\n", list("/** blah blah @hello there\n * @foo first \n @foo second *\n*/"), set("@foo"));
         
         // make sure strip tags leaves other comment types alone
         final CommentProcessor commentProcessor = new CommentProcessor();

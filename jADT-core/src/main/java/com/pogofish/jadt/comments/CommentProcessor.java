@@ -17,7 +17,7 @@ package com.pogofish.jadt.comments;
 
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
-import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
+import static com.pogofish.jadt.ast.JDToken.*;
 import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 
@@ -33,11 +33,14 @@ import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JDToken.JDAsterisk;
 import com.pogofish.jadt.ast.JDToken.JDEOL;
+import com.pogofish.jadt.ast.JDToken.JDTag;
 import com.pogofish.jadt.ast.JDToken.JDWhiteSpace;
+import com.pogofish.jadt.ast.JDToken.JDWord;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.JavaComment.JavaBlockComment;
 import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
 import com.pogofish.jadt.ast.JavaComment.JavaEOLComment;
+import com.pogofish.jadt.util.Util;
 
 /**
  * Methods for processing parsed comments
@@ -112,7 +115,140 @@ public class CommentProcessor {
         }
         return results;
     }
+    
+    /**
+     * Produce a copy of a list of JavaDoc comments by pulling specified parameter tags out of an orignal list of comments.  
+     * Block and EOL comments are skipped.  JavaDoc comments are stripped down to only have the content of the specified 
+     * param tag
+     */
+    public List<JavaComment> paramDoc(final String paramName, List<JavaComment> originals) {
+        final List<JavaComment> results = new ArrayList<JavaComment>(originals.size());
+        for (JavaComment original : originals) {
+            original._switch(new JavaComment.SwitchBlock() {
+                @Override
+                public void _case(JavaDocComment x) {
+                    paramDocSections(paramName, x.tagSections, results);
+                }
 
+                @Override
+                public void _case(JavaBlockComment x) {
+                    // skip
+                }
+
+                @Override
+                public void _case(JavaEOLComment x) {
+                    // skip
+                }
+            });
+        }
+        return results;
+    }
+    
+
+    private void paramDocSections(String paramName,
+            List<JDTagSection> tagSections, List<JavaComment> results) {
+        for (JDTagSection section : tagSections) {
+            if (section.name.equals("@param")) {
+                paramDocSection(paramName, section.tokens, results);
+            }
+        }
+    }    
+    
+    private static enum ParamState {
+        BEGIN, ASTERISK, TAGGED, ACCUMULATING, DEAD;
+    }
+
+    private void paramDocSection(final String paramName, final List<JDToken> tokens,
+            List<JavaComment> results) {
+        final ParamState state[] = new ParamState[]{ParamState.BEGIN};
+        @SuppressWarnings("unchecked")
+        final List<JDToken>[] accum = new List[1];
+        
+        for (JDToken token : tokens) {
+            token._switch(new JDToken.SwitchBlock() {
+                
+                @Override
+                public void _case(JDWhiteSpace x) {
+                    if (state[0] == ParamState.ACCUMULATING) {
+                        accum[0].add(x);
+                    }                    
+                }
+                
+                @Override
+                public void _case(JDWord x) {
+                    switch(state[0]) {
+                    case ACCUMULATING:
+                        accum[0].add(x);
+                        break;
+                    case TAGGED: 
+                        if (x.word.equals(paramName)) {
+                            state[0] = ParamState.ACCUMULATING;
+                            accum[0] = new ArrayList<JDToken>(tokens.size() - 1);
+                            accum[0].add(_JDEOL("\n"));
+                            accum[0].add(_JDWhiteSpace(" "));
+                            accum[0].add(_JDAsterisk());
+                        } else {
+                            state[0] = ParamState.DEAD;
+                        }
+                        break;
+                    default:
+                        state[0] = ParamState.DEAD;
+                        break;
+                    }                 
+                }
+                
+                @Override
+                public void _case(JDTag x) {
+                    switch(state[0]) {
+                    case ACCUMULATING:
+                        accum[0].add(x);
+                        break;
+                    case BEGIN:
+                        state[0] = ParamState.TAGGED;
+                        break;
+                    case ASTERISK:
+                        state[0] = ParamState.TAGGED;
+                        break;
+                    default:
+                        state[0] = ParamState.DEAD;
+                        break;
+                    }    
+                }
+                
+                @Override
+                public void _case(JDEOL x) {
+                    if (state[0] == ParamState.ACCUMULATING) {
+                        accum[0].add(x);
+                    }                    
+                }
+                
+                @Override
+                public void _case(JDAsterisk x) {
+                    switch(state[0]) {
+                    case ACCUMULATING:
+                        accum[0].add(x);
+                        break;
+                    case BEGIN:
+                        state[0] = ParamState.ASTERISK;
+                        break;
+                    default:
+                        state[0] = ParamState.DEAD;
+                        break;
+                    }  
+                }
+            });
+        }
+        
+        if(accum[0] != null && !accum[0].isEmpty()) {
+            results.add(_JavaDocComment("/**", accum[0], Util.<JDTagSection>list(), "*/"));
+        }
+        
+    }
+
+    /**
+     * Align a list of comments on the left marging.  EOLComments are left alone.  Block and JavaDoc comments are aligned by making every line that starts
+     * with a * be one space in from the comment opener.  Lines that don't start with * are left alone.
+     */
     public List<JavaComment> leftAlign(List<JavaComment> originals) {
         final List<JavaComment> results = new ArrayList<JavaComment>(
                 originals.size());

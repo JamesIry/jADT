@@ -127,4 +127,26 @@ public class CommentProcessorTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testParamDoc() {
+        testParamDoc("", "foo", list("/** */"));
+        testParamDoc("", "foo", list("/** @flurg foo */"));
+        testParamDoc("/**\n * hello */\n", "foo", list("/** @param foo hello */"));
+        testParamDoc("/**\n * hello\n */\n", "foo", list("/** \n * @param foo hello\n */"));
+        testParamDoc("/**\n * hello\n */\n", "foo", list("/** \n * @param bar hello1\n * @param foo hello\n * @param baz hello2\n */"));
+    }
+
+    private void testParamDoc(String expected, String paramName, List<String> inputs) {
+        final JavaDocParser parser = new JavaDocParser();
+        final List<JavaComment> outputs = new ArrayList<JavaComment>(inputs.size());
+        final CommentProcessor commentProcessor = new CommentProcessor();
+        for (String input : inputs) {
+            final JavaComment comment = parser.parse(new StringReader(input));
+            outputs.add(comment);
+        }
+        final List<JavaComment> paramDoc = commentProcessor.paramDoc(paramName, outputs);
+        final String actual = ASTPrinter.printComments("", paramDoc);
+        assertEquals(expected, actual);
+     }
+    
 }

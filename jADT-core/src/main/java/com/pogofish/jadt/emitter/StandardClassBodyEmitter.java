@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
+import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.PrimitiveType.BooleanType;
 import com.pogofish.jadt.ast.PrimitiveType.ByteType;
@@ -105,8 +106,10 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     @Override
     public void emitConstructorMethod(Sink sink, Constructor constructor) {
     	logger.finest("Generating constructor method for " + constructor.name);
-    	// TODO javadoc for fields
+    	final List<JavaComment> javaDoc = commentProcessor.leftAlign(commentProcessor.javaDocOnly(constructor.comments));
     	for (Arg arg : constructor.args) {
+    	    final List<JavaComment> paramDoc = commentProcessor.paramDoc(arg.name, javaDoc);
+    	    sink.write(ASTPrinter.printComments("      ", paramDoc));
             final String finalName = arg.modifiers.contains(ArgModifier._Final()) ? "final " : "";
             sink.write("      public " + finalName + ASTPrinter.print(arg.type) + " " + arg.name + ";\n");
         }

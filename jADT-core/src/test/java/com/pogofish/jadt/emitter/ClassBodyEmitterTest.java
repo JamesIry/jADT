@@ -16,6 +16,13 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
+import static com.pogofish.jadt.ast.JDToken._JDAsterisk;
+import static com.pogofish.jadt.ast.JDToken._JDEOL;
+import static com.pogofish.jadt.ast.JDToken._JDTag;
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
+import static com.pogofish.jadt.ast.JDToken._JDWord;
+import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -66,9 +73,15 @@ public class ClassBodyEmitterTest {
     "   public static final <A, B> SomeDataType<A, B> _SomeFactory(Integer yeah, String hmmm) { return new Foo<A, B>(yeah, hmmm); }";    
     
     private static final String CONSTRUCTOR_METHOD = 
+    "      /**\n" +
+    "       * this is the um\n" +
+    "       */\n" +
     "      public String um;\n" +
     "      public final int yeah;\n" +
     "\n" +
+    "      /**\n" +
+    "       * @param um this is the um\n" +
+    "       */\n" +
     "      public Foo(String um, int yeah) {\n" +
     "         this.um = um;\n" +
     "         this.yeah = yeah;\n" +
@@ -274,7 +287,7 @@ public class ClassBodyEmitterTest {
      */
     @Test
     public void testConstructorMethod() {
-        final Constructor constructor = new Constructor(NO_COMMENTS, "Foo",
+        final Constructor constructor = new Constructor(list(_JavaDocComment("/**", list(_JDEOL("\n")), list(_JDTagSection("@param", list(_JDWhiteSpace(" "), _JDAsterisk(), _JDWhiteSpace(" "), _JDTag("@param"), _JDWhiteSpace(" "), _JDWord("um"), _JDWhiteSpace(" "), _JDWord("this is the um"), _JDEOL("\n"), _JDWhiteSpace(" ")))), "*/")), "Foo",
                 list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "um"), new Arg(Util.list(ArgModifier._Final()), _Primitive(_IntType()),
                         "yeah")));
 

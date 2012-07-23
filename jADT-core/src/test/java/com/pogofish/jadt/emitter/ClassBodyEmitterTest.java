@@ -73,101 +73,101 @@ public class ClassBodyEmitterTest {
     "   public static final <A, B> SomeDataType<A, B> _SomeFactory(Integer yeah, String hmmm) { return new Foo<A, B>(yeah, hmmm); }";    
     
     private static final String CONSTRUCTOR_METHOD = 
-    "      /**\n" +
-    "       * this is the um\n" +
-    "       */\n" +
-    "      public String um;\n" +
-    "      public final int yeah;\n" +
+    "    /**\n" +
+    "     * this is the um\n" +
+    "     */\n" +
+    "    public String um;\n" +
+    "    public final int yeah;\n" +
     "\n" +
-    "      /**\n" +
-    "       * @param um this is the um\n" +
-    "       */\n" +
-    "      public Foo(String um, int yeah) {\n" +
-    "         this.um = um;\n" +
-    "         this.yeah = yeah;\n" +
-    "      }";
+    "    /**\n" +
+    "     * @param um this is the um\n" +
+    "     */\n" +
+    "    public Foo(String um, int yeah) {\n" +
+    "       this.um = um;\n" +
+    "       this.yeah = yeah;\n" +
+    "    }";
 
     private static final String NO_ARG_TO_STRING =
-    "      @Override\n" +
-    "      public String toString() {\n" +
-    "         return \"Whatever\";\n" +
-    "      }";
+    "    @Override\n" +
+    "    public String toString() {\n" +
+    "       return \"Whatever\";\n" +
+    "    }";
 
     private static final String ONE_ARG_TO_STRING =
-    "      @Override\n" +
-    "      public String toString() {\n" +
-    "         return \"Foo(um = \" + um + \")\";\n" +
-    "      }";
+    "    @Override\n" +
+    "    public String toString() {\n" +
+    "       return \"Foo(um = \" + um + \")\";\n" +
+    "    }";
 
     private static final String ARGS_TO_STRING =
-    "      @Override\n" +
-    "      public String toString() {\n" +
-    "         return \"Foo(um = \" + um + \", yeah = \" + yeah + \")\";\n" +
-    "      }";
+    "    @Override\n" +
+    "    public String toString() {\n" +
+    "       return \"Foo(um = \" + um + \", yeah = \" + yeah + \")\";\n" +
+    "    }";
 
     private static final String NO_ARG_EQUALS =
-    "      @Override\n" +
-    "      public boolean equals(Object obj) {\n" +
-    "         if (this == obj) return true;\n" +
-    "         if (obj == null) return false;\n" +
-    "         if (getClass() != obj.getClass()) return false;\n" +
-    "         return true;\n" +
-    "      }";
+    "    @Override\n" +
+    "    public boolean equals(Object obj) {\n" +
+    "       if (this == obj) return true;\n" +
+    "       if (obj == null) return false;\n" +
+    "       if (getClass() != obj.getClass()) return false;\n" +
+    "       return true;\n" +
+    "    }";
 
     private static final String ARGS_NO_TYPES_EQUALS =
-    "      @Override\n" +
-    "      public boolean equals(Object obj) {\n" +
-    "         if (this == obj) return true;\n" +
-    "         if (obj == null) return false;\n" +
-    "         if (getClass() != obj.getClass()) return false;\n" +
-    "         Foo other = (Foo)obj;\n" +
-    "         if (um != other.um) return false;\n" +
-    "         if (yeah == null) {\n" +
-    "            if (other.yeah != null) return false;\n" +
-    "         } else if (!yeah.equals(other.yeah)) return false;\n" +
-    "         if (!java.util.Arrays.equals(oh, other.oh)) return false;\n" +
-    "         return true;\n" +
-    "      }";
+    "    @Override\n" +
+    "    public boolean equals(Object obj) {\n" +
+    "       if (this == obj) return true;\n" +
+    "       if (obj == null) return false;\n" +
+    "       if (getClass() != obj.getClass()) return false;\n" +
+    "       Foo other = (Foo)obj;\n" +
+    "       if (um != other.um) return false;\n" +
+    "       if (yeah == null) {\n" +
+    "          if (other.yeah != null) return false;\n" +
+    "       } else if (!yeah.equals(other.yeah)) return false;\n" +
+    "       if (!java.util.Arrays.equals(oh, other.oh)) return false;\n" +
+    "       return true;\n" +
+    "    }";
 
     private static final String ARGS_TYPES_EQUALS =
-    "      @Override\n" +
-    "      public boolean equals(Object obj) {\n" +
-    "         if (this == obj) return true;\n" +
-    "         if (obj == null) return false;\n" +
-    "         if (getClass() != obj.getClass()) return false;\n" +
-    "         @SuppressWarnings(\"rawtypes\")" +
-    "         Foo other = (Foo)obj;\n" +
-    "         if (um != other.um) return false;\n" +
-    "         if (yeah == null) {\n" +
-    "            if (other.yeah != null) return false;\n" +
-    "         } else if (!yeah.equals(other.yeah)) return false;\n" +
-    "         if (!java.util.Arrays.equals(oh, other.oh)) return false;\n" +
-    "         return true;\n" +
-    "      }";
+    "    @Override\n" +
+    "    public boolean equals(Object obj) {\n" +
+    "       if (this == obj) return true;\n" +
+    "       if (obj == null) return false;\n" +
+    "       if (getClass() != obj.getClass()) return false;\n" +
+    "       @SuppressWarnings(\"rawtypes\")" +
+    "       Foo other = (Foo)obj;\n" +
+    "       if (um != other.um) return false;\n" +
+    "       if (yeah == null) {\n" +
+    "          if (other.yeah != null) return false;\n" +
+    "       } else if (!yeah.equals(other.yeah)) return false;\n" +
+    "       if (!java.util.Arrays.equals(oh, other.oh)) return false;\n" +
+    "       return true;\n" +
+    "    }";
 
     private static final String NO_ARG_HASHCODE =
-    "      @Override\n" +
-    "      public int hashCode() {\n" +
-    "          return 0;\n" +
-    "      }";
+    "    @Override\n" +
+    "    public int hashCode() {\n" +
+    "        return 0;\n" +
+    "    }";
 
     private static final String ARGS_HASHCODE =
-    "      @Override\n" +
-    "      public int hashCode() {\n" +
-    "          final int prime = 31;\n" +
-    "          int result = 1;\n" +
-    "          result = prime * result + (boolShit ? 1 : 0);\n" +
-    "          result = prime * result + dracula;\n" +
-    "          result = prime * result + whatACharacter;\n" +
-    "          result = prime * result + shorty;\n" +
-    "          result = prime * result + integrity;\n" +
-    "          result = prime * result + (int)likeYourMomLikesIt;\n" +
-    "          result = prime * result + (int)turd;\n" +
-    "          result = prime * result + (int)yourPleasure;\n" +
-    "          result = prime * result + ((yeah == null) ? 0 : yeah.hashCode());\n" +
-    "          result = prime * result + java.util.Arrays.hashCode(oh);\n" +
-    "          return result;\n" +
-    "      }";
+    "    @Override\n" +
+    "    public int hashCode() {\n" +
+    "        final int prime = 31;\n" +
+    "        int result = 1;\n" +
+    "        result = prime * result + (boolShit ? 1 : 0);\n" +
+    "        result = prime * result + dracula;\n" +
+    "        result = prime * result + whatACharacter;\n" +
+    "        result = prime * result + shorty;\n" +
+    "        result = prime * result + integrity;\n" +
+    "        result = prime * result + (int)likeYourMomLikesIt;\n" +
+    "        result = prime * result + (int)turd;\n" +
+    "        result = prime * result + (int)yourPleasure;\n" +
+    "        result = prime * result + ((yeah == null) ? 0 : yeah.hashCode());\n" +
+    "        result = prime * result + java.util.Arrays.hashCode(oh);\n" +
+    "        return result;\n" +
+    "    }";
     
     private final ClassBodyEmitter emitter = new StandardClassBodyEmitter();
     
@@ -293,7 +293,7 @@ public class ClassBodyEmitterTest {
 
         final StringSink sink = new StringSink("test");
         try {
-            emitter.emitConstructorMethod(sink, constructor);
+            emitter.emitConstructorMethod(sink, "    ", constructor);
         } finally {
             sink.close();
         }
@@ -310,7 +310,7 @@ public class ClassBodyEmitterTest {
         final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitToString(sink, constructor);
+            emitter.emitToString(sink, "    ", constructor);
         } finally {
             sink.close();            
         }
@@ -329,7 +329,7 @@ public class ClassBodyEmitterTest {
         final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitToString(sink, constructor);
+            emitter.emitToString(sink, "    ", constructor);
         } finally {
             sink.close();            
         }
@@ -349,7 +349,7 @@ public class ClassBodyEmitterTest {
         final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitToString(sink, constructor);
+            emitter.emitToString(sink, "    ", constructor);
         } finally {
             sink.close();            
         }
@@ -366,7 +366,7 @@ public class ClassBodyEmitterTest {
         final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitEquals(sink, constructor, Util.<String>list());
+            emitter.emitEquals(sink, "    ", constructor, Util.<String>list());
         } finally {
             sink.close();            
         }
@@ -388,7 +388,7 @@ public class ClassBodyEmitterTest {
         final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitEquals(sink, constructor, Util.<String>list());
+            emitter.emitEquals(sink, "    ", constructor, Util.<String>list());
         } finally {
             sink.close();            
         }
@@ -409,7 +409,7 @@ public class ClassBodyEmitterTest {
         final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitEquals(sink, constructor, list("A", "B"));
+            emitter.emitEquals(sink, "    ", constructor, list("A", "B"));
         } finally {
             sink.close();            
         }
@@ -426,7 +426,7 @@ public class ClassBodyEmitterTest {
         final StringSink sink = new StringSink("test");
         try {
             
-            emitter.emitHashCode(sink, constructor);
+            emitter.emitHashCode(sink, "    ", constructor);
         } finally {
             sink.close();            
         }
@@ -454,7 +454,7 @@ public class ClassBodyEmitterTest {
         
         final StringSink sink = new StringSink("test");
         try {            
-            emitter.emitHashCode(sink, constructor);
+            emitter.emitHashCode(sink, "    ", constructor);
         } finally {
             sink.close();            
         }

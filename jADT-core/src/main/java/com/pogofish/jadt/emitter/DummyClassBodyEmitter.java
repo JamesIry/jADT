@@ -26,23 +26,23 @@ public class DummyClassBodyEmitter implements ClassBodyEmitter {
     }
 
     @Override
-    public void emitConstructorMethod(Sink sink, Constructor constructor) {
-        sink.write("/* constructor method " + constructor.name + "*/");
+    public void emitConstructorMethod(Sink sink, String indent, Constructor constructor) {
+        sink.write(indent + "/* constructor method " + constructor.name + "*/");
     }
 
     @Override
-    public void emitToString(Sink sink, Constructor constructor) {
-        sink.write("/* toString method " + constructor.name + "*/");
+    public void emitToString(Sink sink, String indent, Constructor constructor) {
+        sink.write(indent + "/* toString method " + constructor.name + "*/");
     }
 
     @Override
-    public void emitEquals(Sink sink, Constructor constructor, List<String> typeArguments) {
-        sink.write("/* equals method " + constructor.name + "*/");
+    public void emitEquals(Sink sink, String indent, Constructor constructor, List<String> typeArguments) {
+        sink.write(indent + "/* equals method " + constructor.name + "*/");
     }
 
     @Override
-    public void emitHashCode(Sink sink, Constructor constructor) {
-        sink.write("/* hashCode method " + constructor.name + "*/");
+    public void emitHashCode(Sink sink, String indent, Constructor constructor) {
+        sink.write(indent + "/* hashCode method " + constructor.name + "*/");
     }
     
     @Override

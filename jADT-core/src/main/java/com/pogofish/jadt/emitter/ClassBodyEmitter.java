@@ -43,34 +43,38 @@ public interface ClassBodyEmitter {
      * Emit the Java constructor for the constructor class
      * 
      * @param sink Sink for output
+     * @param indent whitespace to insert before the constructor method
      * @param constructor Constructor with information about arguments
      */
-    public abstract void emitConstructorMethod(Sink sink, Constructor constructor);
+    public abstract void emitConstructorMethod(Sink sink, String indent, Constructor constructor);
 
     /**
      * Emit a toString method
      * 
      * @param sink Sink for output
+     * @param indent whitespace to use for indent
      * @param constructor Constructor with information about arguments
      */
-    public abstract void emitToString(Sink sink, Constructor constructor);
+    public abstract void emitToString(Sink sink, String indent, Constructor constructor);
 
     /**
      * Emit an equals method
      * 
      * @param sink Sink for output
+     * @param indent whitespace to ues for indent
      * @param constructor Constructor with information about arguments
      * @param typeArguments List of names of types that parameterize the datatype
      */
-    public abstract void emitEquals(Sink sink, Constructor constructor, List<String> typeArguments);
+    public abstract void emitEquals(Sink sink, String indent, Constructor constructor, List<String> typeArguments);
 
     /**
      * Emit a hashCode method
      * 
      * @param sink Sink for output
+     * @param indent whitespace to use for indent
      * @param constructor Constructor with information about arguments
      */
-    public abstract void emitHashCode(Sink sink, Constructor constructor);
+    public abstract void emitHashCode(Sink sink, String indent, Constructor constructor);
        
     /**
      * Emit a list of type arg names if any
@@ -78,4 +82,5 @@ public interface ClassBodyEmitter {
      * @param typeArguments list of type argument names
      */
     public void emitParameterizedTypeName(Sink sink, List<String> typeArguments);
+
 }

@@ -103,13 +103,13 @@ public class DataTypeEmitterTest {
     "\n" +
     "/* constructor factory FooBar Foo FooBar*/\n" +
     "\n" +
-    "/* constructor method FooBar*/\n" +
+    "   /* constructor method FooBar*/\n" +
     "\n" +
-    "/* hashCode method FooBar*/\n" +
+    "   /* hashCode method FooBar*/\n" +
     "\n" +
-    "/* equals method FooBar*/\n" +
+    "   /* equals method FooBar*/\n" +
     "\n" +
-    "/* toString method FooBar*/\n" +
+    "   /* toString method FooBar*/\n" +
     "\n" +
     "}";
     private static final String SINGLE_HEADER =

@@ -45,7 +45,7 @@ public class ConstructorEmitterTest {
     private static final String CONSTRUCTOR_CLASS = 
     "   /** hello */\n" +
     "   public static final class Foo/* type arguments */ extends NonPrimitive/* type arguments */ {\n" +
-    "/* constructor method Foo*/\n" +
+    "      /* constructor method Foo*/\n" +
     "\n" +
     "      @Override\n" +
     "      public <ResultType> ResultType match(MatchBlock/* type arguments */ matchBlock) { return matchBlock._case(this); }\n" +
@@ -53,11 +53,11 @@ public class ConstructorEmitterTest {
     "      @Override\n" +
     "      public void _switch(SwitchBlock/* type arguments */ switchBlock) { switchBlock._case(this); }\n" +
     "\n" +
-    "/* hashCode method Foo*/\n" +
+    "      /* hashCode method Foo*/\n" +
     "\n" +
-    "/* equals method Foo*/\n" +
+    "      /* equals method Foo*/\n" +
     "\n" +
-    "/* toString method Foo*/\n" +
+    "      /* toString method Foo*/\n" +
     "\n" +
     "   }";
 

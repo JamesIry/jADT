@@ -29,7 +29,8 @@ import com.pogofish.jadt.sink.Sink;
 
 
 public class StandardConstructorEmitter implements ConstructorEmitter {
-	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
+	private static final String INDENT = "      ";
+    private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     private final ClassBodyEmitter classBodyEmitter;
     private final CommentProcessor commentProcessor = new CommentProcessor();
     private static final Set<String> CONSTRUCTOR_CLASS_STRIP = set("@return", "@param");
@@ -54,19 +55,19 @@ public class StandardConstructorEmitter implements ConstructorEmitter {
         classBodyEmitter.emitParameterizedTypeName(sink, typeParameters);
         sink.write(" {\n");
         
-        classBodyEmitter.emitConstructorMethod(sink, constructor);
+        classBodyEmitter.emitConstructorMethod(sink, INDENT, constructor);
         sink.write("\n\n");
         
         emitAccept(sink, typeParameters);
         sink.write("\n\n");
         
-        classBodyEmitter.emitHashCode(sink, constructor);
+        classBodyEmitter.emitHashCode(sink, INDENT, constructor);
         sink.write("\n\n");
         
-        classBodyEmitter.emitEquals(sink, constructor, typeParameters);
+        classBodyEmitter.emitEquals(sink, INDENT, constructor, typeParameters);
         sink.write("\n\n");
         
-        classBodyEmitter.emitToString(sink, constructor);
+        classBodyEmitter.emitToString(sink, INDENT, constructor);
         sink.write("\n\n");
         
         sink.write("   }");

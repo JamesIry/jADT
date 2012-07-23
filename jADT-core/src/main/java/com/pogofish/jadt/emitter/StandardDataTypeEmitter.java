@@ -27,7 +27,9 @@ import com.pogofish.jadt.sink.Sink;
 
 
 public class StandardDataTypeEmitter implements DataTypeEmitter {
-	private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
+	private static final String SINGLE_CONSTRUCTOR_INDENT = "   ";
+
+    private static final Logger logger = Logger.getLogger(StandardConstructorEmitter.class.toString());
     
     private final ConstructorEmitter constructorEmitter;
     private final ClassBodyEmitter classBodyEmitter;
@@ -71,16 +73,16 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         classBodyEmitter.constructorFactory(sink, dataType.name, originalConstructor.name, dataType.typeArguments, pseudoConstructor);
         sink.write("\n\n");
         
-        classBodyEmitter.emitConstructorMethod(sink, pseudoConstructor);
+        classBodyEmitter.emitConstructorMethod(sink, SINGLE_CONSTRUCTOR_INDENT, pseudoConstructor);
         sink.write("\n\n");
         
-        classBodyEmitter.emitHashCode(sink, pseudoConstructor);
+        classBodyEmitter.emitHashCode(sink, SINGLE_CONSTRUCTOR_INDENT, pseudoConstructor);
         sink.write("\n\n");
         
-        classBodyEmitter.emitEquals(sink, pseudoConstructor, dataType.typeArguments);
+        classBodyEmitter.emitEquals(sink, SINGLE_CONSTRUCTOR_INDENT, pseudoConstructor, dataType.typeArguments);
         sink.write("\n\n");
         
-        classBodyEmitter.emitToString(sink, pseudoConstructor);
+        classBodyEmitter.emitToString(sink, SINGLE_CONSTRUCTOR_INDENT, pseudoConstructor);
         sink.write("\n\n");
         
         sink.write("}");

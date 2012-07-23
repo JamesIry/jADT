@@ -104,35 +104,35 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
      * @see com.pogofish.jadt.emitter.ClassBodyEmitter#emitConstructorMethod(com.pogofish.jadt.emitter.Sink, com.pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitConstructorMethod(Sink sink, Constructor constructor) {
+    public void emitConstructorMethod(Sink sink, String indent, Constructor constructor) {
     	logger.finest("Generating constructor method for " + constructor.name);
     	final List<JavaComment> javaDoc = commentProcessor.leftAlign(commentProcessor.javaDocOnly(constructor.comments));
     	for (Arg arg : constructor.args) {
     	    final List<JavaComment> paramDoc = commentProcessor.paramDoc(arg.name, javaDoc);
-    	    sink.write(ASTPrinter.printComments("      ", paramDoc));
+    	    sink.write(ASTPrinter.printComments(indent, paramDoc));
             final String finalName = arg.modifiers.contains(ArgModifier._Final()) ? "final " : "";
-            sink.write("      public " + finalName + ASTPrinter.print(arg.type) + " " + arg.name + ";\n");
+            sink.write(indent + "public " + finalName + ASTPrinter.print(arg.type) + " " + arg.name + ";\n");
         }
     	sink.write("\n");
-        sink.write(ASTPrinter.printComments("      ", commentProcessor.leftAlign(commentProcessor.stripTags(CONSTRUCTOR_METHOD_STRIP, commentProcessor.javaDocOnly(constructor.comments)))));    	
-        sink.write("      public " + constructor.name + "("); 
+        sink.write(ASTPrinter.printComments(indent, commentProcessor.leftAlign(commentProcessor.stripTags(CONSTRUCTOR_METHOD_STRIP, commentProcessor.javaDocOnly(constructor.comments)))));    	
+        sink.write(indent + "public " + constructor.name + "("); 
         constructorArgs(sink, constructor, true);        
         sink.write(") {");
         for (Arg arg : constructor.args) {
-            sink.write("\n         this." + arg.name + " = " + arg.name + ";");
+            sink.write("\n" + indent + "   this." + arg.name + " = " + arg.name + ";");
         }
-        sink.write("\n      }");
+        sink.write("\n" + indent + "}");
     }
 
     /* (non-Javadoc)
      * @see com.pogofish.jadt.emitter.ClassBodyEmitter#emitToString(com.pogofish.jadt.emitter.Sink, com.pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitToString(Sink sink, Constructor constructor) {
+    public void emitToString(Sink sink, String indent, Constructor constructor) {
     	logger.finest("Generating toString() for " + constructor.name);
-        sink.write("      @Override\n");
-        sink.write("      public String toString() {\n");
-        sink.write("         return \"" + constructor.name);
+        sink.write(indent + "@Override\n");
+        sink.write(indent + "public String toString() {\n");
+        sink.write(indent + "   return \"" + constructor.name);
         if (!constructor.args.isEmpty()) {
             sink.write("(");
             boolean first = true;
@@ -147,25 +147,25 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
             sink.write(")");
         }
         sink.write("\";\n");
-        sink.write("      }");
+        sink.write(indent + "}");
     }
 
     /* (non-Javadoc)
      * @see com.pogofish.jadt.emitter.ClassBodyEmitter#emitEquals(com.pogofish.jadt.emitter.Sink, com.pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitEquals(final Sink sink, Constructor constructor, List<String> typeArguments) {
+    public void emitEquals(final Sink sink, final String indent, Constructor constructor, List<String> typeArguments) {
     	logger.finest("Generating equals() for " + constructor.name);
-        sink.write("      @Override\n");
-        sink.write("      public boolean equals(Object obj) {\n");
-        sink.write("         if (this == obj) return true;\n");
-        sink.write("         if (obj == null) return false;\n");
-        sink.write("         if (getClass() != obj.getClass()) return false;\n");
+        sink.write(indent + "@Override\n");
+        sink.write(indent + "public boolean equals(Object obj) {\n");
+        sink.write(indent + "   if (this == obj) return true;\n");
+        sink.write(indent + "   if (obj == null) return false;\n");
+        sink.write(indent + "   if (getClass() != obj.getClass()) return false;\n");
         if (!constructor.args.isEmpty()) {
         	if (!typeArguments.isEmpty()) {
-        		sink.write("         @SuppressWarnings(\"rawtypes\")");
+        		sink.write(indent + "   @SuppressWarnings(\"rawtypes\")");
         	}
-            sink.write("         " + constructor.name + " other = (" + constructor.name + ")obj;\n");
+            sink.write(indent + "   " + constructor.name + " other = (" + constructor.name + ")obj;\n");
             
             for (final Arg arg : constructor.args) {
                 arg.type._switch(new Type.SwitchBlock(){
@@ -174,40 +174,40 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
                         x.type._switch(new RefType.SwitchBlock() {
                             @Override
                             public void _case(ClassType x) {
-                                sink.write("         if (" + arg.name + " == null) {\n");
-                                sink.write("            if (other." + arg.name + " != null) return false;\n");
-                                sink.write("         } else if (!" + arg.name + ".equals(other." + arg.name + ")) return false;\n");
+                                sink.write(indent + "   if (" + arg.name + " == null) {\n");
+                                sink.write(indent + "      if (other." + arg.name + " != null) return false;\n");
+                                sink.write(indent + "   } else if (!" + arg.name + ".equals(other." + arg.name + ")) return false;\n");
                             }
 
                             @Override
                             public void _case(ArrayType x) {
-                                sink.write("         if (!java.util.Arrays.equals(" + arg.name + ", other." + arg.name + ")) return false;\n");
+                                sink.write(indent + "   if (!java.util.Arrays.equals(" + arg.name + ", other." + arg.name + ")) return false;\n");
                             }});
                     }
 
                     @Override
                     public void _case(Primitive x) {
-                        sink.write("         if (" + arg.name + " != other." + arg.name + ") return false;\n");
+                        sink.write(indent + "   if (" + arg.name + " != other." + arg.name + ") return false;\n");
                     }});
             }
         }
-        sink.write("         return true;\n");
-        sink.write("      }");
+        sink.write(indent + "   return true;\n");
+        sink.write(indent + "}");
     }
 
     /* (non-Javadoc)
      * @see com.pogofish.jadt.emitter.ClassBodyEmitter#emitHashCode(com.pogofish.jadt.emitter.Sink, com.pogofish.jadt.ast.Constructor)
      */
     @Override
-    public void emitHashCode(final Sink sink, Constructor constructor) {
+    public void emitHashCode(final Sink sink, final String indent, Constructor constructor) {
     	logger.finest("Generating hashCode() for " + constructor.name);
-        sink.write("      @Override\n");
-        sink.write("      public int hashCode() {\n");
+        sink.write(indent + "@Override\n");
+        sink.write(indent + "public int hashCode() {\n");
         if (constructor.args.isEmpty()) {
-            sink.write("          return 0;\n");
+            sink.write(indent + "    return 0;\n");
         } else {
-            sink.write("          final int prime = 31;\n");
-            sink.write("          int result = 1;\n");
+            sink.write(indent + "    final int prime = 31;\n");
+            sink.write(indent + "    int result = 1;\n");
             for (final Arg arg : constructor.args) {
                 arg.type._switch(new Type.SwitchBlock(){
                     @Override
@@ -215,12 +215,12 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
                         x.type._switch(new RefType.SwitchBlock() {
                             @Override
                             public void _case(ClassType x) {
-                                sink.write("          result = prime * result + ((" + arg.name + " == null) ? 0 : " + arg.name + ".hashCode());\n");                
+                                sink.write(indent + "    result = prime * result + ((" + arg.name + " == null) ? 0 : " + arg.name + ".hashCode());\n");                
                             }
 
                             @Override
                             public void _case(ArrayType x) {
-                                sink.write("          result = prime * result + java.util.Arrays.hashCode(" + arg.name + ");\n");                
+                                sink.write(indent + "    result = prime * result + java.util.Arrays.hashCode(" + arg.name + ");\n");                
                             }});
                     }
 
@@ -230,7 +230,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
 
                             @Override
                             public void _case(BooleanType x) {
-                                sink.write("          result = prime * result + (" + arg.name + " ? 1 : 0);\n");
+                                sink.write(indent + "    result = prime * result + (" + arg.name + " ? 1 : 0);\n");
                             }
 
                             @Override
@@ -239,7 +239,7 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
                             }
 
                             private void uncastedHashChunk(final Sink sink, final Arg arg) {
-                                sink.write("          result = prime * result + " + arg.name + ";\n");
+                                sink.write(indent + "    result = prime * result + " + arg.name + ";\n");
                             }                            
                             
                             @Override
@@ -259,13 +259,13 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
 
                             @Override
                             public void _default(PrimitiveType x) {
-                                sink.write("          result = prime * result + (int)" + arg.name + ";\n");
+                                sink.write(indent + "    result = prime * result + (int)" + arg.name + ";\n");
                             }});
                     }});
             }
-            sink.write("          return result;\n");
+            sink.write(indent + "    return result;\n");
         }
-        sink.write("      }");
+        sink.write(indent + "}");
     }
 
     

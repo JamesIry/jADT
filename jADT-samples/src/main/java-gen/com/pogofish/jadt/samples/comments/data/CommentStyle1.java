@@ -87,9 +87,15 @@ public abstract class CommentStyle1 {
    /**
     * A constructor case
     *
-    * */
+    */
    public static final class Foo extends CommentStyle1 {
+      /**
+       * some argument
+      */
       public int arg1;
+      /**
+       * some other argument
+       */
       public int arg2;
 
       /**

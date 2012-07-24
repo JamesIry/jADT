@@ -1,6 +1,6 @@
 Generating Java from the Shell
 
-    {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./maven_generation.html} Generating Java from Apache Maven \>\>}}
+    {{{./comments.html}\<\< Comments }} | {{{./maven_generation.html} Generating Java from Apache Maven \>\>}}
 
     To use {{{./index.html}jADT}} to generate Java from the shell use you'll need to {{{./download.html}download}} the executable jar jADT-core-${projectVersion}.jar.
 
@@ -24,5 +24,5 @@ Generating Java from the Shell
     java -cp lib/jADT-core-${projectVersion}.jar com.pogofish.jadt.JADT src/main/jadt/ target/generated-sources/jadt
 ----
 
-    {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./maven_generation.html} Generating Java from Apache Maven \>\>}}
+    {{{./comments.html}\<\< Comments }} | {{{./maven_generation.html} Generating Java from Apache Maven \>\>}}
     

@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 /*
- * Here's one sample comment.  It's a good spot for copyright and license info
+ * Here's one sample comment.  It's a good spot for copyright and license info.
+ * This one happens to be a block comment
  */
 package com.pogofish.jadt.samples.comments.data;
 
-/*
- * Imports can also have comments.  Mostly useful for the case when there is
- * no package declaration.
- */
+// Imports can also have comments.  Mostly useful for the case when there is
+// no package declaration.
+// this one happens to be an end of line style comment
 import java.util.*;
 
 /*
@@ -35,6 +35,8 @@ CommentStyle1 =
 */
 /**
  * Here's one style of using JavaDoc
+ *
+ * @author me
  */
 public abstract class CommentStyle1 {
 
@@ -46,11 +48,13 @@ public abstract class CommentStyle1 {
     *
     * @param arg1 some argument
     * @param arg2 some other argument
+    * @return The Foo case of ConstructorStyle1
     */
    public static final  CommentStyle1 _Foo(int arg1, int arg2) { return new Foo(arg1, arg2); }
    private static final CommentStyle1 _Bar = new Bar();
    /**
     * Another constructor case
+    * @return The Bar case of ConstructorStyle1
     */
    public static final  CommentStyle1 _Bar() { return _Bar; }
 
@@ -95,7 +99,7 @@ public abstract class CommentStyle1 {
       public int arg1;
       /**
        * some other argument
-       */
+      */
       public int arg2;
 
       /**

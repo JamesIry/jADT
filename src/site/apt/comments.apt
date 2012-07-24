@@ -1,0 +1,34 @@
+Comments
+
+     {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./shell_generation.html} Generating Java from the Shell \>\>}}
+     
+     jADT files can have 2 broad categories of comments: internal and Java.  Internal comments are completely ignored by the parser and have no effect on code generation.
+ They start with # and continue to the end of the line. They're useful when you want to temporarily comment out a block of jADT definition.
+
+     Here's an example of an internal comment.
+     
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/CommentSamples.jadt|id=internal}
+ 
+     Java comments are the range of comments from Java: end of line, block, and JavaDoc.  The parser will pick them up and pass them through to the generated code. Because the
+ parser must be aware of them, there are only a few places where they are allowed.  Java comments can go before a package declaration, before an import declaration, 
+ before a data type declaration, or before a constructor case.  Java comments on constructor cases can appear before the punctuation ('=' and '|') or after. Java comments in any other location will cause a syntax error.
+
+     In a large team, most programmers will interact with the generated java more than the jADT files so JavaDoc comments on constructor cases are treated specially.  
+Different parts of the generated code will get subsets of the JavaDoc provided for the jADT constructor case. The resulting Java class's doc will have @param and 
+@return tags stripped, the resulting factory method will have no tags stripped, the resulting constructor method will have @return 
+stripped, and each field will have only the documentation from its corresponding @param tag.  In short, put the usual range of JavaDoc tags (@author, @since, @return, @param, etc)
+in JavaDoc comments on constructor cases and jADT will try to do something reasonable with them in the generated Java code.
+     
+     Here's an example of using end of line and block comments on package and import declarations.
+     
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/CommentSamples.jadt|id=block_and_eol}
+
+     Here's an example of using JavaDoc comments before a datatype declaration and after '=' and '|' punctuation on constructor cases.
+              
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/CommentSamples.jadt|id=comment_style_1}
+
+     Here's a similar example, but the JavaDoc comments are before '=' and '|' punctuation on constructor cases.
+
+%{snippet|verbatim=true|file=jADT-samples/src/main/jadt/CommentSamples.jadt|id=comment_style_2}
+
+     {{{./visitor_variations.html}\<\< Visitor Variations }} | {{{./shell_generation.html} Generating Java from the Shell \>\>}}

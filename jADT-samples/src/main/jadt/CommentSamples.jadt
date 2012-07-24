@@ -13,20 +13,30 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  */
+
+# START SNIPPET: internal
+     # This is an internal comment.  It's completely ignored by the parser
+     # blah de blah de blah
+# END SNIPPET: internal
  
+# START SNIPPET: block_and_eol
      /*
-      * Here's one sample comment.  It's a good spot for copyright and license info
+      * Here's one sample comment.  It's a good spot for copyright and license info.
+      * This one happens to be a block comment
       */
      package com.pogofish.jadt.samples.comments.data
      
-     /*
-      * Imports can also have comments.  Mostly useful for the case when there is
-      * no package declaration.
-      */
+      // Imports can also have comments.  Mostly useful for the case when there is
+      // no package declaration.
+      // this one happens to be an end of line style comment
      import java.util.*
-     
+# END SNIPPET: block_and_eol
+
+# START SNIPPET: comment_style_1     
      /**
       * Here's one style of using JavaDoc
+      *
+      * @author me
       */
      CommentStyle1 =
          /**
@@ -34,16 +44,21 @@ limitations under the License.
           *
           * @param arg1 some argument
           * @param arg2 some other argument
+          * @return The Foo case of ConstructorStyle1
           */
           Foo(int arg1, int arg2) |
           /**
            * Another constructor case
+           * @return The Bar case of ConstructorStyle1
            */
-           Bar
-           
+          Bar
+# END SNIPPET: comment_style_1
+
+# START SNIPPET: comment_style_2   
      /**
-      * Here's another style of using JavaDoc which does the same thing.
-      * The constructor case comments occur before the puntuation = and |
+      * Here's another style of using JavaDoc.
+      *
+      * @since the day after tomorrow
       */
      CommentStyle2
          /**
@@ -51,9 +66,12 @@ limitations under the License.
           *
           * @param arg1 some argument
           * @param arg2 some other argument
+          * @return The Foo case of ConstructorStyle2
           */
         = Foo(int arg1, int arg2)
           /**
            * Another constructor case
+           * @return The Bar case of ConstructorStyle2
            */
-         | Bar       
+        | Bar       
+ # END SNIPPET: comment_style_2

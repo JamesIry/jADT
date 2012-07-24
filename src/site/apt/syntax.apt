@@ -1,8 +1,8 @@
 Syntax
 
-    {{{./change_list.html}\<\< Change List }} | | {{{./constraints.html} Constraints \>\>}}
+    {{{./change_list.html}\<\< Change List }} | {{{./constraints.html} Constraints \>\>}}
 
-    This shows the syntax of a jADT file in EBNF notation with informal commentary interspersed
+    This shows the syntax of a jADT file in EBNF notation with informal commentary interspersed. X? means X is optional.  X* mean 0 or more occurances of X.  X+ means 1 or more occurances of X.
 
 +---
     DOC : PACKAGE? IMPORTS DATATYPES
@@ -11,28 +11,24 @@ Syntax
     A jADT document has an optional package followed by imports and datatypes.
     
 +---
-    PACKAGE : "package" PACKAGENAME
+    PACKAGE : JAVA_COMMENTS? "package" PACKAGENAME
+    PACKAGENAME : identifier ("." identifier)*
 +---
 
     The package declaration (if it exists) is the keyword "package" followed by a package name.  No semicolon required.
 
 +---
     IMPORTS : IMPORT*
-    IMPORT : "import" PACKAGENAME
+    IMPORT : JAVA_COMMENTS? "import" IMPORTNAME
+    IMPORTNAME : identifier ("." identifier)* ("." "*")?
 +---
 
-    A jADT document may specify any number (including 0) of package names to import.  Each one is the keyword "import" followed by a package name.
+    A jADT document may specify any number (including 0) of package names to import.  Each one is the keyword "import" followed by a package name which may include a wildcard *.
 No semicolon required.
-
-+---
-    PACKAGENAME : valid Java package name
-+---
-
-    A package name used in a package or import declaration must be a valid Java package name.
     
 +---
     DATATYPES : DATATYPE+
-    DATATYPE : DATATYPENAME TYPEARGS? "=" CONSTRUCTORS
+    DATATYPE : JAVA_COMMENTS? DATATYPENAME TYPEARGS? JAVA_COMMENTS? "=" CONSTRUCTORS
     DATATYPENAME : a valid Java identifier, not qualified with a package
 +---
 
@@ -47,8 +43,8 @@ of a name, optional type arguments, "=" and a list of constructors.
     As in Java, the type arguments for a data type are specfied with \<Arg1, Arg2, Arg3, etc\>.
 
 +---
-    CONSTRUCTORS : CONSTRUCTOR ("|" CONSTRUCTOR)*
-    CONSTRUCTOR : CONSTRUCTORNAME ("(" ARGS ")")?
+    CONSTRUCTORS : CONSTRUCTOR (JAVA_COMMENTS? "|" CONSTRUCTOR)*
+    CONSTRUCTOR : JAVA_COMMENTS? CONSTRUCTORNAME ("(" ARGS ")")?
     CONSTRUCTORNAME : a valid Java identifier
 +---
 
@@ -102,18 +98,24 @@ args are separated by ",".
    Type params must be a series of 1 or more reference types separated by ",".
 
 +---
-    PRIMITIVETYPE : "boolean" | "char" | "double" |
+    PRIMITIVETYPE : "boolean" | "byte" | "char" | "double" |
                     "float" | "int" | "long" | "short"
 +---
 
     Primitives types are the Java primitive types.
 
++----
+    JAVA_COMMENTS : Java style comments - end of line (//), block (/* */), and JavaDoc (/** */). 
++----
+
+    Java style comments are allowed in several places as described by this grammar, but there are {{{./comments.html} limitations}} on their location.
+
     
-    Lexical conventions    
+Lexical conventions    
 
       * jADT is case sensitive.
 
-      * Java style comments, both end of line (//) and block (/* */), are allowed.
+      * Internal comments start with # and continue to the end of line.  They are completely ignored by the parser other than as token separators.
 
       * Whitespace isn't significant other than for separating tokens.
 
@@ -125,5 +127,5 @@ args are separated by ",".
 
       * The punctuation characters "=" "," "\<" "\>" "(" ")" serve as both tokens and token separators.  E.g. the data type definition "Foo=Bar|Baz" is parsed the same as "Foo = Bar | Baz"
    
-    {{{./change_list.html}\<\< Change List }} | | {{{./constraints.html} Constraints \>\>}}
+    {{{./change_list.html}\<\< Change List }} | {{{./constraints.html} Constraints \>\>}}
     

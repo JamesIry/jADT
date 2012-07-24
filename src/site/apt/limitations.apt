@@ -2,7 +2,6 @@ Known Limitations
 
     {{{./ant_generation.html}\<\< Generating Java from Ant }} | {{{./faq.html} FAQ \>\>}}
 
-    * You can add comments to a jADT file but there's no way to create comments that flow through to the generated Java. {{{https://github.com/JamesIry/jADT/issues/4}[track]}}
     * jADT generates equals, hashCode and toString methods for you. But if you don't like them, or you want an ADT to be Comparable then you're stuck. {{{https://github.com/JamesIry/jADT/issues/29}track}}
  
     []

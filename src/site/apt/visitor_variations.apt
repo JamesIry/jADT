@@ -1,6 +1,6 @@
 Visitor Variations
 
-     {{{./how_adt.html}\<\< How can Algebraic DataTypes (ADTs) Be Used? }} | {{{./shell_generation.html} Generating Java from the Shell \>\>}}
+     {{{./how_adt.html}\<\< How can Algebraic DataTypes (ADTs) Be Used? }} | {{{./comments.html} Comments \>\>}}
 
      The Java generated from a {{{./index.html}jADT}} definition supports several 
 different variations on the {{{./visitor.html}Visitor pattern}}, each specialized to a particular need.
@@ -73,4 +73,4 @@ SwitchBlockWithDefault
     The non-generic ADT "DataType" will get an abstract base class DataType.SwitchBlockWithDefault where the SwitchBlockWithDefault's _case
  methods will return type void. The generic ADT "DataType\<T1,T2\> will get DataType.SwitchBlockWithDefault\<T1, T2\>.  
  
-    {{{./how_adt.html}\<\< How can Algebraic DataTypes (ADTs) Be Used? }} | {{{./shell_generation.html} Generating Java from the Shell \>\>}}
+     {{{./how_adt.html}\<\< How can Algebraic DataTypes (ADTs) Be Used? }} | {{{./comments.html} Comments \>\>}}

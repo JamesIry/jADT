@@ -5,6 +5,17 @@ Change List
     Prior to 1.0 expect frequent <<Breaking Change>>s.  SNAPSHOT versions are development versions.
 
 * ${projectVersion}
+
+    * Java comments now {{{./comments.html} pass through}} to the generated Java.  This is a slight <<Breaking Change>> if you happen
+    to have a Java comment in a place that the parser can't figure out.
+
+    * Support wildcard imports (e.g. import my.package.*).
+
+    * Support the 'byte' primitive type. Somehow I missed it. Oops.
+    
+    * Only put the jADT definition of the current data type in the comment header on generated .java files instead of putting all the data types from the same .jadt file.
+
+* 0.2.1
    
     * Fixed screw up with default output directory of Maven plugin.
 

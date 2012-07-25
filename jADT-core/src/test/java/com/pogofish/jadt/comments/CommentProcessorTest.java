@@ -56,15 +56,6 @@ public class CommentProcessorTest {
         assertEquals(comments, commentProcessor.stripTags(set("@foo"), comments));
     }
     
-    @Test
-    public void testJavaDocOnly() {
-        final CommentProcessor commentProcessor = new CommentProcessor();
-        JavaComment javaDocComment = _JavaDocComment("/**", list(ONEWS), NO_TAG_SECTIONS, "*/");
-        @SuppressWarnings("unchecked")
-        List<JavaComment> comments = list(javaDocComment, _JavaEOLComment("//whatever"), _JavaBlockComment(list(list(_BlockWord("/*"), _BlockWhiteSpace(" "), _BlockWord("*/")))));
-        assertEquals(list(javaDocComment), commentProcessor.javaDocOnly(comments));
-    }
-    
     private void testStripTags(String expected, List<String> inputs, Set<String> tags) {
         final JavaDocParser parser = new JavaDocParser();
         final List<JavaComment> outputs = new ArrayList<JavaComment>(inputs.size());
@@ -77,6 +68,15 @@ public class CommentProcessorTest {
         final String actual = ASTPrinter.printComments("", stripped);
         assertEquals(expected, actual);    
    }
+    
+    @Test
+    public void testJavaDocOnly() {
+        final CommentProcessor commentProcessor = new CommentProcessor();
+        JavaComment javaDocComment = _JavaDocComment("/**", list(ONEWS), NO_TAG_SECTIONS, "*/");
+        @SuppressWarnings("unchecked")
+        List<JavaComment> comments = list(javaDocComment, _JavaEOLComment("//whatever"), _JavaBlockComment(list(list(_BlockWord("/*"), _BlockWhiteSpace(" "), _BlockWord("*/")))));
+        assertEquals(list(javaDocComment), commentProcessor.javaDocOnly(comments));
+    }
 
     @Test
     public void testLeftAlignBlock() {
@@ -131,9 +131,10 @@ public class CommentProcessorTest {
     public void testParamDoc() {
         testParamDoc("", "foo", list("/** */"));
         testParamDoc("", "foo", list("/** @flurg foo */"));
-        testParamDoc("/**\n * hello */\n", "foo", list("/** @param foo hello */"));
+        testParamDoc("", "foo", list("/** @param @foo * */"));
+        testParamDoc("/**\n * hello @world */\n", "foo", list("/** @param foo hello @world */"));
         testParamDoc("/**\n * hello\n */\n", "foo", list("/** \n * @param foo hello\n */"));
-        testParamDoc("/**\n * hello\n */\n", "foo", list("/** \n * @param bar hello1\n * @param foo hello\n * @param baz hello2\n */"));
+        testParamDoc("/**\n * hello *\n */\n", "foo", list("/** \n * @param bar hello1\n * @param foo hello *\n * @param baz hello2\n */"));
     }
 
     private void testParamDoc(String expected, String paramName, List<String> inputs) {
@@ -148,5 +149,14 @@ public class CommentProcessorTest {
         final String actual = ASTPrinter.printComments("", paramDoc);
         assertEquals(expected, actual);
      }
+    
+
+    @Test
+    public void testParamDocNonJavaDoc() {
+        final CommentProcessor commentProcessor = new CommentProcessor();
+        @SuppressWarnings("unchecked")
+        List<JavaComment> comments = list(_JavaEOLComment("//whatever"), _JavaBlockComment(list(list(_BlockWord("/*"), _BlockWhiteSpace(" "), _BlockWord("*/")))));
+        assertEquals(Util.<JavaComment>list(), commentProcessor.paramDoc("foo", comments));
+    }
     
 }

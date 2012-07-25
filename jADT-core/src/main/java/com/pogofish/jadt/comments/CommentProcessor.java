@@ -239,7 +239,7 @@ public class CommentProcessor {
             });
         }
         
-        if(accum[0] != null && !accum[0].isEmpty()) {
+        if(state[0] == ParamState.ACCUMULATING) {
             results.add(_JavaDocComment("/**", accum[0], Util.<JDTagSection>list(), "*/"));
         }
         

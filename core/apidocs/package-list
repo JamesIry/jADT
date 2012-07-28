@@ -1,0 +1,15 @@
+com.pogofish.jadt
+com.pogofish.jadt.ast
+com.pogofish.jadt.checker
+com.pogofish.jadt.comments
+com.pogofish.jadt.comments.javacc.generated
+com.pogofish.jadt.emitter
+com.pogofish.jadt.errors
+com.pogofish.jadt.javadoc.javacc
+com.pogofish.jadt.parser
+com.pogofish.jadt.parser.javacc
+com.pogofish.jadt.parser.javacc.generated
+com.pogofish.jadt.printer
+com.pogofish.jadt.sink
+com.pogofish.jadt.source
+com.pogofish.jadt.util

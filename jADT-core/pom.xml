@@ -17,7 +17,7 @@
   <distributionManagement>
     <site>
       <id>core</id>
-      <url>file:///tmp/jADT-${project.version}/core/</url>
+      <url>target/sitedeploy/jADT-${project.version}/core/</url>
     </site>
   </distributionManagement>
   

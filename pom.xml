@@ -19,8 +19,8 @@
   <distributionManagement>
     <site>
       <id>jADT</id>
-      <!-- site is at http://jamesiry.github.com/jADT but I prefer to manage deployment to it separately from releaseing artifacts -->
-      <url>file:///tmp/jADT-${project.version}</url>
+      <!-- site is at http://jamesiry.github.com/jADT but I prefer to manage deployment to it separately from releasing artifacts -->
+      <url>file://${project.build.directory}/sitedeploy/jADT-${project.version}</url>
     </site>
   </distributionManagement>
 

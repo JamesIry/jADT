@@ -18,7 +18,7 @@
   <distributionManagement>
     <site>
       <id>maven</id>
-      <url>file:///tmp/jADT-${project.version}/maven/</url>
+      <url>target/sitedeploy/jADT-${project.version}/maven/</url>
     </site>
   </distributionManagement>
   

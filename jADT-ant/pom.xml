@@ -17,7 +17,7 @@
   <distributionManagement>
     <site>
       <id>ant</id>
-      <url>file:///tmp/jADT-${project.version}/ant/</url>
+      <url>target/sitedeploy/jADT-${project.version}/ant/</url>
     </site>
   </distributionManagement>
   

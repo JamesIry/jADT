@@ -25,17 +25,17 @@
 <a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment">*/</em>
 <a class="jxr_linenumber" name="16" href="#16">16</a>  <strong class="jxr_keyword">package</strong> com.pogofish.jadt.emitter;
 <a class="jxr_linenumber" name="17" href="#17">17</a>  
-<a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertEquals;
-<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.fail;
-<a class="jxr_linenumber" name="20" href="#20">20</a>  
-<a class="jxr_linenumber" name="21" href="#21">21</a>  <strong class="jxr_keyword">import</strong> java.util.Collections;
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertEquals;
+<a class="jxr_linenumber" name="21" href="#21">21</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.fail;
 <a class="jxr_linenumber" name="22" href="#22">22</a>  
-<a class="jxr_linenumber" name="23" href="#23">23</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="23" href="#23">23</a>  <strong class="jxr_keyword">import</strong> java.util.Collections;
 <a class="jxr_linenumber" name="24" href="#24">24</a>  
-<a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.ast.DataType;
-<a class="jxr_linenumber" name="26" href="#26">26</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.ast.Doc;
-<a class="jxr_linenumber" name="27" href="#27">27</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.emitter.DocEmitter;
-<a class="jxr_linenumber" name="28" href="#28">28</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.emitter.DummyDocEmitter;
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="26" href="#26">26</a>  
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.ast.DataType;
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.ast.Doc;
 <a class="jxr_linenumber" name="29" href="#29">29</a>  <strong class="jxr_keyword">import</strong> com.pogofish.jadt.sink.StringSinkFactory;
 <a class="jxr_linenumber" name="30" href="#30">30</a>  
 <a class="jxr_linenumber" name="31" href="#31">31</a>  
@@ -50,7 +50,7 @@
 <a class="jxr_linenumber" name="40" href="#40">40</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="41" href="#41">41</a>      @Test
 <a class="jxr_linenumber" name="42" href="#42">42</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testHappy() {
-<a class="jxr_linenumber" name="43" href="#43">43</a>          <strong class="jxr_keyword">final</strong> Doc testDoc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"some source"</span>, <span class="jxr_string">""</span>, Collections.&lt;String&gt;emptyList(),Collections.&lt;DataType&gt;emptyList());
+<a class="jxr_linenumber" name="43" href="#43">43</a>          <strong class="jxr_keyword">final</strong> Doc testDoc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"some source"</span>, EMPTY_PKG, NO_IMPORTS,Collections.&lt;DataType&gt;emptyList());
 <a class="jxr_linenumber" name="44" href="#44">44</a>          <strong class="jxr_keyword">final</strong> DocEmitter dummyDocEmitter = <strong class="jxr_keyword">new</strong> DummyDocEmitter(testDoc, <span class="jxr_string">"SomeClass"</span>);
 <a class="jxr_linenumber" name="45" href="#45">45</a>          <strong class="jxr_keyword">final</strong> StringSinkFactory factory = <strong class="jxr_keyword">new</strong> StringSinkFactory(<span class="jxr_string">"baseDir"</span>);
 <a class="jxr_linenumber" name="46" href="#46">46</a>          dummyDocEmitter.emit(factory, testDoc);
@@ -62,8 +62,8 @@
 <a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="53" href="#53">53</a>      @Test
 <a class="jxr_linenumber" name="54" href="#54">54</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testWrongDoc() {
-<a class="jxr_linenumber" name="55" href="#55">55</a>          <strong class="jxr_keyword">final</strong> Doc testDoc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"some source"</span>, <span class="jxr_string">""</span>, Collections.&lt;String&gt;emptyList(),Collections.&lt;DataType&gt;emptyList());
-<a class="jxr_linenumber" name="56" href="#56">56</a>          <strong class="jxr_keyword">final</strong> Doc doc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"some source"</span>, <span class="jxr_string">""</span>, Collections.&lt;String&gt;emptyList(),Collections.&lt;DataType&gt;emptyList());
+<a class="jxr_linenumber" name="55" href="#55">55</a>          <strong class="jxr_keyword">final</strong> Doc testDoc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"some source"</span>, EMPTY_PKG, NO_IMPORTS,Collections.&lt;DataType&gt;emptyList());
+<a class="jxr_linenumber" name="56" href="#56">56</a>          <strong class="jxr_keyword">final</strong> Doc doc = <strong class="jxr_keyword">new</strong> Doc(<span class="jxr_string">"some source"</span>, EMPTY_PKG, NO_IMPORTS,Collections.&lt;DataType&gt;emptyList());
 <a class="jxr_linenumber" name="57" href="#57">57</a>          <strong class="jxr_keyword">final</strong> DocEmitter dummyDocEmitter = <strong class="jxr_keyword">new</strong> DummyDocEmitter(testDoc, <span class="jxr_string">"SomeClass"</span>);
 <a class="jxr_linenumber" name="58" href="#58">58</a>          <strong class="jxr_keyword">final</strong> StringSinkFactory factory = <strong class="jxr_keyword">new</strong> StringSinkFactory(<span class="jxr_string">"baseDir"</span>);
 <a class="jxr_linenumber" name="59" href="#59">59</a>          <strong class="jxr_keyword">try</strong> {

@@ -24,9 +24,11 @@ import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplCons
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.DOUBLE;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.EOF;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.EQUALS;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.EXTENDS;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.FINAL;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.FLOAT;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.IDENTIFIER;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.IMPLEMENTS;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.IMPORT;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.INT;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.JAVA_KEYWORD;
@@ -227,13 +229,16 @@ public class JavaCCTokenizerTest {
      */
     @Test
     public void testKeywords() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("import package boolean byte double char float int long short final abstract assert break case catch class const continue "
-                + "default do else enum extends finally for goto if implements instanceof interface native new private protected public return "
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("import package final extends implements boolean byte double char float int long short abstract assert break case catch class const continue "
+                + "default do else enum finally for goto if instanceof interface native new private protected public return "
                 + "static strictfp super switch synchronized this throw throws transient try void volatile while");
 
         // keywords used by jADT
         check(tokenizer, "import", IMPORT, 1);
         check(tokenizer, "package", PACKAGE, 1);
+        check(tokenizer, "final", FINAL, 1);
+        check(tokenizer, "extends", EXTENDS, 1);
+        check(tokenizer, "implements", IMPLEMENTS, 1);
 
         // primitive Java types
         check(tokenizer, "boolean", BOOLEAN, 1);
@@ -244,7 +249,6 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "int", INT, 1);
         check(tokenizer, "long", LONG, 1);
         check(tokenizer, "short", SHORT, 1);
-        check(tokenizer, "final", FINAL, 1);
 
         // Java keywords not used by jADT but reserved to prevent bad Java
         // generation
@@ -260,12 +264,10 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "do", JAVA_KEYWORD, 1);
         check(tokenizer, "else", JAVA_KEYWORD, 1);
         check(tokenizer, "enum", JAVA_KEYWORD, 1);
-        check(tokenizer, "extends", JAVA_KEYWORD, 1);
         check(tokenizer, "finally", JAVA_KEYWORD, 1);
         check(tokenizer, "for", JAVA_KEYWORD, 1);
         check(tokenizer, "goto", JAVA_KEYWORD, 1);
         check(tokenizer, "if", JAVA_KEYWORD, 1);
-        check(tokenizer, "implements", JAVA_KEYWORD, 1);
         check(tokenizer, "instanceof", JAVA_KEYWORD, 1);
         check(tokenizer, "interface", JAVA_KEYWORD, 1);
         check(tokenizer, "native", JAVA_KEYWORD, 1);

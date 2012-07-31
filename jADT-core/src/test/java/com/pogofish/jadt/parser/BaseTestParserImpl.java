@@ -405,4 +405,17 @@ public abstract class BaseTestParserImpl implements ParserImpl {
     
     }
 
+    @Override
+    public void extendsKeyword() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    }
+
+    @Override
+    public void implementsKeyword() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    }
+    
+
 }

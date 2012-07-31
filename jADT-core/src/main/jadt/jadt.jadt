@@ -20,6 +20,21 @@ import java.util.Map
 import com.pogofish.jadt.errors.SyntaxError
 
 /**
+ * A value that is optional
+ */
+Optional<T>
+     /**
+      * Has a value
+      * 
+      * @param value held in the Some
+      */
+   = Some(T value)
+     /**
+      * No value
+      */
+   | None
+
+/**
  * The result of a parse
  */
 ParseResult
@@ -70,9 +85,11 @@ DataType
      * @param comments that come before the data type
      * @param name of the data type
      * @param type argument for the datatype
+     * @param extendedType optional ref type that this datatype extends
+     * @param implementedTypes list of ref types that this datatype implements
      * @param constructors non-empty list of constructor cases for the data type
      */
-  = DataType(final List<JavaComment> comments, final String name, final List<String> typeArguments, final List<Constructor> constructors)
+  = DataType(final List<JavaComment> comments, final String name, final List<String> typeArguments, Optional<RefType> extendedType, List<RefType> implementedTypes, final List<Constructor> constructors)
 
 /**
  * A constructor case for a data type

@@ -38,6 +38,9 @@ import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.JavaComment.JavaBlockComment;
 import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
 import com.pogofish.jadt.ast.JavaComment.JavaEOLComment;
+import com.pogofish.jadt.ast.Optional;
+import com.pogofish.jadt.ast.Optional.None;
+import com.pogofish.jadt.ast.Optional.Some;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.PrimitiveType.BooleanType;
 import com.pogofish.jadt.ast.PrimitiveType.ByteType;
@@ -165,7 +168,31 @@ public class ASTPrinter  {
      * @return pretty string
      */
     public static String print(DataType dataType) {
-        final StringBuilder builder = new StringBuilder(dataType.name + " =\n    ");
+        final StringBuilder builder = new StringBuilder(dataType.name);
+        dataType.extendedType._switch(new Optional.SwitchBlock<RefType>() {
+            @Override
+            public void _case(Some<RefType> x) {
+                builder.append(" extends ");
+                builder.append(print(x.value));
+            }
+
+            @Override
+            public void _case(None<RefType> x) {
+            }
+        });
+        if (!dataType.implementedTypes.isEmpty()) {
+            builder.append(" implements ");
+            boolean first = true;
+            for (RefType type : dataType.implementedTypes) {
+                if (first) {
+                    first = false;
+                } else {
+                    builder.append(", ");
+                }
+                builder.append(print(type));
+            }
+        }
+        builder.append(" =\n    ");
         boolean first = true;
         for (Constructor constructor : dataType.constructors) {
             if (first) {

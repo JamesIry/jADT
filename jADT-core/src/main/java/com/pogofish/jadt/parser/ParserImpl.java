@@ -312,4 +312,14 @@ public interface ParserImpl {
      * Errors that occured during parsing
      */
     public abstract List<SyntaxError> errors();
+
+    /**
+     * 'extends'
+     */
+    public abstract void extendsKeyword() throws Exception;
+
+    /**
+     * 'implements'
+     */
+    public abstract void implementsKeyword() throws Exception;
 }

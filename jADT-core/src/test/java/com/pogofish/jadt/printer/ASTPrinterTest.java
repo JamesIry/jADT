@@ -30,6 +30,7 @@ import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
+import static com.pogofish.jadt.ast.Optional._Some;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -62,6 +63,7 @@ import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.ast.Optional;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.util.Util;
@@ -81,7 +83,10 @@ public class ASTPrinterTest {
     private static final JDToken ONEEOL = _JDEOL("\n");
     private static final JDToken ONEWS = _JDWhiteSpace(" ");
     private static final List<JDToken> NO_TOKENS = Util.<JDToken>list();
+    private static final List<RefType> NO_TYPE_ARGS = Util.<RefType>list();
     private static final List<JDTagSection> NO_TAG_SECTIONS = Util.<JDTagSection>list();
+    private static final Optional<RefType> NO_EXTENDS = Optional.<RefType>_None();
+    private static final List<RefType> NO_IMPLEMENTS = Util.<RefType>list();
     
     /**
      * Cobertura isn't happy unless the (implicit) constructor is called. This
@@ -163,7 +168,9 @@ public class ASTPrinterTest {
      */
     @Test
     public void testDataTypes() {
-        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), list(new Constructor(NO_COMMENTS, "Bar",
+        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(new Constructor(NO_COMMENTS, "Bar",
+                Util.<Arg> list()), new Constructor(NO_COMMENTS, "Baz", Util.<Arg> list())))));
+        assertEquals("Foo extends FooA implements FooB, FooC =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), _Some(_ClassType("FooA", NO_TYPE_ARGS)), list(_ClassType("FooB", NO_TYPE_ARGS), _ClassType("FooC", NO_TYPE_ARGS)), list(new Constructor(NO_COMMENTS, "Bar",
                 Util.<Arg> list()), new Constructor(NO_COMMENTS, "Baz", Util.<Arg> list())))));
     }
 
@@ -185,7 +192,7 @@ public class ASTPrinterTest {
                 "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), Util.<DataType> list())));
         // package, imports and datatypes
         assertEquals("package some.package\n\nimport number.one\nimport number.two\n\nFoo =\n    Bar\n", print(new Doc(
-                "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), list(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), 
+                "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), list(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, 
                         list(new Constructor(NO_COMMENTS, "Bar", Util.<Arg> list())))))));
     }
 

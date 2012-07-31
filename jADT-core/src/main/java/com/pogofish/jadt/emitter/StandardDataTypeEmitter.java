@@ -21,6 +21,10 @@ import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.ast.Optional;
+import com.pogofish.jadt.ast.Optional.None;
+import com.pogofish.jadt.ast.Optional.Some;
+import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.comments.CommentProcessor;
 import com.pogofish.jadt.printer.ASTPrinter;
 import com.pogofish.jadt.sink.Sink;
@@ -59,6 +63,32 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
             emitMultipleConstructor(sink, dataType, header);
         }
     }
+    
+    private void emitBaseClassAndInterfaces(final Sink sink, DataType dataType) {
+        dataType.extendedType._switch(new Optional.SwitchBlock<RefType>() {
+            @Override
+            public void _case(Some<RefType> x) {
+                sink.write(" extends ");
+                sink.write(ASTPrinter.print(x.value));
+            }
+
+            @Override
+            public void _case(None<RefType> x) {
+            }
+        });
+        if (!dataType.implementedTypes.isEmpty()) {
+            sink.write(" implements ");
+            boolean first = true;
+            for (RefType type : dataType.implementedTypes) {
+                if (first) {
+                    first = false;
+                } else {
+                    sink.write(", ");
+                }
+                sink.write(ASTPrinter.print(type));
+            }
+        }
+    }
 
     private void emitSingleConstructor(Sink sink, DataType dataType, String header) {
     	logger.finer("Generating single constructor for " + dataType.name + ".");
@@ -67,6 +97,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         
         sink.write("public final class " + dataType.name);
         classBodyEmitter.emitParameterizedTypeName(sink, dataType.typeArguments);
+        emitBaseClassAndInterfaces(sink, dataType);
         sink.write(" {\n\n");
         
         
@@ -93,6 +124,7 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
        	logger.finer("Generating multiple constructors for " + dataType.name + ".");
         sink.write("public abstract class " + dataType.name);
         classBodyEmitter.emitParameterizedTypeName(sink, dataType.typeArguments);
+        emitBaseClassAndInterfaces(sink, dataType);
         sink.write(" {\n\n");
         
         sink.write("   private " + dataType.name + "() {\n");

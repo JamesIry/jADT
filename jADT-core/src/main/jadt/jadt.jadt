@@ -19,50 +19,265 @@ import java.util.List
 import java.util.Map
 import com.pogofish.jadt.errors.SyntaxError
 
-ParseResult = ParseResult(final Doc doc, final List<SyntaxError> errors)
+/**
+ * The result of a parse
+ */
+ParseResult
+    /**
+     * @param doc The Doc produced by the parse
+     * @errors List of SyntaxErrors produced by the parse
+     */ 
+  = ParseResult(final Doc doc, final List<SyntaxError> errors)
 
-Doc = Doc(final String srcInfo, final Pkg pkg, final List<Imprt> imports, final List<DataType> dataTypes) 
+/**
+ * Root of the syntax tree produced by the parser
+ */
+Doc
+    /**
+     * @param srcInfo information about what source produced this document
+     * @param pkg name of the package in which all the generated classes will be placed. Empty string for
+     *        the default package
+     * @param imports list of Imprt to be appended to each class
+     * @param dataTypes all the data types defined by this doc
+     */
+  = Doc(final String srcInfo, final Pkg pkg, final List<Imprt> imports, final List<DataType> dataTypes) 
 
-Pkg = Pkg(final List<JavaComment> comments, final String name)
+/**
+ * A package declaration
+ */
+Pkg
+    /**
+     * @param comments that come before the package declaration
+     * @param name of the package, empty string for default package
+     */
+  = Pkg(final List<JavaComment> comments, final String name)
 
-Imprt = Imprt(final List<JavaComment> comments, final String name)
+/**
+ * A single import declaration
+ */
+Imprt
+   /**
+    * @param comments that come before the import
+    * @param name of the package to import
+    */
+  = Imprt(final List<JavaComment> comments, final String name)
 
-DataType = DataType(final List<JavaComment> comments, final String name, final List<String> typeArguments, final List<Constructor> constructors)
+/**
+ * A single data type definition
+ */
+DataType
+    /**
+     * @param comments that come before the data type
+     * @param name of the data type
+     * @param type argument for the datatype
+     * @param constructors non-empty list of constructor cases for the data type
+     */
+  = DataType(final List<JavaComment> comments, final String name, final List<String> typeArguments, final List<Constructor> constructors)
 
-Constructor = Constructor(final List<JavaComment> comments, final String name, final List<Arg> args)
+/**
+ * A constructor case for a data type
+ */
+Constructor
+    /**
+     * @param comments that come before this case constructor
+     * @param name of the case constructor
+     * @param args list of args (fields) for this constructor case
+     */
+  = Constructor(final List<JavaComment> comments, final String name, final List<Arg> args)
 
-Arg = Arg(final List<ArgModifier> modifiers, final Type type, final String name)
+/**
+ * A single argument/field for a constructor case
+ */
+Arg
+    /**
+     * @param modifiers for this arg
+     * @param type of this arg
+     * @param name of this arg
+     */
+ = Arg(final List<ArgModifier> modifiers, final Type type, final String name)
 
-ArgModifier = Final
+/**
+ * Modifiers for Args
+ */
+ArgModifier
+    /**
+     * "final"
+     */
+  = Final
 
+/**
+ * A type, e.g. of an Arg
+ */
 Type
+    /**
+     * A ref type
+     *
+     * @param type RefType used to create the Ref
+     */
   = Ref(final RefType type)
+    /**
+     * A primitive type
+     *
+     * @param type PrimitiveType used to create the Primitive
+     */
   | Primitive(final PrimitiveType type)
 
+/**
+ * A non-primitive type
+ */
 RefType
+    /**
+     * A non-array class type
+     *
+     * @param baseName name of the class
+     * @param typeArguments list of types used to instantiate the class into a type if it is 
+     *        a type constructor("generic type").  Empty for non generic classes
+     */
   = ClassType(final String baseName, final List<RefType> typeArguments)
+    /**
+     * An array of some type
+     *
+     * @param heldType the type of the elements in this array type
+     */
   | ArrayType(final Type heldType)
 
+/**
+ * A non class, non array type
+ */
 PrimitiveType
+    /**
+     * "boolean"
+     */
   = BooleanType
+    /**
+     * "byte"
+     */
   | ByteType
+    /**
+     * "char"
+     */
   | CharType
+    /**
+     * "double"
+     */
   | DoubleType
+    /**
+     * "float"
+     */
   | FloatType
+    /**
+     * "int"
+     */
   | IntType
+    /**
+     * "long"
+     */
   | LongType
+    /**
+     * "short"
+     */
   | ShortType 
 
-CommentedIdentifier = CommentedIdentifier(final List<JavaComment> comments, final String identifier)
-  
+/**
+ * A pair consisting of a list of comments followed by an identifier.  Used internally by the parser
+ * but not part of the AST
+ */
+CommentedIdentifier
+     /**
+      * @param comments that come before the identifier
+      * @param identifier name of the identifier
+      */
+   = CommentedIdentifier(final List<JavaComment> comments, final String identifier)
+
+/**
+ * A Java style comment that should be carried through to the generated Java
+ */  
 JavaComment
+     /**
+      * JavaDoc style comment
+      *
+      * @param start the opening part of the comment.  A '/' followed by at least two '*'
+      * @param generalSection tokens that precede any tags
+      * @param tagSections list of tags
+      * @param end the ending part of the comment.  At least one '*' followed by a '/'
+      */
   = JavaDocComment(final String start, final List<JDToken> generalSection, final List<JDTagSection> tagSections, final String end)
+    /**
+     * A Java block style comment
+     *
+     * @param lines list lines which are themselves just list of BlockTokens
+     */
   | JavaBlockComment(List<List<BlockToken>> lines)
+    /**
+     * A Java end of line style comment
+     *
+     * @param comment the content of the comment including leading '/' '/'
+     */
   | JavaEOLComment(final String comment)
 
-JDTagSection = JDTagSection(String name, List<JDToken> tokens)
+/**
+ * A single tag within a JavaDocComment
+ */
+JDTagSection
+    /**
+     * @param name of the tag in this tag section
+     *
+     * @param list of tokens in the tag section
+     */
+  = JDTagSection(String name, List<JDToken> tokens)
 
-JDToken = JDAsterisk | JDEOL(String content) | JDTag(String name) | JDWord(String word) | JDWhiteSpace(String ws)
+/**
+ * A single token in a JavaDoc style comment
+ */
+JDToken
+    /**
+     * '*'
+     */
+  = JDAsterisk
+    /**
+     * An end of line 
+     *
+     * @param content of the end of line
+     */
+  | JDEOL(String content)
+    /**
+     * A tag
+     *
+     * @param name of the tag
+     */
+  | JDTag(String name)
+    /**
+     * A string of contiguous whitespace
+     *
+     * @param ws the content of the whitespace
+     */
+  | JDWhiteSpace(String ws) 
+     /** 
+      * Anything that isn't an asterisk, end of line, tag, or whitespace
+      *
+      * @param word content of the word
+      */
+  | JDWord(String word)
 
-BlockToken = BlockWord(String word) | BlockWhiteSpace(String ws) | BlockEOL(String content)
-
+/**
+ * A single token in a Java block style comment
+ */
+BlockToken
+    /**
+     * A string of continuous whitespace
+     *
+     * @param ws content of the whitespace
+     */
+  = BlockWhiteSpace(String ws)
+    /**
+     * A single end of line mark
+     *
+     * @param content of the end of line
+     */
+  | BlockEOL(String content)
+    /**
+     * Anything that isn't whitespace or and end of line
+     *
+     * @param word content of the word
+     */
+  | BlockWord(String word)

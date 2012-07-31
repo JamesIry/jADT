@@ -15,15 +15,73 @@ limitations under the License.
 */
 package com.pogofish.jadt.errors
 
+/**
+ * An error in the user's input
+ */
 UserError
+    /**
+     * A semantic user error
+     *
+     * @param error the content of the error
+     */
   = Semantic(final SemanticError error)
+    /**
+     * A syntactic user error
+     *
+     * @param error the content of the error
+     */
   | Syntactic(final SyntaxError error)
 
-SyntaxError = UnexpectedToken(final String expected, final String found, final int line)
+/**
+ * An error found by the parser
+ */
+SyntaxError
+     /**
+      * One token was expected but another was found
+      *
+      * @param expected token
+      * @param found token
+      * @param line where the error was found
+      */
+   = UnexpectedToken(final String expected, final String found, final int line)
 
-SemanticError 
+/**
+ * An error found the semantic checker
+ */
+SemanticError
+    /**
+     * same data type defined twice
+     *
+     * @param dataTypeName that was duplicated
+     */
   = DuplicateDataType(final String dataTypeName)
+    /**
+     * data type and constructor have the same name
+     *
+     * @param dataTypeName that was in conflict
+     */
   | ConstructorDataTypeConflict(final String dataTypeName) 
+    /**
+     * Data type has two constructors with the same name
+     *
+     * @param dataTypeName that had the problem
+     * @param constructorName that was duplicated
+     */
   | DuplicateConstructor(final String dataTypeName, final String constructorName)
+    /**
+     * Constructor defined the same arg twice
+     *
+     * @param dataTypeName that had the problem
+     * @param constructorName that had the problem
+     * @param argName that was duplicated
+     */
   | DuplicateArgName(final String dataTypeName, final String constructorName, final String argName)
+    /**
+     * Arg has the same modifier twice
+     *
+     * @param dataTypeName that had the problem
+     * @param constructorName that had the problem
+     * @param argName that had the problem
+     * @param modifier name of the modifier that was duplicated
+     */
   | DuplicateModifier(final String dataTypeName, final String constructorName, final String argName, final String modifier)

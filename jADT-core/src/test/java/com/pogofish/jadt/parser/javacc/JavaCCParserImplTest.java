@@ -19,7 +19,7 @@ import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
 import static com.pogofish.jadt.ast.Arg._Arg;
-import static com.pogofish.jadt.ast.ArgModifier._Final;
+import static com.pogofish.jadt.ast.ArgModifier.*;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.BlockToken._BlockWord;
 import static com.pogofish.jadt.ast.CommentedIdentifier._CommentedIdentifier;
@@ -230,6 +230,8 @@ public class JavaCCParserImplTest {
     @Test
     public void testArgModifier() throws Exception {
         assertEquals(_Final(), parserImpl("final").argModifier());
+        assertEquals(_Transient(), parserImpl("transient").argModifier());
+        assertEquals(_Volatile(), parserImpl("volatile").argModifier());
     }
 
     /**
@@ -238,7 +240,7 @@ public class JavaCCParserImplTest {
     @Test
     public void testArgModifiers() throws Exception {
         assertEquals(list(_Final()), parserImpl("final int").argModifiers());
-        assertEquals(list(_Final(), _Final()), parserImpl("final final int")
+        assertEquals(list(_Final(), _Transient(), _Volatile()), parserImpl("final transient volatile int")
                 .argModifiers());
         assertEquals(Util.<ArgModifier> list(), parserImpl("").argModifiers());
         assertEquals(Util.<ArgModifier> list(), parserImpl("int")
@@ -667,6 +669,12 @@ public class JavaCCParserImplTest {
         final ParserImpl p22 = parserImpl("/**/implements");
         p22.implementsKeyword();
         checkVoidCommentError("'implements'", p22);        
+        
+        final ParserImpl p23 = parserImpl("/**/transient");
+        checkCommentError(_Transient(), p23.transientKeyword(), "'transient'", p23);
+        
+        final ParserImpl p24 = parserImpl("/**/volatile");
+        checkCommentError(_Volatile(), p24.volatileKeyword(), "'volatile'", p24);
         
     }
 

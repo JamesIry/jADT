@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import com.pogofish.jadt.ast.Arg;
-import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.PrimitiveType;
@@ -110,8 +109,9 @@ public class StandardClassBodyEmitter implements ClassBodyEmitter {
     	for (Arg arg : constructor.args) {
     	    final List<JavaComment> paramDoc = commentProcessor.paramDoc(arg.name, javaDoc);
     	    sink.write(ASTPrinter.printComments(indent, paramDoc));
-            final String finalName = arg.modifiers.contains(ArgModifier._Final()) ? "final " : "";
-            sink.write(indent + "public " + finalName + ASTPrinter.print(arg.type) + " " + arg.name + ";\n");
+            sink.write(indent + "public ");
+            sink.write(ASTPrinter.printArgModifiers(arg.modifiers));
+            sink.write(ASTPrinter.print(arg.type) + " " + arg.name + ";\n");
         }
     	sink.write("\n");
         sink.write(ASTPrinter.printComments(indent, commentProcessor.leftAlign(commentProcessor.stripTags(CONSTRUCTOR_METHOD_STRIP, commentProcessor.javaDocOnly(constructor.comments)))));    	

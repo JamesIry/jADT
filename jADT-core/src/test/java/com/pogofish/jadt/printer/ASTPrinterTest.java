@@ -48,6 +48,7 @@ import static com.pogofish.jadt.printer.ASTPrinter.printComments;
 import static com.pogofish.jadt.util.Util.list;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static com.pogofish.jadt.ast.ArgModifier.*;
 
 import java.util.List;
 
@@ -147,8 +148,18 @@ public class ASTPrinterTest {
     @Test
     public void testArg() {      
         assertEquals("boolean[] Foo", print(new Arg(Util.<ArgModifier>list(), _Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
-        assertEquals("final boolean[] Foo", print(new Arg(list(ArgModifier._Final()), _Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
-        assertEquals("final boolean[] Foo", print(new Arg(list(ArgModifier._Final(), ArgModifier._Final()), _Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
+        assertEquals("final boolean[] Foo", print(new Arg(list(_Final()), _Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
+        assertEquals("final boolean[] Foo", print(new Arg(list(_Final(), _Final()), _Ref(_ArrayType(_Primitive(_BooleanType()))), "Foo")));
+    }
+    
+    /**
+     * Test taht arg modifiers print properly
+     */
+    @Test
+    public void testArgModifier() {
+        assertEquals("final", print(_Final()));
+        assertEquals("volatile", print(_Volatile()));
+        assertEquals("transient", print(_Transient()));
     }
 
     /**

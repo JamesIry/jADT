@@ -231,7 +231,7 @@ public class JavaCCTokenizerTest {
     public void testKeywords() {
         final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("import package final extends implements boolean byte double char float int long short abstract assert break case catch class const continue "
                 + "default do else enum finally for goto if instanceof interface native new private protected public return "
-                + "static strictfp super switch synchronized this throw throws transient try void volatile while");
+                + "static strictfp super switch synchronized this throw throws try void while");
 
         // keywords used by jADT
         check(tokenizer, "import", IMPORT, 1);
@@ -284,10 +284,8 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "this", JAVA_KEYWORD, 1);
         check(tokenizer, "throw", JAVA_KEYWORD, 1);
         check(tokenizer, "throws", JAVA_KEYWORD, 1);
-        check(tokenizer, "transient", JAVA_KEYWORD, 1);
         check(tokenizer, "try", JAVA_KEYWORD, 1);
         check(tokenizer, "void", JAVA_KEYWORD, 1);
-        check(tokenizer, "volatile", JAVA_KEYWORD, 1);
         check(tokenizer, "while", JAVA_KEYWORD, 1);
         check(tokenizer, "<EOF>", EOF, 1);
     }

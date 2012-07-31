@@ -212,6 +212,26 @@ public interface ParserImpl {
     public abstract ArgModifier finalKeyword() throws Exception;
 
     /**
+     * 'transient'
+     */
+    public abstract ArgModifier transientKeyword() throws Exception;
+
+    /**
+     * 'volatile'
+     */
+    public abstract ArgModifier volatileKeyword() throws Exception;
+
+    /**
+     * 'extends'
+     */
+    public abstract void extendsKeyword() throws Exception;
+
+    /**
+     * 'implements'
+     */
+    public abstract void implementsKeyword() throws Exception;
+    
+   /**
      * 'boolean'
      */
     public abstract PrimitiveType booleanType() throws Exception;
@@ -293,13 +313,13 @@ public interface ParserImpl {
 
     /**
      * '='
-     * may be precedeed by Java comments
+     * may be preceded by Java comments
      */
     public abstract List<JavaComment> equals() throws Exception;
 
     /**
      * '|'
-     * may be precedeed by Java comments
+     * may be preceded by Java comments
      */
     public abstract List<JavaComment> bar() throws Exception;
 
@@ -309,17 +329,7 @@ public interface ParserImpl {
     public abstract void eof() throws Exception;
 
     /**
-     * Errors that occured during parsing
+     * Errors that occurred during parsing
      */
     public abstract List<SyntaxError> errors();
-
-    /**
-     * 'extends'
-     */
-    public abstract void extendsKeyword() throws Exception;
-
-    /**
-     * 'implements'
-     */
-    public abstract void implementsKeyword() throws Exception;
 }

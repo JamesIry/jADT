@@ -17,7 +17,9 @@ package com.pogofish.jadt.comments;
 
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
-import static com.pogofish.jadt.ast.JDToken.*;
+import static com.pogofish.jadt.ast.JDToken._JDAsterisk;
+import static com.pogofish.jadt.ast.JDToken._JDEOL;
+import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
 import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 

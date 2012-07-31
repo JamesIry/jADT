@@ -19,6 +19,9 @@ import java.util.List;
 
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.ArgModifier.Final;
+import com.pogofish.jadt.ast.ArgModifier.Transient;
+import com.pogofish.jadt.ast.ArgModifier.Volatile;
 import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.BlockToken.BlockEOL;
 import com.pogofish.jadt.ast.BlockToken.BlockWhiteSpace;
@@ -252,6 +255,14 @@ public class ASTPrinter  {
             builder.append(print(ArgModifier._Final()));
             builder.append(" ");
         }
+        if (modifiers.contains(ArgModifier._Transient())) {
+            builder.append(print(ArgModifier._Transient()));
+            builder.append(" ");
+        }
+        if (modifiers.contains(ArgModifier._Volatile())) {
+            builder.append(print(ArgModifier._Volatile()));
+            builder.append(" ");
+        }
         return builder.toString();
     }
     
@@ -369,8 +380,23 @@ public class ASTPrinter  {
      * Print arg modifier
      */
     public static String print(ArgModifier modifier) {
-        // so far there's only one modifer, but that will change;
-        return "final";
+        return modifier.match(new ArgModifier.MatchBlock<String>() {
+
+            @Override
+            public String _case(Final x) {
+                return "final";
+            }
+
+            @Override
+            public String _case(Volatile x) {
+                return "volatile";
+            }
+
+            @Override
+            public String _case(Transient x) {
+                return "transient";
+            }
+        });
     }
 
     /**

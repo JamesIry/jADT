@@ -36,6 +36,7 @@ import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
 import static com.pogofish.jadt.ast.Type._Ref;
 import static com.pogofish.jadt.util.Util.list;
+import static com.pogofish.jadt.ast.ArgModifier.*;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -77,7 +78,7 @@ public class ClassBodyEmitterTest {
     "     * this is the um\n" +
     "     */\n" +
     "    public String um;\n" +
-    "    public final int yeah;\n" +
+    "    public final transient volatile int yeah;\n" +
     "\n" +
     "    /**\n" +
     "     * @param um this is the um\n" +
@@ -288,7 +289,7 @@ public class ClassBodyEmitterTest {
     @Test
     public void testConstructorMethod() {
         final Constructor constructor = new Constructor(list(_JavaDocComment("/**", list(_JDEOL("\n")), list(_JDTagSection("@param", list(_JDWhiteSpace(" "), _JDAsterisk(), _JDWhiteSpace(" "), _JDTag("@param"), _JDWhiteSpace(" "), _JDWord("um"), _JDWhiteSpace(" "), _JDWord("this is the um"), _JDEOL("\n"), _JDWhiteSpace(" ")))), "*/")), "Foo",
-                list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "um"), new Arg(Util.list(ArgModifier._Final()), _Primitive(_IntType()),
+                list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "um"), new Arg(Util.list(_Final(), _Transient(), _Volatile()), _Primitive(_IntType()),
                         "yeah")));
 
         final StringSink sink = new StringSink("test");

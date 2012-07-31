@@ -121,6 +121,14 @@ ArgModifier
      * "final"
      */
   = Final
+    /**
+     * "volatile"
+     */
+  | Volatile
+    /**
+     * "transient"
+     */
+  | Transient
 
 /**
  * A type, e.g. of an Arg

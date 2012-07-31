@@ -215,6 +215,20 @@ public abstract class BaseTestParserImpl implements ParserImpl {
                 "This should not have been called");
     
     }
+    
+    @Override
+    public ArgModifier transientKeyword() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    
+    }
+
+    @Override
+    public ArgModifier volatileKeyword() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    
+    }
 
     @Override
     public List<SyntaxError> errors() {

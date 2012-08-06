@@ -45,6 +45,8 @@ import static com.pogofish.jadt.errors.SyntaxError._UnexpectedToken;
 import static com.pogofish.jadt.util.Util.list;
 import static org.junit.Assert.assertEquals;
 
+import static com.pogofish.jadt.ast.Literal.*;
+
 import static com.pogofish.jadt.ast.Optional.*;
 
 import java.util.List;
@@ -60,6 +62,7 @@ import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.ast.Literal;
 import com.pogofish.jadt.ast.Optional;
 import com.pogofish.jadt.ast.ParseResult;
 import com.pogofish.jadt.ast.Pkg;
@@ -744,5 +747,45 @@ public class JavaCCParserImplTest {
                                      _Arg(list(_Final()), _Ref(_ClassType("TypeRef", Util.<RefType>list())), "type"),
                                      _Arg(list(_Final()), _Ref(_ClassType("String", Util.<RefType>list())), "name") */)
                                                 ))))), list(SyntaxError._UnexpectedToken("')'", "'>'", 1))).toString(), result.toString());
+    }
+    
+    @Test
+    public void testLiteral() throws Exception {
+        testLiteral(_NullLiteral(), "null");
+        testLiteral(_BooleanLiteral("true"), "true");
+        testLiteral(_BooleanLiteral("false"), "false");
+        testLiteral(_IntegerLiteral("123"), "123");
+        testLiteral(_IntegerLiteral("123L"), "123L");
+        testLiteral(_IntegerLiteral("123l"), "123l");
+        testLiteral(_IntegerLiteral("0x123F"), "0x123F");
+        testLiteral(_IntegerLiteral("0x123f"), "0x123f");
+        testLiteral(_IntegerLiteral("0x123FL"), "0x123FL");
+        testLiteral(_IntegerLiteral("0x123fl"), "0x123fl");
+        testLiteral(_IntegerLiteral("0123"), "0123");
+        testLiteral(_IntegerLiteral("0123L"), "0123L");
+        testLiteral(_FloatingPointLiteral("123.123"), "123.123");
+        testLiteral(_FloatingPointLiteral("123.123e10"), "123.123e10");
+        testLiteral(_FloatingPointLiteral("123.123e+10"), "123.123e+10");
+        testLiteral(_FloatingPointLiteral("123.123e-10"), "123.123e-10");
+        testLiteral(_FloatingPointLiteral("123.123F"), "123.123F");
+        testLiteral(_FloatingPointLiteral("123.123f"), "123.123f");
+        testLiteral(_FloatingPointLiteral("123.123D"), "123.123D");
+        testLiteral(_FloatingPointLiteral("123.123d"), "123.123d");
+        testLiteral(_FloatingPointLiteral("0x123FP10"), "0x123FP10");
+        testLiteral(_FloatingPointLiteral("0x123F.P10"), "0x123F.P10");
+        testLiteral(_FloatingPointLiteral("0x123f.p10"), "0x123f.p10");
+        testLiteral(_FloatingPointLiteral("0x123f.p+10"), "0x123f.p+10");
+        testLiteral(_FloatingPointLiteral("0x123f.p-10"), "0x123f.p-10");
+        testLiteral(_StringLiteral("\"\""), "\"\"");
+        testLiteral(_StringLiteral("\"hello\""), "\"hello\"");
+        testLiteral(_CharLiteral("'c'"), "'c'");
+    }
+
+    private void testLiteral(Literal expected, String input) throws Exception {
+        final ParserImpl p = parserImpl(input);
+        final Literal lit = p.literal();
+        assertEquals(Util.<SyntaxError>list().toString(), p.errors().toString());
+        assertEquals(expected, lit);
+        
     }
 }

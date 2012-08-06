@@ -32,6 +32,7 @@ import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
+import com.pogofish.jadt.ast.Literal;
 import com.pogofish.jadt.ast.JDToken.JDAsterisk;
 import com.pogofish.jadt.ast.JDToken.JDEOL;
 import com.pogofish.jadt.ast.JDToken.JDTag;
@@ -41,6 +42,12 @@ import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.JavaComment.JavaBlockComment;
 import com.pogofish.jadt.ast.JavaComment.JavaDocComment;
 import com.pogofish.jadt.ast.JavaComment.JavaEOLComment;
+import com.pogofish.jadt.ast.Literal.BooleanLiteral;
+import com.pogofish.jadt.ast.Literal.CharLiteral;
+import com.pogofish.jadt.ast.Literal.FloatingPointLiteral;
+import com.pogofish.jadt.ast.Literal.IntegerLiteral;
+import com.pogofish.jadt.ast.Literal.NullLiteral;
+import com.pogofish.jadt.ast.Literal.StringLiteral;
 import com.pogofish.jadt.ast.Optional;
 import com.pogofish.jadt.ast.Optional.None;
 import com.pogofish.jadt.ast.Optional.Some;
@@ -428,6 +435,43 @@ public class ASTPrinter  {
             @Override
             public String _case(JDWhiteSpace x) {
                 return x.ws;
+            }
+        });
+    }
+    
+    /**
+     * Print a single literal
+     */
+    public static String print(final Literal literal) {
+        return literal.match(new Literal.MatchBlock<String>() {
+            @Override
+            public String _case(StringLiteral x) {
+                return x.content;
+            }
+
+            @Override
+            public String _case(FloatingPointLiteral x) {
+                return x.content;
+            }
+
+            @Override
+            public String _case(IntegerLiteral x) {
+                return x.content;
+            }
+
+            @Override
+            public String _case(CharLiteral x) {
+                return x.content;
+            }
+
+            @Override
+            public String _case(BooleanLiteral x) {
+                return x.content;
+            }
+
+            @Override
+            public String _case(NullLiteral x) {
+                return "null";
             }
         });
     }

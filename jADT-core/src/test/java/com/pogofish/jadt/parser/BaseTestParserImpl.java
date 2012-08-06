@@ -24,6 +24,7 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.ast.Literal;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
@@ -427,6 +428,12 @@ public abstract class BaseTestParserImpl implements ParserImpl {
 
     @Override
     public void implementsKeyword() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    }
+
+    @Override
+    public Literal literal() throws Exception {
         throw new RuntimeException(
                 "This should not have been called");
     }

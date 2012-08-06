@@ -64,11 +64,13 @@ import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.ast.Literal;
 import com.pogofish.jadt.ast.Optional;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.util.Util;
 
+import static com.pogofish.jadt.ast.Literal.*;
 
 /**
  * Test the pretty ASTPrinter.  Does not prove that the output is in fact pretty.
@@ -251,5 +253,19 @@ public class ASTPrinterTest {
         testComment("/* */", _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, BLOCKEND))));
         testComment("/* hello */", _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKONEWS, BLOCKEND))));
         testComment("/* hello\n * goodbye */", _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("hello"), BLOCKEOL), list(BLOCKONEWS, _BlockWord("*"), BLOCKONEWS, _BlockWord("goodbye"), BLOCKONEWS, BLOCKEND))));
+    }
+    
+    @Test
+    public void testLiteral() {
+        testLiteral("null", _NullLiteral());
+        testLiteral("\"hello\"", _StringLiteral("\"hello\""));
+        testLiteral("0.05", _FloatingPointLiteral("0.05"));
+        testLiteral("823823", _IntegerLiteral("823823"));
+        testLiteral("'c'", _CharLiteral("'c'"));
+        testLiteral("true", _BooleanLiteral("true"));
+    }
+
+    private void testLiteral(String expected, Literal literal) {
+        assertEquals(expected, ASTPrinter.print(literal));
     }
 }

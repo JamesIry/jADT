@@ -202,7 +202,18 @@ PrimitiveType
      * "short"
      */
   | ShortType 
-
+  
+/**
+ * A literal value in the source text
+ */
+Literal
+  = StringLiteral(final String content)
+  | FloatingPointLiteral(final String content)
+  | IntegerLiteral(final String content)
+  | CharLiteral(final String content)
+  | BooleanLiteral(final String content)
+  | NullLiteral
+  
 /**
  * A pair consisting of a list of comments followed by an identifier.  Used internally by the parser
  * but not part of the AST

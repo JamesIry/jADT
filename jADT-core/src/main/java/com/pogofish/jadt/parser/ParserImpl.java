@@ -25,6 +25,7 @@ import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JavaComment;
+import com.pogofish.jadt.ast.Literal;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
@@ -332,4 +333,9 @@ public interface ParserImpl {
      * Errors that occurred during parsing
      */
     public abstract List<SyntaxError> errors();
+
+    /**
+     * Parse a literal - the entire range of Java literals
+     */
+    public abstract Literal literal() throws Exception;
 }

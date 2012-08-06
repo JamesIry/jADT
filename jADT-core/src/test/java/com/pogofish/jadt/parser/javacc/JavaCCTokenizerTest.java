@@ -169,10 +169,9 @@ public class JavaCCTokenizerTest {
      */
     @Test
     public void testBadIdentifiers() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("42 ?");
-        // bad because identifiers can't start with numbers (jADT doesn't care
-        // about numbers)
-        check(tokenizer, "42", UNKNOWN, 1);
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("42x ?");
+        // bad because identifiers can't start with numbers
+        check(tokenizer, "42x", UNKNOWN, 1);
         // just bad
         check(tokenizer, "?", UNKNOWN, 1);
     }

@@ -29,6 +29,9 @@ import com.pogofish.jadt.ast.BlockToken.BlockWord;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Expression;
+import com.pogofish.jadt.ast.Expression.LiteralExpression;
+import com.pogofish.jadt.ast.Expression.VariableExpression;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
@@ -476,4 +479,31 @@ public class ASTPrinter  {
         });
     }
 
+    /**
+     * Print an expression
+     */
+    public static String print(Expression expression) {
+        return expression.match(new Expression.MatchBlock<String>() {
+
+            @Override
+            public String _case(LiteralExpression x) {
+                return print(x.literal);
+            }
+
+            @Override
+            public String _case(VariableExpression x) {
+                return x.selector.match(new Optional.MatchBlock<Expression, String>() {
+                    @Override
+                    public String _case(Some<Expression> x) {
+                        return print(x.value) + ".";
+                    }
+
+                    @Override
+                    public String _case(None<Expression> x) {
+                        return "";
+                    }
+                }) + x.identifier;
+            }
+        });
+    }
 }

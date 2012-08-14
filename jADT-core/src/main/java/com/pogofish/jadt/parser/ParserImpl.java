@@ -23,6 +23,7 @@ import com.pogofish.jadt.ast.CommentedIdentifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Expression;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.Literal;
@@ -338,4 +339,9 @@ public interface ParserImpl {
      * Parse a literal - the entire range of Java literals
      */
     public abstract Literal literal() throws Exception;
+
+    /**
+     * Parse an expression - used for annotations
+     */
+    public abstract Expression expression() throws Exception;
 }

@@ -22,6 +22,7 @@ import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.CommentedIdentifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
+import com.pogofish.jadt.ast.Expression;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JavaComment;
 import com.pogofish.jadt.ast.Literal;
@@ -437,6 +438,10 @@ public abstract class BaseTestParserImpl implements ParserImpl {
         throw new RuntimeException(
                 "This should not have been called");
     }
-    
 
+    @Override
+    public Expression expression() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    }
 }

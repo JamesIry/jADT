@@ -202,6 +202,24 @@ PrimitiveType
      * "short"
      */
   | ShortType 
+
+/**
+ * An expression for use in an annotation
+ */
+Expression
+    /**
+     * An Expression consisting only of a literal
+     *
+     * @param literal that makes the expression
+     */
+  = LiteralExpression(Literal literal)
+    /**
+     * An expression consisting of a variable reference that may be hanging off of an expression
+     *
+     * @param selector Optional expression that specifies where to find the variable
+     * @param identifier Name of the variable
+     */
+  | VariableExpression(final Optional<Expression> selector, final String identifier)
   
 /**
  * A literal value in the source text

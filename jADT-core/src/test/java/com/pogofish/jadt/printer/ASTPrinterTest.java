@@ -18,6 +18,9 @@ package com.pogofish.jadt.printer;
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.ArgModifier._Final;
+import static com.pogofish.jadt.ast.ArgModifier._Transient;
+import static com.pogofish.jadt.ast.ArgModifier._Volatile;
 import static com.pogofish.jadt.ast.BlockToken._BlockEOL;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.BlockToken._BlockWord;
@@ -30,6 +33,12 @@ import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
+import static com.pogofish.jadt.ast.Literal._BooleanLiteral;
+import static com.pogofish.jadt.ast.Literal._CharLiteral;
+import static com.pogofish.jadt.ast.Literal._FloatingPointLiteral;
+import static com.pogofish.jadt.ast.Literal._IntegerLiteral;
+import static com.pogofish.jadt.ast.Literal._NullLiteral;
+import static com.pogofish.jadt.ast.Literal._StringLiteral;
 import static com.pogofish.jadt.ast.Optional._Some;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
@@ -48,7 +57,7 @@ import static com.pogofish.jadt.printer.ASTPrinter.printComments;
 import static com.pogofish.jadt.util.Util.list;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static com.pogofish.jadt.ast.ArgModifier.*;
+import static com.pogofish.jadt.ast.Expression.*;
 
 import java.util.List;
 
@@ -60,6 +69,7 @@ import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Expression;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JDToken;
@@ -69,8 +79,6 @@ import com.pogofish.jadt.ast.Optional;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.RefType;
 import com.pogofish.jadt.util.Util;
-
-import static com.pogofish.jadt.ast.Literal.*;
 
 /**
  * Test the pretty ASTPrinter.  Does not prove that the output is in fact pretty.
@@ -263,6 +271,16 @@ public class ASTPrinterTest {
         testLiteral("823823", _IntegerLiteral("823823"));
         testLiteral("'c'", _CharLiteral("'c'"));
         testLiteral("true", _BooleanLiteral("true"));
+    }
+    
+    @Test public void testExpression() {
+        testExpression("null", _LiteralExpression(_NullLiteral()));
+        testExpression("foo", _VariableExpression(Optional.<Expression>_None(), "foo"));
+        testExpression("null.foo", _VariableExpression(_Some(_LiteralExpression(_NullLiteral())), "foo"));
+    }
+
+    private void testExpression(String expected, Expression expression) {
+        assertEquals(expected, ASTPrinter.print(expression));
     }
 
     private void testLiteral(String expected, Literal literal) {

@@ -44,6 +44,7 @@ import static com.pogofish.jadt.ast.Type._Ref;
 import static com.pogofish.jadt.errors.SyntaxError._UnexpectedToken;
 import static com.pogofish.jadt.util.Util.list;
 import static org.junit.Assert.assertEquals;
+import static com.pogofish.jadt.ast.Expression.*;
 
 import static com.pogofish.jadt.ast.Literal.*;
 
@@ -59,6 +60,7 @@ import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
+import com.pogofish.jadt.ast.Expression;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
 import com.pogofish.jadt.ast.JavaComment;
@@ -788,4 +790,18 @@ public class JavaCCParserImplTest {
         assertEquals(expected, lit);
         
     }
+    
+    @Test
+    public void testExpression() throws Exception {
+        testExpression(_LiteralExpression(_NullLiteral()), "null");
+        testExpression(_VariableExpression(Optional.<Expression>_None(), "foo"), "foo");
+        testExpression(_VariableExpression(_Some(_VariableExpression(Optional.<Expression>_None(), "foo")), "bar"), "foo.bar");
+    }
+    
+    private void testExpression(Expression expected, String input) throws Exception {
+        final ParserImpl p = parserImpl(input);
+        final Expression expression = p.expression();
+        assertEquals(expected.toString(), expression.toString());
+    }
+    
 }

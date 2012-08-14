@@ -30,7 +30,9 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Expression;
+import com.pogofish.jadt.ast.Expression.ClassReference;
 import com.pogofish.jadt.ast.Expression.LiteralExpression;
+import com.pogofish.jadt.ast.Expression.NestedExpression;
 import com.pogofish.jadt.ast.Expression.VariableExpression;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
@@ -503,6 +505,16 @@ public class ASTPrinter  {
                         return "";
                     }
                 }) + x.identifier;
+            }
+
+            @Override
+            public String _case(NestedExpression x) {
+                return "( " + print(x.expression) + " )";
+            }
+
+            @Override
+            public String _case(ClassReference x) {
+                return print(x.type) + ".class";
             }
         });
     }

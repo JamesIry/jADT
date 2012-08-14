@@ -15,7 +15,7 @@ limitations under the License.
  */
 package com.pogofish.jadt.parser.javacc;
 
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BAR;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.*;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BOOLEAN;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BYTE;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.CHAR;
@@ -228,7 +228,7 @@ public class JavaCCTokenizerTest {
      */
     @Test
     public void testKeywords() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("import package final extends implements boolean byte double char float int long short abstract assert break case catch class const continue "
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("import package final extends implements class boolean byte double char float int long short abstract assert break case catch const continue "
                 + "default do else enum finally for goto if instanceof interface native new private protected public return "
                 + "static strictfp super switch synchronized this throw throws try void while");
 
@@ -238,6 +238,7 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "final", FINAL, 1);
         check(tokenizer, "extends", EXTENDS, 1);
         check(tokenizer, "implements", IMPLEMENTS, 1);
+        check(tokenizer, "class", CLASS, 1);
 
         // primitive Java types
         check(tokenizer, "boolean", BOOLEAN, 1);
@@ -256,7 +257,6 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "break", JAVA_KEYWORD, 1);
         check(tokenizer, "case", JAVA_KEYWORD, 1);
         check(tokenizer, "catch", JAVA_KEYWORD, 1);
-        check(tokenizer, "class", JAVA_KEYWORD, 1);
         check(tokenizer, "const", JAVA_KEYWORD, 1);
         check(tokenizer, "continue", JAVA_KEYWORD, 1);
         check(tokenizer, "default", JAVA_KEYWORD, 1);

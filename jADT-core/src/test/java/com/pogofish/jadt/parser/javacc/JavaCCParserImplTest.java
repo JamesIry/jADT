@@ -459,12 +459,6 @@ public class JavaCCParserImplTest {
         final ParserImpl p1 = parserImpl("package");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), Pkg._Pkg(NO_COMMENTS, "NO_IDENTIFIER@1"), p1.pkg(), p1);
 
-        final ParserImpl p2 = parserImpl("package foo.bar.");
-        checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), Pkg._Pkg(NO_COMMENTS, "foo.bar.NO_IDENTIFIER@1"), p2.pkg(), p2);
-
-        final ParserImpl p5 = parserImpl("package foo.bar.*");
-        checkError(list(_UnexpectedToken("a package name", "'*'", 1)), Pkg._Pkg(NO_COMMENTS, "foo.bar.BAD_IDENTIFIER_*@1"), p5.pkg(), p5);
-
         final ParserImpl p3 = parserImpl("package ?g42");
         checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), Pkg._Pkg(NO_COMMENTS, "BAD_IDENTIFIER_?g42@1"), p3.pkg(), p3);
 
@@ -794,8 +788,10 @@ public class JavaCCParserImplTest {
     @Test
     public void testExpression() throws Exception {
         testExpression(_LiteralExpression(_NullLiteral()), "null");
+        testExpression(_NestedExpression(_LiteralExpression(_NullLiteral())), "(null)");
         testExpression(_VariableExpression(Optional.<Expression>_None(), "foo"), "foo");
         testExpression(_VariableExpression(_Some(_VariableExpression(Optional.<Expression>_None(), "foo")), "bar"), "foo.bar");
+        testExpression(_ClassReference(_Ref(_ClassType("foo.bar", NO_ACTUAL_TYPE_ARGUMENTS))), "foo.bar.class");
     }
     
     private void testExpression(Expression expected, String input) throws Exception {

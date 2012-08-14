@@ -212,7 +212,7 @@ Expression
      *
      * @param literal that makes the expression
      */
-  = LiteralExpression(Literal literal)
+  = LiteralExpression(final Literal literal)
     /**
      * An expression consisting of a variable reference that may be hanging off of an expression
      *
@@ -220,6 +220,20 @@ Expression
      * @param identifier Name of the variable
      */
   | VariableExpression(final Optional<Expression> selector, final String identifier)
+    /**
+     * An expression contained within parens. Normally an AST throws parens away, but this
+     * is just so much easier for the simple printing I have to do - for one thing it means
+     * the printer can basically ignore precedence
+     *
+     * @param expression nested within this one
+     */
+  | NestedExpression(final Expression expression)
+    /**
+     * foo.class where foo is a type
+     *
+     * @param type whose class is to be referenced
+     */
+  | ClassReference(final Type type)
   
 /**
  * A literal value in the source text

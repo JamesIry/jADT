@@ -277,6 +277,8 @@ public class ASTPrinterTest {
         testExpression("null", _LiteralExpression(_NullLiteral()));
         testExpression("foo", _VariableExpression(Optional.<Expression>_None(), "foo"));
         testExpression("null.foo", _VariableExpression(_Some(_LiteralExpression(_NullLiteral())), "foo"));
+        testExpression("( null )", _NestedExpression(_LiteralExpression(_NullLiteral())));
+        testExpression("boolean.class", _ClassReference(_Primitive(_BooleanType())));
     }
 
     private void testExpression(String expected, Expression expression) {

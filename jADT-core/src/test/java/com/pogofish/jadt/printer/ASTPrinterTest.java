@@ -58,11 +58,17 @@ import static com.pogofish.jadt.util.Util.list;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static com.pogofish.jadt.ast.Expression.*;
+import static com.pogofish.jadt.ast.Annotation.*;
+import static com.pogofish.jadt.ast.AnnotationElement.*;
+import static com.pogofish.jadt.ast.AnnotationValue.*;
+import static com.pogofish.jadt.ast.AnnotationKeyValue.*;
 
 import java.util.List;
 
 import org.junit.Test;
 
+import com.pogofish.jadt.ast.Annotation;
+import com.pogofish.jadt.ast.AnnotationElement;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.BlockToken;
@@ -273,7 +279,8 @@ public class ASTPrinterTest {
         testLiteral("true", _BooleanLiteral("true"));
     }
     
-    @Test public void testExpression() {
+    @Test
+    public void testExpression() {
         testExpression("null", _LiteralExpression(_NullLiteral()));
         testExpression("foo", _VariableExpression(Optional.<Expression>_None(), "foo"));
         testExpression("null.foo", _VariableExpression(_Some(_LiteralExpression(_NullLiteral())), "foo"));
@@ -288,4 +295,19 @@ public class ASTPrinterTest {
     private void testLiteral(String expected, Literal literal) {
         assertEquals(expected, ASTPrinter.print(literal));
     }
+    
+    @Test
+    public void testAnnotation() {
+        testAnnotation("@foo", _Annotation("foo", Optional.<AnnotationElement>_None()));
+        testAnnotation("@foo( @bar )", _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None()))))));
+        testAnnotation("@foo( null )", _Annotation("foo", _Some(_ElementValue(_AnnotationValueExpression(_LiteralExpression(_NullLiteral()))))));
+        testAnnotation("@foo( x = @bar )", _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None()))))))));
+        testAnnotation("@foo( x = null )", _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueExpression(_LiteralExpression(_NullLiteral()))))))));
+        testAnnotation("@foo( x = null, y = @bar )", _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueExpression(_LiteralExpression(_NullLiteral()))), _AnnotationKeyValue("y", _AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None()))))))));
+    }
+    
+    private void testAnnotation(String expected, Annotation annotation) {
+        assertEquals(expected, ASTPrinter.print(annotation));
+    }
+    
 }

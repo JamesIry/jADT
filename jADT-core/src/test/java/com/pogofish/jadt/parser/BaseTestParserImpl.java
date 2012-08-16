@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.CommentedAnnotation;
 import com.pogofish.jadt.ast.CommentedIdentifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
@@ -240,7 +241,7 @@ public abstract class BaseTestParserImpl implements ParserImpl {
     }
 
     @Override
-    public List<JavaComment> equals() throws Exception {
+    public List<JavaComment> equals(boolean allowComments) throws Exception {
         throw new RuntimeException(
                 "This should not have been called");
     
@@ -444,4 +445,35 @@ public abstract class BaseTestParserImpl implements ParserImpl {
         throw new RuntimeException(
                 "This should not have been called");
     }
+    
+    @Override
+    public List<JavaComment> at(boolean allowComments) throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    
+    }
+
+    @Override
+    public CommentedAnnotation annotation(boolean allowComments)
+            throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    
+    }
+
+    @Override
+    public void lcurly() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    
+    }
+
+    @Override
+    public void rcurly() throws Exception {
+        throw new RuntimeException(
+                "This should not have been called");
+    
+    }
+    
+    
 }

@@ -17,6 +17,15 @@ package com.pogofish.jadt.printer;
 
 import java.util.List;
 
+import com.pogofish.jadt.ast.Annotation;
+import com.pogofish.jadt.ast.AnnotationElement;
+import com.pogofish.jadt.ast.AnnotationElement.ElementValue;
+import com.pogofish.jadt.ast.AnnotationElement.ElementValuePairs;
+import com.pogofish.jadt.ast.AnnotationKeyValue;
+import com.pogofish.jadt.ast.AnnotationValue;
+import com.pogofish.jadt.ast.AnnotationValue.AnnotationValueAnnotation;
+import com.pogofish.jadt.ast.AnnotationValue.AnnotationValueArray;
+import com.pogofish.jadt.ast.AnnotationValue.AnnotationValueExpression;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.ArgModifier.Final;
@@ -515,6 +524,77 @@ public class ASTPrinter  {
             @Override
             public String _case(ClassReference x) {
                 return print(x.type) + ".class";
+            }
+        });
+    }
+    
+    public static String print(Annotation annotation) {
+        return "@" + annotation.name + annotation.element.match(new Optional.MatchBlock<AnnotationElement, String>() {
+
+            @Override
+            public String _case(Some<AnnotationElement> x) {
+                return "( " + print(x.value) + " )";
+            }
+
+            @Override
+            public String _case(None<AnnotationElement> x) {
+                return "";
+            }
+        });
+    }
+    
+    public static String print(AnnotationElement value) {
+        return value.match(new AnnotationElement.MatchBlock<String>() {
+            @Override
+            public String _case(ElementValue x) {
+                return print(x.value);
+            }
+
+            @Override
+            public String _case(ElementValuePairs x) {
+                final StringBuilder builder = new StringBuilder();
+                boolean first = true;
+                for (AnnotationKeyValue kv : x.keyValues) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        builder.append(", ");
+                    }
+                    builder.append(kv.key);
+                    builder.append(" = ");
+                    builder.append(print(kv.value));
+                }
+                return builder.toString();
+            }
+        });
+    }
+
+    public static String print(AnnotationValue value) {
+        return value.match(new AnnotationValue.MatchBlock<String>() {
+
+            @Override
+            public String _case(AnnotationValueAnnotation x) {
+                return print(x.annotation);
+            }
+
+            @Override
+            public String _case(AnnotationValueExpression x) {
+                return print(x.expression);
+            }
+
+            @Override
+            public String _case(AnnotationValueArray x) {
+                final StringBuilder builder = new StringBuilder("{ ");
+                boolean first = true;
+                for (AnnotationValue value : x.values) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        builder.append(", ");
+                    }
+                    builder.append(print(value));
+                }
+                return builder.toString();
             }
         });
     }

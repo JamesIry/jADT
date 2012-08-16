@@ -18,6 +18,12 @@ package com.pogofish.jadt.parser.javacc;
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.Annotation._Annotation;
+import static com.pogofish.jadt.ast.AnnotationElement._ElementValue;
+import static com.pogofish.jadt.ast.AnnotationElement._ElementValuePairs;
+import static com.pogofish.jadt.ast.AnnotationKeyValue._AnnotationKeyValue;
+import static com.pogofish.jadt.ast.AnnotationValue._AnnotationValueAnnotation;
+import static com.pogofish.jadt.ast.AnnotationValue._AnnotationValueExpression;
 import static com.pogofish.jadt.ast.Arg._Arg;
 import static com.pogofish.jadt.ast.ArgModifier.*;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
@@ -54,9 +60,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.pogofish.jadt.ast.AnnotationElement;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.BlockToken;
+import com.pogofish.jadt.ast.CommentedAnnotation;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
@@ -77,6 +85,8 @@ import com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants;
 import com.pogofish.jadt.parser.javacc.generated.Token;
 import com.pogofish.jadt.source.StringSource;
 import com.pogofish.jadt.util.Util;
+
+import static com.pogofish.jadt.ast.CommentedAnnotation.*;
 /**
  * Tests for the new JavaCC based parser.
  * 
@@ -675,6 +685,21 @@ public class JavaCCParserImplTest {
         final ParserImpl p24 = parserImpl("/**/volatile");
         checkCommentError(_Volatile(), p24.volatileKeyword(), "'volatile'", p24);
         
+        final ParserImpl p25 = parserImpl("/**/@");
+        p25.at(false);
+        checkVoidCommentError("'@'", p25);  
+        
+        final ParserImpl p26 = parserImpl("/**/{");
+        p26.lcurly();
+        checkVoidCommentError("'{'", p26);
+        
+        final ParserImpl p27 = parserImpl("/**/}");
+        p27.rcurly();
+        checkVoidCommentError("'}'", p27);
+        
+        final ParserImpl p28 = parserImpl("/**/=");
+        p28.equals(false);
+        checkVoidCommentError("'='", p28);
     }
 
     private static void checkVoidCommentError(String expected, ParserImpl p) {
@@ -696,7 +721,7 @@ public class JavaCCParserImplTest {
         checkParseResult(comments, p1.bar(), p1);
 
         final ParserImpl p2 = parserImpl(commentString + "=");
-        checkParseResult(comments, p2.equals(), p2);
+        checkParseResult(comments, p2.equals(true), p2);
 
         final ParserImpl p3 = parserImpl(commentString + "package");
         checkParseResult(comments, p3.packageKeyword(), p3);
@@ -706,6 +731,10 @@ public class JavaCCParserImplTest {
 
         final ParserImpl p5 = parserImpl(commentString + "hello");
         checkParseResult(_CommentedIdentifier(comments, "hello"), p5.commentedIdentifier("an identifier"), p5);
+
+        final ParserImpl p6 = parserImpl(commentString + "@");
+        checkParseResult(comments, p6.at(true), p6);
+
     }
 
     private <A>void checkParseResult(A expected, A actual, ParserImpl p) {
@@ -800,4 +829,20 @@ public class JavaCCParserImplTest {
         assertEquals(expected.toString(), expression.toString());
     }
     
+    @Test
+    public void testAnnotaion() throws Exception {
+        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", Optional.<AnnotationElement>_None())), "@foo");
+        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))), "@foo( @bar )");
+        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValue(_AnnotationValueExpression(_LiteralExpression(_NullLiteral())))))), "@foo( null )");
+        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))))), "@foo( x = @bar )");
+        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueExpression(_LiteralExpression(_NullLiteral())))))))), "@foo( x = null )");
+        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueExpression(_LiteralExpression(_NullLiteral()))), _AnnotationKeyValue("y", _AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))))), "@foo( x = null, y = @bar )");        
+    }
+    
+    private void testAnnotation(CommentedAnnotation expected, String input) throws Exception {
+        final ParserImpl p = parserImpl(input);
+        final CommentedAnnotation ca = p.annotation(true);
+        assertEquals("[]", p.errors().toString());
+        assertEquals(expected.toString(), ca.toString());
+    }
 }

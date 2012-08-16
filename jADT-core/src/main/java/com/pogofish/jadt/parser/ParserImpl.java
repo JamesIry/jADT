@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.CommentedAnnotation;
 import com.pogofish.jadt.ast.CommentedIdentifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
@@ -279,6 +280,11 @@ public interface ParserImpl {
     public abstract void dot() throws Exception;
 
     /**
+     * '@'
+     */
+    public abstract List<JavaComment> at(boolean allowComments) throws Exception;
+
+    /**
      * ','
      */
     public abstract void comma() throws Exception;
@@ -317,7 +323,7 @@ public interface ParserImpl {
      * '='
      * may be preceded by Java comments
      */
-    public abstract List<JavaComment> equals() throws Exception;
+    public abstract List<JavaComment> equals(boolean allowComments) throws Exception;
 
     /**
      * '|'
@@ -339,9 +345,26 @@ public interface ParserImpl {
      * Parse a literal - the entire range of Java literals
      */
     public abstract Literal literal() throws Exception;
+    
+    /**
+     * Parse an annotation
+     * @param allowComments if true then comments are allowed on the annotation, if not comments cause an error
+     * @return A CommentedAnnotation, a pair of comments and an annotation.  If allowComments is false then the comments will be an empty list
+     */
+    public abstract CommentedAnnotation annotation(boolean allowComments) throws Exception;
 
     /**
      * Parse an expression - used for annotations
      */
     public abstract Expression expression() throws Exception;
+
+    /**
+     * '{'
+     */
+    public abstract void lcurly() throws Exception;
+
+    /**
+     * '}'
+     */
+    public abstract void rcurly() throws Exception;
 }

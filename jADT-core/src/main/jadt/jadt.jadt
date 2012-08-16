@@ -204,6 +204,77 @@ PrimitiveType
   | ShortType 
 
 /**
+ * A pair consisting of a list of comments followed by an annotation.  Used internally by the parser
+ * but not part of the AST
+ */
+CommentedAnnotation
+     /**
+      * @param comments that come before the annotation
+      * @param annotation that comes after the comments
+      */
+   = CommentedAnnotation(final List<JavaComment> comments, final Annotation annotation)
+   
+/**
+ * '@'annotations for data types and constructors
+ */
+Annotation
+    /**
+     * @param name of the annotation
+     * @param element optional argument to the annotation
+     */
+  = Annotation(final String name, final Optional<AnnotationElement> element)
+  
+/**
+ * A single element argument to an annotation
+ */
+AnnotationElement
+    /**
+     * An annotation element that consist only of a single value with no key
+     *
+     * @param value AnnotationValue contained in the value
+     */
+  = ElementValue(final AnnotationValue value)
+    /**
+     * Annotation element that consists of a list of key/value pairs
+     *
+     * @param keyValues list of AnnotationKeyValues
+     */
+  | ElementValuePairs(final List<AnnotationKeyValue> keyValues)
+
+/**
+ * A key/value argument to an annotation
+ */
+AnnotationKeyValue
+    /**
+     * @param key name of the argument
+     * @param value of the argument
+     */
+  = AnnotationKeyValue(final String key, final AnnotationValue value)
+
+/**
+ * An annotation argument
+ */
+AnnotationValue
+    /**
+     * An annotation used as an argument to an annotation
+     *
+     * @param annotation the nested argument
+     */
+  = AnnotationValueAnnotation(final Annotation annotation)
+    /**
+     * An expression used as an argument to an annotation
+     *
+     * @param expression the nested expression
+     */
+  | AnnotationValueExpression(final Expression expression)
+    /**
+     * A list of values used to initialize an array
+     *
+     * @param values used to initialize an array argument
+     */
+  | AnnotationValueArray(final List<AnnotationValue> values)
+
+/**
  * An expression for use in an annotation
  */
 Expression

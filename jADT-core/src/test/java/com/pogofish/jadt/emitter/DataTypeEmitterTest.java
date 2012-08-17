@@ -16,6 +16,9 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.Annotation._Annotation;
+import static com.pogofish.jadt.ast.AnnotationElement._ElementValue;
+import static com.pogofish.jadt.ast.AnnotationValue._AnnotationValueAnnotation;
 import static com.pogofish.jadt.ast.JDToken._JDWhiteSpace;
 import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
@@ -29,6 +32,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.pogofish.jadt.ast.Annotation;
+import com.pogofish.jadt.ast.AnnotationElement;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
@@ -49,17 +54,26 @@ public class DataTypeEmitterTest {
     private static final Optional<RefType> NO_EXTENDS = Optional.<RefType>_None();
     private static final List<RefType> NO_IMPLEMENTS = Util.<RefType>list();
     private static final List<RefType> NO_TYPE_ARGS = Util.<RefType>list();
+    private static final List<Annotation> ANNOTATIONS = list(_Annotation("foo", Optional.<AnnotationElement>_None()), _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None()))))));
     private static final String HEADER = "/*header*/\n";
-    private static final String MULTI_HEADER_NO_BASE = "FooBar =\n" +
+    private static final String MULTI_HEADER_NO_BASE = 
+    "@foo\n" +
+    "@foo( @bar )\n" +
+    "FooBar =\n" +
     "    Foo(Integer yeah, String hmmm)\n" +
     "  | Bar\n" +
     "*/\n";
-    private static final String MULTI_HEADER_WITH_BASE = "FooBar extends FooA implements FooB, FooC =\n" +
+    private static final String MULTI_HEADER_WITH_BASE =  
+    "@foo\n" +
+    "@foo( @bar )\n" +
+    "FooBar extends FooA implements FooB, FooC =\n" +
     "    Foo(Integer yeah, String hmmm)\n" +
     "  | Bar\n" +
     "*/\n";
     private static final String MULTI_CONSTRUCTOR_NO_BASE = 
     "/** hello */\n" +
+    "@foo\n" +
+    "@foo( @bar )\n" +
     "public abstract class FooBar/* type arguments */ {\n" +
     "\n" +
     "   private FooBar() {\n" +
@@ -110,6 +124,8 @@ public class DataTypeEmitterTest {
     
     private static final String MULTI_CONSTRUCTOR_WITH_BASE = 
     "/** hello */\n" +
+    "@foo\n" +
+    "@foo( @bar )\n" +
     "public abstract class FooBar/* type arguments */ extends FooA implements FooB, FooC {\n" +
     "\n" +
     "   private FooBar() {\n" +
@@ -160,6 +176,8 @@ public class DataTypeEmitterTest {
     
     private static final String SINGLE_CONSTRUCTOR_NO_BASE = 
     "/** hello */\n" +
+    "@foo\n" +
+    "@foo( @bar )\n" +
     "public final class FooBar/* type arguments */ {\n" +
     "\n" +
     "/* constructor factory FooBar Foo FooBar*/\n" +
@@ -175,6 +193,8 @@ public class DataTypeEmitterTest {
     "}";
     private static final String SINGLE_CONSTRUCTOR_WITH_BASE = 
     "/** hello */\n" +
+    "@foo\n" +
+    "@foo( @bar )\n" +
     "public final class FooBar/* type arguments */ extends FooA implements FooB, FooC {\n" +
     "\n" +
     "/* constructor factory FooBar Foo FooBar*/\n" +
@@ -188,11 +208,15 @@ public class DataTypeEmitterTest {
     "   /* toString method FooBar*/\n" +
     "\n" +
     "}";
-    private static final String SINGLE_HEADER_NO_BASE =
+    private static final String SINGLE_HEADER_NO_BASE =            
+   "@foo\n" +
+   "@foo( @bar )\n" +
     "FooBar =\n" +
     "    Foo(Integer yeah, String hmmm)\n" +
     "*/\n";
     private static final String SINGLE_HEADER_WITH_BASE =
+    "@foo\n" +
+    "@foo( @bar )\n" +
     "FooBar extends FooA implements FooB, FooC =\n" +
     "    Foo(Integer yeah, String hmmm)\n" +
     "*/\n";
@@ -202,7 +226,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testMultipleConstructorsNoBase() {
-        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
+        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), ANNOTATIONS, "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
                 new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                         new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor(NO_COMMENTS, "Bar",
                         Util.<Arg> list())));
@@ -224,7 +248,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testMultipleConstructorsWithBase() {
-        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), "FooBar", Util.<String>list(), _Some(_ClassType("FooA", NO_TYPE_ARGS)), list(_ClassType("FooB", NO_TYPE_ARGS), _ClassType("FooC", NO_TYPE_ARGS)), list(
+        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), ANNOTATIONS, "FooBar", Util.<String>list(), _Some(_ClassType("FooA", NO_TYPE_ARGS)), list(_ClassType("FooB", NO_TYPE_ARGS), _ClassType("FooC", NO_TYPE_ARGS)), list(
                 new Constructor(NO_COMMENTS, "Foo", list(new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                         new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm"))), new Constructor(NO_COMMENTS, "Bar",
                         Util.<Arg> list())));
@@ -246,7 +270,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testSingleConstructorNoBase() {
-        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(new Constructor(NO_COMMENTS, "Foo", list(
+        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), ANNOTATIONS, "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 
@@ -267,7 +291,7 @@ public class DataTypeEmitterTest {
      */
     @Test
     public void testSingleConstructorWithBase() {
-        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), "FooBar", Util.<String>list(), _Some(_ClassType("FooA", NO_TYPE_ARGS)), list(_ClassType("FooB", NO_TYPE_ARGS), _ClassType("FooC", NO_TYPE_ARGS)), list(new Constructor(NO_COMMENTS, "Foo", list(
+        final DataType fooBar = new DataType(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), ANNOTATIONS, "FooBar", Util.<String>list(), _Some(_ClassType("FooA", NO_TYPE_ARGS)), list(_ClassType("FooB", NO_TYPE_ARGS), _ClassType("FooC", NO_TYPE_ARGS)), list(new Constructor(NO_COMMENTS, "Foo", list(
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("Integer", Util.<RefType> list())), "yeah"),
                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType> list())), "hmmm")))));
 

@@ -33,6 +33,16 @@ Optional<T>
       * No value
       */
    | None
+   
+/**
+ * A pair of values
+ */
+ Tuple<A,B>
+     /**
+      * @param _1 first value
+      * @param _2 second value
+      */
+   = Tuple(A _1, B _2)
 
 /**
  * The result of a parse
@@ -83,13 +93,14 @@ Imprt
 DataType
     /**
      * @param comments that come before the data type
+     * @param annotations attached to the datatype
      * @param name of the data type
      * @param type argument for the datatype
      * @param extendedType optional ref type that this datatype extends
      * @param implementedTypes list of ref types that this datatype implements
      * @param constructors non-empty list of constructor cases for the data type
      */
-  = DataType(final List<JavaComment> comments, final String name, final List<String> typeArguments, Optional<RefType> extendedType, List<RefType> implementedTypes, final List<Constructor> constructors)
+  = DataType(final List<JavaComment> comments, final List<Annotation> annotations, final String name, final List<String> typeArguments, Optional<RefType> extendedType, List<RefType> implementedTypes, final List<Constructor> constructors)
 
 /**
  * A constructor case for a data type
@@ -202,17 +213,6 @@ PrimitiveType
      * "short"
      */
   | ShortType 
-
-/**
- * A pair consisting of a list of comments followed by an annotation.  Used internally by the parser
- * but not part of the AST
- */
-CommentedAnnotation
-     /**
-      * @param comments that come before the annotation
-      * @param annotation that comes after the comments
-      */
-   = CommentedAnnotation(final List<JavaComment> comments, final Annotation annotation)
    
 /**
  * '@'annotations for data types and constructors
@@ -316,17 +316,6 @@ Literal
   | CharLiteral(final String content)
   | BooleanLiteral(final String content)
   | NullLiteral
-  
-/**
- * A pair consisting of a list of comments followed by an identifier.  Used internally by the parser
- * but not part of the AST
- */
-CommentedIdentifier
-     /**
-      * @param comments that come before the identifier
-      * @param identifier name of the identifier
-      */
-   = CommentedIdentifier(final List<JavaComment> comments, final String identifier)
 
 /**
  * A Java style comment that should be carried through to the generated Java

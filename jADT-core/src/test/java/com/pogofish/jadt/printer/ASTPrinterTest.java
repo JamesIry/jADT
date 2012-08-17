@@ -18,12 +18,22 @@ package com.pogofish.jadt.printer;
 import static com.pogofish.jadt.ast.ASTConstants.EMPTY_PKG;
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
 import static com.pogofish.jadt.ast.ASTConstants.NO_IMPORTS;
+import static com.pogofish.jadt.ast.Annotation._Annotation;
+import static com.pogofish.jadt.ast.AnnotationElement._ElementValue;
+import static com.pogofish.jadt.ast.AnnotationElement._ElementValuePairs;
+import static com.pogofish.jadt.ast.AnnotationKeyValue._AnnotationKeyValue;
+import static com.pogofish.jadt.ast.AnnotationValue._AnnotationValueAnnotation;
+import static com.pogofish.jadt.ast.AnnotationValue._AnnotationValueExpression;
 import static com.pogofish.jadt.ast.ArgModifier._Final;
 import static com.pogofish.jadt.ast.ArgModifier._Transient;
 import static com.pogofish.jadt.ast.ArgModifier._Volatile;
 import static com.pogofish.jadt.ast.BlockToken._BlockEOL;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.BlockToken._BlockWord;
+import static com.pogofish.jadt.ast.Expression._ClassReference;
+import static com.pogofish.jadt.ast.Expression._LiteralExpression;
+import static com.pogofish.jadt.ast.Expression._NestedExpression;
+import static com.pogofish.jadt.ast.Expression._VariableExpression;
 import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
 import static com.pogofish.jadt.ast.JDToken._JDAsterisk;
 import static com.pogofish.jadt.ast.JDToken._JDEOL;
@@ -57,11 +67,6 @@ import static com.pogofish.jadt.printer.ASTPrinter.printComments;
 import static com.pogofish.jadt.util.Util.list;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static com.pogofish.jadt.ast.Expression.*;
-import static com.pogofish.jadt.ast.Annotation.*;
-import static com.pogofish.jadt.ast.AnnotationElement.*;
-import static com.pogofish.jadt.ast.AnnotationValue.*;
-import static com.pogofish.jadt.ast.AnnotationKeyValue.*;
 
 import java.util.List;
 
@@ -104,6 +109,7 @@ public class ASTPrinterTest {
     private static final List<JDTagSection> NO_TAG_SECTIONS = Util.<JDTagSection>list();
     private static final Optional<RefType> NO_EXTENDS = Optional.<RefType>_None();
     private static final List<RefType> NO_IMPLEMENTS = Util.<RefType>list();
+    private static final List<Annotation> NO_ANNOTATIONS = Util.<Annotation>list();
     
     /**
      * Cobertura isn't happy unless the (implicit) constructor is called. This
@@ -195,9 +201,11 @@ public class ASTPrinterTest {
      */
     @Test
     public void testDataTypes() {
-        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(new Constructor(NO_COMMENTS, "Bar",
+        assertEquals("Foo =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(new Constructor(NO_COMMENTS, "Bar",
                 Util.<Arg> list()), new Constructor(NO_COMMENTS, "Baz", Util.<Arg> list())))));
-        assertEquals("Foo extends FooA implements FooB, FooC =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), _Some(_ClassType("FooA", NO_TYPE_ARGS)), list(_ClassType("FooB", NO_TYPE_ARGS), _ClassType("FooC", NO_TYPE_ARGS)), list(new Constructor(NO_COMMENTS, "Bar",
+        assertEquals("Foo extends FooA implements FooB, FooC =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", Util.<String>list(), _Some(_ClassType("FooA", NO_TYPE_ARGS)), list(_ClassType("FooB", NO_TYPE_ARGS), _ClassType("FooC", NO_TYPE_ARGS)), list(new Constructor(NO_COMMENTS, "Bar",
+                Util.<Arg> list()), new Constructor(NO_COMMENTS, "Baz", Util.<Arg> list())))));
+        assertEquals("@foo\n@foo( @bar )\nFoo =\n" + "    Bar\n" + "  | Baz", print(new DataType(NO_COMMENTS, list(_Annotation("foo", Optional.<AnnotationElement>_None()), _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))), "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(new Constructor(NO_COMMENTS, "Bar",
                 Util.<Arg> list()), new Constructor(NO_COMMENTS, "Baz", Util.<Arg> list())))));
     }
 
@@ -219,7 +227,7 @@ public class ASTPrinterTest {
                 "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), Util.<DataType> list())));
         // package, imports and datatypes
         assertEquals("package some.package\n\nimport number.one\nimport number.two\n\nFoo =\n    Bar\n", print(new Doc(
-                "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), list(new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, 
+                "PrinterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), list(Imprt._Imprt(NO_COMMENTS, "number.one"), Imprt._Imprt(NO_COMMENTS,"number.two")), list(new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, 
                         list(new Constructor(NO_COMMENTS, "Bar", Util.<Arg> list())))))));
     }
 

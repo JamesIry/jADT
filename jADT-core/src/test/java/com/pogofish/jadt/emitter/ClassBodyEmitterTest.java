@@ -16,6 +16,9 @@ limitations under the License.
 package com.pogofish.jadt.emitter;
 
 import static com.pogofish.jadt.ast.ASTConstants.NO_COMMENTS;
+import static com.pogofish.jadt.ast.ArgModifier._Final;
+import static com.pogofish.jadt.ast.ArgModifier._Transient;
+import static com.pogofish.jadt.ast.ArgModifier._Volatile;
 import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
 import static com.pogofish.jadt.ast.JDToken._JDAsterisk;
 import static com.pogofish.jadt.ast.JDToken._JDEOL;
@@ -36,7 +39,6 @@ import static com.pogofish.jadt.ast.RefType._ClassType;
 import static com.pogofish.jadt.ast.Type._Primitive;
 import static com.pogofish.jadt.ast.Type._Ref;
 import static com.pogofish.jadt.util.Util.list;
-import static com.pogofish.jadt.ast.ArgModifier.*;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

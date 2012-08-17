@@ -37,6 +37,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.pogofish.jadt.Version;
+import com.pogofish.jadt.ast.Annotation;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
@@ -59,6 +60,7 @@ import com.pogofish.jadt.util.Util;
 public class DocEmitterTest {
     private static final Optional<RefType> NO_EXTENDS = Optional.<RefType>_None();
     private static final List<RefType> NO_IMPLEMENTS = Util.<RefType>list();
+    private static final List<Annotation> NO_ANNOTATIONS = Util.<Annotation>list();
     
 	private static final String VERSION = new Version().getVersion();
 	private static final String BOILERPLATE = 
@@ -107,14 +109,14 @@ public class DocEmitterTest {
     public void testFull() {
         @SuppressWarnings("unchecked")
         final Doc doc = new Doc("EmitterTest", Pkg._Pkg(Util.list(_JavaDocComment("/**", list(_JDWhiteSpace(" "), _JDWord("hello"), _JDWhiteSpace(" ")), Util.<JDTagSection>list(), "*/")), "some.package"), list(Imprt._Imprt(Util.list(_JavaBlockComment(list(list(_BlockWord("/* hello */"))))), "wow.man"), Imprt._Imprt(Util.list(_JavaEOLComment("// hello")), "flim.flam")), list(
-                new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
+                new DataType(NO_COMMENTS, NO_ANNOTATIONS, "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
                         new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
                         new Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())
                 )),
-                new DataType(NO_COMMENTS, "Whatever", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
+                new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Whatever", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
                         new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list())
                 ))
                 
@@ -135,14 +137,14 @@ public class DocEmitterTest {
     @Test
     public void testNoImports() {
         final Doc doc = new Doc("EmitterTest", Pkg._Pkg(NO_COMMENTS, "some.package"), NO_IMPORTS, list(
-                new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
+                new DataType(NO_COMMENTS, NO_ANNOTATIONS, "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
                         new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
                         new Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())
                 )),
-                new DataType(NO_COMMENTS, "Whatever", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
+                new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Whatever", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
                         new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list())
                 ))
                 
@@ -163,14 +165,14 @@ public class DocEmitterTest {
     @Test
     public void testNoPackage() {
         final Doc doc = new Doc("EmitterTest", EMPTY_PKG, list(Imprt._Imprt(NO_COMMENTS, "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")), list(
-                new DataType(NO_COMMENTS, "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
+                new DataType(NO_COMMENTS, NO_ANNOTATIONS, "FooBar", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
                         new Constructor(NO_COMMENTS, "Foo", list(
                                 new Arg(Util.<ArgModifier>list(), _Primitive(_IntType()), "yeah"),
                                 new Arg(Util.<ArgModifier>list(), _Ref(_ClassType("String", Util.<RefType>list())), "hmmm")
                         )),
                         new Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())
                 )),
-                new DataType(NO_COMMENTS, "Whatever", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
+                new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Whatever", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(
                         new Constructor(NO_COMMENTS, "Whatever", Util.<Arg>list())
                 ))
                 

@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.pogofish.jadt.ast.Annotation;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.Constructor;
@@ -50,6 +51,7 @@ import com.pogofish.jadt.util.Util;
 public class CheckerTest {
     private static final Optional<RefType> NO_EXTENDS = Optional.<RefType>_None();
     private static final List<RefType> NO_IMPLEMENTS = Util.<RefType>list();
+    private static final List<Annotation> NO_ANNOTATIONS = Util.<Annotation>list();
     
     /**
      * Check with duplicate data types
@@ -57,7 +59,7 @@ public class CheckerTest {
     @Test
     public void testDuplicateDataType() {
         final Checker checker = new StandardChecker();
-        final DataType dataType = new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(new Constructor(NO_COMMENTS, "Foo", Util.<Arg>list())));
+        final DataType dataType = new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(new Constructor(NO_COMMENTS, "Foo", Util.<Arg>list())));
         final Doc doc = new Doc("CheckerTest", Pkg._Pkg(NO_COMMENTS, ""), NO_IMPORTS, list(dataType, dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -71,7 +73,7 @@ public class CheckerTest {
     public void testDuplicateConstructor() {
         final Checker checker = new StandardChecker();
         final Constructor constructor = new Constructor(NO_COMMENTS, "Bar", Util.<Arg>list());
-        final DataType dataType = new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(constructor, constructor));
+        final DataType dataType = new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(constructor, constructor));
         final Doc doc = new Doc("CheckerTest", Pkg._Pkg(NO_COMMENTS, ""), NO_IMPORTS, list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -86,7 +88,7 @@ public class CheckerTest {
         final Checker checker = new StandardChecker();
         final Constructor constructor1 = new Constructor(NO_COMMENTS, "Bar", Util.<Arg>list());
         final Constructor constructor2 = new Constructor(NO_COMMENTS, "Foo", Util.<Arg>list());
-        final DataType dataType = new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(constructor1, constructor2));
+        final DataType dataType = new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(constructor1, constructor2));
         final Doc doc = new Doc("CheckerTest", Pkg._Pkg(NO_COMMENTS, ""), NO_IMPORTS, list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -97,7 +99,7 @@ public class CheckerTest {
     public void testDuplicateArgName() {
         final Checker checker = new StandardChecker();
         final Constructor constructor = new Constructor(NO_COMMENTS, "Bar", list(Arg._Arg(Util.<ArgModifier>list(), Type._Primitive(PrimitiveType._IntType()), "foo"), Arg._Arg(Util.<ArgModifier>list(), Type._Primitive(PrimitiveType._BooleanType()), "foo")));
-        final DataType dataType = new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(constructor));
+        final DataType dataType = new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(constructor));
         final Doc doc = new Doc("CheckerTest", Pkg._Pkg(NO_COMMENTS, ""), NO_IMPORTS, list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());
@@ -108,7 +110,7 @@ public class CheckerTest {
     public void testDuplicateArgModifier() {
         final Checker checker = new StandardChecker();
         final Constructor constructor = new Constructor(NO_COMMENTS, "Bar", list(Arg._Arg(list(ArgModifier._Final(), ArgModifier._Final()), Type._Primitive(PrimitiveType._IntType()), "foo")));
-        final DataType dataType = new DataType(NO_COMMENTS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(constructor));
+        final DataType dataType = new DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", Util.<String>list(), NO_EXTENDS, NO_IMPLEMENTS, list(constructor));
         final Doc doc = new Doc("CheckerTest", Pkg._Pkg(NO_COMMENTS, ""), NO_IMPORTS, list(dataType));
         final List<SemanticError> errors = checker.check(doc);
         assertEquals(1, errors.size());

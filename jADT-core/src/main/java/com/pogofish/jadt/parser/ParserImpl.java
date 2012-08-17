@@ -17,10 +17,9 @@ package com.pogofish.jadt.parser;
 
 import java.util.List;
 
+import com.pogofish.jadt.ast.Annotation;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
-import com.pogofish.jadt.ast.CommentedAnnotation;
-import com.pogofish.jadt.ast.CommentedIdentifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
@@ -31,6 +30,7 @@ import com.pogofish.jadt.ast.Literal;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
+import com.pogofish.jadt.ast.Tuple;
 import com.pogofish.jadt.ast.Type;
 import com.pogofish.jadt.errors.SyntaxError;
 
@@ -91,7 +91,7 @@ public interface ParserImpl {
     /**
      * A data type name is any valid Java identifier not qualified with a package.
      */
-    public abstract CommentedIdentifier dataTypeName() throws Exception;
+    public abstract Tuple<List<JavaComment>, String> dataTypeName() throws Exception;
 
     /**
      * A data type's type arguments, if it has them, start with '<', have 1 or more arguments, and end with '>'.
@@ -116,7 +116,7 @@ public interface ParserImpl {
     /**
      * A case constructor name is any valid Java identifier not qualified by a package.
      */
-    public abstract CommentedIdentifier constructorName() throws Exception;
+    public abstract Tuple<List<JavaComment>, String> constructorName() throws Exception;
 
     /**
      * If a case constructor arguments then they must start with '(', have 1 ore more arguments separated by ',' and end with ')'.
@@ -189,7 +189,7 @@ public interface ParserImpl {
      * A commented identifier may be any valid Java identifier
      * and may be precedeed by java comments
      */
-    public abstract CommentedIdentifier commentedIdentifier(String expected)
+    public abstract Tuple<List<JavaComment>, String> commentedIdentifier(String expected)
             throws Exception;
 
     /**
@@ -351,7 +351,7 @@ public interface ParserImpl {
      * @param allowComments if true then comments are allowed on the annotation, if not comments cause an error
      * @return A CommentedAnnotation, a pair of comments and an annotation.  If allowComments is false then the comments will be an empty list
      */
-    public abstract CommentedAnnotation annotation(boolean allowComments) throws Exception;
+    public abstract Tuple<List<JavaComment>, Annotation> annotation(boolean allowComments) throws Exception;
 
     /**
      * Parse an expression - used for annotations

@@ -17,10 +17,9 @@ package com.pogofish.jadt.parser;
 
 import java.util.List;
 
+import com.pogofish.jadt.ast.Annotation;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
-import com.pogofish.jadt.ast.CommentedAnnotation;
-import com.pogofish.jadt.ast.CommentedIdentifier;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Expression;
@@ -30,6 +29,7 @@ import com.pogofish.jadt.ast.Literal;
 import com.pogofish.jadt.ast.Pkg;
 import com.pogofish.jadt.ast.PrimitiveType;
 import com.pogofish.jadt.ast.RefType;
+import com.pogofish.jadt.ast.Tuple;
 import com.pogofish.jadt.ast.Type;
 import com.pogofish.jadt.errors.SyntaxError;
 
@@ -283,7 +283,7 @@ public abstract class BaseTestParserImpl implements ParserImpl {
     }
 
     @Override
-    public CommentedIdentifier dataTypeName() throws Exception {
+    public Tuple<List<JavaComment>, String> dataTypeName() throws Exception {
         throw new RuntimeException(
                 "This should not have been called");
     
@@ -304,7 +304,7 @@ public abstract class BaseTestParserImpl implements ParserImpl {
     }
 
     @Override
-    public CommentedIdentifier constructorName() throws Exception {
+    public Tuple<List<JavaComment>, String> constructorName() throws Exception {
         throw new RuntimeException(
                 "This should not have been called");
     
@@ -318,7 +318,7 @@ public abstract class BaseTestParserImpl implements ParserImpl {
     }
 
     @Override
-    public CommentedIdentifier commentedIdentifier(String expected) throws Exception {
+    public Tuple<List<JavaComment>, String> commentedIdentifier(String expected) throws Exception {
         throw new RuntimeException(
                 "This should not have been called");
     
@@ -454,7 +454,7 @@ public abstract class BaseTestParserImpl implements ParserImpl {
     }
 
     @Override
-    public CommentedAnnotation annotation(boolean allowComments)
+    public Tuple<List<JavaComment>, Annotation> annotation(boolean allowComments)
             throws Exception {
         throw new RuntimeException(
                 "This should not have been called");

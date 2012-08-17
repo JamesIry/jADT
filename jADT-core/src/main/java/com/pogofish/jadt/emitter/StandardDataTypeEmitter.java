@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.pogofish.jadt.ast.Annotation;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Optional;
@@ -56,6 +57,10 @@ public class StandardDataTypeEmitter implements DataTypeEmitter {
         sink.write("\n*/\n");
 
         sink.write(ASTPrinter.printComments("", commentProcessor.leftAlign(dataType.comments)));
+        for (Annotation annotation : dataType.annotations) {
+            sink.write(ASTPrinter.print(annotation));
+            sink.write("\n");
+        }
         if (dataType.constructors.size() == 1) {
             emitSingleConstructor(sink, dataType, header);
             

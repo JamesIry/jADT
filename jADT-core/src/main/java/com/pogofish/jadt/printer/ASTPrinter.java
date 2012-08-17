@@ -192,7 +192,12 @@ public class ASTPrinter  {
      * @return pretty string
      */
     public static String print(DataType dataType) {
-        final StringBuilder builder = new StringBuilder(dataType.name);
+        final StringBuilder builder = new StringBuilder();
+        for(Annotation annotation : dataType.annotations) {
+            builder.append(print(annotation));
+            builder.append("\n");
+        }
+        builder.append(dataType.name);
         dataType.extendedType._switch(new Optional.SwitchBlock<RefType>() {
             @Override
             public void _case(Some<RefType> x) {

@@ -25,16 +25,29 @@ import static com.pogofish.jadt.ast.AnnotationKeyValue._AnnotationKeyValue;
 import static com.pogofish.jadt.ast.AnnotationValue._AnnotationValueAnnotation;
 import static com.pogofish.jadt.ast.AnnotationValue._AnnotationValueExpression;
 import static com.pogofish.jadt.ast.Arg._Arg;
-import static com.pogofish.jadt.ast.ArgModifier.*;
+import static com.pogofish.jadt.ast.ArgModifier._Final;
+import static com.pogofish.jadt.ast.ArgModifier._Transient;
+import static com.pogofish.jadt.ast.ArgModifier._Volatile;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.BlockToken._BlockWord;
-import static com.pogofish.jadt.ast.CommentedIdentifier._CommentedIdentifier;
+import static com.pogofish.jadt.ast.Tuple.*;
 import static com.pogofish.jadt.ast.Constructor._Constructor;
 import static com.pogofish.jadt.ast.DataType._DataType;
+import static com.pogofish.jadt.ast.Expression._ClassReference;
+import static com.pogofish.jadt.ast.Expression._LiteralExpression;
+import static com.pogofish.jadt.ast.Expression._NestedExpression;
+import static com.pogofish.jadt.ast.Expression._VariableExpression;
 import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaEOLComment;
+import static com.pogofish.jadt.ast.Literal._BooleanLiteral;
+import static com.pogofish.jadt.ast.Literal._CharLiteral;
+import static com.pogofish.jadt.ast.Literal._FloatingPointLiteral;
+import static com.pogofish.jadt.ast.Literal._IntegerLiteral;
+import static com.pogofish.jadt.ast.Literal._NullLiteral;
+import static com.pogofish.jadt.ast.Literal._StringLiteral;
+import static com.pogofish.jadt.ast.Optional._Some;
 import static com.pogofish.jadt.ast.PrimitiveType._BooleanType;
 import static com.pogofish.jadt.ast.PrimitiveType._ByteType;
 import static com.pogofish.jadt.ast.PrimitiveType._CharType;
@@ -50,21 +63,17 @@ import static com.pogofish.jadt.ast.Type._Ref;
 import static com.pogofish.jadt.errors.SyntaxError._UnexpectedToken;
 import static com.pogofish.jadt.util.Util.list;
 import static org.junit.Assert.assertEquals;
-import static com.pogofish.jadt.ast.Expression.*;
-
-import static com.pogofish.jadt.ast.Literal.*;
-
-import static com.pogofish.jadt.ast.Optional.*;
 
 import java.util.List;
 
 import org.junit.Test;
 
+import com.pogofish.jadt.ast.Annotation;
 import com.pogofish.jadt.ast.AnnotationElement;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.BlockToken;
-import com.pogofish.jadt.ast.CommentedAnnotation;
+import com.pogofish.jadt.ast.Tuple;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
@@ -85,8 +94,6 @@ import com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants;
 import com.pogofish.jadt.parser.javacc.generated.Token;
 import com.pogofish.jadt.source.StringSource;
 import com.pogofish.jadt.util.Util;
-
-import static com.pogofish.jadt.ast.CommentedAnnotation.*;
 /**
  * Tests for the new JavaCC based parser.
  * 
@@ -100,6 +107,7 @@ public class JavaCCParserImplTest {
     private static final BlockToken BLOCKSTART = _BlockWord("/*");
     private static final BlockToken BLOCKEND = _BlockWord("*/");
     private static final BlockToken BLOCKONEWS = _BlockWhiteSpace(" ");
+    private static final List<Annotation> NO_ANNOTATIONS = Util.<Annotation>list();
     
     @SuppressWarnings("unchecked")
     private static final JavaComment IMPORTS_COMMENT = _JavaBlockComment(list(list(BLOCKSTART, BLOCKONEWS, _BlockWord("here"), BLOCKONEWS, _BlockWord("are"), BLOCKONEWS, _BlockWord("some"), BLOCKONEWS, _BlockWord("imports"), BLOCKONEWS, BLOCKEND)));
@@ -370,36 +378,41 @@ public class JavaCCParserImplTest {
     @Test
     public void testDataType() throws Exception {
         assertEquals(
-                _DataType(NO_COMMENTS, "Foo", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
+                _DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
                         list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()))),
                 parserImpl("Foo=Foo").dataType());
         assertEquals(
-                _DataType(NO_COMMENTS, "Foo", list("A"), NO_EXTENDS, NO_IMPLEMENTS,
+                _DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", list("A"), NO_EXTENDS, NO_IMPLEMENTS,
                         list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()))),
                 parserImpl("Foo<A>=Foo").dataType());
         assertEquals(
-                _DataType(NO_COMMENTS, "Foo", list("A", "B"), NO_EXTENDS, NO_IMPLEMENTS,
+                _DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", list("A", "B"), NO_EXTENDS, NO_IMPLEMENTS,
                         list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()))),
                 parserImpl("Foo<A, B>=Foo").dataType());
+        testAnnotation(_Tuple(NO_COMMENTS, _Annotation("foo", Optional.<AnnotationElement>_None())), "@foo");
+        assertEquals(
+                _DataType(NO_COMMENTS, list(_Annotation("foo", Optional.<AnnotationElement>_None()), _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))), "Foo", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
+                        list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()))),
+                parserImpl("@foo @foo(@bar) Foo=Foo").dataType());
     }
     
     @Test
    public void testDataTypeErrors() throws Exception {
         
         final ParserImpl p1 = parserImpl("boolean = Foo");
-        checkError(list(_UnexpectedToken("a data type name", "'boolean'", 1)), _DataType(NO_COMMENTS, "BAD_IDENTIFIER_boolean@1", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()))), p1.dataType(), p1);
+        checkError(list(_UnexpectedToken("a data type name", "'boolean'", 1)), _DataType(NO_COMMENTS, NO_ANNOTATIONS, "BAD_IDENTIFIER_boolean@1", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()))), p1.dataType(), p1);
  
         final ParserImpl p2 = parserImpl("= Foo");
-        checkError(list(_UnexpectedToken("a data type name", "'='", 1)), _DataType(NO_COMMENTS, "NO_IDENTIFIER@1", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()))), p2.dataType(), p2);
+        checkError(list(_UnexpectedToken("a data type name", "'='", 1)), _DataType(NO_COMMENTS, NO_ANNOTATIONS, "NO_IDENTIFIER@1", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()))), p2.dataType(), p2);
  
         final ParserImpl p3 = parserImpl("Bar Foo");
-        checkError(list(_UnexpectedToken("'='", "'Foo'", 1)), _DataType(NO_COMMENTS, "Bar", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()))), p3.dataType(), p3);
+        checkError(list(_UnexpectedToken("'='", "'Foo'", 1)), _DataType(NO_COMMENTS, NO_ANNOTATIONS, "Bar", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()))), p3.dataType(), p3);
 
         final ParserImpl p4 = parserImpl("");
-        checkError(list(_UnexpectedToken("a data type name", "<EOF>", 1)), _DataType(NO_COMMENTS, "NO_IDENTIFIER@1", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "NO_IDENTIFIER@2", Util.<Arg>list()))), p4.dataType(), p4);
+        checkError(list(_UnexpectedToken("a data type name", "<EOF>", 1)), _DataType(NO_COMMENTS, NO_ANNOTATIONS, "NO_IDENTIFIER@1", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "NO_IDENTIFIER@2", Util.<Arg>list()))), p4.dataType(), p4);
 
         final ParserImpl p5 = parserImpl("Bar<A, = Foo");
-        checkError(list(_UnexpectedToken("a type parameter", "'='", 1)), _DataType(NO_COMMENTS, "Bar", list("A", "NO_IDENTIFIER@1"), NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()))), p5.dataType(), p5);
+        checkError(list(_UnexpectedToken("a type parameter", "'='", 1)), _DataType(NO_COMMENTS, NO_ANNOTATIONS, "Bar", list("A", "NO_IDENTIFIER@1"), NO_EXTENDS, NO_IMPLEMENTS, list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()))), p5.dataType(), p5);
  
     }
 
@@ -409,13 +422,13 @@ public class JavaCCParserImplTest {
     @Test
     public void testDataTypes() throws Exception {
         assertEquals(
-                list(_DataType(NO_COMMENTS, "Foo", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
+                list(_DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
                         list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list())))),
                 parserImpl("Foo=Foo").dataTypes());
         assertEquals(
-                list(_DataType(NO_COMMENTS, "Foo", NO_FORMAL_TYPE_ARGUMENTS, _Some(_ClassType("FooA", NO_ACTUAL_TYPE_ARGUMENTS)), list(_ClassType("FooB", NO_ACTUAL_TYPE_ARGUMENTS), _ClassType("FooC", NO_ACTUAL_TYPE_ARGUMENTS)),
+                list(_DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", NO_FORMAL_TYPE_ARGUMENTS, _Some(_ClassType("FooA", NO_ACTUAL_TYPE_ARGUMENTS)), list(_ClassType("FooB", NO_ACTUAL_TYPE_ARGUMENTS), _ClassType("FooC", NO_ACTUAL_TYPE_ARGUMENTS)),
                         list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()))),
-                        _DataType(NO_COMMENTS, "Bar", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
+                        _DataType(NO_COMMENTS, NO_ANNOTATIONS, "Bar", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
                                 list(_Constructor(NO_COMMENTS, "Bar", Util.<Arg> list())))).toString(),
                 parserImpl("Foo extends FooA implements FooB, FooC=Foo Bar = Bar").dataTypes().toString());
     }
@@ -522,7 +535,7 @@ public class JavaCCParserImplTest {
         final ParseResult result = parser.parse(new StringSource("ParserTest",
                 "Foo = Foo"));
 
-        assertEquals(new ParseResult(new Doc("ParserTest", EMPTY_PKG, NO_IMPORTS, list(_DataType(NO_COMMENTS, "Foo", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
+        assertEquals(new ParseResult(new Doc("ParserTest", EMPTY_PKG, NO_IMPORTS, list(_DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
                 list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()))))), Util.<SyntaxError>list()), result);
     }
 
@@ -533,7 +546,7 @@ public class JavaCCParserImplTest {
     public void testFull() {
         final Parser parser = new StandardParser(PARSER_IMPL_FACTORY);
         final String source = "//a pre-start comment\n//a start comment\npackage hello.world /* here are some imports */import wow.man import flim.flam "
-                + "//datatype comment\nFooBar //equal comment\n= //constructor comment\nfoo //bar comment\n| //really a bar comment\nbar(int hey, final String[] yeah) whatever = whatever";
+                + "//an annotation comment\n@foo\n@foo(@bar)\n//datatype comment\nFooBar //equal comment\n= //constructor comment\nfoo //bar comment\n| //really a bar comment\nbar(int hey, final String[] yeah) whatever = whatever";
         final ParseResult result = parser.parse(new StringSource("ParserTest",
                 source));
 
@@ -541,7 +554,7 @@ public class JavaCCParserImplTest {
                 new ParseResult(new Doc(
                         "ParserTest",
                         Pkg._Pkg(list(_JavaEOLComment("//a pre-start comment"), _JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(IMPORTS_COMMENT), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
-                        list(new DataType(list(_JavaEOLComment("//datatype comment")), 
+                        list(new DataType(list(_JavaEOLComment("//an annotation comment"), _JavaEOLComment("//datatype comment")), list(_Annotation("foo", Optional.<AnnotationElement>_None()), _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))), 
                                 "FooBar",
                                 NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
                                 list(
@@ -559,7 +572,7 @@ public class JavaCCParserImplTest {
                                                                         "String",
                                                                         NO_ACTUAL_TYPE_ARGUMENTS)))),
                                                                 "yeah"))))),
-                                new DataType(NO_COMMENTS, "whatever", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
+                                new DataType(NO_COMMENTS, NO_ANNOTATIONS, "whatever", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
                                         list(new Constructor(NO_COMMENTS, "whatever", Util
                                                 .<Arg> list()))))), Util.<SyntaxError>list()).toString(), result.toString());
     }
@@ -579,7 +592,7 @@ public class JavaCCParserImplTest {
                 new ParseResult(new Doc(
                         "ParserTest",
                         Pkg._Pkg(list(_JavaEOLComment("//a start comment")), "hello.world"), list(Imprt._Imprt(list(IMPORTS_COMMENT), "wow.man"), Imprt._Imprt(NO_COMMENTS, "flim.flam")),
-                        list(new DataType(NO_COMMENTS, 
+                        list(new DataType(NO_COMMENTS, NO_ANNOTATIONS, 
                                 "FooBar",
                                 NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
                                 list(
@@ -597,7 +610,7 @@ public class JavaCCParserImplTest {
                                                                         "String",
                                                                         NO_ACTUAL_TYPE_ARGUMENTS)))),
                                                                 "yeah"))))),
-                                new DataType(NO_COMMENTS, "whatever", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
+                                new DataType(NO_COMMENTS, NO_ANNOTATIONS, "whatever", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
                                         list(new Constructor(NO_COMMENTS, "BAD_IDENTIFIER_int@1", Util
                                                 .<Arg> list()))))), list(SyntaxError._UnexpectedToken("a constructor name", "'int'", 2))).toString(), result.toString());
                 
@@ -730,7 +743,7 @@ public class JavaCCParserImplTest {
         checkParseResult(comments, p4.importKeyword(), p4);
 
         final ParserImpl p5 = parserImpl(commentString + "hello");
-        checkParseResult(_CommentedIdentifier(comments, "hello"), p5.commentedIdentifier("an identifier"), p5);
+        checkParseResult(_Tuple(comments, "hello"), p5.commentedIdentifier("an identifier"), p5);
 
         final ParserImpl p6 = parserImpl(commentString + "@");
         checkParseResult(comments, p6.at(true), p6);
@@ -766,7 +779,7 @@ public class JavaCCParserImplTest {
         
         final ParseResult result = parser.parse(new StringSource("whatever", "FormalParameter = FormalParameter(final List<Modifier> modifiers>, final TypeRef type, final String name)"));
         assertEquals(ParseResult._ParseResult(Doc._Doc("whatever", EMPTY_PKG, NO_IMPORTS, 
-                list(_DataType(NO_COMMENTS, "FormalParameter", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, 
+                list(_DataType(NO_COMMENTS, NO_ANNOTATIONS, "FormalParameter", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS, 
                         list(_Constructor(NO_COMMENTS, "FormalParameter", 
                                 list(_Arg(list(_Final()), _Ref(_ClassType("List", list(_ClassType("Modifier", NO_ACTUAL_TYPE_ARGUMENTS)))), "modifiers") /*,
                                      _Arg(list(_Final()), _Ref(_ClassType("TypeRef", Util.<RefType>list())), "type"),
@@ -831,17 +844,17 @@ public class JavaCCParserImplTest {
     
     @Test
     public void testAnnotaion() throws Exception {
-        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", Optional.<AnnotationElement>_None())), "@foo");
-        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))), "@foo( @bar )");
-        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValue(_AnnotationValueExpression(_LiteralExpression(_NullLiteral())))))), "@foo( null )");
-        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))))), "@foo( x = @bar )");
-        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueExpression(_LiteralExpression(_NullLiteral())))))))), "@foo( x = null )");
-        testAnnotation(_CommentedAnnotation(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueExpression(_LiteralExpression(_NullLiteral()))), _AnnotationKeyValue("y", _AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))))), "@foo( x = null, y = @bar )");        
+        testAnnotation(_Tuple(NO_COMMENTS, _Annotation("foo", Optional.<AnnotationElement>_None())), "@foo");
+        testAnnotation(_Tuple(NO_COMMENTS, _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))), "@foo( @bar )");
+        testAnnotation(_Tuple(NO_COMMENTS, _Annotation("foo", _Some(_ElementValue(_AnnotationValueExpression(_LiteralExpression(_NullLiteral())))))), "@foo( null )");
+        testAnnotation(_Tuple(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))))), "@foo( x = @bar )");
+        testAnnotation(_Tuple(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueExpression(_LiteralExpression(_NullLiteral())))))))), "@foo( x = null )");
+        testAnnotation(_Tuple(NO_COMMENTS, _Annotation("foo", _Some(_ElementValuePairs(list(_AnnotationKeyValue("x", _AnnotationValueExpression(_LiteralExpression(_NullLiteral()))), _AnnotationKeyValue("y", _AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))))), "@foo( x = null, y = @bar )");        
     }
     
-    private void testAnnotation(CommentedAnnotation expected, String input) throws Exception {
+    private void testAnnotation(Tuple<List<JavaComment>, Annotation> expected, String input) throws Exception {
         final ParserImpl p = parserImpl(input);
-        final CommentedAnnotation ca = p.annotation(true);
+        final Tuple<List<JavaComment>, Annotation> ca = p.annotation(true);
         assertEquals("[]", p.errors().toString());
         assertEquals(expected.toString(), ca.toString());
     }

@@ -15,10 +15,11 @@ limitations under the License.
  */
 package com.pogofish.jadt.parser.javacc;
 
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.*;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BAR;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BOOLEAN;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BYTE;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.CHAR;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.CLASS;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.COMMA;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.DOT;
 import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.DOUBLE;

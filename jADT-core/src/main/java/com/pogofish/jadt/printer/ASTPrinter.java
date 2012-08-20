@@ -42,6 +42,7 @@ import com.pogofish.jadt.ast.Expression;
 import com.pogofish.jadt.ast.Expression.ClassReference;
 import com.pogofish.jadt.ast.Expression.LiteralExpression;
 import com.pogofish.jadt.ast.Expression.NestedExpression;
+import com.pogofish.jadt.ast.Expression.TernaryExpression;
 import com.pogofish.jadt.ast.Expression.VariableExpression;
 import com.pogofish.jadt.ast.Imprt;
 import com.pogofish.jadt.ast.JDTagSection;
@@ -529,6 +530,11 @@ public class ASTPrinter  {
             @Override
             public String _case(ClassReference x) {
                 return print(x.type) + ".class";
+            }
+
+            @Override
+            public String _case(TernaryExpression x) {
+                return print(x.cond) + " ? " + print(x.trueExpression) + " : " + print (x.falseExpression);
             }
         });
     }

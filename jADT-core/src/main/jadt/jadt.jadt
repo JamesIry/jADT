@@ -275,15 +275,25 @@ AnnotationValue
   | AnnotationValueArray(final List<AnnotationValue> values)
 
 /**
- * An expression for use in an annotation
+ * An expression used in annotations.  This is a subset of the Java expression language that can be used
+ * to create compile time constants, which means no method calls, no "new", and no assignment.
  */
 Expression
+    /**
+     * ternary expression 
+     * cond ? trueExpression : falseExpression
+     *
+     * @param cond condtion to check
+     * @param trueExpression expression to evaluate if cond is true
+     * @param falseExpression expression to evaluate if cond is false
+     */
+   = TernaryExpression(final Expression cond, final Expression trueExpression, final Expression falseExpression)     
     /**
      * An Expression consisting only of a literal
      *
      * @param literal that makes the expression
      */
-  = LiteralExpression(final Literal literal)
+  | LiteralExpression(final Literal literal)
     /**
      * An expression consisting of a variable reference that may be hanging off of an expression
      *

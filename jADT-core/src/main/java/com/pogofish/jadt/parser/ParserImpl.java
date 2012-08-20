@@ -367,4 +367,14 @@ public interface ParserImpl {
      * '}'
      */
     public abstract void rcurly() throws Exception;
+
+    /**
+     * '?'
+     */
+    public abstract void question() throws Exception;
+    
+    /**
+     * ':'
+     */
+    public abstract void colon() throws Exception;
 }

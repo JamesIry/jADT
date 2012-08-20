@@ -15,35 +15,8 @@ limitations under the License.
  */
 package com.pogofish.jadt.parser.javacc;
 
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BAR;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BOOLEAN;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.BYTE;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.CHAR;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.CLASS;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.COMMA;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.DOT;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.DOUBLE;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.EOF;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.EQUALS;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.EXTENDS;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.FINAL;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.FLOAT;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.IDENTIFIER;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.IMPLEMENTS;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.IMPORT;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.INT;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.JAVA_KEYWORD;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.LANGLE;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.LBRACKET;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.LONG;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.LPAREN;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.PACKAGE;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.RANGLE;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.RBRACKET;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.RPAREN;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.SHORT;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.UNKNOWN;
-import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.UNTERMINATED_COMMENT;
+import static com.pogofish.jadt.parser.javacc.generated.BaseJavaCCParserImplConstants.*;
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -170,11 +143,11 @@ public class JavaCCTokenizerTest {
      */
     @Test
     public void testBadIdentifiers() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("42x ?");
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("42x ~");
         // bad because identifiers can't start with numbers
         check(tokenizer, "42x", UNKNOWN, 1);
         // just bad
-        check(tokenizer, "?", UNKNOWN, 1);
+        check(tokenizer, "~", UNKNOWN, 1);
     }
 
     /**
@@ -182,7 +155,7 @@ public class JavaCCTokenizerTest {
      */
     @Test
     public void testPunctuation() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("<>=(),[]|.");
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("<>=(),[]|.@*?:");
         check(tokenizer, "<", LANGLE, 1);
         check(tokenizer, ">", RANGLE, 1);
         check(tokenizer, "=", EQUALS, 1);
@@ -193,27 +166,31 @@ public class JavaCCTokenizerTest {
         check(tokenizer, "]", RBRACKET, 1);
         check(tokenizer, "|", BAR, 1);
         check(tokenizer, ".", DOT, 1);
+        check(tokenizer, "@", AT, 1);
+        check(tokenizer, "*", SPLAT, 1);
+        check(tokenizer, "?", QUESTION, 1);
+        check(tokenizer, ":", COLON, 1);
         check(tokenizer, "<EOF>", EOF, 1);
     }
 
     @Test
     public void testUnknown() {
-        final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("~?/~");
-        check(tokenizer1, "~?/~", UNKNOWN, 1);
+        final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("~`/~");
+        check(tokenizer1, "~`/~", UNKNOWN, 1);
         check(tokenizer1, "<EOF>", EOF, 1);
 
-        final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("?");
-        check(tokenizer2, "?", UNKNOWN, 1);
+        final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("~");
+        check(tokenizer2, "~", UNKNOWN, 1);
         check(tokenizer2, "<EOF>", EOF, 1);
 
         final BaseJavaCCParserImplTokenManager tokenizer3 = tokenizer("/");
         check(tokenizer3, "/", UNKNOWN, 1);
         check(tokenizer3, "<EOF>", EOF, 1);
 
-        final BaseJavaCCParserImplTokenManager tokenizer4 = tokenizer("?/");
+        final BaseJavaCCParserImplTokenManager tokenizer4 = tokenizer("~/");
         // ideally these would match as one token but I haven't figure out how
         // to do that
-        check(tokenizer4, "?", UNKNOWN, 1);
+        check(tokenizer4, "~", UNKNOWN, 1);
         check(tokenizer4, "/", UNKNOWN, 1);
         check(tokenizer4, "<EOF>", EOF, 1);
     }

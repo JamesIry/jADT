@@ -474,6 +474,16 @@ public abstract class BaseTestParserImpl implements ParserImpl {
                 "This should not have been called");
     
     }
-    
-    
+
+    @Override
+    public void question() {
+        throw new RuntimeException(
+                "This should not have been called");
+    }
+
+    @Override
+    public void colon() {
+        throw new RuntimeException(
+                "This should not have been called");
+    }    
 }

@@ -33,10 +33,7 @@ import static com.pogofish.jadt.ast.BlockToken._BlockWord;
 import static com.pogofish.jadt.ast.Tuple.*;
 import static com.pogofish.jadt.ast.Constructor._Constructor;
 import static com.pogofish.jadt.ast.DataType._DataType;
-import static com.pogofish.jadt.ast.Expression._ClassReference;
-import static com.pogofish.jadt.ast.Expression._LiteralExpression;
-import static com.pogofish.jadt.ast.Expression._NestedExpression;
-import static com.pogofish.jadt.ast.Expression._VariableExpression;
+import static com.pogofish.jadt.ast.Expression.*;
 import static com.pogofish.jadt.ast.JDToken._JDWord;
 import static com.pogofish.jadt.ast.JavaComment._JavaBlockComment;
 import static com.pogofish.jadt.ast.JavaComment._JavaDocComment;
@@ -482,8 +479,8 @@ public class JavaCCParserImplTest {
         final ParserImpl p1 = parserImpl("package");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), Pkg._Pkg(NO_COMMENTS, "NO_IDENTIFIER@1"), p1.pkg(), p1);
 
-        final ParserImpl p3 = parserImpl("package ?g42");
-        checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), Pkg._Pkg(NO_COMMENTS, "BAD_IDENTIFIER_?g42@1"), p3.pkg(), p3);
+        final ParserImpl p3 = parserImpl("package ~g42");
+        checkError(list(_UnexpectedToken("a package name", "'~g42'", 1)), Pkg._Pkg(NO_COMMENTS, "BAD_IDENTIFIER_~g42@1"), p3.pkg(), p3);
 
         final ParserImpl p4 = parserImpl("package boolean");
         checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), Pkg._Pkg(NO_COMMENTS, "BAD_IDENTIFIER_boolean@1"), p4.pkg(), p4);
@@ -507,8 +504,8 @@ public class JavaCCParserImplTest {
         final ParserImpl p1 = parserImpl("import");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), list(Imprt._Imprt(NO_COMMENTS, "NO_IDENTIFIER@1")), p1.imports(), p1);
         
-        final ParserImpl p2 = parserImpl("import ?g42");
-        checkError(list(_UnexpectedToken("a package name", "'?g42'", 1)), list(Imprt._Imprt(NO_COMMENTS, "BAD_IDENTIFIER_?g42@1")), p2.imports(), p2);
+        final ParserImpl p2 = parserImpl("import ~g42");
+        checkError(list(_UnexpectedToken("a package name", "'~g42'", 1)), list(Imprt._Imprt(NO_COMMENTS, "BAD_IDENTIFIER_~g42@1")), p2.imports(), p2);
         
         final ParserImpl p3 = parserImpl("import boolean");
         checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), list(Imprt._Imprt(NO_COMMENTS, "BAD_IDENTIFIER_boolean@1")), p3.imports(), p3);       
@@ -713,6 +710,14 @@ public class JavaCCParserImplTest {
         final ParserImpl p28 = parserImpl("/**/=");
         p28.equals(false);
         checkVoidCommentError("'='", p28);
+
+        final ParserImpl p29 = parserImpl("/**/?");
+        p29.question();
+        checkVoidCommentError("'?'", p29);
+
+        final ParserImpl p30 = parserImpl("/**/:");
+        p30.colon();
+        checkVoidCommentError("':'", p30);
     }
 
     private static void checkVoidCommentError(String expected, ParserImpl p) {
@@ -829,6 +834,7 @@ public class JavaCCParserImplTest {
     
     @Test
     public void testExpression() throws Exception {
+        testExpression(_TernaryExpression(_VariableExpression(Optional.<Expression>_None(), "foo"), _VariableExpression(Optional.<Expression>_None(), "bar"), _VariableExpression(Optional.<Expression>_None(), "baz")), "foo?bar:baz");
         testExpression(_LiteralExpression(_NullLiteral()), "null");
         testExpression(_NestedExpression(_LiteralExpression(_NullLiteral())), "(null)");
         testExpression(_VariableExpression(Optional.<Expression>_None(), "foo"), "foo");
@@ -839,6 +845,7 @@ public class JavaCCParserImplTest {
     private void testExpression(Expression expected, String input) throws Exception {
         final ParserImpl p = parserImpl(input);
         final Expression expression = p.expression();
+        assertEquals("[]", p.errors().toString());
         assertEquals(expected.toString(), expression.toString());
     }
     

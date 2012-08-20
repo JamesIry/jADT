@@ -30,10 +30,7 @@ import static com.pogofish.jadt.ast.ArgModifier._Volatile;
 import static com.pogofish.jadt.ast.BlockToken._BlockEOL;
 import static com.pogofish.jadt.ast.BlockToken._BlockWhiteSpace;
 import static com.pogofish.jadt.ast.BlockToken._BlockWord;
-import static com.pogofish.jadt.ast.Expression._ClassReference;
-import static com.pogofish.jadt.ast.Expression._LiteralExpression;
-import static com.pogofish.jadt.ast.Expression._NestedExpression;
-import static com.pogofish.jadt.ast.Expression._VariableExpression;
+import static com.pogofish.jadt.ast.Expression.*;
 import static com.pogofish.jadt.ast.JDTagSection._JDTagSection;
 import static com.pogofish.jadt.ast.JDToken._JDAsterisk;
 import static com.pogofish.jadt.ast.JDToken._JDEOL;
@@ -289,6 +286,7 @@ public class ASTPrinterTest {
     
     @Test
     public void testExpression() {
+        testExpression("foo ? bar : baz", _TernaryExpression(_VariableExpression(Optional.<Expression>_None(), "foo"), _VariableExpression(Optional.<Expression>_None(), "bar"), _VariableExpression(Optional.<Expression>_None(), "baz")));
         testExpression("null", _LiteralExpression(_NullLiteral()));
         testExpression("foo", _VariableExpression(Optional.<Expression>_None(), "foo"));
         testExpression("null.foo", _VariableExpression(_Some(_LiteralExpression(_NullLiteral())), "foo"));

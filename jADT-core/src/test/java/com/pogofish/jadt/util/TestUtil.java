@@ -18,6 +18,8 @@ package com.pogofish.jadt.util;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Utility methods only used in testing
  */
@@ -41,4 +43,11 @@ public class TestUtil {
         return tmp;
     }
 
+    public static void assertEqualsBarringFileSeparators(String expected, String actual) {
+        assertEquals(sanitize(expected), sanitize(actual));
+    }
+
+    private static String sanitize(String s) {
+        return s.replaceAll("\\\\", "/").replaceAll("//", "/");
+    }
 }

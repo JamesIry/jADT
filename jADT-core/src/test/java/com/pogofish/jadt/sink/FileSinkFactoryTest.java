@@ -15,6 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.sink;
 
+import static com.pogofish.jadt.util.TestUtil.assertEqualsBarringFileSeparators;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -54,7 +55,7 @@ public class FileSinkFactoryTest {
     public void testFactorySlash() {
         final FileSinkFactory factory = new FileSinkFactory("/germufabits/");
         final String path = factory.convertToPath("hello.world");
-        assertEquals("/germufabits/hello/world.java", path);
+        assertEqualsBarringFileSeparators("/germufabits/hello/world.java", path);
     }
     
     /**
@@ -64,6 +65,6 @@ public class FileSinkFactoryTest {
     public void testFactoryNoSlash() {
         final FileSinkFactory factory = new FileSinkFactory("/germufabits");
         final String path = factory.convertToPath("hello.world");
-        assertEquals("/germufabits/hello/world.java", path);
+        assertEqualsBarringFileSeparators("/germufabits/hello/world.java", path);
     }
 }

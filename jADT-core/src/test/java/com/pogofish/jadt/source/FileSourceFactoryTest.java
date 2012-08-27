@@ -15,6 +15,7 @@ limitations under the License.
 */
 package com.pogofish.jadt.source;
 
+import static com.pogofish.jadt.util.TestUtil.assertEqualsBarringFileSeparators;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -145,7 +146,7 @@ public class FileSourceFactoryTest {
     private void checkSource(int i, File parent, Source source) throws IOException {
         final BufferedReader reader = source.createReader();
         try {
-            assertEquals(parent.getAbsolutePath() + "/" + i + ".jadt", source.getSrcInfo());
+            assertEqualsBarringFileSeparators(parent.getAbsolutePath() + "/" + i + ".jadt", source.getSrcInfo());
             final String line = reader.readLine();
             assertEquals("hello" + i, line);
         } finally {

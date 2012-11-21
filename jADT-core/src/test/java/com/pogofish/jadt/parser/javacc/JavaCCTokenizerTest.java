@@ -1,5 +1,5 @@
 /*
-Copyright 2012 James Iry
+AE  Copyright 2012 James Iry
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -54,21 +54,18 @@ public class JavaCCTokenizerTest {
         check(tokenizer1, "oh", IDENTIFIER, 3);
         check(tokenizer1, "<EOF>", EOF, 3);
 
-//         final BaseJavaCCParserImplTokenManager tokenizer2 =
-//         tokenizer("/**/hello");
-//         check(tokenizer2, "hello", IDENTIFIER, 1);
-//         check(tokenizer2, "<EOF>", EOF, 1);
-        
-         final BaseJavaCCParserImplTokenManager tokenizer3 =
-         tokenizer("/***/hello");
-         check(tokenizer3, "hello", IDENTIFIER, 1);
-         check(tokenizer3, "<EOF>", EOF, 1);
-        
-         final BaseJavaCCParserImplTokenManager tokenizer4 =
-         tokenizer("/****/hello");
-         check(tokenizer4, "hello", IDENTIFIER, 1);
-         check(tokenizer4, "<EOF>", EOF, 1);
-        //
+        final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("/**/hello");
+        check(tokenizer2, "hello", IDENTIFIER, 1);
+        check(tokenizer2, "<EOF>", EOF, 1);
+
+        final BaseJavaCCParserImplTokenManager tokenizer3 = tokenizer("/***/hello");
+        check(tokenizer3, "hello", IDENTIFIER, 1);
+        check(tokenizer3, "<EOF>", EOF, 1);
+
+        final BaseJavaCCParserImplTokenManager tokenizer4 = tokenizer("/****/hello");
+        check(tokenizer4, "hello", IDENTIFIER, 1);
+        check(tokenizer4, "<EOF>", EOF, 1);
+
         final BaseJavaCCParserImplTokenManager tokenizer5 = tokenizer("/*** */hello");
         check(tokenizer5, "hello", IDENTIFIER, 1);
         check(tokenizer5, "<EOF>", EOF, 1);
@@ -139,60 +136,34 @@ public class JavaCCTokenizerTest {
     }
 
     /**
-     * Various types of invalid identifier
-     */
-    @Test
-    public void testBadIdentifiers() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("42x ~");
-        // bad because identifiers can't start with numbers
-        check(tokenizer, "42x", UNKNOWN, 1);
-        // just bad
-        check(tokenizer, "~", UNKNOWN, 1);
-    }
-
-    /**
      * Test various kinds of punctuation
      */
     @Test
     public void testPunctuation() {
-        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer("<>=(),[]|.@*?:");
+        final BaseJavaCCParserImplTokenManager tokenizer = tokenizer(">><<>>>>=<=<>*/+-=|(),[].@?:");
+        check(tokenizer, ">>", RIGHT_SHIFT, 1);
+        check(tokenizer, "<<", LEFT_SHIFT, 1);
+        check(tokenizer, ">>>", ZERO_EXTENDED_RIGHT_SHIFT, 1);
+        check(tokenizer, ">=", GREATER_THAN_EQUAL, 1);
+        check(tokenizer, "<=", LESS_THAN_EQUAL, 1);        
         check(tokenizer, "<", LANGLE, 1);
         check(tokenizer, ">", RANGLE, 1);
+        check(tokenizer, "*", SPLAT, 1);
+        check(tokenizer, "/", DIVIDE, 1);
+        check(tokenizer, "+", PLUS, 1);
+        check(tokenizer, "-", MINUS, 1);
         check(tokenizer, "=", EQUALS, 1);
+        check(tokenizer, "|", BAR, 1);
         check(tokenizer, "(", LPAREN, 1);
         check(tokenizer, ")", RPAREN, 1);
         check(tokenizer, ",", COMMA, 1);
         check(tokenizer, "[", LBRACKET, 1);
         check(tokenizer, "]", RBRACKET, 1);
-        check(tokenizer, "|", BAR, 1);
         check(tokenizer, ".", DOT, 1);
         check(tokenizer, "@", AT, 1);
-        check(tokenizer, "*", SPLAT, 1);
         check(tokenizer, "?", QUESTION, 1);
         check(tokenizer, ":", COLON, 1);
         check(tokenizer, "<EOF>", EOF, 1);
-    }
-
-    @Test
-    public void testUnknown() {
-        final BaseJavaCCParserImplTokenManager tokenizer1 = tokenizer("~`/~");
-        check(tokenizer1, "~`/~", UNKNOWN, 1);
-        check(tokenizer1, "<EOF>", EOF, 1);
-
-        final BaseJavaCCParserImplTokenManager tokenizer2 = tokenizer("~");
-        check(tokenizer2, "~", UNKNOWN, 1);
-        check(tokenizer2, "<EOF>", EOF, 1);
-
-        final BaseJavaCCParserImplTokenManager tokenizer3 = tokenizer("/");
-        check(tokenizer3, "/", UNKNOWN, 1);
-        check(tokenizer3, "<EOF>", EOF, 1);
-
-        final BaseJavaCCParserImplTokenManager tokenizer4 = tokenizer("~/");
-        // ideally these would match as one token but I haven't figure out how
-        // to do that
-        check(tokenizer4, "~", UNKNOWN, 1);
-        check(tokenizer4, "/", UNKNOWN, 1);
-        check(tokenizer4, "<EOF>", EOF, 1);
     }
 
     @Test

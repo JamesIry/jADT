@@ -31,6 +31,26 @@ import com.pogofish.jadt.ast.ArgModifier;
 import com.pogofish.jadt.ast.ArgModifier.Final;
 import com.pogofish.jadt.ast.ArgModifier.Transient;
 import com.pogofish.jadt.ast.ArgModifier.Volatile;
+import com.pogofish.jadt.ast.BinaryOperator;
+import com.pogofish.jadt.ast.BinaryOperator.Add;
+import com.pogofish.jadt.ast.BinaryOperator.BitwiseAnd;
+import com.pogofish.jadt.ast.BinaryOperator.BitwiseOr;
+import com.pogofish.jadt.ast.BinaryOperator.BitwiseXor;
+import com.pogofish.jadt.ast.BinaryOperator.Divide;
+import com.pogofish.jadt.ast.BinaryOperator.DoubleEqual;
+import com.pogofish.jadt.ast.BinaryOperator.GreaterThan;
+import com.pogofish.jadt.ast.BinaryOperator.GreaterThanEqual;
+import com.pogofish.jadt.ast.BinaryOperator.LeftShift;
+import com.pogofish.jadt.ast.BinaryOperator.LessThan;
+import com.pogofish.jadt.ast.BinaryOperator.LessThanEqual;
+import com.pogofish.jadt.ast.BinaryOperator.LogicalAnd;
+import com.pogofish.jadt.ast.BinaryOperator.LogicalOr;
+import com.pogofish.jadt.ast.BinaryOperator.Mod;
+import com.pogofish.jadt.ast.BinaryOperator.Multiply;
+import com.pogofish.jadt.ast.BinaryOperator.NotEqual;
+import com.pogofish.jadt.ast.BinaryOperator.RightShift;
+import com.pogofish.jadt.ast.BinaryOperator.Subtract;
+import com.pogofish.jadt.ast.BinaryOperator.ZeroExtendedRightShift;
 import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.BlockToken.BlockEOL;
 import com.pogofish.jadt.ast.BlockToken.BlockWhiteSpace;
@@ -39,6 +59,7 @@ import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
 import com.pogofish.jadt.ast.Doc;
 import com.pogofish.jadt.ast.Expression;
+import com.pogofish.jadt.ast.Expression.BinaryExpression;
 import com.pogofish.jadt.ast.Expression.ClassReference;
 import com.pogofish.jadt.ast.Expression.LiteralExpression;
 import com.pogofish.jadt.ast.Expression.NestedExpression;
@@ -536,6 +557,11 @@ public class ASTPrinter  {
             public String _case(TernaryExpression x) {
                 return print(x.cond) + " ? " + print(x.trueExpression) + " : " + print (x.falseExpression);
             }
+
+            @Override
+            public String _case(BinaryExpression x) {
+                return print(x.left) + " " + print(x.op) + " " +  print(x.right);
+            }
         });
     }
     
@@ -606,6 +632,106 @@ public class ASTPrinter  {
                     builder.append(print(value));
                 }
                 return builder.toString();
+            }
+        });
+    }
+    
+    public static String print(BinaryOperator op) {
+        return op.match(new BinaryOperator.MatchBlock<String>() {
+
+            @Override
+            public String _case(LogicalOr x) {
+                return "||";
+            }
+
+            @Override
+            public String _case(LogicalAnd x) {
+                return "&&";
+            }
+
+            @Override
+            public String _case(BitwiseOr x) {
+                return "|";
+            }
+
+            @Override
+            public String _case(BitwiseAnd x) {
+                return "&";
+            }
+
+            @Override
+            public String _case(BitwiseXor x) {
+                return "^";
+            }
+
+            @Override
+            public String _case(Multiply x) {
+                return "*";
+            }
+
+            @Override
+            public String _case(Divide x) {
+                return "/";
+            }
+
+            @Override
+            public String _case(Add x) {
+                return "+";
+            }
+
+            @Override
+            public String _case(Subtract x) {
+                return "-";
+            }
+
+            @Override
+            public String _case(Mod x) {
+                return "%";
+            }
+
+            @Override
+            public String _case(DoubleEqual x) {
+                return "==";
+            }
+
+            @Override
+            public String _case(NotEqual x) {
+                return "!=";
+            }
+
+            @Override
+            public String _case(LessThan x) {
+                return "<";
+            }
+
+            @Override
+            public String _case(GreaterThan x) {
+                return ">";
+            }
+
+            @Override
+            public String _case(LessThanEqual x) {
+                return "<=";
+            }
+
+            @Override
+            public String _case(GreaterThanEqual x) {
+                return ">=";
+            }
+
+            @Override
+            public String _case(RightShift x) {
+                return ">>";
+            }
+
+            @Override
+            public String _case(LeftShift x) {
+                return "<<";
+            }
+
+            @Override
+            public String _case(ZeroExtendedRightShift x) {
+                return ">>>";
             }
         });
     }

@@ -363,10 +363,6 @@ public class JavaCCParserImplTest {
         final ParserImpl p1 = parserImpl("Foo|");
         checkError(list(_UnexpectedToken("a constructor name", "<EOF>", 1)), 
                 list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()), _Constructor(NO_COMMENTS, "NO_IDENTIFIER@1", Util.<Arg>list())), p1.constructors(NO_COMMENTS), p1);
-
-        final ParserImpl p2 = parserImpl("Foo||Bar");
-        checkError(list(_UnexpectedToken("a constructor name", "'|'", 1)), 
-                list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg>list()), _Constructor(NO_COMMENTS, "NO_IDENTIFIER@1", Util.<Arg>list()), _Constructor(NO_COMMENTS, "Bar", Util.<Arg>list())), p2.constructors(NO_COMMENTS), p2);
     }
 
     /**
@@ -381,11 +377,11 @@ public class JavaCCParserImplTest {
         assertEquals(
                 _DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", list("A"), NO_EXTENDS, NO_IMPLEMENTS,
                         list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()))),
-                parserImpl("Foo<A>=Foo").dataType());
+                parserImpl("Foo<A> =Foo").dataType());
         assertEquals(
                 _DataType(NO_COMMENTS, NO_ANNOTATIONS, "Foo", list("A", "B"), NO_EXTENDS, NO_IMPLEMENTS,
                         list(_Constructor(NO_COMMENTS, "Foo", Util.<Arg> list()))),
-                parserImpl("Foo<A, B>=Foo").dataType());
+                parserImpl("Foo<A, B> =Foo").dataType());
         testAnnotation(_Tuple(NO_COMMENTS, _Annotation("foo", Optional.<AnnotationElement>_None())), "@foo");
         assertEquals(
                 _DataType(NO_COMMENTS, list(_Annotation("foo", Optional.<AnnotationElement>_None()), _Annotation("foo", _Some(_ElementValue(_AnnotationValueAnnotation(_Annotation("bar", Optional.<AnnotationElement>_None())))))), "Foo", NO_FORMAL_TYPE_ARGUMENTS, NO_EXTENDS, NO_IMPLEMENTS,
@@ -479,8 +475,8 @@ public class JavaCCParserImplTest {
         final ParserImpl p1 = parserImpl("package");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), Pkg._Pkg(NO_COMMENTS, "NO_IDENTIFIER@1"), p1.pkg(), p1);
 
-        final ParserImpl p3 = parserImpl("package ~g42");
-        checkError(list(_UnexpectedToken("a package name", "'~g42'", 1)), Pkg._Pkg(NO_COMMENTS, "BAD_IDENTIFIER_~g42@1"), p3.pkg(), p3);
+        final ParserImpl p3 = parserImpl("package 42");
+        checkError(list(_UnexpectedToken("a package name", "'42'", 1)), Pkg._Pkg(NO_COMMENTS, "BAD_IDENTIFIER_42@1"), p3.pkg(), p3);
 
         final ParserImpl p4 = parserImpl("package boolean");
         checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), Pkg._Pkg(NO_COMMENTS, "BAD_IDENTIFIER_boolean@1"), p4.pkg(), p4);
@@ -504,8 +500,8 @@ public class JavaCCParserImplTest {
         final ParserImpl p1 = parserImpl("import");
         checkError(list(_UnexpectedToken("a package name", "<EOF>", 1)), list(Imprt._Imprt(NO_COMMENTS, "NO_IDENTIFIER@1")), p1.imports(), p1);
         
-        final ParserImpl p2 = parserImpl("import ~g42");
-        checkError(list(_UnexpectedToken("a package name", "'~g42'", 1)), list(Imprt._Imprt(NO_COMMENTS, "BAD_IDENTIFIER_~g42@1")), p2.imports(), p2);
+        final ParserImpl p2 = parserImpl("import 42");
+        checkError(list(_UnexpectedToken("a package name", "'42'", 1)), list(Imprt._Imprt(NO_COMMENTS, "BAD_IDENTIFIER_42@1")), p2.imports(), p2);
         
         final ParserImpl p3 = parserImpl("import boolean");
         checkError(list(_UnexpectedToken("a package name", "'boolean'", 1)), list(Imprt._Imprt(NO_COMMENTS, "BAD_IDENTIFIER_boolean@1")), p3.imports(), p3);       
@@ -520,7 +516,7 @@ public class JavaCCParserImplTest {
 
     private static <A> void checkError(List<SyntaxError> expectedErrors, A expectedResult, A actualResult, ParserImpl p) {
         assertEquals(expectedErrors, p.errors());
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult.toString(), actualResult.toString());
     }
 
     /**

@@ -64,6 +64,7 @@ import static com.pogofish.jadt.printer.ASTPrinter.printComments;
 import static com.pogofish.jadt.util.Util.list;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static com.pogofish.jadt.ast.BinaryOperator.*;
 
 import java.util.List;
 
@@ -73,6 +74,7 @@ import com.pogofish.jadt.ast.Annotation;
 import com.pogofish.jadt.ast.AnnotationElement;
 import com.pogofish.jadt.ast.Arg;
 import com.pogofish.jadt.ast.ArgModifier;
+import com.pogofish.jadt.ast.BinaryOperator;
 import com.pogofish.jadt.ast.BlockToken;
 import com.pogofish.jadt.ast.Constructor;
 import com.pogofish.jadt.ast.DataType;
@@ -287,6 +289,7 @@ public class ASTPrinterTest {
     @Test
     public void testExpression() {
         testExpression("foo ? bar : baz", _TernaryExpression(_VariableExpression(Optional.<Expression>_None(), "foo"), _VariableExpression(Optional.<Expression>_None(), "bar"), _VariableExpression(Optional.<Expression>_None(), "baz")));
+        testExpression("foo || bar", _BinaryExpression(_VariableExpression(Optional.<Expression>_None(), "foo"), _LogicalOr(), _VariableExpression(Optional.<Expression>_None(), "bar")));
         testExpression("null", _LiteralExpression(_NullLiteral()));
         testExpression("foo", _VariableExpression(Optional.<Expression>_None(), "foo"));
         testExpression("null.foo", _VariableExpression(_Some(_LiteralExpression(_NullLiteral())), "foo"));
@@ -314,6 +317,33 @@ public class ASTPrinterTest {
     
     private void testAnnotation(String expected, Annotation annotation) {
         assertEquals(expected, ASTPrinter.print(annotation));
+    }
+    
+    @Test
+    public void testBinaryOp() {
+        testBinaryOp("||", _LogicalOr());
+        testBinaryOp("&&", _LogicalAnd());
+        testBinaryOp("|", _BitwiseOr());
+        testBinaryOp("&", _BitwiseAnd());
+        testBinaryOp("^", _BitwiseXor());
+        testBinaryOp("*", _Multiply());
+        testBinaryOp("/", _Divide());
+        testBinaryOp("+", _Add());
+        testBinaryOp("-", _Subtract());
+        testBinaryOp("%", _Mod());
+        testBinaryOp(">", _GreaterThan());
+        testBinaryOp("<", _LessThan());
+        testBinaryOp(">=", _GreaterThanEqual());
+        testBinaryOp("<=", _LessThanEqual());
+        testBinaryOp(">>", _RightShift());
+        testBinaryOp("<<", _LeftShift());
+        testBinaryOp(">>>", _ZeroExtendedRightShift());
+        testBinaryOp("==", _DoubleEqual());
+        testBinaryOp("!=", _NotEqual());
+    }
+    
+    private void testBinaryOp(String expected, BinaryOperator op) {
+        assertEquals(expected, ASTPrinter.print(op));
     }
     
 }

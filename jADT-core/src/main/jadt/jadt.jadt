@@ -288,6 +288,15 @@ Expression
      * @param falseExpression expression to evaluate if cond is false
      */
    = TernaryExpression(final Expression cond, final Expression trueExpression, final Expression falseExpression)     
+     /**
+      * binary expression
+      * left op right
+      *
+      * @param left the expression on the left
+      * @param op the operator used in the expression
+      * @param right the expression on the right
+      */
+   | BinaryExpression(final Expression left, final BinaryOperator op, final Expression right)
     /**
      * An Expression consisting only of a literal
      *
@@ -419,3 +428,24 @@ BlockToken
      * @param word content of the word
      */
   | BlockWord(String word)
+  
+BinaryOperator
+  = LogicalOr
+  | LogicalAnd
+  | BitwiseOr
+  | BitwiseAnd
+  | BitwiseXor
+  | Multiply
+  | Divide
+  | Add
+  | Subtract
+  | Mod
+  | DoubleEqual
+  | NotEqual
+  | LessThan
+  | GreaterThan
+  | LessThanEqual
+  | GreaterThanEqual
+  | RightShift
+  | LeftShift
+  | ZeroExtendedRightShift
